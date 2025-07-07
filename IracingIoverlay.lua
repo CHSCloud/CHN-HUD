@@ -1,20 +1,25 @@
 STORAGE_SIZE = ac.storage("Size", 1)
 Size = STORAGE_SIZE:get()
 
+-- Tamanho base para a janela
 BaseWindowWidth = 202
-BaseWindowHeight = 72 + 22
+BaseWindowHeight = 94
+--
+barWidth = 17 -- Largura das barras de freio e acelerador
+posxBars = 100 -- Move as barras e textos
 
 OldWindowWidth = BaseWindowWidth
 OldWindowHeight = BaseWindowHeight
-NewWindowWidth = OldWindowWidth
-NewWindowHeight = OldWindowHeight
+NewWindowWidth = BaseWindowWidth
+NewWindowHeight = BaseWindowHeight
+
 
 function script.windowMain(dt)
     SIM = ac.getSim()
     CAR = ac.getCar(SIM.focusedCar)
 
     if CAR == nil then
-        ac.debug("focused driver error");
+        ac.debug("Focused driver error");
     else
         ui.beginScale()
 
@@ -29,32 +34,30 @@ function script.windowMain(dt)
         --
 
         -- Barras do acelerador:
-        posX_Barras = 100 -- Move as barras e textos
-        larguraBarras = 17 -- Largura das barras de freio e acelerador
-        ui.drawSimpleLine(vec2(posX_Barras, 85), vec2(posX_Barras, 85 - 45), rgbm(0.2, 0.2, 0.2, 0.6), larguraBarras)
-        ui.drawSimpleLine(vec2(posX_Barras, 85), vec2(posX_Barras, 85 - CAR.gas * 45), rgbm(107 / 255, 228 / 255, 96 / 255, 1), larguraBarras)
+        ui.drawSimpleLine(vec2(posxBars, 85), vec2(posxBars, 85 - 45), rgbm(0.2, 0.2, 0.2, 0.6), barWidth)
+        ui.drawSimpleLine(vec2(posxBars, 85), vec2(posxBars, 85 - CAR.gas * 45), rgbm(107 / 255, 228 / 255, 96 / 255, 1), barWidth)
 
-        posX_textoAcelerador = posX_Barras - 43
+        posxAccelerator = posxBars - 43
         if (CAR.gas * 100) < 98.99 then
-          ui.setCursor(vec2(posX_textoAcelerador, 23))
+          ui.setCursor(vec2(posxAccelerator, 23))
           ui.dwriteTextAligned(string.format("%.0f", CAR.gas * 100), 14, ui.Alignment.Center, ui.Alignment.Start, vec2(86, 30), false, rgbm(255, 255, 255, 1))
         else 
-          ui.setCursor(vec2(posX_textoAcelerador, 17))
+          ui.setCursor(vec2(posxAccelerator, 17))
           ui.dwriteTextAligned("∞", 22, ui.Alignment.Center, ui.Alignment.Start, vec2(85, 30), false, rgbm(107 / 255, 228 / 255, 96 / 255, 1))
         end
         -- 
 
         -- Barras do freio:
-        posX_freio = posX_Barras - 20 -- Posição X freio
-        ui.drawSimpleLine(vec2(posX_freio, 85), vec2(posX_freio, 85 - 45), rgbm(0.2, 0.2, 0.2, 0.6), larguraBarras)
-        ui.drawSimpleLine(vec2(posX_freio, 85), vec2(posX_freio, 85 - CAR.brake * 45), rgbm(226 / 255, 12 / 255, 50 / 255, 1), larguraBarras)
+        posxBrake = posxBars - 20 -- Posição X das barras e números do freio
+        ui.drawSimpleLine(vec2(posxBrake, 85), vec2(posxBrake, 85 - 45), rgbm(0.2, 0.2, 0.2, 0.6), barWidth)
+        ui.drawSimpleLine(vec2(posxBrake, 85), vec2(posxBrake, 85 - CAR.brake * 45), rgbm(226 / 255, 12 / 255, 50 / 255, 1), barWidth)
 
-         posX_textoAcelerador = posX_Barras - 43
+        posxAccelerator = posxBars - 43
         if (CAR.brake * 100) < 98.99 then
-          ui.setCursor(vec2(posX_textoAcelerador, 23))
+          ui.setCursor(vec2(posxAccelerator, 23))
           ui.dwriteTextAligned(string.format("%.0f", CAR.brake * 100), 14, ui.Alignment.Center, ui.Alignment.Start, vec2(45, 30), false, rgbm(255, 255, 255, 1))
         else 
-          ui.setCursor(vec2(posX_textoAcelerador, 17))
+          ui.setCursor(vec2(posxAccelerator, 17))
           ui.dwriteTextAligned("∞", 22, ui.Alignment.Center, ui.Alignment.Start, vec2(45, 30), false, rgbm(226 / 255, 12 / 255, 50 / 255, 1))
         end
         --
@@ -79,7 +82,7 @@ function script.windowMain(dt)
         ui.dwriteTextAligned(speed, 17, ui.Alignment.Center, ui.Alignment.Start, vec2(86, 30), false, rgbm(255, 255, 255, 1))   
         --
 
-        ui.endPivotScale(Size, vec2(0, 22)) -- Escala background
+        ui.endPivotScale(Size, vec2(0, 22)) -- Escala da janela
     end
 end
 
