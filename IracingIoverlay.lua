@@ -1,9 +1,6 @@
 STORAGE_SIZE = ac.storage("Size", 1)
 Size = STORAGE_SIZE:get()
 
-STORAGE_MPH = ac.storage("MPH", false)
-MphFlag = STORAGE_MPH:get()
-
 BaseWindowWidth = 202
 BaseWindowHeight = 72 + 22
 
@@ -22,7 +19,7 @@ function script.windowMain(dt)
         ui.beginScale()
 
         -- BackGround
-        ui.drawRectFilled(vec2(0, 0), vec2(203, 95), rgbm(0, 0, 0, 0.30), 0)
+        ui.drawRectFilled(vec2(0, 0), vec2(202, 94), rgbm(0, 0, 0, 0.30), 0)
         
         -- Volante:
         ui.beginRotation()
@@ -62,7 +59,6 @@ function script.windowMain(dt)
         end
         --
 
-
         -- Texto das marchas:
         local gear = tostring(CAR.gear);
         if gear == "0" then
@@ -88,18 +84,15 @@ function script.windowMain(dt)
 end
 
 function script.iRacingHUD_Settings(dt)
-    min = 1
-    max = 2
-    Size = ui.slider('##Size', Size, min, max, string.format("%.2f", Size - 1), nil);
+    Size = ui.slider('##Size', Size, 1, 2, string.format("%.2f", Size - 1), nil);
   
     STORAGE_SIZE:set(Size)
-    STORAGE_MPH:set(MphFlag)
-  
-    local iniFile = ac.INIConfig.load(ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\iRacingGearHUD\\manifest.ini")
-  
+
+    local iniFile = ac.INIConfig.load(ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\IracingIoverlay\\manifest.ini")
+
     NewWindowHeight = BaseWindowHeight * Size
     NewWindowWidth = BaseWindowWidth * Size
-  
+
     if NewWindowHeight ~= OldWindowHeight or NewWindowWidth ~= OldWindowWidth then
       iniFile:setAndSave("WINDOW_...", "SIZE", " " .. tostring(NewWindowWidth) .. ", " .. tostring(NewWindowHeight))
       OldWindowHeight = NewWindowHeight
