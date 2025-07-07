@@ -34,8 +34,8 @@ function script.windowMain(dt)
         --
 
         -- Barras do acelerador:
-        ui.drawSimpleLine(vec2(posxBars, 85), vec2(posxBars, 85 - 45), rgbm(0.2, 0.2, 0.2, 0.6), barWidth)
-        ui.drawSimpleLine(vec2(posxBars, 85), vec2(posxBars, 85 - CAR.gas * 45), rgbm(107 / 255, 228 / 255, 96 / 255, 1), barWidth)
+        ui.drawSimpleLine(vec2(posxBars, 90), vec2(posxBars, 90 - 50), rgbm(0.2, 0.2, 0.2, 0.6), barWidth)
+        ui.drawSimpleLine(vec2(posxBars, 90), vec2(posxBars, 90 - CAR.gas * 50), rgbm(107 / 255, 228 / 255, 96 / 255, 1), barWidth)
 
         posxAccelerator = posxBars - 43
         if (CAR.gas * 100) < 98.99 then
@@ -49,8 +49,8 @@ function script.windowMain(dt)
 
         -- Barras do freio:
         posxBrake = posxBars - 20 -- Posição X das barras e números do freio
-        ui.drawSimpleLine(vec2(posxBrake, 85), vec2(posxBrake, 85 - 45), rgbm(0.2, 0.2, 0.2, 0.6), barWidth)
-        ui.drawSimpleLine(vec2(posxBrake, 85), vec2(posxBrake, 85 - CAR.brake * 45), rgbm(226 / 255, 12 / 255, 50 / 255, 1), barWidth)
+        ui.drawSimpleLine(vec2(posxBrake, 90), vec2(posxBrake, 90 - 50), rgbm(0.2, 0.2, 0.2, 0.6), barWidth)
+        ui.drawSimpleLine(vec2(posxBrake, 90), vec2(posxBrake, 90 - CAR.brake * 50), rgbm(226 / 255, 12 / 255, 50 / 255, 1), barWidth)
 
         posxAccelerator = posxBars - 43
         if (CAR.brake * 100) < 98.99 then
@@ -77,9 +77,9 @@ function script.windowMain(dt)
         
         -- Velocidade Km/h:
         speed = string.format("%d", math.round(CAR.speedKmh))
-        ui.setCursor(vec2(-10, 49 + 22))
+        ui.setCursor(vec2(-10, 45 + 22))
         ui.pushDWriteFont("Font/Montserrat-Bold.ttf")
-        ui.dwriteTextAligned(speed, 17, ui.Alignment.Center, ui.Alignment.Start, vec2(86, 30), false, rgbm(255, 255, 255, 1))   
+        ui.dwriteTextAligned(speed, 15, ui.Alignment.Center, ui.Alignment.Start, vec2(88, 30), false, rgbm(255, 255, 255, 1))   
         --
 
         ui.endPivotScale(Size, vec2(0, 22)) -- Escala da janela
