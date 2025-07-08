@@ -5,8 +5,25 @@ Size = STORAGE_SIZE:get()
 BaseWindowWidth = 202
 BaseWindowHeight = 94
 --
-barWidth = 17 -- Largura das barras de freio e acelerador
-posxBars = 100 -- Move as barras e textos
+local barWidth = 17 -- Largura das barras de freio e acelerador
+
+-- Posições das das barras:
+local posXAceleratorBar = 100 -- Posição X da barra de acelerador 
+local posxBrakeBar = posXAceleratorBar - 20 -- Posição X da barra de freio
+local posyBars = 90 -- Posição Y de ambas as barras
+
+-- Posições dos textos das barras:
+local posxTextBars = (posXAceleratorBar - 43) * Size -- Posição X dos textos do acelerador e freio
+local posyTextBars = 22 * Size
+local posyInfiniteBars = 16 * Size
+local posxTextRight = -10 * Size -- Posição X dos textos de marcha e velocidade
+
+-- Fonte dos textos:
+ui.pushDWriteFont("Font/Montserrat-Bold.ttf") -- Fonte do texto
+local fontBar = 14 * Size -- Tamanho da fonte dos textos do acelerador e freio
+local fontBarInfinite = 22 * Size -- Tamanho da fonte dos símbolos de infinito
+local fontGear = 35 * Size -- Tamanho da fonte do texto de marcha
+local fontSpeed = 15 * Size -- Tamanho da fonte do texto de velocidade
 
 OldWindowWidth = BaseWindowWidth
 OldWindowHeight = BaseWindowHeight
@@ -17,7 +34,6 @@ NewWindowHeight = BaseWindowHeight
 function script.windowMain(dt)
     SIM = ac.getSim()
     CAR = ac.getCar(SIM.focusedCar)
-    ui.pushDWriteFont("Font/Montserrat-Bold.ttf") -- Fonte do texto
 
     if CAR == nil then
         ac.debug("Focused driver error");
@@ -35,31 +51,32 @@ function script.windowMain(dt)
         --
 
         -- Barras do acelerador:
-        ui.drawSimpleLine(vec2(posxBars, 90), vec2(posxBars, 90 - 50), rgbm(0.2, 0.2, 0.2, 0.6), barWidth)
-        ui.drawSimpleLine(vec2(posxBars, 90), vec2(posxBars, 90 - CAR.gas * 50), rgbm(107 / 255, 228 / 255, 96 / 255, 1), barWidth)
+        ui.drawSimpleLine(vec2(posXAceleratorBar, posyBars), vec2(posXAceleratorBar, posyBars - 50), rgbm(0.2, 0.2, 0.2, 0.6), barWidth)
+        ui.drawSimpleLine(vec2(posXAceleratorBar, posyBars), vec2(posXAceleratorBar, posyBars - CAR.gas * 50), rgbm(107 / 255, 228 / 255, 96 / 255, 1), barWidth)
 
-        posxAccelerator = posxBars - 43
+        -- Barras do freio:
+        ui.drawSimpleLine(vec2(posxBrakeBar, posyBars), vec2(posxBrakeBar, posyBars - 50), rgbm(0.2, 0.2, 0.2, 0.6), barWidth)
+        ui.drawSimpleLine(vec2(posxBrakeBar, posyBars), vec2(posxBrakeBar, posyBars - CAR.brake * 50), rgbm(226 / 255, 12 / 255, 50 / 255, 1), barWidth)
+
+        ui.endPivotScale(Size, vec2(0, 0)) -- Escala da janela
+
+        -- Texto do acelerador:
         if (CAR.gas * 100) < 98.99 then
-          ui.setCursor(vec2(posxAccelerator, 23))
-          ui.dwriteTextAligned(string.format("%.0f", CAR.gas * 100), 14, ui.Alignment.Center, ui.Alignment.Start, vec2(86, 30), false, rgbm(255, 255, 255, 1))
+          ui.setCursor(vec2(posxTextBars, posyTextBars))
+          ui.dwriteTextAligned(string.format("%.0f", CAR.gas * 100), fontBar, ui.Alignment.Center, ui.Alignment.Start, vec2(86, 30):scale(Size), false, rgbm(255, 255, 255, 1))
         else 
-          ui.setCursor(vec2(posxAccelerator, 17))
-          ui.dwriteTextAligned("∞", 22, ui.Alignment.Center, ui.Alignment.Start, vec2(85, 30), false, rgbm(107 / 255, 228 / 255, 96 / 255, 1))
+          ui.setCursor(vec2(posxTextBars, posyInfiniteBars))
+          ui.dwriteTextAligned("∞", fontBarInfinite, ui.Alignment.Center, ui.Alignment.Start, vec2(85, 30):scale(Size), false, rgbm(107 / 255, 228 / 255, 96 / 255, 1))
         end
         -- 
 
-        -- Barras do freio:
-        posxBrake = posxBars - 20 -- Posição X das barras e números do freio
-        ui.drawSimpleLine(vec2(posxBrake, 90), vec2(posxBrake, 90 - 50), rgbm(0.2, 0.2, 0.2, 0.6), barWidth)
-        ui.drawSimpleLine(vec2(posxBrake, 90), vec2(posxBrake, 90 - CAR.brake * 50), rgbm(226 / 255, 12 / 255, 50 / 255, 1), barWidth)
-
-        posxAccelerator = posxBars - 43
+        -- Texto do freio:
         if (CAR.brake * 100) < 98.99 then
-          ui.setCursor(vec2(posxAccelerator, 23))
-          ui.dwriteTextAligned(string.format("%.0f", CAR.brake * 100), 14, ui.Alignment.Center, ui.Alignment.Start, vec2(45, 30), false, rgbm(255, 255, 255, 1))
+          ui.setCursor(vec2(posxTextBars, posyTextBars))
+          ui.dwriteTextAligned(string.format("%.0f", CAR.brake * 100), fontBar, ui.Alignment.Center, ui.Alignment.Start, vec2(45, 30):scale(Size), false, rgbm(255, 255, 255, 1))
         else 
-          ui.setCursor(vec2(posxAccelerator, 17))
-          ui.dwriteTextAligned("∞", 22, ui.Alignment.Center, ui.Alignment.Start, vec2(45, 30), false, rgbm(226 / 255, 12 / 255, 50 / 255, 1))
+          ui.setCursor(vec2(posxTextBars, posyInfiniteBars))
+          ui.dwriteTextAligned("∞", fontBarInfinite, ui.Alignment.Center, ui.Alignment.Start, vec2(45, 30):scale(Size), false, rgbm(226 / 255, 12 / 255, 50 / 255, 1))
         end
         --
 
@@ -70,21 +87,19 @@ function script.windowMain(dt)
         elseif gear == "-1" then
          gear = "R";
         end
-        ui.setCursor(vec2(-10, 8 + 22))
-        ui.dwriteTextAligned(gear, 35, ui.Alignment.Center, ui.Alignment.Center, vec2(86, 33), false, rgbm(255, 255, 255, 1))
+        ui.setCursor(vec2(posxTextRight, 30 * Size))
+        ui.dwriteTextAligned(gear, fontGear, ui.Alignment.Center, ui.Alignment.Center, vec2(86, 33):scale(Size), false, rgbm(255, 255, 255, 1))
         --
         
         -- Velocidade Km/h:
-        speed = string.format("%d", math.round(CAR.speedKmh))
-        ui.setCursor(vec2(-10, 45 + 22))
-        ui.dwriteTextAligned(speed, 15, ui.Alignment.Center, ui.Alignment.Start, vec2(88, 30), false, rgbm(255, 255, 255, 1))   
+        local speed = string.format("%d", math.floor(CAR.speedKmh))
+        ui.setCursor(vec2(posxTextRight, 60 * Size))
+        ui.dwriteTextAligned(speed, fontSpeed, ui.Alignment.Center, ui.Alignment.Center, vec2(88, 30):scale(Size), false, rgbm(255, 255, 255, 1))   
         --
-
-        ui.endPivotScale(Size, vec2(0, 22)) -- Escala da janela
     end
 end
 
-function script.iRacingHUD_Settings(dt)
+function script.Ioverlay_Settings(dt)
     Size = ui.slider('##Size', Size, 1, 2, string.format("%.2f", Size - 1), nil);
   
     STORAGE_SIZE:set(Size)
