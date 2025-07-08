@@ -100,7 +100,7 @@ function script.windowMain(dt)
 end
 
 function script.Ioverlay_Settings(dt)
-    Size = ui.slider('##Size', Size, 1, 2, string.format("%.2f", Size - 1), nil);
+    Size = ui.slider('##Size', Size, 1, 3, string.format("%.2f", Size), nil);
   
     STORAGE_SIZE:set(Size)
 
