@@ -17,6 +17,7 @@ NewWindowHeight = BaseWindowHeight
 function script.windowMain(dt)
     SIM = ac.getSim()
     CAR = ac.getCar(SIM.focusedCar)
+    ui.pushDWriteFont("Font/Montserrat-Bold.ttf") -- Fonte do texto
 
     if CAR == nil then
         ac.debug("Focused driver error");
@@ -69,16 +70,13 @@ function script.windowMain(dt)
         elseif gear == "-1" then
          gear = "R";
         end
-        ui.pushDWriteFont("Font/Montserrat-Bold.ttf")
         ui.setCursor(vec2(-10, 8 + 22))
         ui.dwriteTextAligned(gear, 35, ui.Alignment.Center, ui.Alignment.Center, vec2(86, 33), false, rgbm(255, 255, 255, 1))
-        ui.popDWriteFont()
         --
         
         -- Velocidade Km/h:
         speed = string.format("%d", math.round(CAR.speedKmh))
         ui.setCursor(vec2(-10, 49 + 22))
-        ui.pushDWriteFont("Font/Montserrat-Bold.ttf")
         ui.dwriteTextAligned(speed, 17, ui.Alignment.Center, ui.Alignment.Start, vec2(86, 30), false, rgbm(255, 255, 255, 1))   
         --
 
