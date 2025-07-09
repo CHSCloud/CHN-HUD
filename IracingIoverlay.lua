@@ -1,13 +1,15 @@
 local settings = ac.storage{
   Size = 1,
-  Wheel = false,
-  ABS = false,
+  Wheel = true,
+  ABS = true,
   BaseWindowWidth = 202,
   BaseWindowHeight = 110
 }
 
+ui.pushDWriteFont("Font/Montserrat-Bold.ttf") -- Fonte do texto
+
 -- Largura das barras de freio e acelerador
-local barWidth = 17 
+local barWidth = 17
 
 -- Posições das das barras:
 local posXAceleratorBar = 100 -- Posição X da barra de acelerador 
@@ -36,13 +38,11 @@ NewWindowHeight = settings.BaseWindowHeight
 function script.windowMain()
     SIM = ac.getSim()
     CAR = ac.getCar(SIM.focusedCar)
-    ui.pushDWriteFont("Font/Montserrat-Bold.ttf") -- Fonte do texto
 
     if CAR == nil then
         ac.debug("Focused driver error");
     else
         ui.beginScale()
-
         -- BackGround
         ui.drawRectFilled(vec2(0, 0), vec2(settings.BaseWindowWidth, settings.BaseWindowHeight), rgbm(0, 0, 0, 0.30), 0)
 
@@ -127,7 +127,7 @@ function script.windowMain()
 end
 
 function script.Ioverlay_Settings()
-    settings.Size = ui.slider('##Size', settings.Size, 1, 3, string.format("%.2f", settings.Size), nil);
+    settings.Size = ui.slider('Size', settings.Size, 1, 3, string.format("%.2f", settings.Size));
 
     if ui.checkbox("Wheel", settings.Wheel) then
       settings.Wheel = not settings.Wheel
