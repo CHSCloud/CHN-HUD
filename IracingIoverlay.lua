@@ -24,8 +24,8 @@ local posxTextRight = -10 * settings.Size -- Posição X dos textos de marcha e 
 -- Fonte dos textos:
 local fontBar = 14 * settings.Size -- Tamanho da fonte dos textos do acelerador e freio
 local fontBarInfinite = 22 * settings.Size -- Tamanho da fonte dos símbolos de infinito
-local fontGear = 35 * settings.Size -- Tamanho da fonte do texto de marcha
-local fontSpeed = 15 * settings.Size -- Tamanho da fonte do texto de velocidade
+local fontGear = 40 * settings.Size -- Tamanho da fonte do texto de marcha
+local fontSpeed = 17 * settings.Size -- Tamanho da fonte do texto de velocidade
 
 -- Setando largura e altura da janela para posterior redimencionamento:
 local OldWindowWidth = settings.BaseWindowWidth
@@ -48,7 +48,7 @@ function script.windowMain()
     ui.drawRectFilled(vec2(0, 0), vec2(settings.BaseWindowWidth, settings.BaseWindowHeight), rgbm(0, 0, 0, 0.30), 0)
 
     if settings.Wheel then
-      -- Volante:
+      -- Wheel:
       settings.BaseWindowWidth = 202
       ui.beginRotation()
       ui.setCursor(vec2(125, 30))
@@ -64,12 +64,12 @@ function script.windowMain()
         ui.setCursor(vec2(190, 25))
       else
         settings.BaseWindowWidth = 202
-        ui.setCursor(vec2(120, 25))
+        ui.setCursor(vec2(115, 25))
       end
       if CAR.absInAction then
-        ui.image("Icons/ABSactive.png", vec2(70, 82), ui.ImageFit.Fit)
+        ui.image("Icons/ABSactive.png", vec2(80, 82), ui.ImageFit.Fit)
       else
-        ui.image("Icons/ABS.png", vec2(70, 82), ui.ImageFit.Fit)
+        ui.image("Icons/ABS.png", vec2(80, 82), ui.ImageFit.Fit)
       end
     end
 
@@ -122,7 +122,7 @@ function script.windowMain()
     -- Velocidade Km/h:
     local speed = string.format("%d", math.floor(CAR.speedKmh))
     ui.setCursor(vec2(posxTextRight, 60 * settings.Size))
-    ui.dwriteTextAligned(speed, fontSpeed, ui.Alignment.Center, ui.Alignment.Center, vec2(88, 50):scale(settings.Size), false, rgbm(255, 255, 255, 1))   
+    ui.dwriteTextAligned(speed, fontSpeed, ui.Alignment.Center, ui.Alignment.Center, vec2(88, 55):scale(settings.Size), false, rgbm(255, 255, 255, 1))   
     --
 end
 
