@@ -38,6 +38,8 @@ local OldWindowHeight = settings.BaseWindowHeight
 local NewWindowWidth = settings.BaseWindowWidth
 local NewWindowHeight = settings.BaseWindowHeight
 
+local isApplyClicked = false
+
 local SIM = ac.getSim()
 local CAR = ac.getCar(SIM.focusedCar)
 
@@ -47,21 +49,21 @@ function script.windowMain()
         return
     end
     ui.beginScale()
+
     -- BackGround
     ui.drawRectFilled(vec2(0, 0), vec2(settings.BaseWindowWidth, settings.BaseWindowHeight), rgbm(0, 0, 0, 0.30), 0)
 
+    -- Wheel:
     if settings.Wheel then
-      -- Wheel:
       settings.BaseWindowWidth = 202
       ui.beginRotation()
       ui.setCursor(vec2(125, 30))
       ui.image("Icons/Wheel.png", vec2(60, 72), ui.ImageFit.Fit)
       ui.endRotation(90 -CAR.steer)
-      --
     end
 
+    -- ABS:
     if settings.ABS then
-      -- ABS:
       if settings.Wheel then
         settings.BaseWindowWidth = 272
         ui.setCursor(vec2(190, 25))
@@ -129,6 +131,11 @@ function script.windowMain()
     --
 end
 
+local function updateSettings()
+  setTimeout(function()
+      Language.loadTranslations()
+  end, 0.5) 
+end
 
 -- Checkbox
 local function elements()
@@ -156,13 +163,23 @@ local function geral()
     if ui.selectable("English") then
       settings.optionLanguage = "English"
       Language.setLanguage("en")
+      isApplyClicked = true
     end
 
     if ui.selectable("Português") then
       settings.optionLanguage = "Português"
       Language.setLanguage("pt-br")
+      isApplyClicked = true
     end
   end)
+
+  if isApplyClicked then
+    ui.setCursor(vec2(250,98))
+    if ui.button(Language.get("APPLY")) then
+      isApplyClicked = false
+      updateSettings()
+    end
+  end
 end
 
 -- TabBar
@@ -171,7 +188,7 @@ function script.Ioverlay_Settings()
       ui.tabItem(Language.get("GENERAL"), geral)
       ui.tabItem(Language.get("ELEMENTS"), elements)
     end)
-
+    
     NewWindowHeight = settings.BaseWindowHeight * settings.Size
     NewWindowWidth = settings.BaseWindowWidth * settings.Size
     if NewWindowHeight ~= OldWindowHeight or NewWindowWidth ~= OldWindowWidth then

@@ -21,7 +21,6 @@ end
 
 function Language.setLanguage(key)
     settings.currentLanguage = key
-    Language.loadTranslations()
 end
 
 function Language.get(key)
@@ -31,3 +30,4 @@ end
 function Language.getCurrentLanguage()
     return settings.currentLanguage
 end
+Language.loadTranslations()
