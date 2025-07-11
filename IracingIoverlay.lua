@@ -16,7 +16,9 @@ local barWidth = 17
 local posXAceleratorBar = 100 -- Posição X da barra de acelerador 
 local posxBrakeBar = posXAceleratorBar - 20 -- Posição X da barra de freio
 local posyBars = 106 -- Posição Y de ambas as barras
+
 ui.pushDWriteFont("Font/Montserrat-Bold.ttf") -- Fonte do texto
+
 -- Posições dos textos das barras:
 local posxTextBars = (posXAceleratorBar - 43) * settings.Size -- Posição X dos textos do acelerador e freio
 local posyTextBars = 26 * settings.Size
@@ -126,29 +128,36 @@ function script.windowMain()
     --
 end
 
+local function config()
+  settings.Size = ui.slider(Language.get("SIZE"), settings.Size, 1, 3, string.format("%.2f", settings.Size));
+end
+
+local function others()
+  ui.setCursor(vec2(20, 55))
+  if ui.checkbox(Language.get("WHEEL"), settings.Wheel) then
+    settings.Wheel = not settings.Wheel
+  end
+
+  ui.setCursor(vec2(20, 80))
+  if ui.checkbox(Language.get("ABS"), settings.ABS) then
+    settings.ABS = not settings.ABS
+  end
+
+  if CAR.absModes == 0 then
+    ui.setCursor(vec2(70, 75))
+    ui.dwriteTextAligned(Language.get("ALERT_ABS"), 10, ui.Alignment.Center, ui.Alignment.Center, vec2(150, 35), false, rgbm(255, 0, 0, 1))  
+  end
+end
+
+
 function script.Ioverlay_Settings()
-    settings.Size = ui.slider(Language.get("SIZE"), settings.Size, 1, 3, string.format("%.2f", settings.Size));
-
-    ui.setCursor(vec2(20, 55))
-    if ui.checkbox(Language.get("WHEEL"), settings.Wheel) then
-      settings.Wheel = not settings.Wheel
-    end
-
-    ui.setCursor(vec2(20, 80))
-    if ui.checkbox(Language.get("ABS"), settings.ABS) then
-      settings.ABS = not settings.ABS
-    end
-
-    -- Verifica se o carro possui ABS:
-    if CAR.absModes == 0 then
-      ui.setCursor(vec2(70, 75))
-      ui.dwriteTextAligned(Language.get("ALERT_ABS"), 10, ui.Alignment.Center, ui.Alignment.Center, vec2(150, 35), false, rgbm(255, 0, 0, 1))  
-    end
+    ui.tabBar('id', function ()
+      ui.tabItem('Config', config)
+      ui.tabItem('Others', others)
+    end)
     
-
     NewWindowHeight = settings.BaseWindowHeight * settings.Size
     NewWindowWidth = settings.BaseWindowWidth * settings.Size
-
     if NewWindowHeight ~= OldWindowHeight or NewWindowWidth ~= OldWindowWidth then
       -- Redimencionando janela:
       local iniFile = ac.INIConfig.load(ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\IracingIoverlay\\manifest.ini")
@@ -157,3 +166,5 @@ function script.Ioverlay_Settings()
       OldWindowWidth = NewWindowWidth
     end
   end
+
+ 
