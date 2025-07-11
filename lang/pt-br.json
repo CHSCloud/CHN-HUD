@@ -3,5 +3,7 @@
     "SIZE": "Tamanho",
     "ABS": "ABS",
     "ALERT_ABS": "Este carro não possui ABS",
-    "LANGUAGE": "Idioma"
+    "LANGUAGE": "Idioma:",
+    "ELEMENTS": "Conteúdo",
+    "GENERAL": "Geral"
 }

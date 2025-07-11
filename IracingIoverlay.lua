@@ -6,7 +6,8 @@ local settings = ac.storage{
   Wheel = true,
   ABS = true,
   BaseWindowWidth = 272,
-  BaseWindowHeight = 110
+  BaseWindowHeight = 110,
+  optionLanguage = "English"
 }
 
 -- Largura das barras de freio e acelerador
@@ -128,11 +129,9 @@ function script.windowMain()
     --
 end
 
-local function config()
-  settings.Size = ui.slider(Language.get("SIZE"), settings.Size, 1, 3, string.format("%.2f", settings.Size));
-end
 
-local function others()
+-- Checkbox
+local function elements()
   ui.setCursor(vec2(20, 55))
   if ui.checkbox(Language.get("WHEEL"), settings.Wheel) then
     settings.Wheel = not settings.Wheel
@@ -142,20 +141,37 @@ local function others()
   if ui.checkbox(Language.get("ABS"), settings.ABS) then
     settings.ABS = not settings.ABS
   end
-
+  -- Alert ABS
   if CAR.absModes == 0 then
     ui.setCursor(vec2(70, 75))
     ui.dwriteTextAligned(Language.get("ALERT_ABS"), 10, ui.Alignment.Center, ui.Alignment.Center, vec2(150, 35), false, rgbm(255, 0, 0, 1))  
   end
 end
+--
 
+local function geral()
+  settings.Size = ui.slider(Language.get("SIZE"), settings.Size, 1, 3, string.format("%.2f", settings.Size));
+  ui.header(Language.get("LANGUAGE"))
+  ui.combo('##resolution', '%s' % settings.optionLanguage, function ()
+    if ui.selectable("English") then
+      settings.optionLanguage = "English"
+      Language.setLanguage("en")
+    end
 
+    if ui.selectable("Português") then
+      settings.optionLanguage = "Português"
+      Language.setLanguage("pt-br")
+    end
+  end)
+end
+
+-- TabBar
 function script.Ioverlay_Settings()
-    ui.tabBar('id', function ()
-      ui.tabItem('Config', config)
-      ui.tabItem('Others', others)
+    ui.tabBar('##ID', function ()
+      ui.tabItem(Language.get("GENERAL"), geral)
+      ui.tabItem(Language.get("ELEMENTS"), elements)
     end)
-    
+
     NewWindowHeight = settings.BaseWindowHeight * settings.Size
     NewWindowWidth = settings.BaseWindowWidth * settings.Size
     if NewWindowHeight ~= OldWindowHeight or NewWindowWidth ~= OldWindowWidth then
@@ -166,5 +182,3 @@ function script.Ioverlay_Settings()
       OldWindowWidth = NewWindowWidth
     end
   end
-
- 
