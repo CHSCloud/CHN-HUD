@@ -6,7 +6,7 @@ local settings = ac.storage{
   Wheel = true,
   ABS = true,
   BaseWindowWidth = 272,
-  BaseWindowHeight = 110,
+  BaseWindowHeight = 125,
   optionLanguage = "English"
 }
 
@@ -16,7 +16,7 @@ local barWidth = 17
 -- Posições das das barras:
 local posXAceleratorBar = 100 -- Posição X da barra de acelerador 
 local posxBrakeBar = posXAceleratorBar - 20 -- Posição X da barra de freio
-local posyBars = 106 -- Posição Y de ambas as barras
+local posyBars = 102 -- Posição Y de ambas as barras
 
 ui.pushDWriteFont("Font/Montserrat-Bold.ttf") -- Fonte do texto
 
@@ -27,6 +27,7 @@ local posyInfiniteBars = 20 * settings.Size
 local posxTextRight = -10 * settings.Size -- Posição X dos textos de marcha e velocidade
 
 -- Fonte dos textos:
+local fontFuel = 13 * settings.Size -- Tamanho da fonte dos textos do acelerador e freio
 local fontBar = 14 * settings.Size -- Tamanho da fonte dos textos do acelerador e freio
 local fontBarInfinite = 22 * settings.Size -- Tamanho da fonte dos símbolos de infinito
 local fontGear = 40 * settings.Size -- Tamanho da fonte do texto de marcha
@@ -72,7 +73,7 @@ function script.windowMain()
         ui.setCursor(vec2(115, 25))
       end
       if CAR.absInAction then
-        ui.image("Icons/ABSactive.png", vec2(80, 82), ui.ImageFit.Fit)
+        ui.image("Icons/ABS.png", vec2(80, 82), rgbm(255, 0, 0, 1),ui.ImageFit.Fit)
       else
         ui.image("Icons/ABS.png", vec2(80, 82), ui.ImageFit.Fit)
       end
@@ -88,10 +89,43 @@ function script.windowMain()
 
     -- Barras do freio:
     ui.drawSimpleLine(vec2(posxBrakeBar, posyBars), vec2(posxBrakeBar, posyBars - 60), rgbm(0.2, 0.2, 0.2, 0.6), barWidth)
-    ui.drawSimpleLine(vec2(posxBrakeBar, posyBars), vec2(posxBrakeBar, posyBars - CAR.brake * 60), rgbm(226 / 255, 12 / 255, 50 / 255, 1), barWidth)
+    ui.drawSimpleLine(vec2(posxBrakeBar, posyBars), vec2(posxBrakeBar, posyBars - CAR.brake * 60), rgbm(255, 0, 0, 1), barWidth)
 
+    
+    -- Fuel Imagem
+    if CAR.fuel <= 5 then
+      ui.setCursor(vec2(settings.BaseWindowWidth-55, settings.BaseWindowHeight-19))
+      ui.image("Icons/Fuel.png", vec2(16, 15), rgbm(255, 0, 0, 1), ui.ImageFit.Fit)
+    elseif CAR.fuel < 10 then
+      ui.setCursor(vec2(settings.BaseWindowWidth-55, settings.BaseWindowHeight-19))
+      ui.image("Icons/Fuel.png", vec2(16, 15), rgbm(255, 255, 0, 1), ui.ImageFit.Fit)
+    elseif CAR.fuel < 100 then
+      ui.setCursor(vec2(settings.BaseWindowWidth-59, settings.BaseWindowHeight-19))
+      ui.image("Icons/Fuel.png", vec2(16, 15), rgbm(255, 255, 255, 1), ui.ImageFit.Fit)
+    else
+      ui.setCursor(vec2(settings.BaseWindowWidth-62, settings.BaseWindowHeight-19))
+      ui.image("Icons/Fuel.png", vec2(16, 15), rgbm(255, 255, 255, 1), ui.ImageFit.Fit)
+    end
+    --
+    -- BrakeBias Image
+    ui.setCursor(vec2(2, 104))
+    ui.image("Icons/BrakeBias.png", vec2(19, 19), ui.ImageFit.Fit)
+    --
     ui.endPivotScale(settings.Size, vec2(0, 0)) -- Escala da janela
 
+    -- Text Fuel
+    ui.setCursor(vec2((settings.BaseWindowWidth-67)*settings.Size, (settings.BaseWindowHeight-20)*settings.Size))
+    if CAR.fuel <= 5 then
+      ui.dwriteTextAligned(string.format("%.2f", CAR.fuel), fontFuel, ui.Alignment.Center, ui.Alignment.Start, vec2(86, 30):scale(settings.Size), false, rgbm(255, 0, 0, 1))
+    elseif CAR.fuel < 10 then
+      ui.dwriteTextAligned(string.format("%.2f", CAR.fuel), fontFuel, ui.Alignment.Center, ui.Alignment.Start, vec2(86, 30):scale(settings.Size), false, rgbm(255, 255, 0, 1))
+    else
+      ui.dwriteTextAligned(string.format("%.2f", CAR.fuel), fontFuel, ui.Alignment.Center, ui.Alignment.Start, vec2(86, 30):scale(settings.Size), false, rgbm(255, 255, 255, 1))
+    end
+    --
+    -- Text Brake Bias
+    ui.setCursor(vec2(-8, (settings.BaseWindowHeight-20)*settings.Size))
+    ui.dwriteTextAligned(string.format("%.1f", CAR.brakeBias*100), fontFuel, ui.Alignment.Center, ui.Alignment.Start, vec2(86, 30):scale(settings.Size), false, rgbm(255, 255, 255, 1))
 
     -- Texto do acelerador:
     if (CAR.gas * 100) < 98.99 then
@@ -109,7 +143,7 @@ function script.windowMain()
       ui.dwriteTextAligned(string.format("%.0f", CAR.brake * 100), fontBar, ui.Alignment.Center, ui.Alignment.Start, vec2(45, 30):scale(settings.Size), false, rgbm(255, 255, 255, 1))
     else 
       ui.setCursor(vec2(posxTextBars, posyInfiniteBars))
-      ui.dwriteTextAligned("∞", fontBarInfinite, ui.Alignment.Center, ui.Alignment.Start, vec2(45, 30):scale(settings.Size), false, rgbm(226 / 255, 12 / 255, 50 / 255, 1))
+      ui.dwriteTextAligned("∞", fontBarInfinite, ui.Alignment.Center, ui.Alignment.Start, vec2(45, 30):scale(settings.Size), false, rgbm(255, 0, 0, 1))
     end
     --
 
@@ -136,6 +170,7 @@ local function updateSettings()
       Language.loadTranslations()
   end, 0.5) 
 end
+
 
 -- Checkbox
 local function elements()
