@@ -7,9 +7,9 @@ local settings = ac.storage{
   ABS = true,
   BaseWindowWidth = 272,
   BaseWindowHeight = 125,
-  optionLanguage = "English"
+  optionLanguage = "English",
+  selectedSpeed = 1
 }
-
 -- Largura das barras de freio e acelerador
 local barWidth = 17
 
@@ -212,6 +212,7 @@ end
 
 local function geral()
   settings.Size = ui.slider(Language.get("SIZE"), settings.Size, 1, 3, string.format("%.2f", settings.Size));
+
   ui.header(Language.get("SPEED"))
   settings.selectedSpeed = ui.combo("##Speed", settings.selectedSpeed , {"Km/h", "Mph"})
 end
