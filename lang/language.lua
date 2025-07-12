@@ -13,10 +13,8 @@ function Language.loadTranslations()
         local content = io.load(file_path)
         if content then
             translations = JSON.parse(content)
-            return true
         end
     end
-    return false
 end
 
 function Language.setLanguage(key)

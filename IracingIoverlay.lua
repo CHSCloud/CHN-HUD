@@ -1,4 +1,4 @@
-require("language")
+require("lang.language")
 
 ui.setAsynchronousImagesLoading(true)
 local settings = ac.storage{
@@ -7,7 +7,8 @@ local settings = ac.storage{
   ABS = true,
   BaseWindowWidth = 272,
   BaseWindowHeight = 110,
-  optionLanguage = "English"
+  optionLanguage = "English",
+  selectedSpeed = 1
 }
 
 -- Largura das barras de freio e acelerador
@@ -37,8 +38,6 @@ local OldWindowWidth = settings.BaseWindowWidth
 local OldWindowHeight = settings.BaseWindowHeight
 local NewWindowWidth = settings.BaseWindowWidth
 local NewWindowHeight = settings.BaseWindowHeight
-
-local isApplyClicked = false
 
 local SIM = ac.getSim()
 local CAR = ac.getCar(SIM.focusedCar)
@@ -125,7 +124,13 @@ function script.windowMain()
     --
     
     -- Velocidade Km/h:
-    local speed = string.format("%d", math.floor(CAR.speedKmh))
+    local speed
+    if(settings.selectedSpeed == 1) then
+      speed = string.format("%d", math.floor(CAR.speedKmh))
+    else
+      speed = string.format("%d", math.floor(CAR.speedKmh * 0.621371))
+    end
+    
     ui.setCursor(vec2(posxTextRight, 60 * settings.Size))
     ui.dwriteTextAligned(speed, fontSpeed, ui.Alignment.Center, ui.Alignment.Center, vec2(88, 55):scale(settings.Size), false, rgbm(255, 255, 255, 1))   
     --
@@ -133,8 +138,28 @@ end
 
 local function updateSettings()
   setTimeout(function()
-      Language.loadTranslations()
+    Language.loadTranslations()
   end, 0.5) 
+end
+
+-- Escolher Idioma:
+local function setLanguage()
+  ui.header(Language.get("LANGUAGE"))
+  ui.combo('##resolution', '%s' % settings.optionLanguage, function ()
+    if ui.selectable("English") then
+      settings.optionLanguage = "English"
+      Language.setLanguage("en")
+    end
+
+    if ui.selectable("Português - Brasil") then
+      settings.optionLanguage = "Português - Brasil"
+      Language.setLanguage("pt-br")
+    end
+  end)
+  ui.setCursor(vec2(20,100))
+  if ui.button(Language.get("APPLY")) then
+    updateSettings()
+  end
 end
 
 -- Checkbox
@@ -158,28 +183,8 @@ end
 
 local function geral()
   settings.Size = ui.slider(Language.get("SIZE"), settings.Size, 1, 3, string.format("%.2f", settings.Size));
-  ui.header(Language.get("LANGUAGE"))
-  ui.combo('##resolution', '%s' % settings.optionLanguage, function ()
-    if ui.selectable("English") then
-      settings.optionLanguage = "English"
-      Language.setLanguage("en")
-      isApplyClicked = true
-    end
-
-    if ui.selectable("Português") then
-      settings.optionLanguage = "Português"
-      Language.setLanguage("pt-br")
-      isApplyClicked = true
-    end
-  end)
-
-  if isApplyClicked then
-    ui.setCursor(vec2(250,98))
-    if ui.button(Language.get("APPLY")) then
-      isApplyClicked = false
-      updateSettings()
-    end
-  end
+  ui.header(Language.get("SPEED"))
+  settings.selectedSpeed = ui.combo("##Speed", settings.selectedSpeed , {"Km/h", "Mph"})
 end
 
 -- TabBar
@@ -187,6 +192,7 @@ function script.Ioverlay_Settings()
     ui.tabBar('##ID', function ()
       ui.tabItem(Language.get("GENERAL"), geral)
       ui.tabItem(Language.get("ELEMENTS"), elements)
+      ui.tabItem(Language.get("LANGUAGE"), setLanguage)
     end)
     
     NewWindowHeight = settings.BaseWindowHeight * settings.Size
