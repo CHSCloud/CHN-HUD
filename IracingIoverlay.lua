@@ -136,10 +136,6 @@ function script.windowMain()
     --
 end
 
-local function updateSettings()
-  Language.loadTranslations()
-end
-
 -- Escolher Idioma:
 local function setLanguage()
   
@@ -157,7 +153,7 @@ local function setLanguage()
   end)
   ui.setCursor(vec2(20,100))
   if ui.button(Language.get("APPLY")) then
-    updateSettings()
+    Language.loadTranslations()
   end
 end
 
