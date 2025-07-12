@@ -137,15 +137,14 @@ function script.windowMain()
 end
 
 local function updateSettings()
-  setTimeout(function()
-    Language.loadTranslations()
-  end, 0.5) 
+  Language.loadTranslations()
 end
 
 -- Escolher Idioma:
 local function setLanguage()
+  
   ui.header(Language.get("LANGUAGE"))
-  ui.combo('##resolution', '%s' % settings.optionLanguage, function ()
+  ui.combo('##resolution', settings.optionLanguage, function ()
     if ui.selectable("English") then
       settings.optionLanguage = "English"
       Language.setLanguage("en")
