@@ -79,10 +79,10 @@ function script.windowMain()
     -- Barras acelerador:
     ui.drawRectFilled(posBar, posBar + barSize, rgbm(0.2, 0.2, 0.2, 0.6))
     ui.drawRectFilled(posBar + vec2(0, barSize.y - (CAR.gas * barSize.y)), posBar + barSize, rgbm(0, 255, 0, 1))
+    currentWindowWidth = currentWindowWidth + vec2(barSize.x + barSpace)
     --
 
     -- Volante:
-    currentWindowWidth = currentWindowWidth + vec2(barSize.x + barSpace)
     if WheelActive then
       ui.drawRectFilled(currentWindowWidth, currentWindowWidth + wheelBackgroundSize, rgbm(0, 0, 0, 0.30), 0)
       ui.beginRotation()
@@ -93,16 +93,25 @@ function script.windowMain()
     end
     --
 
+
     -- ABS:
     if ABSActive then
       ui.drawRectFilled(currentWindowWidth, currentWindowWidth + absBackgroundSize, rgbm(0, 0, 0, 0.30), 0)
       ui.setCursor(vec2(currentWindowWidth.x, 35 * HudScale))
       if CAR.absInAction then
-        ui.image("assets/ABS.png", vec2(80, 82):scale(HudScale), rgbm(255, 0, 0, 1),ui.ImageFit.Fit)
+        ui.image("assets/ABS.png", vec2(80,80):scale(HudScale), rgbm(255, 0, 0, 1),ui.ImageFit.Fit)
       else
-        ui.image("assets/ABS.png", vec2(80, 82):scale(HudScale), ui.ImageFit.Fit)
+        ui.image("assets/ABS.png", vec2(80,80):scale(HudScale), ui.ImageFit.Fit)
       end
-      currentWindowWidth = currentWindowWidth + vec2(absBackgroundSize.x)
+      if CAR.absModes == 0 then
+        local posline = vec2(currentWindowWidth.x, 35 * HudScale) + vec2(15,15) * HudScale
+        local distance = 50 * HudScale
+        local widthLine = 4 * HudScale
+        ui.drawLine(posline, posline + vec2(distance,distance), rgbm(255, 0, 0, 1), widthLine) 
+        posline = posline + vec2(distance)
+        ui.drawLine(posline, posline + vec2(-distance, distance), rgbm(255, 0, 0, 1), widthLine)
+      end
+        currentWindowWidth = currentWindowWidth + vec2(absBackgroundSize.x)
     end
     --
 
