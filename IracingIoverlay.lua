@@ -20,7 +20,7 @@ function script.windowMain()
     local currentWindowHeight = vec2(0, 135 * HudScale) -- Altura da tela
     
     local gearBackgroundSize = vec2(70 * HudScale, currentWindowHeight.y) -- Tamanho do background do texto de velocidade e marcha
-    local wheelBackgroundSize = vec2(75 * HudScale, currentWindowHeight.y) -- Tamanho do background do eixo do roda
+    local wheelBackgroundSize = vec2(70 * HudScale, currentWindowHeight.y) -- Tamanho do background do eixo do roda
     local absBackgroundSize = vec2(80 * HudScale, currentWindowHeight.y) -- Tamanho do background do ABS
     local barSize = vec2(17, 65) * HudScale -- Tamanho das barras
     local barSpace = 3 * HudScale --Comprimento do padding das barras
@@ -53,7 +53,7 @@ function script.windowMain()
     ui.drawRectFilled(currentWindowWidth, currentWindowWidth + vec2(barSpace + barSize.x, currentWindowHeight.y), rgbm(0, 0, 0, 0.30), 0)
     -- Texto do freio:
     if (CAR.brake * 100) < 98.99 then
-      ui.setCursor(vec2(currentWindowWidth.x, posBar.y - 20))
+      ui.setCursor(vec2(currentWindowWidth.x, posyTextBars))
       ui.dwriteTextAligned(string.format("%.0f", CAR.brake * 100), fontBar, ui.Alignment.Center, ui.Alignment.Start, vec2(17, 30):scale(HudScale), false, rgbm(255, 255, 255, 1))
     else 
       ui.setCursor(vec2(currentWindowWidth.x, posyInfiniteBars))
