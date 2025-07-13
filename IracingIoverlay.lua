@@ -1,237 +1,144 @@
 require("lang.language")
-
-ui.setAsynchronousImagesLoading(true)
-local settings = ac.storage{
-  Size = 1,
-  Wheel = true,
-  ABS = true,
-  BaseWindowWidth = 272,
-  BaseWindowHeight = 125,
-  optionLanguage = "English",
-  selectedSpeed = 1
-}
--- Largura das barras de freio e acelerador
-local barWidth = 17
-
--- Posições das das barras:
-local posXAceleratorBar = 100 -- Posição X da barra de acelerador 
-local posxBrakeBar = posXAceleratorBar - 20 -- Posição X da barra de freio
-local posyBars = 102 -- Posição Y de ambas as barras
-
-ui.pushDWriteFont("Font/Montserrat-Bold.ttf") -- Fonte do texto
-
--- Posições dos textos das barras:
-local posxTextBars = (posXAceleratorBar - 43) * settings.Size -- Posição X dos textos do acelerador e freio
-local posyTextBars = 26 * settings.Size
-local posyInfiniteBars = 20 * settings.Size
-local posxTextRight = -10 * settings.Size -- Posição X dos textos de marcha e velocidade
-
--- Fonte dos textos:
-local fontFuel = 13 * settings.Size -- Tamanho da fonte dos textos do acelerador e freio
-local fontBar = 14 * settings.Size -- Tamanho da fonte dos textos do acelerador e freio
-local fontBarInfinite = 22 * settings.Size -- Tamanho da fonte dos símbolos de infinito
-local fontGear = 40 * settings.Size -- Tamanho da fonte do texto de marcha
-local fontSpeed = 17 * settings.Size -- Tamanho da fonte do texto de velocidade
-
--- Setando largura e altura da janela para posterior redimencionamento:
-local OldWindowWidth = settings.BaseWindowWidth
-local OldWindowHeight = settings.BaseWindowHeight
-local NewWindowWidth = settings.BaseWindowWidth
-local NewWindowHeight = settings.BaseWindowHeight
-
-local SIM = ac.getSim()
-local CAR = ac.getCar(SIM.focusedCar)
+require("settings.settings")
+local config = require("common.config")
 
 function script.windowMain()
-    if CAR == nil then
-        ac.debug("Focused driver error");
-        return
-    end
-    ui.beginScale()
+    ui.pushDWriteFont("Font/Montserrat-Bold.ttf") -- Fonte do texto
 
-    -- BackGround
-    ui.drawRectFilled(vec2(0, 0), vec2(settings.BaseWindowWidth, settings.BaseWindowHeight), rgbm(0, 0, 0, 0.30), 0)
+    -- Posições dos textos das barras:
+    local posyTextBars = 26 * HudScale
+    local posyInfiniteBars = 20 * HudScale
 
-    -- Wheel:
-    if settings.Wheel then
-      settings.BaseWindowWidth = 202
-      ui.beginRotation()
-      ui.setCursor(vec2(125, 30))
-      ui.image("Icons/Wheel.png", vec2(60, 72), ui.ImageFit.Fit)
-      ui.endRotation(90 -CAR.steer)
-    end
+    -- Fonte dos textos:
+    local fontFuel = 13 * HudScale -- Tamanho da fonte dos textos do acelerador e freio
+    local fontBar = 14 * HudScale -- Tamanho da fonte dos textos do acelerador e freio
+    local fontBarInfinite = 22 * HudScale -- Tamanho da fonte dos símbolos de infinito
+    local fontGear = 40 * HudScale -- Tamanho da fonte do texto de marcha
+    local fontSpeed = 17 * HudScale -- Tamanho da fonte do texto de velocidade
 
-    -- ABS:
-    if settings.ABS then
-      if settings.Wheel then
-        settings.BaseWindowWidth = 272
-        ui.setCursor(vec2(190, 25))
-      else
-        settings.BaseWindowWidth = 202
-        ui.setCursor(vec2(115, 25))
-      end
-      if CAR.absInAction then
-        ui.image("Icons/ABS.png", vec2(80, 82), rgbm(255, 0, 0, 1),ui.ImageFit.Fit)
-      else
-        ui.image("Icons/ABS.png", vec2(80, 82), ui.ImageFit.Fit)
-      end
-    end
-
-    if not settings.ABS and not settings.Wheel then
-      settings.BaseWindowWidth = 120
-    end
-
-    -- Barras do acelerador:
-    ui.drawSimpleLine(vec2(posXAceleratorBar, posyBars), vec2(posXAceleratorBar, posyBars - 60), rgbm(0.2, 0.2, 0.2, 0.6), barWidth)
-    ui.drawSimpleLine(vec2(posXAceleratorBar, posyBars), vec2(posXAceleratorBar, posyBars - CAR.gas * 60), rgbm(107 / 255, 228 / 255, 96 / 255, 1), barWidth)
-
-    -- Barras do freio:
-    ui.drawSimpleLine(vec2(posxBrakeBar, posyBars), vec2(posxBrakeBar, posyBars - 60), rgbm(0.2, 0.2, 0.2, 0.6), barWidth)
-    ui.drawSimpleLine(vec2(posxBrakeBar, posyBars), vec2(posxBrakeBar, posyBars - CAR.brake * 60), rgbm(255, 0, 0, 1), barWidth)
-
+    local currentWindowWidth = vec2(0, 0) -- Comprimento da tela
+    local currentWindowHeight = vec2(0, 135 * HudScale) -- Altura da tela
     
-    -- Fuel Imagem
-    if CAR.fuel <= 5 then
-      ui.setCursor(vec2(settings.BaseWindowWidth-55, settings.BaseWindowHeight-19))
-      ui.image("Icons/Fuel.png", vec2(16, 15), rgbm(255, 0, 0, 1), ui.ImageFit.Fit)
-    elseif CAR.fuel < 10 then
-      ui.setCursor(vec2(settings.BaseWindowWidth-55, settings.BaseWindowHeight-19))
-      ui.image("Icons/Fuel.png", vec2(16, 15), rgbm(255, 255, 0, 1), ui.ImageFit.Fit)
-    elseif CAR.fuel < 100 then
-      ui.setCursor(vec2(settings.BaseWindowWidth-59, settings.BaseWindowHeight-19))
-      ui.image("Icons/Fuel.png", vec2(16, 15), rgbm(255, 255, 255, 1), ui.ImageFit.Fit)
-    else
-      ui.setCursor(vec2(settings.BaseWindowWidth-62, settings.BaseWindowHeight-19))
-      ui.image("Icons/Fuel.png", vec2(16, 15), rgbm(255, 255, 255, 1), ui.ImageFit.Fit)
-    end
-    --
-    -- BrakeBias Image
-    ui.setCursor(vec2(2, 104))
-    ui.image("Icons/BrakeBias.png", vec2(19, 19), ui.ImageFit.Fit)
-    --
-    ui.endPivotScale(settings.Size, vec2(0, 0)) -- Escala da janela
+    local gearBackgroundSize = vec2(70 * HudScale, currentWindowHeight.y) -- Tamanho do background do texto de velocidade e marcha
+    local wheelBackgroundSize = vec2(75 * HudScale, currentWindowHeight.y) -- Tamanho do background do eixo do roda
+    local absBackgroundSize = vec2(80 * HudScale, currentWindowHeight.y) -- Tamanho do background do ABS
+    local barSize = vec2(17, 65) * HudScale -- Tamanho das barras
+    local barSpace = 3 * HudScale --Comprimento do padding das barras
 
-    -- Text Fuel
-    ui.setCursor(vec2((settings.BaseWindowWidth-67)*settings.Size, (settings.BaseWindowHeight-20)*settings.Size))
-    if CAR.fuel <= 5 then
-      ui.dwriteTextAligned(string.format("%.2f", CAR.fuel), fontFuel, ui.Alignment.Center, ui.Alignment.Start, vec2(86, 30):scale(settings.Size), false, rgbm(255, 0, 0, 1))
-    elseif CAR.fuel < 10 then
-      ui.dwriteTextAligned(string.format("%.2f", CAR.fuel), fontFuel, ui.Alignment.Center, ui.Alignment.Start, vec2(86, 30):scale(settings.Size), false, rgbm(255, 255, 0, 1))
-    else
-      ui.dwriteTextAligned(string.format("%.2f", CAR.fuel), fontFuel, ui.Alignment.Center, ui.Alignment.Start, vec2(86, 30):scale(settings.Size), false, rgbm(255, 255, 255, 1))
-    end
-    --
-    -- Text Brake Bias
-    ui.setCursor(vec2(-8, (settings.BaseWindowHeight-20)*settings.Size))
-    ui.dwriteTextAligned(string.format("%.1f", CAR.brakeBias*100), fontFuel, ui.Alignment.Center, ui.Alignment.Start, vec2(86, 30):scale(settings.Size), false, rgbm(255, 255, 255, 1))
-
-    -- Texto do acelerador:
-    if (CAR.gas * 100) < 98.99 then
-      ui.setCursor(vec2(posxTextBars, posyTextBars))
-      ui.dwriteTextAligned(string.format("%.0f", CAR.gas * 100), fontBar, ui.Alignment.Center, ui.Alignment.Start, vec2(86, 30):scale(settings.Size), false, rgbm(255, 255, 255, 1))
-    else 
-      ui.setCursor(vec2(posxTextBars, posyInfiniteBars))
-      ui.dwriteTextAligned("∞", fontBarInfinite, ui.Alignment.Center, ui.Alignment.Start, vec2(85, 30):scale(settings.Size), false, rgbm(107 / 255, 228 / 255, 96 / 255, 1))
-    end
-    -- 
-
-    -- Texto do freio:
-    if (CAR.brake * 100) < 98.99 then
-      ui.setCursor(vec2(posxTextBars, posyTextBars))
-      ui.dwriteTextAligned(string.format("%.0f", CAR.brake * 100), fontBar, ui.Alignment.Center, ui.Alignment.Start, vec2(45, 30):scale(settings.Size), false, rgbm(255, 255, 255, 1))
-    else 
-      ui.setCursor(vec2(posxTextBars, posyInfiniteBars))
-      ui.dwriteTextAligned("∞", fontBarInfinite, ui.Alignment.Center, ui.Alignment.Start, vec2(45, 30):scale(settings.Size), false, rgbm(255, 0, 0, 1))
-    end
-    --
-
-    -- Texto das marchas:
+    -- Marcha:
+    ui.drawRectFilled(currentWindowWidth, currentWindowWidth + gearBackgroundSize, rgbm(0, 0, 0, 0.30), 0)
     local gear = tostring(CAR.gear);
     if gear == "0" then
       gear = "N";
     elseif gear == "-1" then
       gear = "R";
     end
-    ui.setCursor(vec2(posxTextRight, 30 * settings.Size))
-    ui.dwriteTextAligned(gear, fontGear, ui.Alignment.Center, ui.Alignment.Center, vec2(86, 50):scale(settings.Size), false, rgbm(255, 255, 255, 1))
-    --
-    
-    -- Velocidade Km/h:
+    ui.setCursor(vec2(20, 50):scale(HudScale))
+    ui.dwriteTextAligned(gear, fontGear, ui.Alignment.Center, ui.Alignment.Center, vec2(30, 30):scale(HudScale), false, rgbm(255, 255, 255, 1))
+
+    -- Velocidade:
     local speed
-    if(settings.selectedSpeed == 1) then
+    if(SelectedSpeed == 1) then
       speed = string.format("%d", math.floor(CAR.speedKmh))
     else
       speed = string.format("%d", math.floor(CAR.speedKmh * 0.621371))
     end
-    
-    ui.setCursor(vec2(posxTextRight, 60 * settings.Size))
-    ui.dwriteTextAligned(speed, fontSpeed, ui.Alignment.Center, ui.Alignment.Center, vec2(88, 55):scale(settings.Size), false, rgbm(255, 255, 255, 1))   
+    ui.setCursor(vec2(20, 80):scale(HudScale))
+    ui.dwriteTextAligned(speed, fontSpeed, ui.Alignment.Center, ui.Alignment.Center, vec2(30, 30):scale(HudScale), false, rgbm(255, 255, 255, 1))   
+
+
+    -- Freio: 
+    currentWindowWidth = currentWindowWidth + vec2(gearBackgroundSize.x)
+    local posBar = currentWindowWidth + vec2(0, 45 * HudScale)
+    ui.drawRectFilled(currentWindowWidth, currentWindowWidth + vec2(barSpace + barSize.x, currentWindowHeight.y), rgbm(0, 0, 0, 0.30), 0)
+    -- Texto do freio:
+    if (CAR.brake * 100) < 98.99 then
+      ui.setCursor(vec2(currentWindowWidth.x, posBar.y - 20))
+      ui.dwriteTextAligned(string.format("%.0f", CAR.brake * 100), fontBar, ui.Alignment.Center, ui.Alignment.Start, vec2(17, 30):scale(HudScale), false, rgbm(255, 255, 255, 1))
+    else 
+      ui.setCursor(vec2(currentWindowWidth.x, posyInfiniteBars))
+      ui.dwriteTextAligned("∞", fontBarInfinite, ui.Alignment.Center, ui.Alignment.Start, vec2(17, 30):scale(HudScale), false, rgbm(255, 0, 0, 1))
+    end
+    -- Barras freio:
+    ui.drawRectFilled(posBar, posBar + barSize, rgbm(0.2, 0.2, 0.2, 0.6))
+    ui.drawRectFilled(posBar + vec2(0, barSize.y - (CAR.brake * barSize.y)), posBar + barSize,  rgbm(255, 0, 0, 1))
     --
-end
 
--- Escolher Idioma:
-local function setLanguage()
-  
-  ui.header(Language.get("LANGUAGE"))
-  ui.combo('##resolution', settings.optionLanguage, function ()
-    if ui.selectable("English") then
-      settings.optionLanguage = "English"
-      Language.setLanguage("en")
+    -- Acelerador:
+    currentWindowWidth = currentWindowWidth + vec2(barSize.x + barSpace)
+    posBar = currentWindowWidth + vec2(0, 45 * HudScale)
+    ui.drawRectFilled(currentWindowWidth, currentWindowWidth + vec2(barSpace + barSize.x, currentWindowHeight.y), rgbm(0, 0, 0, 0.30), 0)
+    -- Texto do acelerador:
+    if (CAR.gas * 100) < 98.99 then
+      ui.setCursor(vec2(currentWindowWidth.x, posyTextBars))
+      ui.dwriteTextAligned(string.format("%.0f", CAR.gas * 100), fontBar, ui.Alignment.Center, ui.Alignment.Start, vec2(17, 30):scale(HudScale), false, rgbm(255, 255, 255, 1))
+    else 
+      ui.setCursor(vec2(currentWindowWidth.x, posyInfiniteBars))
+      ui.dwriteTextAligned("∞", fontBarInfinite, ui.Alignment.Center, ui.Alignment.Start, vec2(17, 30):scale(HudScale), false, rgbm(107 / 255, 228 / 255, 96 / 255, 1))
     end
+    -- Barras acelerador:
+    ui.drawRectFilled(posBar, posBar + barSize, rgbm(0.2, 0.2, 0.2, 0.6))
+    ui.drawRectFilled(posBar + vec2(0, barSize.y - (CAR.gas * barSize.y)), posBar + barSize, rgbm(0, 255, 0, 1))
+    --
 
-    if ui.selectable("Português - Brasil") then
-      settings.optionLanguage = "Português - Brasil"
-      Language.setLanguage("pt-br")
+    -- Volante:
+    currentWindowWidth = currentWindowWidth + vec2(barSize.x + barSpace)
+    if WheelActive then
+      ui.drawRectFilled(currentWindowWidth, currentWindowWidth + wheelBackgroundSize, rgbm(0, 0, 0, 0.30), 0)
+      ui.beginRotation()
+      ui.setCursor(vec2(currentWindowWidth.x + 10, 40 * HudScale))
+      ui.image("Icons/Wheel.png", vec2(60, 72):scale(HudScale), ui.ImageFit.Fit)
+      ui.endRotation(90 -CAR.steer)
+      currentWindowWidth = currentWindowWidth + vec2(wheelBackgroundSize.x)
     end
-  end)
-  ui.setCursor(vec2(20,100))
-  if ui.button(Language.get("APPLY")) then
-    Language.loadTranslations()
-  end
-end
+    --
 
+    -- ABS:
+    if ABSActive then
+      ui.drawRectFilled(currentWindowWidth, currentWindowWidth + absBackgroundSize, rgbm(0, 0, 0, 0.30), 0)
+      ui.setCursor(vec2(currentWindowWidth.x, 35 * HudScale))
+      if CAR.absInAction then
+        ui.image("Icons/ABS.png", vec2(80, 82):scale(HudScale), rgbm(255, 0, 0, 1),ui.ImageFit.Fit)
+      else
+        ui.image("Icons/ABS.png", vec2(80, 82):scale(HudScale), ui.ImageFit.Fit)
+      end
+      currentWindowWidth = currentWindowWidth + vec2(absBackgroundSize.x)
+    end
+    --
 
--- Checkbox
-local function elements()
-  ui.setCursor(vec2(20, 55))
-  if ui.checkbox(Language.get("WHEEL"), settings.Wheel) then
-    settings.Wheel = not settings.Wheel
-  end
-
-  ui.setCursor(vec2(20, 80))
-  if ui.checkbox(Language.get("ABS"), settings.ABS) then
-    settings.ABS = not settings.ABS
-  end
-  -- Alert ABS
-  if CAR.absModes == 0 then
-    ui.setCursor(vec2(70, 75))
-    ui.dwriteTextAligned(Language.get("ALERT_ABS"), 10, ui.Alignment.Center, ui.Alignment.Center, vec2(150, 35), false, rgbm(255, 0, 0, 1))  
-  end
-end
---
-
-local function geral()
-  settings.Size = ui.slider(Language.get("SIZE"), settings.Size, 1, 3, string.format("%.2f", settings.Size));
-
-  ui.header(Language.get("SPEED"))
-  settings.selectedSpeed = ui.combo("##Speed", settings.selectedSpeed , {"Km/h", "Mph"})
-end
-
--- TabBar
-function script.Ioverlay_Settings()
-    ui.tabBar('##ID', function ()
-      ui.tabItem(Language.get("GENERAL"), geral)
-      ui.tabItem(Language.get("ELEMENTS"), elements)
-      ui.tabItem(Language.get("LANGUAGE"), setLanguage)
-    end)
+    -- Fuel:
+    -- Fuel Imagem
+    if CAR.fuel <= 5 then
+      ui.setCursor(vec2(currentWindowWidth.x - 55 * HudScale, currentWindowHeight.y - 19 * HudScale))
+      ui.image("Icons/Fuel.png", vec2(16, 15), rgbm(255, 0, 0, 1), ui.ImageFit.Fit)
+    elseif CAR.fuel < 10 then
+      ui.setCursor(vec2(currentWindowWidth.x - 55 * HudScale, currentWindowHeight.y - 19 * HudScale))
+      ui.image("Icons/Fuel.png", vec2(16, 15):scale(HudScale), rgbm(255, 255, 0, 1), ui.ImageFit.Fit)
+    elseif CAR.fuel < 100 then
+      ui.setCursor(vec2(currentWindowWidth.x - (59 * HudScale), currentWindowHeight.y - (19 * HudScale)))
+      ui.image("Icons/Fuel.png", vec2(16, 15):scale(HudScale), rgbm(255, 255, 255, 1), ui.ImageFit.Fit)
+    else
+      ui.setCursor(vec2(currentWindowWidth.x - 62 * HudScale, currentWindowHeight.y - 19 * HudScale))
+      ui.image("Icons/Fuel.png", vec2(16, 15):scale(HudScale), rgbm(255, 255, 255, 1), ui.ImageFit.Fit)
+    end
+    -- Text Fuel
+    ui.setCursor(vec2(currentWindowWidth.x - 67 * HudScale, currentWindowHeight.y - 20 * HudScale))
+    if CAR.fuel <= 5 then
+      ui.dwriteTextAligned(string.format("%.2f", CAR.fuel), fontFuel, ui.Alignment.Center, ui.Alignment.Start, vec2(86, 30):scale(HudScale), false, rgbm(255, 0, 0, 1))
+    elseif CAR.fuel < 10 then
+      ui.dwriteTextAligned(string.format("%.2f", CAR.fuel), fontFuel, ui.Alignment.Center, ui.Alignment.Start, vec2(86, 30):scale(HudScale), false, rgbm(255, 255, 0, 1))
+    else
+      ui.dwriteTextAligned(string.format("%.2f", CAR.fuel), fontFuel, ui.Alignment.Center, ui.Alignment.Start, vec2(86, 30):scale(HudScale), false, rgbm(255, 255, 255, 1))
+    end
+    --
     
-    NewWindowHeight = settings.BaseWindowHeight * settings.Size
-    NewWindowWidth = settings.BaseWindowWidth * settings.Size
-    if NewWindowHeight ~= OldWindowHeight or NewWindowWidth ~= OldWindowWidth then
-      -- Redimencionando janela:
-      local iniFile = ac.INIConfig.load(ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\IracingIoverlay\\manifest.ini")
-      iniFile:setAndSave("WINDOW_...", "SIZE", " " .. tostring(NewWindowWidth) .. ", " .. tostring(NewWindowHeight))
-      OldWindowHeight = NewWindowHeight
-      OldWindowWidth = NewWindowWidth
-    end
-  end
+    -- Brake Bias:
+    -- Text Brake Bias
+    ui.setCursor(vec2(20 * HudScale, currentWindowHeight.y - 19 * HudScale))
+    ui.dwriteTextAligned(string.format("%.1f", CAR.brakeBias*100), fontFuel, ui.Alignment.Center, ui.Alignment.Start, vec2(30, 30):scale(HudScale), false, rgbm(255, 255, 255, 1))
+    -- BrakeBias Image
+    ui.setCursor(vec2(2 * HudScale, currentWindowHeight.y - 20 * HudScale))
+    ui.image("Icons/BrakeBias.png", vec2(19, 19):scale(HudScale), ui.ImageFit.Fit)
+    --
+    config.resize(currentWindowWidth + currentWindowHeight, "Irancing Overlay")
+end

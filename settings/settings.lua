@@ -12,8 +12,8 @@ ABSActive = settings.ABSActive
 OptionLanguage  = settings.optionLanguage
 SelectedSpeed = settings.selectedSpeed
 
-local SIM = ac.getSim()
-local CAR = ac.getCar(SIM.focusedCar)
+SIM = ac.getSim()
+CAR = ac.getCar(SIM.focusedCar)
 
 -- Escolher Idioma:
 local function setLanguage()
@@ -39,13 +39,13 @@ end
 -- Checkbox
 local function elements()
     ui.setCursor(vec2(20, 55))
-    if ui.checkbox(Language.get("wheelActive"), WheelActive) then
+    if ui.checkbox(Language.get("WHEEL"), WheelActive) then
         WheelActive = not WheelActive
     end
 
     ui.setCursor(vec2(20, 80))
-    if ui.checkbox(Language.get("ABS"), settings.ABS) then
-        settings.ABS = not settings.ABS
+    if ui.checkbox(Language.get("ABS"), ABSActive) then
+        ABSActive = not ABSActive
     end
     -- Alert ABS
     if CAR.absModes == 0 then
@@ -57,13 +57,12 @@ end
   
 local function geral()
     HudScale = ui.slider(Language.get("SIZE"), HudScale, 1, 3, string.format("%.2f", HudScale));
-    
     ui.header(Language.get("SPEED"))
     SelectedSpeed = ui.combo("##Speed", SelectedSpeed , {"Km/h", "Mph"})
 end
   
   -- TabBar
-function script.Ioverlay_Settings()
+function script.windowSettings()
     ui.tabBar('##ID', function ()
     ui.tabItem(Language.get("GENERAL"), geral)
     ui.tabItem(Language.get("ELEMENTS"), elements)

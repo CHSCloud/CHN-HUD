@@ -1,12 +1,19 @@
-Config = {}
+local config = {}
 
 local windows = {}
 
 local windowNames = {
-    "HUD"
+    "Irancing Overlay"
 }
 
-function Config.init()
+
+
+function config.getScreensize(name, scale)
+    local window = windows[name]
+    return window:size()
+end
+
+function config.init()
     local all = ac.getAppWindows()
     for i=1, #all do
         for j=1, #windowNames do
@@ -19,7 +26,7 @@ function Config.init()
     end
 end
 
-function Config.getWindow(name)
+function config.getWindow(name)
     local data = windows[name]
     if data == nil then 
         return nil 
@@ -27,8 +34,8 @@ function Config.getWindow(name)
     return data
 end
 
-function Config.resize(size, nameWindow)
-    local window = Config.getWindow(nameWindow)
+function config.resize(size, nameWindow)
+    local window = config.getWindow(nameWindow)
     if window == nil then 
         return 
     end
@@ -36,4 +43,6 @@ function Config.resize(size, nameWindow)
     window:resize(size * ui_info.uiScale)
 end
 
-Config.init()
+config.init()
+
+return config
