@@ -7,5 +7,9 @@
     "ELEMENTS": "Content",
     "SPEED": "Speed",
     "GENERAL": "General",
-    "APPLY": "Apply"
+    "APPLY": "Apply",
+    "ACCELERATOR": "Accelerator",
+    "BRAKE": "Brake",
+    "CLUTCH": "Clucth",
+    "PEDALS": "Pedals"
 }

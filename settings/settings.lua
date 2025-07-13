@@ -7,6 +7,9 @@ local settings = ac.storage{
     hudScale = 1,
     wheelActive = true,
     ABSActive = true,
+    acceleratorActive = true,
+    brakeActive = true,
+    clutchActive = true,
     optionLanguage = languages.en.code,
     selectedSpeed = 1
 }
@@ -14,6 +17,9 @@ local settings = ac.storage{
 HudScale = settings.hudScale
 WheelActive = settings.wheelActive
 ABSActive = settings.ABSActive
+AcceleratorActive = settings.acceleratorActive
+BrakeActive = settings.brakeActive
+ClutchActive = settings.clutchActive
 OptionLanguage  = Language.getCurrentLanguage()
 SelectedSpeed = settings.selectedSpeed
 
@@ -26,6 +32,9 @@ function script.saveSettings()
     settings.ABSActive = ABSActive
     settings.selectedSpeed = SelectedSpeed
     settings.optionLanguage = OptionLanguage
+    AcceleratorActive = settings.acceleratorActive
+    BrakeActive = settings.brakeActive
+    ClutchActive = settings.clutchActive
 end
 
 -- Escolher Idioma:
@@ -63,6 +72,25 @@ local function elements()
     if ui.checkbox(Language.get("ABS"), ABSActive) then
         ABSActive = not ABSActive
     end
+
+    ui.setCursor(vec2(20, 110))
+    ui.header(Language.get("PEDALS"))
+
+    ui.setCursor(vec2(20, 125))
+    if ui.checkbox(Language.get("ACCELERATOR"), AcceleratorActive) then
+        AcceleratorActive = not AcceleratorActive
+    end
+
+    ui.setCursor(vec2(20, 150))
+    if ui.checkbox(Language.get("BRAKE"), BrakeActive) then
+        BrakeActive = not BrakeActive
+    end
+
+    ui.setCursor(vec2(20, 175))
+    if ui.checkbox(Language.get("CLUTCH"), ClutchActive) then
+        ClutchActive = not ClutchActive
+    end
+
     -- Alert ABS
     if CAR.absModes == 0 then
         ui.setCursor(vec2(70, 75))
@@ -75,7 +103,7 @@ local function geral()
     ui.setCursor(vec2(10, 50))
     ui.header(Language.get("SIZE"))
     ui.setCursor(vec2(10, 70))
-    HudScale = ui.slider("##Size", HudScale, 1, 3, string.format("%.2f", HudScale));
+    HudScale = ui.slider("##Size", HudScale, 0.8  , 3, string.format("%.2f", HudScale));
     
     ui.setCursor(vec2(10, 100))
     ui.header(Language.get("SPEED"))
@@ -85,7 +113,7 @@ end
   
   -- TabBar
 function script.windowSettings()
-    ui.drawRectFilled(vec2(0, 0), vec2(272, 150), rgbm(0, 0, 0, 0.70), 0)
+    ui.drawRectFilled(vec2(0, 0), vec2(272, 200), rgbm(0, 0, 0, 0.70), 0)
     ui.tabBar('##ID', function ()
     ui.tabItem(Language.get("GENERAL"), geral)
     ui.tabItem(Language.get("ELEMENTS"), elements)
