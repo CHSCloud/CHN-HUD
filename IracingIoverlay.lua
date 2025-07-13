@@ -45,11 +45,29 @@ function script.windowMain()
     end
     ui.setCursor(vec2(20, 80):scale(HudScale))
     ui.dwriteTextAligned(speed, fontSpeed, ui.Alignment.Center, ui.Alignment.Center, vec2(30, 30):scale(HudScale), false, rgbm(255, 255, 255, 1))   
+    currentWindowWidth = currentWindowWidth + vec2(gearBackgroundSize.x)
+    --
 
+    -- Embreagem
+    local posBar = currentWindowWidth + vec2(0, 45 * HudScale)
+    ui.drawRectFilled(currentWindowWidth, currentWindowWidth + vec2(barSpace + barSize.x, currentWindowHeight.y), rgbm(0, 0, 0, 0.30), 0)
+
+    ui.drawRectFilled(posBar, posBar + barSize, rgbm(0.2, 0.2, 0.2, 0.6))
+    ui.drawRectFilled(posBar + vec2(0, (CAR.clutch * barSize.y)), posBar + barSize,  rgbm(0, 0, 255, 1))
+    -- Texto do freio:
+    -- Texto da embreagem:
+    if (100 - CAR.clutch * 100) < 98.99 then
+      ui.setCursor(vec2(currentWindowWidth.x, posyTextBars))
+      ui.dwriteTextAligned(string.format("%.0f", 100 - CAR.clutch * 100), fontBar, ui.Alignment.Center, ui.Alignment.Start, vec2(17, 30):scale(HudScale), false, rgbm(255, 255, 255, 1))
+    else 
+      ui.setCursor(vec2(currentWindowWidth.x, posyInfiniteBars))
+      ui.dwriteTextAligned("∞", fontBarInfinite, ui.Alignment.Center, ui.Alignment.Start, vec2(17, 30):scale(HudScale), false, rgbm(0, 0, 255, 1))
+    end
+    currentWindowWidth = currentWindowWidth + vec2(barSize.x + barSpace)
+    --
 
     -- Freio: 
-    currentWindowWidth = currentWindowWidth + vec2(gearBackgroundSize.x)
-    local posBar = currentWindowWidth + vec2(0, 45 * HudScale)
+    posBar = currentWindowWidth + vec2(0, 45 * HudScale)
     ui.drawRectFilled(currentWindowWidth, currentWindowWidth + vec2(barSpace + barSize.x, currentWindowHeight.y), rgbm(0, 0, 0, 0.30), 0)
     -- Texto do freio:
     if (CAR.brake * 100) < 98.99 then
@@ -62,10 +80,10 @@ function script.windowMain()
     -- Barras freio:
     ui.drawRectFilled(posBar, posBar + barSize, rgbm(0.2, 0.2, 0.2, 0.6))
     ui.drawRectFilled(posBar + vec2(0, barSize.y - (CAR.brake * barSize.y)), posBar + barSize,  rgbm(255, 0, 0, 1))
+    currentWindowWidth = currentWindowWidth + vec2(barSize.x + barSpace)
     --
 
     -- Acelerador:
-    currentWindowWidth = currentWindowWidth + vec2(barSize.x + barSpace)
     posBar = currentWindowWidth + vec2(0, 45 * HudScale)
     ui.drawRectFilled(currentWindowWidth, currentWindowWidth + vec2(barSpace + barSize.x, currentWindowHeight.y), rgbm(0, 0, 0, 0.30), 0)
     -- Texto do acelerador:
@@ -74,15 +92,15 @@ function script.windowMain()
       ui.dwriteTextAligned(string.format("%.0f", CAR.gas * 100), fontBar, ui.Alignment.Center, ui.Alignment.Start, vec2(17, 30):scale(HudScale), false, rgbm(255, 255, 255, 1))
     else 
       ui.setCursor(vec2(currentWindowWidth.x, posyInfiniteBars))
-      ui.dwriteTextAligned("∞", fontBarInfinite, ui.Alignment.Center, ui.Alignment.Start, vec2(17, 30):scale(HudScale), false, rgbm(107 / 255, 228 / 255, 96 / 255, 1))
+      ui.dwriteTextAligned("∞", fontBarInfinite, ui.Alignment.Center, ui.Alignment.Start, vec2(17, 30):scale(HudScale), false, rgbm(0, 255, 0, 1))
     end
     -- Barras acelerador:
     ui.drawRectFilled(posBar, posBar + barSize, rgbm(0.2, 0.2, 0.2, 0.6))
     ui.drawRectFilled(posBar + vec2(0, barSize.y - (CAR.gas * barSize.y)), posBar + barSize, rgbm(0, 255, 0, 1))
+    currentWindowWidth = currentWindowWidth + vec2(barSize.x + barSpace)
     --
 
     -- Volante:
-    currentWindowWidth = currentWindowWidth + vec2(barSize.x + barSpace)
     if WheelActive then
       ui.drawRectFilled(currentWindowWidth, currentWindowWidth + wheelBackgroundSize, rgbm(0, 0, 0, 0.30), 0)
       ui.beginRotation()
