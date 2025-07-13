@@ -87,7 +87,7 @@ function script.windowMain()
       ui.drawRectFilled(currentWindowWidth, currentWindowWidth + wheelBackgroundSize, rgbm(0, 0, 0, 0.30), 0)
       ui.beginRotation()
       ui.setCursor(vec2(currentWindowWidth.x + 10, 40 * HudScale))
-      ui.image("Icons/Wheel.png", vec2(60, 72):scale(HudScale), ui.ImageFit.Fit)
+      ui.image("assets/Wheel.png", vec2(60, 72):scale(HudScale), ui.ImageFit.Fit)
       ui.endRotation(90 -CAR.steer)
       currentWindowWidth = currentWindowWidth + vec2(wheelBackgroundSize.x)
     end
@@ -98,9 +98,9 @@ function script.windowMain()
       ui.drawRectFilled(currentWindowWidth, currentWindowWidth + absBackgroundSize, rgbm(0, 0, 0, 0.30), 0)
       ui.setCursor(vec2(currentWindowWidth.x, 35 * HudScale))
       if CAR.absInAction then
-        ui.image("Icons/ABS.png", vec2(80, 82):scale(HudScale), rgbm(255, 0, 0, 1),ui.ImageFit.Fit)
+        ui.image("assets/ABS.png", vec2(80, 82):scale(HudScale), rgbm(255, 0, 0, 1),ui.ImageFit.Fit)
       else
-        ui.image("Icons/ABS.png", vec2(80, 82):scale(HudScale), ui.ImageFit.Fit)
+        ui.image("assets/ABS.png", vec2(80, 82):scale(HudScale), ui.ImageFit.Fit)
       end
       currentWindowWidth = currentWindowWidth + vec2(absBackgroundSize.x)
     end
@@ -110,16 +110,16 @@ function script.windowMain()
     -- Fuel Imagem
     if CAR.fuel <= 5 then
       ui.setCursor(vec2(currentWindowWidth.x - 55 * HudScale, currentWindowHeight.y - 19 * HudScale))
-      ui.image("Icons/Fuel.png", vec2(16, 15), rgbm(255, 0, 0, 1), ui.ImageFit.Fit)
+      ui.image("assets/Fuel.png", vec2(16, 15), rgbm(255, 0, 0, 1), ui.ImageFit.Fit)
     elseif CAR.fuel < 10 then
       ui.setCursor(vec2(currentWindowWidth.x - 55 * HudScale, currentWindowHeight.y - 19 * HudScale))
-      ui.image("Icons/Fuel.png", vec2(16, 15):scale(HudScale), rgbm(255, 255, 0, 1), ui.ImageFit.Fit)
+      ui.image("assets/Fuel.png", vec2(16, 15):scale(HudScale), rgbm(255, 255, 0, 1), ui.ImageFit.Fit)
     elseif CAR.fuel < 100 then
       ui.setCursor(vec2(currentWindowWidth.x - (59 * HudScale), currentWindowHeight.y - (19 * HudScale)))
-      ui.image("Icons/Fuel.png", vec2(16, 15):scale(HudScale), rgbm(255, 255, 255, 1), ui.ImageFit.Fit)
+      ui.image("assets/Fuel.png", vec2(16, 15):scale(HudScale), rgbm(255, 255, 255, 1), ui.ImageFit.Fit)
     else
       ui.setCursor(vec2(currentWindowWidth.x - 62 * HudScale, currentWindowHeight.y - 19 * HudScale))
-      ui.image("Icons/Fuel.png", vec2(16, 15):scale(HudScale), rgbm(255, 255, 255, 1), ui.ImageFit.Fit)
+      ui.image("assets/Fuel.png", vec2(16, 15):scale(HudScale), rgbm(255, 255, 255, 1), ui.ImageFit.Fit)
     end
     -- Text Fuel
     ui.setCursor(vec2(currentWindowWidth.x - 67 * HudScale, currentWindowHeight.y - 20 * HudScale))
@@ -138,7 +138,7 @@ function script.windowMain()
     ui.dwriteTextAligned(string.format("%.1f", CAR.brakeBias*100), fontFuel, ui.Alignment.Center, ui.Alignment.Start, vec2(30, 30):scale(HudScale), false, rgbm(255, 255, 255, 1))
     -- BrakeBias Image
     ui.setCursor(vec2(2 * HudScale, currentWindowHeight.y - 20 * HudScale))
-    ui.image("Icons/BrakeBias.png", vec2(19, 19):scale(HudScale), ui.ImageFit.Fit)
+    ui.image("assets/BrakeBias.png", vec2(19, 19):scale(HudScale), ui.ImageFit.Fit)
     --
     config.resize(currentWindowWidth + currentWindowHeight, "Irancing Overlay")
 end
