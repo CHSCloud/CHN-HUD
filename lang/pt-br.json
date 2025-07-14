@@ -11,5 +11,9 @@
     "ACCELERATOR": "Acelerador",
     "BRAKE": "Freio",
     "CLUTCH": "Embreagem",
-    "PEDALS": "Pedais"
+    "PEDALS": "Pedais",
+    "STEERING": "Direção",
+    "OTHERS": "Outros",
+    "BRAKE_BIAS": "Distribuição de frenagem",
+    "FUEL": "Combustível"
 }

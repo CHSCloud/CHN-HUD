@@ -9,7 +9,9 @@ local settings = ac.storage{
     ABSActive = true,
     acceleratorActive = true,
     brakeActive = true,
+    breakeBiasActive = true,
     clutchActive = true,
+    fuelActive = true,
     optionLanguage = languages.en.code,
     selectedSpeed = 1
 }
@@ -19,7 +21,9 @@ WheelActive = settings.wheelActive
 ABSActive = settings.ABSActive
 AcceleratorActive = settings.acceleratorActive
 BrakeActive = settings.brakeActive
+BrakeBiasActive = settings.breakeBiasActive
 ClutchActive = settings.clutchActive
+FuelActive = settings.fuelActive
 OptionLanguage  = Language.getCurrentLanguage()
 SelectedSpeed = settings.selectedSpeed
 
@@ -30,11 +34,13 @@ function script.saveSettings()
     settings.hudScale = HudScale
     settings.wheelActive = WheelActive
     settings.ABSActive = ABSActive
-    settings.selectedSpeed = SelectedSpeed
     settings.optionLanguage = OptionLanguage
-    AcceleratorActive = settings.acceleratorActive
-    BrakeActive = settings.brakeActive
-    ClutchActive = settings.clutchActive
+    settings.acceleratorActive = AcceleratorActive 
+    settings.brakeActive = BrakeActive 
+    settings.breakeBiasActive = BrakeBiasActive 
+    settings.clutchActive = ClutchActive 
+    settings.fuelActive = FuelActive  
+    settings.selectedSpeed = SelectedSpeed
 end
 
 -- Escolher Idioma:
@@ -63,37 +69,59 @@ end
 
 -- Checkbox
 local function elements()
+    -- Direção:
     ui.setCursor(vec2(20, 55))
+    ui.header(Language.get("STEERING"))
+
+    ui.setCursor(vec2(20, 80))
     if ui.checkbox(Language.get("WHEEL"), WheelActive) then
         WheelActive = not WheelActive
     end
 
-    ui.setCursor(vec2(20, 80))
+    ui.setCursor(vec2(20, 105))
     if ui.checkbox(Language.get("ABS"), ABSActive) then
         ABSActive = not ABSActive
     end
+    --
 
-    ui.setCursor(vec2(20, 110))
+    -- Pedais:
+    ui.setCursor(vec2(20, 135))
     ui.header(Language.get("PEDALS"))
 
-    ui.setCursor(vec2(20, 125))
+    ui.setCursor(vec2(20, 155))
     if ui.checkbox(Language.get("ACCELERATOR"), AcceleratorActive) then
         AcceleratorActive = not AcceleratorActive
     end
 
-    ui.setCursor(vec2(20, 150))
+    ui.setCursor(vec2(20, 180))
     if ui.checkbox(Language.get("BRAKE"), BrakeActive) then
         BrakeActive = not BrakeActive
     end
 
-    ui.setCursor(vec2(20, 175))
+    ui.setCursor(vec2(20, 205))
     if ui.checkbox(Language.get("CLUTCH"), ClutchActive) then
         ClutchActive = not ClutchActive
     end
+    --
+    
+    ui.setCursor(vec2(20, 235))
+    ui.header(Language.get("OTHERS"))
+  
+    ui.setCursor(vec2(20, 260))
+    if ui.checkbox(Language.get("FUEL"), FuelActive) then
+        FuelActive = not FuelActive
+    end
+
+    ui.setCursor(vec2(20, 285))
+    if ui.checkbox(Language.get("BRAKE_BIAS"), BrakeBiasActive) then
+        BrakeBiasActive = not BrakeBiasActive
+    end
+
+    
 
     -- Alert ABS
     if CAR.absModes == 0 then
-        ui.setCursor(vec2(70, 75))
+        ui.setCursor(vec2(70, 100))
         ui.dwriteTextAligned(Language.get("ALERT_ABS"), 10, ui.Alignment.Center, ui.Alignment.Center, vec2(150, 35), false, rgbm(255, 0, 0, 1))  
     end
 end
@@ -113,7 +141,7 @@ end
   
   -- TabBar
 function script.windowSettings()
-    ui.drawRectFilled(vec2(0, 0), vec2(272, 200), rgbm(0, 0, 0, 0.70), 0)
+    ui.drawRectFilled(vec2(0, 0), vec2(272, 500), rgbm(0, 0, 0, 0.70), 0)
     ui.tabBar('##ID', function ()
     ui.tabItem(Language.get("GENERAL"), geral)
     ui.tabItem(Language.get("ELEMENTS"), elements)

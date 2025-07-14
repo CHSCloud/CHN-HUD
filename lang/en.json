@@ -11,5 +11,9 @@
     "ACCELERATOR": "Accelerator",
     "BRAKE": "Brake",
     "CLUTCH": "Clucth",
-    "PEDALS": "Pedals"
+    "PEDALS": "Pedals",
+    "STEERING": "Steering",
+    "OTHERS": "Others",
+    "BRAKE_BIAS": "Brake Bias",
+    "FUEL": "Fuel"
 }
