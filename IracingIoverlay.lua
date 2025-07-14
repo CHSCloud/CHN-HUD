@@ -140,25 +140,9 @@ function script.windowMain()
 
     -- Fuel:
     -- Fuel Imagem
-    if currentWindowWidth.x <= (gearBackgroundSize.x ) then
-      ui.drawRectFilled(currentWindowWidth, currentWindowWidth + vec2(35, currentWindowHeight.y), rgbm(0, 0, 0, 0.30), 0)
-      currentWindowWidth = currentWindowWidth + vec2(35)
-    elseif currentWindowWidth.x <= (gearBackgroundSize.x + (barSize.x + barSpace)) then
-      ui.drawRectFilled(currentWindowWidth, currentWindowWidth + vec2((barSize.x + barSpace + 3), currentWindowHeight.y), rgbm(0, 0, 0, 0.30), 0)
-      currentWindowWidth = currentWindowWidth + vec2((barSize.x + barSpace + 3))
-    end
-    if CAR.fuel <= 5 then
-      ui.setCursor(vec2(currentWindowWidth.x - 55 * HudScale, currentWindowHeight.y - 19 * HudScale))
-      ui.image("assets/Fuel.png", vec2(16, 15), rgbm(255, 0, 0, 1), ui.ImageFit.Fit)
-    elseif CAR.fuel < 10 then
-      ui.setCursor(vec2(currentWindowWidth.x - 55 * HudScale, currentWindowHeight.y - 19 * HudScale))
-      ui.image("assets/Fuel.png", vec2(16, 15):scale(HudScale), rgbm(255, 255, 0, 1), ui.ImageFit.Fit)
-    elseif CAR.fuel < 100 then
-      ui.setCursor(vec2(currentWindowWidth.x - (59 * HudScale), currentWindowHeight.y - (19 * HudScale)))
-      ui.image("assets/Fuel.png", vec2(16, 15):scale(HudScale), rgbm(255, 255, 255, 1), ui.ImageFit.Fit)
-    else
-      ui.setCursor(vec2(currentWindowWidth.x - 62 * HudScale, currentWindowHeight.y - 19 * HudScale))
-      ui.image("assets/Fuel.png", vec2(16, 15):scale(HudScale), rgbm(255, 255, 255, 1), ui.ImageFit.Fit)
+    if currentWindowWidth.x <= (gearBackgroundSize.x + (barSize.x + barSpace) * 2) then
+      ui.drawRectFilled(currentWindowWidth, currentWindowWidth + vec2((gearBackgroundSize.x + (barSize.x + barSpace) * 2) - currentWindowWidth.x, currentWindowHeight.y), rgbm(0, 0, 0, 0.30), 0)
+      currentWindowWidth = currentWindowWidth + vec2((gearBackgroundSize.x + (barSize.x + barSpace) * 2) - currentWindowWidth.x)
     end
     -- Text Fuel
     ui.setCursor(vec2(currentWindowWidth.x - 67 * HudScale, currentWindowHeight.y - 20 * HudScale))
@@ -170,6 +154,20 @@ function script.windowMain()
       ui.dwriteTextAligned(string.format("%.2f", CAR.fuel), fontFuel, ui.Alignment.Center, ui.Alignment.Start, vec2(86, 30):scale(HudScale), false, rgbm(255, 255, 255, 1))
     end
     --
+    if CAR.fuel <= 5 then
+      ui.setCursor(vec2(currentWindowWidth.x - 55 * HudScale, currentWindowHeight.y - 19 * HudScale))
+      ui.image("assets/Fuel.png", vec2(16, 15), rgbm(255, 0, 0, 1), ui.ImageFit.Fit)
+    elseif CAR.fuel < 10 then
+      ui.setCursor(vec2(currentWindowWidth.x - 55 * HudScale, currentWindowHeight.y - 19 * HudScale))
+      ui.image("assets/Fuel.png", vec2(16, 15):scale(HudScale), rgbm(255, 255, 0, 1), ui.ImageFit.Fit)
+    elseif CAR.fuel < 100 then
+      ui.setCursor(vec2(currentWindowWidth.x - (59 * HudScale), currentWindowHeight.y - (19 * HudScale)))
+      ui.image("assets/Fuel.png", vec2(16, 15):scale(HudScale), rgbm(255, 255, 255, 1), ui.ImageFit.Fit)
+    else
+      ui.setCursor(vec2(currentWindowWidth.x - 61 * HudScale, currentWindowHeight.y - 19 * HudScale))
+      ui.image("assets/Fuel.png", vec2(16, 15):scale(HudScale), rgbm(255, 255, 255, 1), ui.ImageFit.Fit)
+    end
+    
 
     config.resize(currentWindowWidth + currentWindowHeight, "Irancing Overlay")
 end
