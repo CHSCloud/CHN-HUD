@@ -37,6 +37,7 @@ function script.windowMain()
     end
     ui.setCursor(vec2(20, 50):scale(HudScale))
     ui.dwriteTextAligned(gear, fontGear, ui.Alignment.Center, ui.Alignment.Center, vec2(30, 30):scale(HudScale), false, rgbm(255, 255, 255, 1))
+    --
 
     -- Velocidade:
     local speed
@@ -62,8 +63,8 @@ function script.windowMain()
     --
 
     -- Embreagem
+    local posBar = currentWindowWidth + vec2(0, 45 * HudScale)
     if ClutchActive then
-      local posBar = currentWindowWidth + vec2(0, 45 * HudScale)
       ui.drawRectFilled(currentWindowWidth, currentWindowWidth + vec2(barSpace + barSize.x, currentWindowHeight.y), rgbm(0, 0, 0, 0.30), 0)
 
       ui.drawRectFilled(posBar, posBar + barSize, rgbm(0.2, 0.2, 0.2, 0.6))
@@ -142,14 +143,14 @@ function script.windowMain()
     end
     --
 
-    -- Fuel:
+    -- Combustível:
     if FuelActive then
-      -- Fuel Imagem
+      -- Combustível Imagem
       if currentWindowWidth.x <= (gearBackgroundSize.x + (barSize.x + barSpace) * 2) then
         ui.drawRectFilled(currentWindowWidth, currentWindowWidth + vec2((gearBackgroundSize.x + (barSize.x + barSpace) * 2) - currentWindowWidth.x, currentWindowHeight.y), rgbm(0, 0, 0, 0.30), 0)
         currentWindowWidth = currentWindowWidth + vec2((gearBackgroundSize.x + (barSize.x + barSpace) * 2) - currentWindowWidth.x)
       end
-      -- Text Fuel
+      -- Texto combustível
       ui.setCursor(vec2(currentWindowWidth.x - 67 * HudScale, currentWindowHeight.y - 20 * HudScale))
       if CAR.fuel <= 5 then
         ui.dwriteTextAligned(string.format("%.2f", CAR.fuel), fontFuel, ui.Alignment.Center, ui.Alignment.Start, vec2(86, 30):scale(HudScale), false, rgbm(255, 0, 0, 1))
@@ -175,5 +176,5 @@ function script.windowMain()
     end
     --
 
-    config.resize(currentWindowWidth + currentWindowHeight, "Irancing Overlay")
+    config.resize(currentWindowWidth + currentWindowHeight, "HUD CH&CN")
 end

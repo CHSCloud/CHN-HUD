@@ -3,15 +3,8 @@ local config = {}
 local windows = {}
 
 local windowNames = {
-    "Irancing Overlay"
+    "HUD CH&CN"
 }
-
-
-
-function config.getScreensize(name, scale)
-    local window = windows[name]
-    return window:size()
-end
 
 function config.init()
     local all = ac.getAppWindows()

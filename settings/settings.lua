@@ -65,10 +65,8 @@ local function setLanguage()
       Language.loadTranslations()
     end
 end
-  
 
--- Checkbox
-local function elements()
+local function content()
     -- Direção:
     ui.setCursor(vec2(20, 55))
     ui.header(Language.get("STEERING"))
@@ -117,9 +115,7 @@ local function elements()
         BrakeBiasActive = not BrakeBiasActive
     end
 
-    
-
-    -- Alert ABS
+    -- Alerta do ABS
     if CAR.absModes == 0 then
         ui.setCursor(vec2(70, 100))
         ui.dwriteTextAligned(Language.get("ALERT_ABS"), 10, ui.Alignment.Center, ui.Alignment.Center, vec2(150, 35), false, rgbm(255, 0, 0, 1))  
@@ -139,12 +135,11 @@ local function geral()
     SelectedSpeed = ui.combo("##Speed", SelectedSpeed , {"Km/h", "Mph"})
 end
   
-  -- TabBar
 function script.windowSettings()
     ui.drawRectFilled(vec2(0, 0), vec2(272, 500), rgbm(0, 0, 0, 0.70), 0)
-    ui.tabBar('##ID', function ()
-    ui.tabItem(Language.get("GENERAL"), geral)
-    ui.tabItem(Language.get("ELEMENTS"), elements)
-    ui.tabItem(Language.get("LANGUAGE"), setLanguage)
+    ui.tabBar('##ID',function ()
+        ui.tabItem(Language.get("GENERAL"), geral)
+        ui.tabItem(Language.get("ELEMENTS"), content)
+        ui.tabItem(Language.get("LANGUAGE"), setLanguage)
     end)
 end
