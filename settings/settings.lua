@@ -30,19 +30,6 @@ SelectedSpeed = settings.selectedSpeed
 SIM = ac.getSim()
 CAR = ac.getCar(SIM.focusedCar)
 
-function script.saveSettings()
-    settings.hudScale = HudScale
-    settings.wheelActive = WheelActive
-    settings.ABSActive = ABSActive
-    settings.optionLanguage = OptionLanguage
-    settings.acceleratorActive = AcceleratorActive 
-    settings.brakeActive = BrakeActive 
-    settings.breakeBiasActive = BrakeBiasActive 
-    settings.clutchActive = ClutchActive 
-    settings.fuelActive = FuelActive  
-    settings.selectedSpeed = SelectedSpeed
-end
-
 -- Escolher Idioma:
 local function setLanguage()
     ui.setCursor(vec2(10, 50))
@@ -74,11 +61,13 @@ local function content()
     ui.setCursor(vec2(20, 80))
     if ui.checkbox(Language.get("WHEEL"), WheelActive) then
         WheelActive = not WheelActive
+        settings.wheelActive = WheelActive
     end
 
     ui.setCursor(vec2(20, 105))
     if ui.checkbox(Language.get("ABS"), ABSActive) then
         ABSActive = not ABSActive
+        settings.ABSActive = ABSActive
     end
     --
 
@@ -89,16 +78,19 @@ local function content()
     ui.setCursor(vec2(20, 155))
     if ui.checkbox(Language.get("ACCELERATOR"), AcceleratorActive) then
         AcceleratorActive = not AcceleratorActive
+        settings.acceleratorActive = AcceleratorActive
     end
 
     ui.setCursor(vec2(20, 180))
     if ui.checkbox(Language.get("BRAKE"), BrakeActive) then
         BrakeActive = not BrakeActive
+        settings.brakeActive = BrakeActive
     end
 
     ui.setCursor(vec2(20, 205))
     if ui.checkbox(Language.get("CLUTCH"), ClutchActive) then
         ClutchActive = not ClutchActive
+        settings.clutchActive = ClutchActive
     end
     --
     
@@ -108,11 +100,13 @@ local function content()
     ui.setCursor(vec2(20, 260))
     if ui.checkbox(Language.get("FUEL"), FuelActive) then
         FuelActive = not FuelActive
+        settings.fuelActive = FuelActive
     end
 
     ui.setCursor(vec2(20, 285))
     if ui.checkbox(Language.get("BRAKE_BIAS"), BrakeBiasActive) then
         BrakeBiasActive = not BrakeBiasActive
+        settings.breakeBiasActive = BrakeBiasActive
     end
 
     -- Alerta do ABS
@@ -128,11 +122,13 @@ local function geral()
     ui.header(Language.get("SIZE"))
     ui.setCursor(vec2(10, 70))
     HudScale = ui.slider("##Size", HudScale, 0.8  , 3, string.format("%.2f", HudScale));
+    settings.hudScale = HudScale
     
     ui.setCursor(vec2(10, 100))
     ui.header(Language.get("SPEED"))
     ui.setCursor(vec2(10, 120))
     SelectedSpeed = ui.combo("##Speed", SelectedSpeed , {"Km/h", "Mph"})
+    settings.selectedSpeed = SelectedSpeed
 end
   
 function script.windowSettings()

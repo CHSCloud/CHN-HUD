@@ -146,7 +146,7 @@ function script.windowMain()
     -- Combustível:
     if FuelActive then
       -- Combustível Imagem
-      if currentWindowWidth.x <= (gearBackgroundSize.x + (barSize.x + barSpace) * 2) then
+      if currentWindowWidth.x <= (gearBackgroundSize.x + (barSize.x + barSpace) * 2) and BrakeBiasActive then
         ui.drawRectFilled(currentWindowWidth, currentWindowWidth + vec2((gearBackgroundSize.x + (barSize.x + barSpace) * 2) - currentWindowWidth.x, currentWindowHeight.y), rgbm(0, 0, 0, 0.30), 0)
         currentWindowWidth = currentWindowWidth + vec2((gearBackgroundSize.x + (barSize.x + barSpace) * 2) - currentWindowWidth.x)
       end
