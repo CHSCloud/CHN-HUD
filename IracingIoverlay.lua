@@ -4,10 +4,14 @@ local config = require("common.config")
 
 function script.windowMain()
     ui.pushDWriteFont("Font/Montserrat-Bold.ttf") -- Fonte do texto
+    
+    local currentWindowWidth = vec2(0, 22) -- Largura da tela
+    local currentWindowHeight = vec2(0, 98 * HudScale) -- Altura da tela
+    if BrakeBiasActive or FuelActive then currentWindowHeight = vec2(0, 113 * HudScale) end -- Altura da tela
 
     -- Posições dos textos das barras:
-    local posyTextBars = 26 * HudScale
-    local posyInfiniteBars = 20 * HudScale
+    local posyTextBars = 4 * HudScale + currentWindowWidth.y
+    local posyInfiniteBars = -2 * HudScale + currentWindowWidth.y
 
     -- Fonte dos textos:
     local fontFuel = 13 * HudScale -- Tamanho da fonte dos textos do acelerador e freio
@@ -15,10 +19,6 @@ function script.windowMain()
     local fontBarInfinite = 22 * HudScale -- Tamanho da fonte dos símbolos de infinito
     local fontGear = 40 * HudScale -- Tamanho da fonte do texto de marcha
     local fontSpeed = 17 * HudScale -- Tamanho da fonte do texto de velocidade
-
-    local currentWindowWidth = vec2(0, 0) -- Largura da tela
-    local currentWindowHeight = vec2(0, 120 * HudScale) -- Altura da tela
-    if BrakeBiasActive or FuelActive then currentWindowHeight = vec2(0, 135 * HudScale) end -- Altura da tela
 
     local gearBackgroundSize = vec2(70 * HudScale, currentWindowHeight.y) -- Tamanho do background do texto de velocidade e marcha
     local wheelBackgroundSize = vec2(70 * HudScale, currentWindowHeight.y) -- Tamanho do background do eixo do roda
@@ -35,7 +35,7 @@ function script.windowMain()
     elseif gear == "-1" then
       gear = "R";
     end
-    ui.setCursor(vec2(20, 50):scale(HudScale))
+    ui.setCursor(vec2(20, 28):scale(HudScale) + currentWindowWidth)
     ui.dwriteTextAligned(gear, fontGear, ui.Alignment.Center, ui.Alignment.Center, vec2(30, 30):scale(HudScale), false, rgbm(255, 255, 255, 1))
     --
 
@@ -46,7 +46,7 @@ function script.windowMain()
     else
       speed = string.format("%d", math.floor(CAR.speedKmh * 0.621371))
     end
-    ui.setCursor(vec2(20, 80):scale(HudScale))
+    ui.setCursor(vec2(20, 58):scale(HudScale) + currentWindowWidth)
     ui.dwriteTextAligned(speed, fontSpeed, ui.Alignment.Center, ui.Alignment.Center, vec2(30, 30):scale(HudScale), false, rgbm(255, 255, 255, 1))   
     currentWindowWidth = currentWindowWidth + vec2(gearBackgroundSize.x)
     --
@@ -54,16 +54,16 @@ function script.windowMain()
     -- Brake Bias:
     if BrakeBiasActive then
       -- Text Brake Bias
-      ui.setCursor(vec2(20 * HudScale, currentWindowHeight.y - 19 * HudScale))
+      ui.setCursor(vec2(20 * HudScale, currentWindowHeight.y + currentWindowWidth.y - 19 * HudScale))
       ui.dwriteTextAligned(string.format("%.1f", CAR.brakeBias*100), fontFuel, ui.Alignment.Center, ui.Alignment.Start, vec2(30, 30):scale(HudScale), false, rgbm(255, 255, 255, 1))
       -- BrakeBias Image
-      ui.setCursor(vec2(2 * HudScale, currentWindowHeight.y - 20 * HudScale))
+      ui.setCursor(vec2(2 * HudScale, currentWindowHeight.y + currentWindowWidth.y - 20 * HudScale))
       ui.image("assets/BrakeBias.png", vec2(19, 19):scale(HudScale), ui.ImageFit.Fit)
     end
     --
 
     -- Embreagem
-    local posBar = currentWindowWidth + vec2(0, 45 * HudScale)
+    local posBar = currentWindowWidth + vec2(0, 23 * HudScale)
     if ClutchActive then
       ui.drawRectFilled(currentWindowWidth, currentWindowWidth + vec2(barSpace + barSize.x, currentWindowHeight.y), rgbm(0, 0, 0, 0.30), 0)
 
@@ -83,7 +83,7 @@ function script.windowMain()
 
     -- Freio: 
     if BrakeActive then
-      posBar = currentWindowWidth + vec2(0, 45 * HudScale)
+      posBar = currentWindowWidth + vec2(0, 23 * HudScale)
       ui.drawRectFilled(currentWindowWidth, currentWindowWidth + vec2(barSpace + barSize.x, currentWindowHeight.y), rgbm(0, 0, 0, 0.30), 0)
       -- Texto do freio:
       if (CAR.brake * 100) < 98.99 then
@@ -102,7 +102,7 @@ function script.windowMain()
 
     -- Acelerador:
     if AcceleratorActive then
-      posBar = currentWindowWidth + vec2(0, 45 * HudScale)
+      posBar = currentWindowWidth + vec2(0, 23 * HudScale)
       ui.drawRectFilled(currentWindowWidth, currentWindowWidth + vec2(barSpace + barSize.x, currentWindowHeight.y), rgbm(0, 0, 0, 0.30), 0)
       -- Texto do acelerador:
       if (CAR.gas * 100) < 98.99 then
@@ -123,7 +123,7 @@ function script.windowMain()
     if WheelActive then
       ui.drawRectFilled(currentWindowWidth, currentWindowWidth + wheelBackgroundSize, rgbm(0, 0, 0, 0.30), 0)
       ui.beginRotation()
-      ui.setCursor(vec2(currentWindowWidth.x + 5, 40 * HudScale))
+      ui.setCursor(vec2(currentWindowWidth.x + 5, 18 * HudScale + currentWindowWidth.y))
       ui.image("assets/Wheel.png", vec2(60, 72):scale(HudScale), ui.ImageFit.Fit)
       ui.endRotation(90 -CAR.steer)
       currentWindowWidth = currentWindowWidth + vec2(wheelBackgroundSize.x)
@@ -133,7 +133,7 @@ function script.windowMain()
     -- ABS:
     if ABSActive and CAR.absModes ~= 0 then
       ui.drawRectFilled(currentWindowWidth, currentWindowWidth + absBackgroundSize, rgbm(0, 0, 0, 0.30), 0)
-      ui.setCursor(vec2(currentWindowWidth.x, 35 * HudScale))
+      ui.setCursor(vec2(currentWindowWidth.x, 13 * HudScale + currentWindowWidth.y))
       if CAR.absInAction then
         ui.image("assets/ABS.png", vec2(80,80):scale(HudScale), rgbm(255, 0, 0, 1),ui.ImageFit.Fit)
       else
@@ -151,7 +151,7 @@ function script.windowMain()
         currentWindowWidth = currentWindowWidth + vec2((gearBackgroundSize.x + (barSize.x + barSpace) * 2) - currentWindowWidth.x)
       end
       -- Texto combustível
-      ui.setCursor(vec2(currentWindowWidth.x - 67 * HudScale, currentWindowHeight.y - 20 * HudScale))
+      ui.setCursor(vec2(currentWindowWidth.x - 67 * HudScale, currentWindowHeight.y + currentWindowWidth.y - 20 * HudScale))
       if CAR.fuel <= 5 then
         ui.dwriteTextAligned(string.format("%.2f", CAR.fuel), fontFuel, ui.Alignment.Center, ui.Alignment.Start, vec2(86, 30):scale(HudScale), false, rgbm(255, 0, 0, 1))
       elseif CAR.fuel < 10 then
@@ -161,16 +161,16 @@ function script.windowMain()
       end
       --
       if CAR.fuel <= 5 then
-        ui.setCursor(vec2(currentWindowWidth.x - 55 * HudScale, currentWindowHeight.y - 19 * HudScale))
+        ui.setCursor(vec2(currentWindowWidth.x - 55 * HudScale, currentWindowHeight.y + currentWindowWidth.y - 19 * HudScale))
         ui.image("assets/Fuel.png", vec2(16, 15), rgbm(255, 0, 0, 1), ui.ImageFit.Fit)
       elseif CAR.fuel < 10 then
-        ui.setCursor(vec2(currentWindowWidth.x - 55 * HudScale, currentWindowHeight.y - 19 * HudScale))
+        ui.setCursor(vec2(currentWindowWidth.x - 55 * HudScale, currentWindowHeight.y + currentWindowWidth.y - 19 * HudScale))
         ui.image("assets/Fuel.png", vec2(16, 15):scale(HudScale), rgbm(255, 255, 0, 1), ui.ImageFit.Fit)
       elseif CAR.fuel < 100 then
-        ui.setCursor(vec2(currentWindowWidth.x - (59 * HudScale), currentWindowHeight.y - (19 * HudScale)))
+        ui.setCursor(vec2(currentWindowWidth.x - (59 * HudScale), currentWindowHeight.y  + currentWindowWidth.y- (19 * HudScale)))
         ui.image("assets/Fuel.png", vec2(16, 15):scale(HudScale), rgbm(255, 255, 255, 1), ui.ImageFit.Fit)
       else
-        ui.setCursor(vec2(currentWindowWidth.x - 61 * HudScale, currentWindowHeight.y - 19 * HudScale))
+        ui.setCursor(vec2(currentWindowWidth.x - 61 * HudScale, currentWindowHeight.y + currentWindowWidth.y - 19 * HudScale))
         ui.image("assets/Fuel.png", vec2(16, 15):scale(HudScale), rgbm(255, 255, 255, 1), ui.ImageFit.Fit)
       end
     end
