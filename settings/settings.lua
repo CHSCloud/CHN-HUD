@@ -76,7 +76,7 @@ local function content()
     ui.header(Language.get("PEDALS"))
 
     ui.setCursor(vec2(20, 155))
-    if ui.checkbox(Language.get("ACCELERATOR"), AcceleratorActive) then
+    if ui.checkbox(Language.get("THROTTLE"), AcceleratorActive) then
         AcceleratorActive = not AcceleratorActive
         settings.acceleratorActive = AcceleratorActive
     end
@@ -119,7 +119,7 @@ end
   
 local function geral()
     ui.setCursor(vec2(10, 50))
-    ui.header(Language.get("SIZE"))
+    ui.header(Language.get("SIZE"), {fontSize = 100})
     ui.setCursor(vec2(10, 70))
     HudScale = ui.slider("##Size", HudScale, 0.8  , 3, string.format("%.2f", HudScale));
     settings.hudScale = HudScale
