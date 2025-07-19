@@ -3,7 +3,7 @@ local config = {}
 local windows = {}
 
 local windowNames = {
-    "HUD CH&CN"
+    "HUD CHN"
 }
 
 function config.init()

@@ -152,29 +152,26 @@ function script.windowMain()
       end
       -- Texto combustível
       ui.setCursor(vec2(currentWindowWidth.x - 67 * HudScale, currentWindowHeight.y + currentWindowWidth.y - 20 * HudScale))
-      if CAR.fuel <= 5 then
+      if CAR.fuel < 5.005 then
         ui.dwriteTextAligned(string.format("%.2f", CAR.fuel), fontFuel, ui.Alignment.Center, ui.Alignment.Start, vec2(86, 30):scale(HudScale), false, rgbm(255, 0, 0, 1))
-      elseif CAR.fuel < 10 then
-        ui.dwriteTextAligned(string.format("%.2f", CAR.fuel), fontFuel, ui.Alignment.Center, ui.Alignment.Start, vec2(86, 30):scale(HudScale), false, rgbm(255, 255, 0, 1))
-      else
-        ui.dwriteTextAligned(string.format("%.2f", CAR.fuel), fontFuel, ui.Alignment.Center, ui.Alignment.Start, vec2(86, 30):scale(HudScale), false, rgbm(255, 255, 255, 1))
-      end
-      --
-      if CAR.fuel <= 5 then
         ui.setCursor(vec2(currentWindowWidth.x - 55 * HudScale, currentWindowHeight.y + currentWindowWidth.y - 19 * HudScale))
-        ui.image("assets/Fuel.png", vec2(16, 15), rgbm(255, 0, 0, 1), ui.ImageFit.Fit)
-      elseif CAR.fuel < 10 then
+        ui.image("assets/Fuel.png", vec2(16, 15):scale(HudScale), rgbm(255, 0, 0, 1), ui.ImageFit.Fit)
+      elseif CAR.fuel < 9.995 then
+        ui.dwriteTextAligned(string.format("%.2f", CAR.fuel), fontFuel, ui.Alignment.Center, ui.Alignment.Start, vec2(86, 30):scale(HudScale), false, rgbm(255, 255, 0, 1))
         ui.setCursor(vec2(currentWindowWidth.x - 55 * HudScale, currentWindowHeight.y + currentWindowWidth.y - 19 * HudScale))
         ui.image("assets/Fuel.png", vec2(16, 15):scale(HudScale), rgbm(255, 255, 0, 1), ui.ImageFit.Fit)
-      elseif CAR.fuel < 100 then
-        ui.setCursor(vec2(currentWindowWidth.x - (59 * HudScale), currentWindowHeight.y  + currentWindowWidth.y- (19 * HudScale)))
-        ui.image("assets/Fuel.png", vec2(16, 15):scale(HudScale), rgbm(255, 255, 255, 1), ui.ImageFit.Fit)
       else
-        ui.setCursor(vec2(currentWindowWidth.x - 61 * HudScale, currentWindowHeight.y + currentWindowWidth.y - 19 * HudScale))
-        ui.image("assets/Fuel.png", vec2(16, 15):scale(HudScale), rgbm(255, 255, 255, 1), ui.ImageFit.Fit)
+        ui.dwriteTextAligned(string.format("%.2f", CAR.fuel), fontFuel, ui.Alignment.Center, ui.Alignment.Start, vec2(86, 30):scale(HudScale), false, rgbm(255, 255, 255, 1))
+        if CAR.fuel < 99.995 then
+          ui.setCursor(vec2(currentWindowWidth.x - (59 * HudScale), currentWindowHeight.y  + currentWindowWidth.y- (19 * HudScale)))
+          ui.image("assets/Fuel.png", vec2(16, 15):scale(HudScale), rgbm(255, 255, 255, 1), ui.ImageFit.Fit)
+        else
+          ui.setCursor(vec2(currentWindowWidth.x - 63 * HudScale, currentWindowHeight.y + currentWindowWidth.y - 19 * HudScale))
+          ui.image("assets/Fuel.png", vec2(16, 15):scale(HudScale), rgbm(255, 255, 255, 1), ui.ImageFit.Fit)
+        end
       end
     end
     --
 
-    config.resize(currentWindowWidth + currentWindowHeight, "HUD CH&CN")
+    config.resize(currentWindowWidth + currentWindowHeight, "HUD CHN")
 end
