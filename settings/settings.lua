@@ -121,7 +121,7 @@ local function geral()
     ui.setCursor(vec2(10, 50))
     ui.header(Language.get("SIZE"), {fontSize = 100})
     ui.setCursor(vec2(10, 70))
-    HudScale = ui.slider("##Size", HudScale, 0.5  , 3, string.format("%.2f", HudScale));
+    HudScale = ui.slider("##Size", HudScale, 0.7, 3, string.format("%.2f", HudScale));
     settings.hudScale = HudScale
     
     ui.setCursor(vec2(10, 100))
