@@ -54,7 +54,7 @@ function script.windowMain()
     -- Brake Bias:
     if BrakeBiasActive then
       -- Text Brake Bias
-      ui.setCursor(vec2(20 * HudScale, currentWindowHeight.y + currentWindowWidth.y - 19 * HudScale))
+      ui.setCursor(vec2(21 * HudScale, currentWindowHeight.y + currentWindowWidth.y - 19 * HudScale))
       ui.dwriteTextAligned(string.format("%.1f", CAR.brakeBias*100), fontFuel, ui.Alignment.Center, ui.Alignment.Start, vec2(30, 30):scale(HudScale), false, rgbm(255, 255, 255, 1))
       -- BrakeBias Image
       ui.setCursor(vec2(2 * HudScale, currentWindowHeight.y + currentWindowWidth.y - 20 * HudScale))
@@ -154,16 +154,16 @@ function script.windowMain()
       ui.setCursor(vec2(currentWindowWidth.x - 67 * HudScale, currentWindowHeight.y + currentWindowWidth.y - 20 * HudScale))
       if CAR.fuel < 5.005 then
         ui.dwriteTextAligned(string.format("%.2f", CAR.fuel), fontFuel, ui.Alignment.Center, ui.Alignment.Start, vec2(86, 30):scale(HudScale), false, rgbm(255, 0, 0, 1))
-        ui.setCursor(vec2(currentWindowWidth.x - 55 * HudScale, currentWindowHeight.y + currentWindowWidth.y - 19 * HudScale))
+        ui.setCursor(vec2(currentWindowWidth.x - 56 * HudScale, currentWindowHeight.y + currentWindowWidth.y - 19 * HudScale))
         ui.image("assets/Fuel.png", vec2(16, 15):scale(HudScale), rgbm(255, 0, 0, 1), ui.ImageFit.Fit)
       elseif CAR.fuel < 9.995 then
         ui.dwriteTextAligned(string.format("%.2f", CAR.fuel), fontFuel, ui.Alignment.Center, ui.Alignment.Start, vec2(86, 30):scale(HudScale), false, rgbm(255, 255, 0, 1))
-        ui.setCursor(vec2(currentWindowWidth.x - 55 * HudScale, currentWindowHeight.y + currentWindowWidth.y - 19 * HudScale))
+        ui.setCursor(vec2(currentWindowWidth.x - 56 * HudScale, currentWindowHeight.y + currentWindowWidth.y - 19 * HudScale))
         ui.image("assets/Fuel.png", vec2(16, 15):scale(HudScale), rgbm(255, 255, 0, 1), ui.ImageFit.Fit)
       else
         ui.dwriteTextAligned(string.format("%.2f", CAR.fuel), fontFuel, ui.Alignment.Center, ui.Alignment.Start, vec2(86, 30):scale(HudScale), false, rgbm(255, 255, 255, 1))
         if CAR.fuel < 99.995 then
-          ui.setCursor(vec2(currentWindowWidth.x - (59 * HudScale), currentWindowHeight.y  + currentWindowWidth.y- (19 * HudScale)))
+          ui.setCursor(vec2(currentWindowWidth.x - (60 * HudScale), currentWindowHeight.y  + currentWindowWidth.y- (19 * HudScale)))
           ui.image("assets/Fuel.png", vec2(16, 15):scale(HudScale), rgbm(255, 255, 255, 1), ui.ImageFit.Fit)
         else
           ui.setCursor(vec2(currentWindowWidth.x - 63 * HudScale, currentWindowHeight.y + currentWindowWidth.y - 19 * HudScale))
