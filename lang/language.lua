@@ -7,7 +7,7 @@ local settings = ac.storage{
 local translations = {}
 
 function Language.loadTranslations()
-    local file_path = ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\IracingIoverlay\\lang\\" .. settings.currentLanguage .. ".json"
+    local file_path = ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\CHN-HUD\\lang\\" .. settings.currentLanguage .. ".json"
 
     if io.fileExists(file_path) then
         local content = io.load(file_path)
