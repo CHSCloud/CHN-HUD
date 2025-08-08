@@ -15,5 +15,6 @@
     "STEERING": "Steering",
     "OTHERS": "Others",
     "BRAKE_BIAS": "Brake Bias",
-    "FUEL": "Fuel"
+    "FUEL": "Fuel",
+    "HANDBRAKE": "Handbrake"
 }

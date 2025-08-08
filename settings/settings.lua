@@ -10,6 +10,7 @@ local settings = ac.storage{
     acceleratorActive = true,
     brakeActive = true,
     breakeBiasActive = true,
+    handbrakeActive = false,
     clutchActive = true,
     fuelActive = true,
     optionLanguage = languages.en.code,
@@ -26,6 +27,7 @@ ClutchActive = settings.clutchActive
 FuelActive = settings.fuelActive
 OptionLanguage  = Language.getCurrentLanguage()
 SelectedSpeed = settings.selectedSpeed
+HandbrakeActive = settings.handbrakeActive
 
 SIM = ac.getSim()
 CAR = ac.getCar(SIM.focusedCar)
@@ -92,18 +94,24 @@ local function content()
         ClutchActive = not ClutchActive
         settings.clutchActive = ClutchActive
     end
+
+    ui.setCursor(vec2(20, 230))
+    if ui.checkbox(Language.get("HANDBRAKE"), HandbrakeActive) then
+        HandbrakeActive = not HandbrakeActive
+        settings.handbrakeActive = HandbrakeActive
+    end
     --
     
-    ui.setCursor(vec2(20, 235))
+    ui.setCursor(vec2(20, 265))
     ui.header(Language.get("OTHERS"))
   
-    ui.setCursor(vec2(20, 260))
+    ui.setCursor(vec2(20, 290))
     if ui.checkbox(Language.get("FUEL"), FuelActive) then
         FuelActive = not FuelActive
         settings.fuelActive = FuelActive
     end
 
-    ui.setCursor(vec2(20, 285))
+    ui.setCursor(vec2(20, 315))
     if ui.checkbox(Language.get("BRAKE_BIAS"), BrakeBiasActive) then
         BrakeBiasActive = not BrakeBiasActive
         settings.breakeBiasActive = BrakeBiasActive

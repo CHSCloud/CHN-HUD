@@ -119,6 +119,25 @@ function script.windowMain()
     end
     --
 
+    -- Freio de mão:
+    if HandbrakeActive then
+      posBar = currentWindowWidth + vec2(0, 23 * HudScale)
+      ui.drawRectFilled(currentWindowWidth, currentWindowWidth + vec2(barSpace + barSize.x, currentWindowHeight.y), rgbm(0, 0, 0, 0.30), 0)
+      -- Texto do acelerador:
+      if CAR.handbrake == 0 then
+        ui.setCursor(vec2(currentWindowWidth.x, posyTextBars))
+        ui.dwriteTextAligned(string.format("0"), fontBar, ui.Alignment.Center, ui.Alignment.Start, vec2(17, 30):scale(HudScale), false, rgbm(255, 255, 255, 1))
+      else 
+        ui.setCursor(vec2(currentWindowWidth.x, posyInfiniteBars))
+        ui.dwriteTextAligned("∞", fontBarInfinite, ui.Alignment.Center, ui.Alignment.Start, vec2(17, 30):scale(HudScale), false, rgbm(255, 255, 0, 1))
+      end
+      -- Barras acelerador:
+      ui.drawRectFilled(posBar, posBar + barSize, rgbm(0.2, 0.2, 0.2, 0.6))
+      ui.drawRectFilled(posBar + vec2(0, barSize.y - (CAR.handbrake * barSize.y)), posBar + barSize, rgbm(255, 255, 0, 1))
+      currentWindowWidth = currentWindowWidth + vec2(barSize.x + barSpace)
+    end
+    --
+
     ui.drawRectFilled(currentWindowWidth, currentWindowWidth + vec2(6 * HudScale, currentWindowHeight.y), rgbm(0, 0, 0, 0.30), 0)
     currentWindowWidth = currentWindowWidth + vec2(6 * HudScale)
     -- Volante:
@@ -144,7 +163,7 @@ function script.windowMain()
         currentWindowWidth = currentWindowWidth + vec2(absBackgroundSize.x)
     end
     --
-
+    
     -- Combustível:
     if FuelActive then
       if currentWindowWidth.x <= (gearBackgroundSize.x + (barSize.x + barSpace) * 2) and BrakeBiasActive then

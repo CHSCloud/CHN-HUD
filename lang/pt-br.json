@@ -15,5 +15,6 @@
     "STEERING": "Direção",
     "OTHERS": "Outros",
     "BRAKE_BIAS": "Distribuição de frenagem",
-    "FUEL": "Combustível"
+    "FUEL": "Combustível",
+    "HANDBRAKE": "Freio de mão"
 }
