@@ -21,8 +21,8 @@ function script.windowMain()
     local fontSpeed = 17 * HudScale -- Tamanho da fonte do texto de velocidade
 
     local gearBackgroundSize = vec2(70 * HudScale, currentWindowHeight.y) -- Tamanho do background do texto de velocidade e marcha
-    local wheelBackgroundSize = vec2(70 * HudScale, currentWindowHeight.y) -- Tamanho do background do eixo do roda
-    local absBackgroundSize = vec2(80 * HudScale, currentWindowHeight.y) -- Tamanho do background do ABS
+    local wheelBackgroundSize = vec2(62 * HudScale, currentWindowHeight.y) -- Tamanho do background do eixo do roda
+    local absBackgroundSize = vec2(78 * HudScale, currentWindowHeight.y) -- Tamanho do background do ABS
     
     local barSize = vec2(17, 65) * HudScale -- Tamanho das barras
     local barSpace = 3 * HudScale --Comprimento do padding das barras
@@ -119,11 +119,13 @@ function script.windowMain()
     end
     --
 
+    ui.drawRectFilled(currentWindowWidth, currentWindowWidth + vec2(6 * HudScale, currentWindowHeight.y), rgbm(0, 0, 0, 0.30), 0)
+    currentWindowWidth = currentWindowWidth + vec2(6 * HudScale)
     -- Volante:
     if WheelActive then
-      ui.drawRectFilled(currentWindowWidth, currentWindowWidth + wheelBackgroundSize, rgbm(0, 0, 0, 0.30), 0)
+      ui.drawRectFilled(currentWindowWidth, currentWindowWidth + wheelBackgroundSize, rgbm(0, 0, 0, 0.3), 0)
       ui.beginRotation()
-      ui.setCursor(vec2(currentWindowWidth.x + 5, 18 * HudScale + currentWindowWidth.y))
+      ui.setCursor(vec2(currentWindowWidth.x + 1, 18 * HudScale + currentWindowWidth.y))
       ui.image("assets/Wheel.png", vec2(60, 72):scale(HudScale), ui.ImageFit.Fit)
       ui.endRotation(90 -CAR.steer)
       currentWindowWidth = currentWindowWidth + vec2(wheelBackgroundSize.x)
@@ -133,7 +135,7 @@ function script.windowMain()
     -- ABS:
     if ABSActive and CAR.absModes ~= 0 then
       ui.drawRectFilled(currentWindowWidth, currentWindowWidth + absBackgroundSize, rgbm(0, 0, 0, 0.30), 0)
-      ui.setCursor(vec2(currentWindowWidth.x, 13 * HudScale + currentWindowWidth.y))
+      ui.setCursor(vec2(currentWindowWidth.x - 1, 13 * HudScale + currentWindowWidth.y))
       if CAR.absInAction then
         ui.image("assets/ABS.png", vec2(80,80):scale(HudScale), rgbm(255, 0, 0, 1),ui.ImageFit.Fit)
       else
