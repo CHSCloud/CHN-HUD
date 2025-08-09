@@ -11,6 +11,7 @@ local settings = ac.storage{
     brakeActive = true,
     breakeBiasActive = true,
     handbrakeActive = false,
+    textBarsActive = true,
     clutchActive = true,
     fuelActive = true,
     optionLanguage = languages.en.code,
@@ -25,6 +26,7 @@ BrakeActive = settings.brakeActive
 BrakeBiasActive = settings.breakeBiasActive
 ClutchActive = settings.clutchActive
 FuelActive = settings.fuelActive
+TextBarsActive = settings.textBarsActive
 OptionLanguage  = Language.getCurrentLanguage()
 SelectedSpeed = settings.selectedSpeed
 HandbrakeActive = settings.handbrakeActive
@@ -89,6 +91,12 @@ local function content()
         settings.brakeActive = BrakeActive
     end
 
+    ui.setCursor(vec2(135, 195))
+    if ui.checkbox(Language.get("PERCENTAGE"), TextBarsActive) then
+        TextBarsActive = not TextBarsActive
+        settings.textBarsActive = TextBarsActive
+    end
+
     ui.setCursor(vec2(20, 205))
     if ui.checkbox(Language.get("CLUTCH"), ClutchActive) then
         ClutchActive = not ClutchActive
@@ -140,7 +148,7 @@ local function geral()
 end
   
 function script.windowSettings()
-    ui.drawRectFilled(vec2(0, 0), vec2(272, 500), rgbm(0, 0, 0, 0.70), 0)
+    ui.drawRectFilled(vec2(0, 0), vec2(500, 500), rgbm(0, 0, 0, 0.70), 0)
     ui.tabBar('##ID',function ()
         ui.tabItem(Language.get("GENERAL"), geral)
         ui.tabItem(Language.get("ELEMENTS"), content)
