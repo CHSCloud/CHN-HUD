@@ -55,7 +55,7 @@ function script.windowMain()
     if BrakeBiasActive then
       -- Text Brake Bias
       ui.setCursor(vec2(20 * HudScale, currentWindowHeight.y + currentWindowWidth.y - 19 * HudScale))
-      ui.dwriteTextAligned(string.format("%.1f", CAR.brakeBias*100), fontFuel, ui.Alignment.Center, ui.Alignment.Start, vec2(30, 30):scale(HudScale), false, rgbm(255, 255, 255, 1))
+      ui.dwriteTextAligned(string.format("%.1f", CAR.brakeBias * 100), fontFuel, ui.Alignment.Center, ui.Alignment.Start, vec2(30, 30):scale(HudScale), false, rgbm(255, 255, 255, 1))
       -- BrakeBias Image
       ui.setCursor(vec2(2 * HudScale, currentWindowHeight.y + currentWindowWidth.y - 21 * HudScale))
       ui.image("assets/BrakeBias.png", vec2(19, 19):scale(HudScale), ui.ImageFit.Fit)
@@ -124,9 +124,9 @@ function script.windowMain()
       posBar = currentWindowWidth + vec2(0, 23 * HudScale)
       ui.drawRectFilled(currentWindowWidth, currentWindowWidth + vec2(barSpace + barSize.x, currentWindowHeight.y), rgbm(0, 0, 0, 0.30), 0)
       -- Texto do acelerador:
-      if CAR.handbrake == 0 then
+      if CAR.handbrake < 1 then
         ui.setCursor(vec2(currentWindowWidth.x, posyTextBars))
-        ui.dwriteTextAligned(string.format("0"), fontBar, ui.Alignment.Center, ui.Alignment.Start, vec2(17, 30):scale(HudScale), false, rgbm(255, 255, 255, 1))
+        ui.dwriteTextAligned(string.format("%.0f", CAR.handbrake * 100), fontBar, ui.Alignment.Center, ui.Alignment.Start, vec2(17, 30):scale(HudScale), false, rgbm(255, 255, 255, 1))
       else 
         ui.setCursor(vec2(currentWindowWidth.x, posyInfiniteBars))
         ui.dwriteTextAligned("∞", fontBarInfinite, ui.Alignment.Center, ui.Alignment.Start, vec2(17, 30):scale(HudScale), false, rgbm(255, 255, 0, 1))
