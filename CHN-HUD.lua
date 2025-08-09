@@ -21,8 +21,8 @@ function script.windowMain()
     local fontSpeed = 17 * HudScale -- Tamanho da fonte do texto de velocidade
 
     local gearBackgroundSize = vec2(70 * HudScale, currentWindowHeight.y) -- Tamanho do background do texto de velocidade e marcha
-    local wheelBackgroundSize = vec2(62 * HudScale, currentWindowHeight.y) -- Tamanho do background do eixo do roda
-    local absBackgroundSize = vec2(78 * HudScale, currentWindowHeight.y) -- Tamanho do background do ABS
+    local wheelBackgroundSize = vec2(65 * HudScale, currentWindowHeight.y) -- Tamanho do background do eixo do roda
+    local absBackgroundSize = vec2(80 * HudScale, currentWindowHeight.y) -- Tamanho do background do ABS
     
     local barSize = vec2(17, 65) * HudScale -- Tamanho das barras
     local barSpace = 3 * HudScale --Comprimento do padding das barras
@@ -146,7 +146,7 @@ function script.windowMain()
       ui.beginRotation()
       ui.setCursor(vec2(currentWindowWidth.x + 1, 18 * HudScale + currentWindowWidth.y))
       ui.image("assets/Wheel.png", vec2(60, 72):scale(HudScale), ui.ImageFit.Fit)
-      ui.endRotation(90 -CAR.steer)
+      ui.endRotation(90 - CAR.steer)
       currentWindowWidth = currentWindowWidth + vec2(wheelBackgroundSize.x)
     end
     --
