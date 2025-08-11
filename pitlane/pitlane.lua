@@ -1,6 +1,6 @@
 function script.pitlane()
     if CAR.isInPitlane then
-      ui.drawRectFilled(vec2(0, 0), vec2(250, 100), rgbm(0, 0, 0, 0.40), 5)
+      ui.drawRectFilled(vec2(0, 0), vec2(260, 90), rgbm(0, 0, 0, 0.40), 5)
       ui.setCursor(vec2(55,5))
       ui.dwriteTextAligned(Language.get("In Pit Lane"), 25, ui.Alignment.Center, ui.Alignment.Start, vec2(150, 25), false, rgbm(1, 0, 0, 1))
       ui.setCursor(vec2(10,40))
