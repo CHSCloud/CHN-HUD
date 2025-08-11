@@ -17,5 +17,8 @@
     "OTHERS": "Others",
     "BRAKE_BIAS": "Brake Bias",
     "FUEL": "Fuel",
-    "HANDBRAKE": "Handbrake"
+    "HANDBRAKE": "Handbrake",
+    "In Pit Lane": "In Pit Lane",
+    "Pit Speed Limit:": "Pit Speed Limit:",
+    "Current Speed:": "Current Speed:"
 }

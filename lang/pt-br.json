@@ -17,5 +17,8 @@
     "OTHERS": "Outros",
     "BRAKE_BIAS": "Distribuição de frenagem",
     "FUEL": "Combustível",
-    "HANDBRAKE": "Freio de mão"
+    "HANDBRAKE": "Freio de mão",
+    "In Pit Lane": "No Pit Lane",
+    "Pit Speed Limit:": "Limite de Velocidade:",
+    "Current Speed:": "Velocidade Atual:"
 }
