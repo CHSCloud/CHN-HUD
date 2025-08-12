@@ -1,6 +1,7 @@
 require("lang.language")
 require("settings.settings")
 require("pitlane.pitlane")
+require("sessionlaps.sessionlaps")
 local config = require("common.config")
 
 function script.windowMain()
