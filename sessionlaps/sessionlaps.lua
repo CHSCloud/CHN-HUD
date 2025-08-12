@@ -1,4 +1,5 @@
-function script.sessionlaps()
+local sessionlaps = {}
+function sessionlaps.windowMain()
     -- Last lap Milisegundos para Minutos
     local lasttimeinseconds = CAR.previousLapTimeMs / 1000
     local lastminutos = math.floor(lasttimeinseconds / 60)
@@ -27,3 +28,4 @@ function script.sessionlaps()
         ui.dwriteTextAligned(Language.get("Last: ") .. lastlap, 15, ui.Alignment.Center, ui.Alignment.Start, vec2(145, 25), false, rgbm(1, 1, 1, 1))
     end
 end
+return sessionlaps
