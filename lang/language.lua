@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-field
 Language = {}
 
 local settings = ac.storage{
