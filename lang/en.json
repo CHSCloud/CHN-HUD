@@ -18,9 +18,9 @@
     "BRAKE_BIAS": "Brake Bias",
     "FUEL": "Fuel",
     "HANDBRAKE": "Handbrake",
-    "In Pit Lane": "In Pit Lane",
-    "Pit Speed Limit:": "Pit Speed Limit:",
-    "Current Speed:": "Current Speed:",
-    "Best: ": "Best: ",
-    "Last: ": "Last: "
+    "IN_PIT_LANE": "In Pit Lane",
+    "PIT_SPEED_LIMIT": "Pit Speed Limit:",
+    "CURRENT_SPEED": "Current Speed:",
+    "BEST": "Best: ",
+    "LAST": "Last: "
 }

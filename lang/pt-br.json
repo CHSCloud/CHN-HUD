@@ -18,9 +18,9 @@
     "BRAKE_BIAS": "Distribuição de frenagem",
     "FUEL": "Combustível",
     "HANDBRAKE": "Freio de mão",
-    "In Pit Lane": "No Pit Lane",
-    "Pit Speed Limit:": "Limite de Velocidade:",
-    "Current Speed:": "Velocidade Atual:",
-    "Best: ": "Melhor: ",
-    "Last: ": "Último: "
+    "IN_PIT_LANE": "No Pit Lane",
+    "PIT_SPEED_LIMIT:": "Limite de Velocidade:",
+    "CURRENT_SPEED:": "Velocidade Atual:",
+    "BEST": "Melhor: ",
+    "LAST": "Último: "
 }

@@ -1,4 +1,5 @@
 local sessionlaps = {}
+
 function sessionlaps.windowMain()
     ui.pushDWriteFont("fonts/Montserrat-Bold.ttf") -- Fonte do texto
     -- Last lap Milisegundos para Minutos
@@ -17,16 +18,17 @@ function sessionlaps.windowMain()
     --Best Lap
     if bestlap == "00:00.000" then
         bestlap = "--.--.--"
-        ui.dwriteTextAligned(Language.get("Best: ") .. bestlap, 15, ui.Alignment.Center, ui.Alignment.Center, vec2(145, 25), false, rgbm(1, 1, 1, 1))
+        ui.dwriteTextAligned(Language.get("BEST") .. bestlap, 15, ui.Alignment.Center, ui.Alignment.Center, vec2(145, 25), false, rgbm(1, 1, 1, 1))
     else
-        ui.dwriteTextAligned(Language.get("Best: ") .. bestlap, 15, ui.Alignment.Center, ui.Alignment.Center, vec2(145, 25), false, rgbm(1, 1, 1, 1))
+        ui.dwriteTextAligned(Language.get("BEST") .. bestlap, 15, ui.Alignment.Center, ui.Alignment.Center, vec2(145, 25), false, rgbm(1, 1, 1, 1))
     end
     --Last Lap
     if lastlap == "00:00.000" then
         lastlap = "--.--.--"
-        ui.dwriteTextAligned(Language.get("Last: ") .. lastlap, 15, ui.Alignment.Center, ui.Alignment.Start, vec2(145, 25), false, rgbm(1, 1, 1, 1))
+        ui.dwriteTextAligned(Language.get("LAST") .. lastlap, 15, ui.Alignment.Center, ui.Alignment.Start, vec2(145, 25), false, rgbm(1, 1, 1, 1))
     else
-        ui.dwriteTextAligned(Language.get("Last: ") .. lastlap, 15, ui.Alignment.Center, ui.Alignment.Start, vec2(145, 25), false, rgbm(1, 1, 1, 1))
+        ui.dwriteTextAligned(Language.get("LAST") .. lastlap, 15, ui.Alignment.Center, ui.Alignment.Start, vec2(145, 25), false, rgbm(1, 1, 1, 1))
     end
 end
+
 return sessionlaps
