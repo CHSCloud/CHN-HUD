@@ -1,5 +1,6 @@
 local sessionlaps = {}
 function sessionlaps.windowMain()
+    ui.pushDWriteFont("fonts/Montserrat-Bold.ttf") -- Fonte do texto
     -- Last lap Milisegundos para Minutos
     local lasttimeinseconds = CAR.previousLapTimeMs / 1000
     local lastminutos = math.floor(lasttimeinseconds / 60)

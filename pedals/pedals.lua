@@ -4,7 +4,7 @@ local config = require("common.config")
 local pedals = {}
 
 function pedals.windowMain()
-    ui.pushDWriteFont("Font/Montserrat-Bold.ttf") -- Fonte do texto
+    ui.pushDWriteFont("fonts/Montserrat-Bold.ttf") -- Fonte do texto
     local paddingTop = 0
     if not TextBarsActive then paddingTop = 8 * HudScale end
     local currentWindowWidth = vec2(0, 22) -- Largura da tela

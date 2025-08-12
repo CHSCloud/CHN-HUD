@@ -2,6 +2,7 @@ require("lang.language")
 local pitlane = {}
 
 function pitlane.windowMain()
+    ui.pushDWriteFont("fonts/Montserrat-Bold.ttf") -- Fonte do texto
     if CAR.isInPitlane then
       ui.drawRectFilled(vec2(0, 0), vec2(270, 90), rgbm(0, 0, 0, 0.40), 5)
       ui.setCursor(vec2(55,5))
