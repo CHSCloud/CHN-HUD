@@ -1,4 +1,7 @@
-function script.pitlane()
+require("lang.language")
+local pitlane = {}
+
+function pitlane.windowMain()
     if CAR.isInPitlane then
       ui.drawRectFilled(vec2(0, 0), vec2(260, 90), rgbm(0, 0, 0, 0.40), 5)
       ui.setCursor(vec2(55,5))
@@ -19,3 +22,5 @@ function script.pitlane()
     end
     
 end
+
+return pitlane

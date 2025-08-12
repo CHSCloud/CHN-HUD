@@ -1,9 +1,12 @@
+require("lang.language")
+local settings = {}
+
 local languages = {
   ["en"] = { name = "English", code = "en" },
   ["pt-br"] = { name = "Português - Brasil", code = "pt-br" }
 }
 
-local settings = ac.storage{
+local settingsStorage = ac.storage{
     hudScale = 1,
     wheelActive = true,
     ABSActive = true,
@@ -18,18 +21,18 @@ local settings = ac.storage{
     selectedSpeed = 1
 }
 
-HudScale = settings.hudScale
-WheelActive = settings.wheelActive
-ABSActive = settings.ABSActive
-AcceleratorActive = settings.acceleratorActive
-BrakeActive = settings.brakeActive
-BrakeBiasActive = settings.breakeBiasActive
-ClutchActive = settings.clutchActive
-FuelActive = settings.fuelActive
-TextBarsActive = settings.textBarsActive
+HudScale = settingsStorage.hudScale
+WheelActive = settingsStorage.wheelActive
+ABSActive = settingsStorage.ABSActive
+AcceleratorActive = settingsStorage.acceleratorActive
+BrakeActive = settingsStorage.brakeActive
+BrakeBiasActive = settingsStorage.breakeBiasActive
+ClutchActive = settingsStorage.clutchActive
+FuelActive = settingsStorage.fuelActive
+TextBarsActive = settingsStorage.textBarsActive
 OptionLanguage  = Language.getCurrentLanguage()
-SelectedSpeed = settings.selectedSpeed
-HandbrakeActive = settings.handbrakeActive
+SelectedSpeed = settingsStorage.selectedSpeed
+HandbrakeActive = settingsStorage.handbrakeActive
 
 SIM = ac.getSim()
 CAR = ac.getCar(SIM.focusedCar)
@@ -65,13 +68,13 @@ local function content()
     ui.setCursor(vec2(20, 80))
     if ui.checkbox(Language.get("WHEEL"), WheelActive) then
         WheelActive = not WheelActive
-        settings.wheelActive = WheelActive
+        settingsStorage.wheelActive = WheelActive
     end
 
     ui.setCursor(vec2(20, 105))
     if ui.checkbox(Language.get("ABS"), ABSActive) then
         ABSActive = not ABSActive
-        settings.ABSActive = ABSActive
+        settingsStorage.ABSActive = ABSActive
     end
     --
 
@@ -82,31 +85,31 @@ local function content()
     ui.setCursor(vec2(20, 155))
     if ui.checkbox(Language.get("THROTTLE"), AcceleratorActive) then
         AcceleratorActive = not AcceleratorActive
-        settings.acceleratorActive = AcceleratorActive
+        settingsStorage.acceleratorActive = AcceleratorActive
     end
 
     ui.setCursor(vec2(20, 180))
     if ui.checkbox(Language.get("BRAKE"), BrakeActive) then
         BrakeActive = not BrakeActive
-        settings.brakeActive = BrakeActive
+        settingsStorage.brakeActive = BrakeActive
     end
 
     ui.setCursor(vec2(135, 195))
     if ui.checkbox(Language.get("PERCENTAGE"), TextBarsActive) then
         TextBarsActive = not TextBarsActive
-        settings.textBarsActive = TextBarsActive
+        settingsStorage.textBarsActive = TextBarsActive
     end
 
     ui.setCursor(vec2(20, 205))
     if ui.checkbox(Language.get("CLUTCH"), ClutchActive) then
         ClutchActive = not ClutchActive
-        settings.clutchActive = ClutchActive
+        settingsStorage.clutchActive = ClutchActive
     end
 
     ui.setCursor(vec2(20, 230))
     if ui.checkbox(Language.get("HANDBRAKE"), HandbrakeActive) then
         HandbrakeActive = not HandbrakeActive
-        settings.handbrakeActive = HandbrakeActive
+        settingsStorage.handbrakeActive = HandbrakeActive
     end
     --
     
@@ -116,13 +119,13 @@ local function content()
     ui.setCursor(vec2(20, 290))
     if ui.checkbox(Language.get("FUEL"), FuelActive) then
         FuelActive = not FuelActive
-        settings.fuelActive = FuelActive
+        settingsStorage.fuelActive = FuelActive
     end
 
     ui.setCursor(vec2(20, 315))
     if ui.checkbox(Language.get("BRAKE_BIAS"), BrakeBiasActive) then
         BrakeBiasActive = not BrakeBiasActive
-        settings.breakeBiasActive = BrakeBiasActive
+        settingsStorage.breakeBiasActive = BrakeBiasActive
     end
 
     -- Alerta do ABS
@@ -138,16 +141,16 @@ local function geral()
     ui.header(Language.get("SIZE"), {fontSize = 100})
     ui.setCursor(vec2(10, 70))
     HudScale = ui.slider("##Size", HudScale, 0.7, 3, string.format("%.2f", HudScale));
-    settings.hudScale = HudScale
+    settingsStorage.hudScale = HudScale
     
     ui.setCursor(vec2(10, 100))
     ui.header(Language.get("SPEED"))
     ui.setCursor(vec2(10, 120))
     SelectedSpeed = ui.combo("##Speed", SelectedSpeed , {"Km/h", "Mph"})
-    settings.selectedSpeed = SelectedSpeed
+    settingsStorage.selectedSpeed = SelectedSpeed
 end
   
-function script.windowSettings()
+function settings.windowMain()
     ui.drawRectFilled(vec2(0, 0), vec2(500, 500), rgbm(0, 0, 0, 0.70), 0)
     ui.tabBar('##ID',function ()
         ui.tabItem(Language.get("GENERAL"), geral)
@@ -155,3 +158,5 @@ function script.windowSettings()
         ui.tabItem(Language.get("LANGUAGE"), setLanguage)
     end)
 end
+
+return settings
