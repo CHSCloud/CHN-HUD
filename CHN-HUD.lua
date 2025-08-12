@@ -1,7 +1,7 @@
-local settings = require("settings.settings")
-local pitlane = require("pitlane.pitlane")
-local pedals = require("pedals.pedals")
-local sessionlaps = require("sessionlaps.sessionlaps")
+local settings = require("src.settings.settings")
+local pitlane = require("src.hud.pitlane.pitlane")
+local pedals = require("src.hud.pedals.pedals")
+local sessionlaps = require("src.hud.sessionlaps.sessionlaps")
 
 function windowSettings()
   settings.windowMain()

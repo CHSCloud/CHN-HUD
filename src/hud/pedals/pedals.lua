@@ -1,5 +1,5 @@
 require("lang.language")
-local settings = require("settings.settings")
+local settings = require("src.settings.settings")
 local config = require("common.config")
 local pedals = {}
 
