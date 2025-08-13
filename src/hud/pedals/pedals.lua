@@ -37,7 +37,7 @@ function pedals.windowMain()
     elseif gear == "-1" then
       gear = "R";
     end
-    ui.setCursor(vec2(20, 28 - paddingTop):scale(WindowPedalsScale) + currentWindowWidth)
+    ui.setCursor(vec2(20, 28 - paddingTop/WindowPedalsScale):scale(WindowPedalsScale) + currentWindowWidth)
     ui.dwriteTextAligned(gear, fontGear, ui.Alignment.Center, ui.Alignment.Center, vec2(30, 30):scale(WindowPedalsScale), false, rgbm(255, 255, 255, 1))
     --
 
@@ -48,7 +48,7 @@ function pedals.windowMain()
     else
       speed = string.format("%d", math.floor(CAR.speedKmh * 0.621371))
     end
-    ui.setCursor(vec2(12, 58 - paddingTop):scale(WindowPedalsScale) + currentWindowWidth)
+    ui.setCursor(vec2(12, 58 - paddingTop/WindowPedalsScale):scale(WindowPedalsScale) + currentWindowWidth)
     ui.dwriteTextAligned(speed, fontSpeed, ui.Alignment.Center, ui.Alignment.Center, vec2(50, 30):scale(WindowPedalsScale), false, rgbm(255, 255, 255, 1))   
     currentWindowWidth = currentWindowWidth + vec2(gearBackgroundSize.x)
     --
