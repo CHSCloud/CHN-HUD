@@ -21,12 +21,6 @@ SIM = ac.getSim()
 CAR = ac.getCar(SIM.focusedCar)
   
 local function geral()
-    ui.setCursor(vec2(10, 100))
-    ui.header(Language.get("SPEED"))
-    ui.setCursor(vec2(10, 120))
-    SelectedSpeed = ui.combo("##Speed", SelectedSpeed , {"Km/h", "Mph"})
-    settingsStorage.selectedSpeed = SelectedSpeed
-
     ui.setCursor(vec2(10, 50))
     ui.header(Language.get("LANGUAGE"))
     ui.setCursor(vec2(10, 70))
@@ -46,6 +40,12 @@ local function geral()
       Language.setLanguage(OptionLanguage)
       Language.loadTranslations()
     end
+
+    ui.setCursor(vec2(10, 140))
+    ui.header(Language.get("SPEED"))
+    ui.setCursor(vec2(10, 160))
+    SelectedSpeed = ui.combo("##Speed", SelectedSpeed , {"Km/h", "Mph"})
+    settingsStorage.selectedSpeed = SelectedSpeed
 end
   
 function settings.windowMain()
