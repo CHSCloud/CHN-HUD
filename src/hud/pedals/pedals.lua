@@ -1,4 +1,3 @@
-require("lang.language")
 require("src.settings.settings")
 local config = require("common.config")
 local pedals = {}

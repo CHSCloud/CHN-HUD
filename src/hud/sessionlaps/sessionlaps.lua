@@ -1,3 +1,5 @@
+require("src.settings.settings")
+
 local sessionlaps = {}
 
 function sessionlaps.windowMain()
