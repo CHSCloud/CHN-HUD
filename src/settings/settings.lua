@@ -21,7 +21,7 @@ local settingsStorage = ac.storage{
     selectedSpeed = 1
 }
 
-HudScale = settingsStorage.hudScale
+WindowPedalsScale = settingsStorage.hudScale
 WheelActive = settingsStorage.wheelActive
 ABSActive = settingsStorage.ABSActive
 AcceleratorActive = settingsStorage.acceleratorActive
@@ -140,8 +140,8 @@ local function geral()
     ui.setCursor(vec2(10, 50))
     ui.header(Language.get("SIZE"), {fontSize = 100})
     ui.setCursor(vec2(10, 70))
-    HudScale = ui.slider("##Size", HudScale, 0.7, 3, string.format("%.2f", HudScale));
-    settingsStorage.hudScale = HudScale
+    WindowPedalsScale = ui.slider("##Size", WindowPedalsScale, 0.7, 3, string.format("%.2f", WindowPedalsScale));
+    settingsStorage.hudScale = WindowPedalsScale
     
     ui.setCursor(vec2(10, 100))
     ui.header(Language.get("SPEED"))
