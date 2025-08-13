@@ -1,4 +1,5 @@
 require("lang.language")
+require("src.settings.settings")
 local pitlane = {}
 
 function pitlane.windowMain()
