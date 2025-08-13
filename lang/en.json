@@ -23,5 +23,6 @@
     "CURRENT_SPEED": "Current Speed:",
     "BEST": "Best: ",
     "LAST": "Last: ",
-    "PIT_LANE": "Pit Lane"
+    "PIT_LANE": "Pit Lane",
+    "SESSION_LAPS": "Session Laps"
 }

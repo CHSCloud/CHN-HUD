@@ -23,5 +23,6 @@
     "CURRENT_SPEED": "Velocidade Atual:",
     "BEST": "Melhor: ",
     "LAST": "Último: ",
-    "PIT_LANE": "Pit Lane"
+    "PIT_LANE": "Pit Lane",
+    "SESSION_LAPS": "Voltas da sessão"
 }
