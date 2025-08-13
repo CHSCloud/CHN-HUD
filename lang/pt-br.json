@@ -22,5 +22,6 @@
     "PIT_SPEED_LIMIT": "Limite de Velocidade:",
     "CURRENT_SPEED": "Velocidade Atual:",
     "BEST": "Melhor: ",
-    "LAST": "Último: "
+    "LAST": "Último: ",
+    "PIT_LANE": "Pit Lane"
 }

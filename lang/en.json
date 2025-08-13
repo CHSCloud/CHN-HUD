@@ -22,5 +22,6 @@
     "PIT_SPEED_LIMIT": "Pit Speed Limit:",
     "CURRENT_SPEED": "Current Speed:",
     "BEST": "Best: ",
-    "LAST": "Last: "
+    "LAST": "Last: ",
+    "PIT_LANE": "Pit Lane"
 }
