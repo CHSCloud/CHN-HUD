@@ -52,6 +52,7 @@ function settings.windowMain()
   -- Aplicando tradução antes da renderização da janela:
   if applyLanguageNextFrame then
       language.setlanguage(Optionlanguage)
+      language.loadTranslations()
       applyLanguageNextFrame = false
   end
 
