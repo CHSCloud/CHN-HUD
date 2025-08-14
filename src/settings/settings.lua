@@ -22,13 +22,6 @@ CAR = ac.getCar(SIM.focusedCar)
 local applyLanguageNextFrame = false
   
 local function geral()
-
-  if applyLanguageNextFrame then
-      language.setlanguage(Optionlanguage)
-      language.loadTranslations()
-      applyLanguageNextFrame = false
-  end
-  
   ui.setCursor(vec2(10, 50))
   ui.header(language.get("LANGUAGE"))
   ui.setCursor(vec2(10, 70))
@@ -45,8 +38,6 @@ local function geral()
 
   ui.setCursor(vec2(10,100))
   if ui.button(language.get("APPLY")) then
-    language.setlanguage(Optionlanguage)
-    language.loadTranslations()
     applyLanguageNextFrame = true
   end
 
@@ -58,6 +49,13 @@ local function geral()
 end
   
 function settings.windowMain()
+  -- Aplicando tradução antes da renderização da janela:
+  if applyLanguageNextFrame then
+      language.setlanguage(Optionlanguage)
+      language.loadTranslations()
+      applyLanguageNextFrame = false
+  end
+
   ui.drawRectFilled(vec2(0, 0), vec2(500, 500), rgbm(0, 0, 0, 0.70), 0)
   ui.tabBar('##ID',function ()
     ui.tabItem(language.get("GENERAL"), geral)
