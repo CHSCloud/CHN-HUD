@@ -1,6 +1,6 @@
-local pedalsSettings = require("src.settings.pedalsSettings")
-local pitLaneSettings = require("src.settings.pitLaneSettings")
-local sessionlapsSettings = require("src.settings.sessionLapsSettings")
+local pedalsSettings = require("src.settings.tabs.pedalsSettings")
+local pitLaneSettings = require("src.settings.tabs.pitLaneSettings")
+local sessionlapsSettings = require("src.settings.tabs.sessionLapsSettings")
 
 local settings = {}
 
