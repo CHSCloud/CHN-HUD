@@ -20,16 +20,16 @@ function sessionlaps.windowMain()
     --Best Lap
     if bestlap == "00:00.000" then
         bestlap = "--.--.--"
-        ui.dwriteTextAligned(Language.get("BEST") .. bestlap, 15, ui.Alignment.Center, ui.Alignment.Center, vec2(145, 25), false, rgbm(1, 1, 1, 1))
+        ui.dwriteTextAligned(language.get("BEST") .. bestlap, 15, ui.Alignment.Center, ui.Alignment.Center, vec2(145, 25), false, rgbm(1, 1, 1, 1))
     else
-        ui.dwriteTextAligned(Language.get("BEST") .. bestlap, 15, ui.Alignment.Center, ui.Alignment.Center, vec2(145, 25), false, rgbm(1, 1, 1, 1))
+        ui.dwriteTextAligned(language.get("BEST") .. bestlap, 15, ui.Alignment.Center, ui.Alignment.Center, vec2(145, 25), false, rgbm(1, 1, 1, 1))
     end
     --Last Lap
     if lastlap == "00:00.000" then
         lastlap = "--.--.--"
-        ui.dwriteTextAligned(Language.get("LAST") .. lastlap, 15, ui.Alignment.Center, ui.Alignment.Start, vec2(145, 25), false, rgbm(1, 1, 1, 1))
+        ui.dwriteTextAligned(language.get("LAST") .. lastlap, 15, ui.Alignment.Center, ui.Alignment.Start, vec2(145, 25), false, rgbm(1, 1, 1, 1))
     else
-        ui.dwriteTextAligned(Language.get("LAST") .. lastlap, 15, ui.Alignment.Center, ui.Alignment.Start, vec2(145, 25), false, rgbm(1, 1, 1, 1))
+        ui.dwriteTextAligned(language.get("LAST") .. lastlap, 15, ui.Alignment.Center, ui.Alignment.Start, vec2(145, 25), false, rgbm(1, 1, 1, 1))
     end
 end
 

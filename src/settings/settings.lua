@@ -10,11 +10,11 @@ local languages = {
 }
 
 local settingsStorage = ac.storage{
-    optionLanguage = languages.en.code,
+    optionlanguage = languages.en.code,
     selectedSpeed = 1
 }
 
-OptionLanguage  = Language.getCurrentLanguage()
+Optionlanguage  = language.getCurrentlanguage()
 SelectedSpeed = settingsStorage.selectedSpeed
 
 SIM = ac.getSim()
@@ -22,27 +22,27 @@ CAR = ac.getCar(SIM.focusedCar)
   
 local function geral()
     ui.setCursor(vec2(10, 50))
-    ui.header(Language.get("LANGUAGE"))
+    ui.header(language.get("LANGUAGE"))
     ui.setCursor(vec2(10, 70))
     
-    ui.combo('##resolution', languages[OptionLanguage].name, function ()
+    ui.combo('##resolution', languages[Optionlanguage].name, function ()
       if ui.selectable(languages["en"].name) then
-        OptionLanguage = languages["en"].code
+        Optionlanguage = languages["en"].code
       end
   
       if ui.selectable(languages["pt-br"].name) then
-        OptionLanguage = languages["pt-br"].code
+        Optionlanguage = languages["pt-br"].code
       end
     end)
 
     ui.setCursor(vec2(10,100))
-    if ui.button(Language.get("APPLY")) then
-      Language.setLanguage(OptionLanguage)
-      Language.loadTranslations()
+    if ui.button(language.get("APPLY")) then
+      language.setlanguage(Optionlanguage)
+      language.loadTranslations()
     end
 
     ui.setCursor(vec2(10, 140))
-    ui.header(Language.get("SPEED"))
+    ui.header(language.get("SPEED"))
     ui.setCursor(vec2(10, 160))
     SelectedSpeed = ui.combo("##Speed", SelectedSpeed , {"Km/h", "Mph"})
     settingsStorage.selectedSpeed = SelectedSpeed
@@ -51,10 +51,10 @@ end
 function settings.windowMain()
     ui.drawRectFilled(vec2(0, 0), vec2(500, 500), rgbm(0, 0, 0, 0.70), 0)
     ui.tabBar('##ID',function ()
-        ui.tabItem(Language.get("GENERAL"), geral)
-        ui.tabItem(Language.get("PEDALS"), pedalsSettings.pedalsSettings)
-        ui.tabItem(Language.get("PIT_LANE"), pitLaneSettings.pitlaneSettings)
-        ui.tabItem(Language.get("SESSION_LAPS"), sessionlapsSettings.sessionlapsSettings)
+        ui.tabItem(language.get("GENERAL"), geral)
+        ui.tabItem(language.get("PEDALS"), pedalsSettings.pedalsSettings)
+        ui.tabItem(language.get("PIT_LANE"), pitLaneSettings.pitlaneSettings)
+        ui.tabItem(language.get("SESSION_LAPS"), sessionlapsSettings.sessionlapsSettings)
     end)
 end
 
