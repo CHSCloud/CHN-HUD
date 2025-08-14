@@ -6,8 +6,7 @@ local settings = ac.storage{
 }
 
 local translations = {}
-
-function language.loadTranslations()
+local function loadTranslations()
     local file_path = ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\CHN-HUD\\lang\\" .. settings.currentLanguage .. ".json"
 
     if io.fileExists(file_path) then
@@ -20,6 +19,7 @@ end
 
 function language.setlanguage(key)
     settings.currentLanguage = key
+    loadTranslations()
 end
 
 function language.get(key)
@@ -30,6 +30,6 @@ function language.getCurrentLanguage()
     return settings.currentLanguage
 end
 
-language.loadTranslations()
+loadTranslations()
 
 return language

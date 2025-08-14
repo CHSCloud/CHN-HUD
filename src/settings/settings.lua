@@ -1,6 +1,7 @@
 local pedalsSettings = require("src.settings.tabs.pedalsSettings")
 local pitLaneSettings = require("src.settings.tabs.pitLaneSettings")
 local sessionlapsSettings = require("src.settings.tabs.sessionLapsSettings")
+local language = require("lang.language")
 
 local settings = {}
 
@@ -14,12 +15,11 @@ local settingsStorage = ac.storage{
     selectedSpeed = 1
 }
 
-Optionlanguage  = language.getCurrentlanguage()
+Optionlanguage  = language.getCurrentLanguage()
 SelectedSpeed = settingsStorage.selectedSpeed
 
 SIM = ac.getSim()
 CAR = ac.getCar(SIM.focusedCar)
-local applyLanguageNextFrame = false
   
 local function geral()
   ui.setCursor(vec2(10, 50))
@@ -38,7 +38,7 @@ local function geral()
 
   ui.setCursor(vec2(10,100))
   if ui.button(language.get("APPLY")) then
-    applyLanguageNextFrame = true
+    language.setlanguage(Optionlanguage)
   end
 
   ui.setCursor(vec2(10, 140))
@@ -47,15 +47,8 @@ local function geral()
   SelectedSpeed = ui.combo("##Speed", SelectedSpeed , {"Km/h", "Mph"})
   settingsStorage.selectedSpeed = SelectedSpeed
 end
-  
-function settings.windowMain()
-  -- Aplicando tradução antes da renderização da janela:
-  if applyLanguageNextFrame then
-      language.setlanguage(Optionlanguage)
-      language.loadTranslations()
-      applyLanguageNextFrame = false
-  end
 
+function settings.windowMain()
   ui.drawRectFilled(vec2(0, 0), vec2(500, 500), rgbm(0, 0, 0, 0.70), 0)
   ui.tabBar('##ID',function ()
     ui.tabItem(language.get("GENERAL"), geral)
@@ -63,6 +56,7 @@ function settings.windowMain()
     ui.tabItem(language.get("PIT_LANE"), pitLaneSettings.pitlaneSettings)
     ui.tabItem(language.get("SESSION_LAPS"), sessionlapsSettings.sessionlapsSettings)
   end)
+
 end
 
 return settings

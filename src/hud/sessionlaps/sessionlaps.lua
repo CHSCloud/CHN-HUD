@@ -1,5 +1,4 @@
-require("src.settings.settings")
-
+local language = require("lang.language")
 local sessionlaps = {}
 
 function sessionlaps.windowMain()
