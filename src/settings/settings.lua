@@ -5,12 +5,12 @@ local sessionlapsSettings = require("src.settings.sessionLapsSettings")
 local settings = {}
 
 local languages = {
-  ["en"] = { name = "English", code = "en" },
-  ["pt-br"] = { name = "Português - Brasil", code = "pt-br" }
+  ["en"] = "English",
+  ["pt-br"] = "Português - Brasil"
 }
 
 local settingsStorage = ac.storage{
-    optionlanguage = languages.en.code,
+    optionlanguage = "en",
     selectedSpeed = 1
 }
 
@@ -33,13 +33,13 @@ local function geral()
   ui.header(language.get("LANGUAGE"))
   ui.setCursor(vec2(10, 70))
   
-  ui.combo('##resolution', languages[Optionlanguage].name, function ()
-    if ui.selectable(languages["en"].name) then
-      Optionlanguage = languages["en"].code
+  ui.combo('##resolution', languages[Optionlanguage], function ()
+    if ui.selectable(languages["en"]) then
+      Optionlanguage = "en"
     end
 
-    if ui.selectable(languages["pt-br"].name) then
-      Optionlanguage = languages["pt-br"].code
+    if ui.selectable(languages["pt-br"]) then
+      Optionlanguage = "pt-br"
     end
   end)
 
