@@ -15,7 +15,7 @@ function sessionlaps.windowMain()
     local bestseconds = besttimeinseconds % 60
     local bestlap = string.format("%02d:%06.3f", bestminutos, bestseconds)
     -- Janela
-    ui.drawRectFilled(vec2(0, 0), vec2(145, 50), rgbm(0, 0, 0, 0.40), 5)
+    ui.drawRectFilled(vec2(0, 0), vec2(145, 50), rgbm(0, 0, 0, 0.7), 5)
     --Best Lap
     if bestlap == "00:00.000" then
         bestlap = "--.--.--"
