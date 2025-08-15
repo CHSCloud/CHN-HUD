@@ -82,6 +82,13 @@ function pedalsSettings.pedalsSettings()
 
     initPos = initPos + 30
     ui.setCursor(vec2(20, initPos))
+    if ui.checkbox(language.get("PERCENTAGE"), TextBarsActive) then
+        TextBarsActive = not TextBarsActive
+        pedalsSettingsStore.textBarsActive = TextBarsActive
+    end
+
+    initPos = initPos + 25
+    ui.setCursor(vec2(20, initPos))
     if ui.checkbox(language.get("THROTTLE"), AcceleratorActive) then
         AcceleratorActive = not AcceleratorActive
         pedalsSettingsStore.acceleratorActive = AcceleratorActive
@@ -106,13 +113,6 @@ function pedalsSettings.pedalsSettings()
     if ui.checkbox(language.get("HANDBRAKE"), HandbrakeActive) then
         HandbrakeActive = not HandbrakeActive
         pedalsSettingsStore.handbrakeActive = HandbrakeActive
-    end
-    
-    initPos = initPos + 25
-    ui.setCursor(vec2(20, initPos))
-    if ui.checkbox(language.get("PERCENTAGE"), TextBarsActive) then
-        TextBarsActive = not TextBarsActive
-        pedalsSettingsStore.textBarsActive = TextBarsActive
     end
     --
     
