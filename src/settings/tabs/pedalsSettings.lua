@@ -26,26 +26,49 @@ FuelActive = pedalsSettingsStore.fuelActive
 TextBarsActive = pedalsSettingsStore.textBarsActive
 HandbrakeActive = pedalsSettingsStore.handbrakeActive
 
-local function geral()
-    ui.setCursor(vec2(10, 75))
+function pedalsSettings.pedalsSettings()
+    local initPos = 55
+    local initPos2
+    ui.setCursor(vec2(10, initPos))
     ui.header(language.get("SIZE"), {fontSize = 100})
-    ui.setCursor(vec2(10, 95))
+    initPos = initPos + 20
+    ui.setCursor(vec2(10, initPos))
     WindowPedalsScale = ui.slider("##Size", WindowPedalsScale, 0.7, 3, string.format("%.2f", WindowPedalsScale));
     pedalsSettingsStore.windowPedalsScale = WindowPedalsScale
-end
 
-local function content()
     -- Direção:
-    ui.setCursor(vec2(20, 75))
+    
+    initPos = initPos + 30
+    initPos2 = initPos
+    ui.setCursor(vec2(20, initPos))
     ui.header(language.get("STEERING"))
 
-    ui.setCursor(vec2(20, 100))
+    ui.setCursor(vec2(200, initPos2))
+    ui.header(language.get("OTHERS"))
+  
+    initPos2 = initPos2 + 25
+    ui.setCursor(vec2(200, initPos2))
+    if ui.checkbox(language.get("FUEL"), FuelActive) then
+        FuelActive = not FuelActive
+        pedalsSettingsStore.fuelActive = FuelActive
+    end
+
+    initPos2 = initPos2 + 25
+    ui.setCursor(vec2(200, initPos2))
+    if ui.checkbox(language.get("BRAKE_BIAS"), BrakeBiasActive) then
+        BrakeBiasActive = not BrakeBiasActive
+        pedalsSettingsStore.breakeBiasActive = BrakeBiasActive
+    end
+    
+    initPos = initPos + 25
+    ui.setCursor(vec2(20, initPos))
     if ui.checkbox(language.get("WHEEL"), WheelActive) then
         WheelActive = not WheelActive
         pedalsSettingsStore.wheelActive = WheelActive
     end
 
-    ui.setCursor(vec2(20, 125))
+    initPos = initPos + 25
+    ui.setCursor(vec2(20, initPos))
     if ui.checkbox(language.get("ABS"), ABSActive) then
         ABSActive = not ABSActive
         pedalsSettingsStore.ABSActive = ABSActive
@@ -53,69 +76,52 @@ local function content()
     --
 
     -- Pedais:
-    ui.setCursor(vec2(20, 155))
+    initPos = initPos + 30
+    ui.setCursor(vec2(20, initPos))
     ui.header(language.get("PEDALS"))
 
-    ui.setCursor(vec2(20, 175))
+    initPos = initPos + 30
+    ui.setCursor(vec2(20, initPos))
     if ui.checkbox(language.get("THROTTLE"), AcceleratorActive) then
         AcceleratorActive = not AcceleratorActive
         pedalsSettingsStore.acceleratorActive = AcceleratorActive
     end
 
-    ui.setCursor(vec2(20, 200))
+    initPos = initPos + 25
+    ui.setCursor(vec2(20, initPos))
     if ui.checkbox(language.get("BRAKE"), BrakeActive) then
         BrakeActive = not BrakeActive
         pedalsSettingsStore.brakeActive = BrakeActive
     end
 
-    ui.setCursor(vec2(135, 215))
-    if ui.checkbox(language.get("PERCENTAGE"), TextBarsActive) then
-        TextBarsActive = not TextBarsActive
-        pedalsSettingsStore.textBarsActive = TextBarsActive
-    end
-
-    ui.setCursor(vec2(20, 225))
+    initPos = initPos + 25
+    ui.setCursor(vec2(20, initPos))
     if ui.checkbox(language.get("CLUTCH"), ClutchActive) then
         ClutchActive = not ClutchActive
         pedalsSettingsStore.clutchActive = ClutchActive
     end
 
-    ui.setCursor(vec2(20, 250))
+    initPos = initPos + 25
+    ui.setCursor(vec2(20, initPos))
     if ui.checkbox(language.get("HANDBRAKE"), HandbrakeActive) then
         HandbrakeActive = not HandbrakeActive
         pedalsSettingsStore.handbrakeActive = HandbrakeActive
     end
+    
+    initPos = initPos + 25
+    ui.setCursor(vec2(20, initPos))
+    if ui.checkbox(language.get("PERCENTAGE"), TextBarsActive) then
+        TextBarsActive = not TextBarsActive
+        pedalsSettingsStore.textBarsActive = TextBarsActive
+    end
     --
     
-    ui.setCursor(vec2(20, 285))
-    ui.header(language.get("OTHERS"))
-  
-    ui.setCursor(vec2(20, 310))
-    if ui.checkbox(language.get("FUEL"), FuelActive) then
-        FuelActive = not FuelActive
-        pedalsSettingsStore.fuelActive = FuelActive
-    end
-
-    ui.setCursor(vec2(20, 335))
-    if ui.checkbox(language.get("BRAKE_BIAS"), BrakeBiasActive) then
-        BrakeBiasActive = not BrakeBiasActive
-        pedalsSettingsStore.breakeBiasActive = BrakeBiasActive
-    end
 
     -- Alerta do ABS
     if CAR.absModes == 0 then
         ui.setCursor(vec2(70, 120))
         ui.dwriteTextAligned(language.get("ALERT_ABS"), 10, ui.Alignment.Center, ui.Alignment.Center, vec2(150, 35), false, rgbm(255, 0, 0, 1))  
     end
-end
---
-
-function pedalsSettings.pedalsSettings()
-    ui.setCursor(vec2(0, 45))
-    ui.tabBar('##ID',function ()
-        ui.tabItem(language.get("GENERAL"), geral)
-        ui.tabItem(language.get("ELEMENTS"), content)
-    end)
 end
 
 return pedalsSettings
