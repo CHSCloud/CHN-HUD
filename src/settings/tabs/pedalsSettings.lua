@@ -12,7 +12,9 @@ local pedalsSettingsStore = ac.storage{
     handbrakeActive = false,
     textBarsActive = true,
     clutchActive = true,
-    fuelActive = true
+    fuelActive = true,
+    transparancy = 0.7,
+    windowColor = rgbm(0, 0, 0, 0.7)
 }
 
 WindowPedalsScale = pedalsSettingsStore.windowPedalsScale
@@ -25,19 +27,20 @@ ClutchActive = pedalsSettingsStore.clutchActive
 FuelActive = pedalsSettingsStore.fuelActive
 TextBarsActive = pedalsSettingsStore.textBarsActive
 HandbrakeActive = pedalsSettingsStore.handbrakeActive
+WindowColor = pedalsSettingsStore.windowColor
+
 
 function pedalsSettings.pedalsSettings()
     local initPos = 55
     local initPos2
     ui.setCursor(vec2(10, initPos))
-    ui.header(language.get("SIZE"), {fontSize = 100})
+    ui.header(language.get("SIZE"))
     initPos = initPos + 20
     ui.setCursor(vec2(10, initPos))
     WindowPedalsScale = ui.slider("##Size", WindowPedalsScale, 0.7, 3, string.format("%.2f", WindowPedalsScale));
     pedalsSettingsStore.windowPedalsScale = WindowPedalsScale
 
     -- Direção:
-    
     initPos = initPos + 30
     initPos2 = initPos
     ui.setCursor(vec2(20, initPos))
@@ -73,7 +76,11 @@ function pedalsSettings.pedalsSettings()
         ABSActive = not ABSActive
         pedalsSettingsStore.ABSActive = ABSActive
     end
-    --
+    -- Alerta do ABS
+    if CAR.absModes == 0 then
+        ui.setCursor(vec2(70, initPos))
+        ui.dwriteTextAligned(language.get("ALERT_ABS"), 10, ui.Alignment.Center, ui.Alignment.Center, vec2(150, 35), false, rgbm(255, 0, 0, 1))  
+    end
 
     -- Pedais:
     initPos = initPos + 30
@@ -115,13 +122,16 @@ function pedalsSettings.pedalsSettings()
         pedalsSettingsStore.handbrakeActive = HandbrakeActive
     end
     --
-    
+    local color = pedalsSettingsStore.windowColor
+    ui.pushItemWidth(150)
+    ui.setCursor(vec2(200, 200))
+    ui.colorPicker(language.get('COLOR'), color, ui.ColorPickerFlags.PickerHueBar + ui.ColorPickerFlags.NoInputs, 10, 20)
 
-    -- Alerta do ABS
-    if CAR.absModes == 0 then
-        ui.setCursor(vec2(70, 120))
-        ui.dwriteTextAligned(language.get("ALERT_ABS"), 10, ui.Alignment.Center, ui.Alignment.Center, vec2(150, 35), false, rgbm(255, 0, 0, 1))  
-    end
+    ui.setCursor(vec2(200, 330))
+    pedalsSettingsStore.transparancy = ui.slider(language.get('TRANSPARENCY'), pedalsSettingsStore.transparancy, 0, 1, string.format("%.2f", pedalsSettingsStore.transparancy));
+
+    pedalsSettingsStore.windowColor = rgbm(color.r, color.g, color.b, pedalsSettingsStore.transparancy)
+    ui.popItemWidth()
 end
 
 return pedalsSettings

@@ -30,6 +30,7 @@ function sessionlaps.windowMain()
     else
         ui.dwriteTextAligned(language.get("LAST") .. lastlap, 15, ui.Alignment.Center, ui.Alignment.Start, vec2(145, 25), false, rgbm(1, 1, 1, 1))
     end
+    
 end
 
 return sessionlaps

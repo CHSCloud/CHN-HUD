@@ -24,5 +24,7 @@
     "BEST": "Melhor: ",
     "LAST": "Último: ",
     "PIT_LANE": "Pit Lane",
-    "SESSION_LAPS": "Voltas da sessão"
+    "SESSION_LAPS": "Voltas da sessão",
+    "COLOR": "Cor",
+    "TRANSPARENCY": "Transparência"
 }

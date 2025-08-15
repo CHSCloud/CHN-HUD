@@ -10,7 +10,6 @@ function pedals.windowMain()
     local currentWindowHeight = vec2(0, 90 * WindowPedalsScale - paddingTop) -- Altura da tela
     if BrakeBiasActive or FuelActive then currentWindowHeight = vec2(0, 107 * WindowPedalsScale - paddingTop) end -- Altura da tela
     --RGB's
-    windowColors = rgbm(0, 0, 0, 0.7)
     barBackground = rgbm(0.5, 0.5, 0.5, 0.6)
 
     -- Posições dos textos das barras:
@@ -32,7 +31,7 @@ function pedals.windowMain()
     local barSpace = 3 * WindowPedalsScale --Comprimento do padding das barras
     
     -- Marcha:
-    ui.drawRectFilled(currentWindowWidth, currentWindowWidth + gearBackgroundSize, windowColors, 0)
+    ui.drawRectFilled(currentWindowWidth, currentWindowWidth + gearBackgroundSize, WindowColor, 0)
     local gear = tostring(CAR.gear);
     if gear == "0" then
       gear = "N";
@@ -69,7 +68,7 @@ function pedals.windowMain()
     -- Embreagem
     local posBar = currentWindowWidth + vec2(0, 23 * WindowPedalsScale - paddingTop)
     if ClutchActive then
-      ui.drawRectFilled(currentWindowWidth, currentWindowWidth + vec2(barSpace + barSize.x, currentWindowHeight.y), windowColors, 0)
+      ui.drawRectFilled(currentWindowWidth, currentWindowWidth + vec2(barSpace + barSize.x, currentWindowHeight.y), WindowColor, 0)
       -- Texto da embreagem:
       if TextBarsActive then
         if (100 - CAR.clutch * 100) < 98.99 then
@@ -89,7 +88,7 @@ function pedals.windowMain()
     -- Freio: 
     if BrakeActive then
       posBar = currentWindowWidth + vec2(0, 23 * WindowPedalsScale - paddingTop)
-      ui.drawRectFilled(currentWindowWidth, currentWindowWidth + vec2(barSpace + barSize.x, currentWindowHeight.y), windowColors, 0)
+      ui.drawRectFilled(currentWindowWidth, currentWindowWidth + vec2(barSpace + barSize.x, currentWindowHeight.y), WindowColor, 0)
       -- Texto do freio:
       if TextBarsActive then
         if (CAR.brake * 100) < 98.99 then
@@ -110,7 +109,7 @@ function pedals.windowMain()
     -- Acelerador:
     if AcceleratorActive then
       posBar = currentWindowWidth + vec2(0, 23 * WindowPedalsScale - paddingTop)
-      ui.drawRectFilled(currentWindowWidth, currentWindowWidth + vec2(barSpace + barSize.x, currentWindowHeight.y), windowColors, 0)
+      ui.drawRectFilled(currentWindowWidth, currentWindowWidth + vec2(barSpace + barSize.x, currentWindowHeight.y), WindowColor, 0)
       -- Texto do acelerador:
       if TextBarsActive then
         if (CAR.gas * 100) < 98.99 then
@@ -131,7 +130,7 @@ function pedals.windowMain()
     -- Freio de mão:
     if HandbrakeActive then
       posBar = currentWindowWidth + vec2(0, 23 * WindowPedalsScale - paddingTop)
-      ui.drawRectFilled(currentWindowWidth, currentWindowWidth + vec2(barSpace + barSize.x, currentWindowHeight.y), windowColors, 0)
+      ui.drawRectFilled(currentWindowWidth, currentWindowWidth + vec2(barSpace + barSize.x, currentWindowHeight.y), WindowColor, 0)
       -- Texto do freio de mão:
       if TextBarsActive then
         if CAR.handbrake < 1 then
@@ -149,11 +148,11 @@ function pedals.windowMain()
     end
     --
 
-    ui.drawRectFilled(currentWindowWidth, currentWindowWidth + vec2(6 * WindowPedalsScale, currentWindowHeight.y), windowColors, 0)
+    ui.drawRectFilled(currentWindowWidth, currentWindowWidth + vec2(6 * WindowPedalsScale, currentWindowHeight.y), WindowColor, 0)
     currentWindowWidth = currentWindowWidth + vec2(6 * WindowPedalsScale)
     -- Volante:
     if WheelActive then
-      ui.drawRectFilled(currentWindowWidth, currentWindowWidth + wheelBackgroundSize, windowColors, 0)
+      ui.drawRectFilled(currentWindowWidth, currentWindowWidth + wheelBackgroundSize, WindowColor, 0)
       ui.beginRotation()
       ui.setCursor(vec2(currentWindowWidth.x - 4, 18 * WindowPedalsScale + currentWindowWidth.y - paddingTop))
       ui.image("assets/Wheel.png", vec2(65, 72):scale(WindowPedalsScale), ui.ImageFit.Fit)
@@ -164,7 +163,7 @@ function pedals.windowMain()
 
     -- ABS:
     if ABSActive and CAR.absModes ~= 0 then
-      ui.drawRectFilled(currentWindowWidth, currentWindowWidth + absBackgroundSize, windowColors, 0)
+      ui.drawRectFilled(currentWindowWidth, currentWindowWidth + absBackgroundSize, WindowColor, 0)
       ui.setCursor(vec2(currentWindowWidth.x - 1, 13 * WindowPedalsScale + currentWindowWidth.y - paddingTop))
       if CAR.absInAction then
         ui.image("assets/ABS.png", vec2(80,80):scale(WindowPedalsScale), rgbm(255, 0, 0, 1),ui.ImageFit.Fit)
@@ -178,7 +177,7 @@ function pedals.windowMain()
     -- Combustível:
     if FuelActive then
       if currentWindowWidth.x <= (gearBackgroundSize.x + (barSize.x + barSpace) * 2) and BrakeBiasActive then
-        ui.drawRectFilled(currentWindowWidth, currentWindowWidth + vec2((gearBackgroundSize.x + (barSize.x + barSpace) * 2) - currentWindowWidth.x, currentWindowHeight.y), windowColors, 0)
+        ui.drawRectFilled(currentWindowWidth, currentWindowWidth + vec2((gearBackgroundSize.x + (barSize.x + barSpace) * 2) - currentWindowWidth.x, currentWindowHeight.y), WindowColor, 0)
         currentWindowWidth = currentWindowWidth + vec2((gearBackgroundSize.x + (barSize.x + barSpace) * 2) - currentWindowWidth.x)
       end
 
