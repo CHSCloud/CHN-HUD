@@ -39,7 +39,7 @@ function pedals.windowMain()
       gear = "R";
     end
     ui.setCursor(vec2(20, 28 - paddingTop/WindowPedalsScale):scale(WindowPedalsScale) + currentWindowWidth)
-    ui.dwriteTextAligned(gear, fontGear, ui.Alignment.Center, ui.Alignment.Center, vec2(30, 30):scale(WindowPedalsScale), false, rgbm(255, 255, 255, 1))
+    ui.dwriteTextAligned(gear, fontGear, ui.Alignment.Center, ui.Alignment.Center, vec2(30, 30):scale(WindowPedalsScale), false, rgbm(255, 255, 0, 1))
     --
 
     -- Velocidade:
@@ -184,11 +184,11 @@ function pedals.windowMain()
       ui.setCursor(vec2(currentWindowWidth.x - 48 * WindowPedalsScale, currentWindowHeight.y + currentWindowWidth.y - 19 * WindowPedalsScale))
       if CAR.fuel < 5.005 then
         ui.dwriteTextAligned(string.format("%.2f", CAR.fuel), fontFuel, ui.Alignment.Center, ui.Alignment.Start, vec2(50, 30):scale(WindowPedalsScale), false, rgbm(255, 0, 0, 1))
-        ui.setCursor(vec2(currentWindowWidth.x - 47 * WindowPedalsScale, currentWindowHeight.y + currentWindowWidth.y - 18.5 * WindowPedalsScale))
+        ui.setCursor(vec2(currentWindowWidth.x - 53 * WindowPedalsScale, currentWindowHeight.y + currentWindowWidth.y - 18.5 * WindowPedalsScale))
         ui.image("assets/Fuel.png", vec2(16, 15):scale(WindowPedalsScale), rgbm(255, 0, 0, 1), ui.ImageFit.Fit)
       elseif CAR.fuel < 9.995 then
         ui.dwriteTextAligned(string.format("%.2f", CAR.fuel), fontFuel, ui.Alignment.Center, ui.Alignment.Start, vec2(50, 30):scale(WindowPedalsScale), false, rgbm(255, 255, 0, 1))
-        ui.setCursor(vec2(currentWindowWidth.x - 47 * WindowPedalsScale, currentWindowHeight.y + currentWindowWidth.y - 18.5 * WindowPedalsScale))
+        ui.setCursor(vec2(currentWindowWidth.x - 53 * WindowPedalsScale, currentWindowHeight.y + currentWindowWidth.y - 18.5 * WindowPedalsScale))
         ui.image("assets/Fuel.png", vec2(16, 15):scale(WindowPedalsScale), rgbm(255, 255, 0, 1), ui.ImageFit.Fit)
       else
         ui.dwriteTextAligned(string.format("%.2f", CAR.fuel), fontFuel, ui.Alignment.Center, ui.Alignment.Start, vec2(50, 30):scale(WindowPedalsScale), false, rgbm(255, 255, 255, 1))
