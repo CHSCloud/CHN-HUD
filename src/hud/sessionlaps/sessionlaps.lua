@@ -20,7 +20,7 @@ function sessionlaps.windowMain()
     local prevlap = string.format("%1.2f", prevseconds)
 
     -- Janela
-    ui.drawRectFilled(vec2(0, 0), vec2(240, 50), rgbm(0, 0, 0, 0.8), 5)
+    ui.drawRectFilled(vec2(0, 0), vec2(240, 50), rgbm(0, 0, 0, 0.5), 5)
     -- Linhas
     ui.drawRectFilled(vec2(5, 26), vec2(235, 26), rgbm(255, 255, 255, 0.3), 1)
 
