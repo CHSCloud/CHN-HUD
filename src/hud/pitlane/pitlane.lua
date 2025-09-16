@@ -15,19 +15,20 @@ function pitlane.windowMain()
       ui.setCursor(vec2(37,5))
       ui.dwriteTextAligned(language.get("YOU"), 17, ui.Alignment.Center, ui.Alignment.Center, vec2(150, 25), false, rgbm(1, 1, 0, 1))
 
-      local speed
       if(SelectedSpeed == 1) then
-        speed = string.format("%d", math.floor(CAR.speedKmh))
-        limitPit = string.format("%d", CAR.speedLimiter)
+        kmh_string = string.format("%.0f", CAR.speedKmh)
+        limitPit_string = string.format("%.0f", CAR.speedLimiter)
       else
-        speed = string.format("%d", math.floor(CAR.speedKmh * 0.621371))
-        limitPit = string.format("%d", (CAR.speedLimiter* 0.621371))
+        kmh_string = string.format("%.0f", CAR.speedKmh * 0.621371)
+        limitPit_string = string.format("%.0f", CAR.speedLimiter * 0.621371)
       end
+
       ui.setCursor(vec2(80, 22))
-      ui.dwriteTextAligned(speed, 30, ui.Alignment.Center, ui.Alignment.Center, vec2(65, 40), false, rgbm(1, 1, 1, 1))
+      ui.dwriteTextAligned(kmh_string, 30, ui.Alignment.Center, ui.Alignment.Center, vec2(65, 40), false, rgbm(1, 1, 1, 1))
 
       ui.setCursor(vec2(7,22))
-      ui.dwriteTextAligned(limitPit, 30, ui.Alignment.Center, ui.Alignment.Center, vec2(65, 40), false, rgbm(0, 0, 0, 1))
+      ui.dwriteTextAligned(limitPit_string, 30, ui.Alignment.Center, ui.Alignment.Center, vec2(65, 40), false, rgbm(0, 0, 0, 1))
+
     end
     
 end

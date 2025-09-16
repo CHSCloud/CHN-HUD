@@ -15,10 +15,6 @@ function sessionlaps.windowMain()
     local bestseconds = besttimeinseconds % 60
     local bestlap = string.format("%02d:%06.3f", bestminutos, bestseconds)
 
-    -- Prev lap Segundos + Milisegundos
-    local prevseconds = lastseconds + bestseconds * -1
-    local prevlap = string.format("%1.2f", prevseconds)
-
     -- Janela
     ui.drawRectFilled(vec2(0, 0), vec2(240, 50), rgbm(0, 0, 0, 0.5), 5)
     -- Linhas
@@ -26,23 +22,21 @@ function sessionlaps.windowMain()
 
     --Best Lap
     if lastlap == "00:00.000" then
-        lastlap = "--.--.--"
-        ui.dwriteTextAligned(lastlap, 15, ui.Alignment.Center, ui.Alignment.Center, vec2(230, 25), false, rgbm(1, 1, 1, 1))
+        lastlap = "-.---"
+        ui.dwriteTextAligned(lastlap, 15, ui.Alignment.End, ui.Alignment.Center, vec2(155, 25), false, rgbm(1, 1, 1, 1))
     else
-        ui.dwriteTextAligned(lastlap, 15, ui.Alignment.Center, ui.Alignment.Center, vec2(230, 25), false, rgbm(1, 1, 1, 1))
+        ui.dwriteTextAligned(lastlap, 15, ui.Alignment.End, ui.Alignment.Center, vec2(155, 25), false, rgbm(1, 1, 1, 1))
     end
     --Last Lap
     if bestlap == "00:00.000" then
-        bestlap = "--.--.--"
-        ui.dwriteTextAligned(bestlap, 15, ui.Alignment.Center, ui.Alignment.Start, vec2(230, 25), false, rgbm(1, 1, 1, 1))
+        bestlap = "-.---"
+        ui.dwriteTextAligned(bestlap, 15, ui.Alignment.End, ui.Alignment.Start, vec2(155, 25), false, rgbm(1, 1, 1, 1))
     else
-        ui.dwriteTextAligned(bestlap, 15, ui.Alignment.Center, ui.Alignment.Start, vec2(230, 25), false, rgbm(1, 1, 1, 1))
+        ui.dwriteTextAligned(bestlap, 15, ui.Alignment.End, ui.Alignment.Start, vec2(155, 25), false, rgbm(1, 1, 1, 1))
     end
-    
+
     ui.setCursor(vec2(5,25))
     ui.dwriteTextAligned(language.get("BEST"), 15, ui.Alignment.Start, ui.Alignment.Center, vec2(150, 25), false, rgbm(255, 255, 0, 1))
-    ui.setCursor(vec2(85,0))
-    ui.dwriteTextAligned("+"..prevlap, 15, ui.Alignment.End, ui.Alignment.Center, vec2(150, 25), false, rgbm(255, 0, 0, 1))
     ui.setCursor(vec2(5,0))
     ui.dwriteTextAligned(language.get("LAST"), 15, ui.Alignment.Start, ui.Alignment.Center, vec2(150, 25), false, rgbm(255, 255, 0, 1))
     

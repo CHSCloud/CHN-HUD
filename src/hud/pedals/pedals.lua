@@ -45,9 +45,9 @@ function pedals.windowMain()
     -- Velocidade:
     local speed
     if(SelectedSpeed == 1) then
-      speed = string.format("%d", math.floor(CAR.speedKmh))
+      speed = string.format("%.0f", CAR.speedKmh)
     else
-      speed = string.format("%d", math.floor(CAR.speedKmh * 0.621371))
+      speed = string.format("%.0f", CAR.speedKmh * 0.621371)
     end
     ui.setCursor(vec2(12, 58 - paddingTop/WindowPedalsScale):scale(WindowPedalsScale) + currentWindowWidth)
     ui.dwriteTextAligned(speed, fontSpeed, ui.Alignment.Center, ui.Alignment.Center, vec2(50, 30):scale(WindowPedalsScale), false, rgbm(255, 255, 255, 1))   
