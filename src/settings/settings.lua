@@ -19,7 +19,7 @@ Optionlanguage  = language.getCurrentLanguage()
 SelectedSpeed = settingsStorage.selectedSpeed
 
 SIM = ac.getSim()
-CAR = ac.getCar(0)
+CAR = ac.getCar(SIM.focusedCar)
   
 local function geral()
   ui.setCursor(vec2(10, 50))
