@@ -18,8 +18,12 @@ local settingsStorage = ac.storage{
 Optionlanguage  = language.getCurrentLanguage()
 SelectedSpeed = settingsStorage.selectedSpeed
 
-SIM = ac.getSim()
-CAR = ac.getCar(SIM.focusedCar)
+
+function update()
+  SIM = ac.getSim()
+  CAR = ac.getCar(SIM.focusedCar)
+  MY_CAR = ac.getCar(0)
+end
   
 local function geral()
   ui.setCursor(vec2(10, 50))

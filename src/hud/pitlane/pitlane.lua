@@ -3,6 +3,7 @@ local language = require("lang.language")
 local pitlane = {}
 
 function pitlane.windowMain()
+  if(SIM.focusedCar == 0) then
     ui.pushDWriteFont("fonts/Montserrat-Bold.ttf") -- FONTE DO TEXTO
     if CAR.manualPitsSpeedLimiterEnabled or CAR.isInPitlane then
       ui.drawRectFilled(vec2(0, 0), vec2(150, 70), rgbm.from0255(18, 21, 29, 0.85), 10)
@@ -43,7 +44,7 @@ function pitlane.windowMain()
       ui.dwriteTextAligned(limitPit_string, 30, ui.Alignment.Center, ui.Alignment.Center, vec2(65, 40), false, rgbm.from0255(0, 0, 0, 1))
 
     end
-    
+  end    
 end
 
 return pitlane

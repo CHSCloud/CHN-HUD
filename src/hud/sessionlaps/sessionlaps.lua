@@ -1,6 +1,14 @@
 local language = require("lang.language")
 local sessionlaps = {}
 
+previouBestlap = 0
+
+if ac.onSessionStart then
+    ac.onSessionStart(function()
+        previouBestlap = 0
+    end)
+end
+
 function sessionlaps.windowMain()
     ui.pushDWriteFont("fonts/Montserrat-Bold.ttf") -- FONT TEXT
 
@@ -25,11 +33,15 @@ function sessionlaps.windowMain()
     end
     ui.dwriteTextAligned(lastLap, 15, ui.Alignment.End, ui.Alignment.Center, vec2(160, 25), false, rgbm.from0255(255, 255, 255, 1))
 
+    if CAR.previousLapTimeMs == CAR.bestLapTimeMs and CAR.isLastLapValid then
+        previouBestlap = CAR.bestLapTimeMs
+    end
+
     -- BEST LAP
-    if CAR.bestLapTimeMs == 0 then
+    if previouBestlap == 0 then
         bestLap = "-.---"
     else
-        minutes = CAR.bestLapTimeMs / 60E3
+        minutes = previouBestlap / 60E3
         seconds = (minutes %1) * 60
         milliseconds = math.round((seconds % 1) * 1000)
         if minutes < 1 then
