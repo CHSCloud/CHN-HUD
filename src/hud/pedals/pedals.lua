@@ -5,12 +5,12 @@ local pedals = {}
 function pedals.windowMain()
     ui.pushDWriteFont("fonts/Montserrat-Bold.ttf") -- Fonte do texto
     local paddingTop = 7 * WindowPedalsScale
-    if not TextBarsActive then paddingTop = 21 * WindowPedalsScale end
+    if not TextBarsActive then paddingTop = 17 * WindowPedalsScale end
     local currentWindowWidth = vec2(0, 0) -- Largura da tela
     local currentWindowHeight = vec2(0, 90 * WindowPedalsScale - paddingTop) -- Altura da tela
     if BrakeBiasActive or FuelActive then currentWindowHeight = vec2(0, 107 * WindowPedalsScale - paddingTop) end -- Altura da tela
     --RGB's
-    barBackground = rgbm.from0255(55, 55, 63, 0.6)
+    barBackground = rgbm.from0255(55, 55, 63, 0.85)
 
     -- Posições dos textos das barras:
     local posyTextBars = -2 * WindowPedalsScale + currentWindowWidth.y
@@ -27,8 +27,8 @@ function pedals.windowMain()
     local wheelBackgroundSize = vec2(65 * WindowPedalsScale, currentWindowHeight.y) -- Tamanho do background do eixo do roda
     local absBackgroundSize = vec2(80 * WindowPedalsScale, currentWindowHeight.y) -- Tamanho do background do ABS
     
-    local barSize = vec2(20, 65) * WindowPedalsScale -- Tamanho das barras
-    local barSpace = 3 * WindowPedalsScale --Comprimento do padding das barras
+    local barSize = vec2(20, 60) * WindowPedalsScale -- Tamanho das barras
+    local barSpace = 4 * WindowPedalsScale --Comprimento do padding das barras
     
     -- Marcha:
     ui.drawRectFilled(currentWindowWidth, currentWindowWidth + gearBackgroundSize, WindowColor, 0)
@@ -155,7 +155,7 @@ function pedals.windowMain()
       ui.drawRectFilled(currentWindowWidth, currentWindowWidth + wheelBackgroundSize, WindowColor, 0)
       ui.beginRotation()
       ui.setCursor(vec2(currentWindowWidth.x - 4, 18 * WindowPedalsScale + currentWindowWidth.y - paddingTop))
-      ui.image("assets/Wheel.png", vec2(65, 72):scale(WindowPedalsScale), ui.ImageFit.Fit)
+      ui.image("assets/Wheel1.png", vec2(65, 72):scale(WindowPedalsScale), ui.ImageFit.Fit)
       ui.endRotation(90 - CAR.steer)
       currentWindowWidth = currentWindowWidth + vec2(wheelBackgroundSize.x)
     end
@@ -168,7 +168,7 @@ function pedals.windowMain()
       if CAR.absInAction then
         ui.image("assets/ABS.png", vec2(80,80):scale(WindowPedalsScale), rgbm(255, 0, 0, 1),ui.ImageFit.Fit)
       else
-        ui.image("assets/ABS.png", vec2(80,80):scale(WindowPedalsScale), rgbm(0.5, 0.5, 0.5, 1), ui.ImageFit.Fit)
+        ui.image("assets/ABS.png", vec2(80,80):scale(WindowPedalsScale), barBackground, ui.ImageFit.Fit)
       end
         currentWindowWidth = currentWindowWidth + vec2(absBackgroundSize.x)
     end
