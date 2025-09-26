@@ -79,7 +79,7 @@ local function geral()
 end
 
 function settings.windowMain()
-  ui.drawRectFilled(vec2(0, 0), WindowSettingsSize, WindowsColor, 0)
+  ui.drawRectFilled(vec2(0, 0), WindowSettingsSize, rgbm.from0255(18, 21, 29, 0.85), 0)
   ui.tabBar('##ID',function ()
     ui.tabItem(language.get("GENERAL"), geral)
     ui.tabItem(language.get("PEDALS"), pedalsSettings.pedalsSettings)
