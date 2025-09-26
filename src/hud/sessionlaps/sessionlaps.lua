@@ -1,3 +1,4 @@
+require("src.settings.settings")
 local language = require("lang.language")
 local sessionlaps = {}
 
@@ -13,7 +14,7 @@ function sessionlaps.windowMain()
     ui.pushDWriteFont("fonts/Montserrat-Bold.ttf") -- FONT TEXT
 
     -- BACKGROUND
-    ui.drawRectFilled(vec2(0, 0), vec2(240, 50), rgbm.from0255(18, 21, 29, 0.85), 5)
+    ui.drawRectFilled(vec2(0, 0), vec2(240, 50), WindowsColor, 5)
     -- LINE
     ui.drawRectFilled(vec2(5, 26), vec2(235, 26), rgbm.from0255(119, 118, 124, 0.3), 1)
 

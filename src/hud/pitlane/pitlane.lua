@@ -6,7 +6,7 @@ function pitlane.windowMain()
   if(SIM.focusedCar == 0) then
     ui.pushDWriteFont("fonts/Montserrat-Bold.ttf") -- FONTE DO TEXTO
     if CAR.manualPitsSpeedLimiterEnabled or CAR.isInPitlane then
-      ui.drawRectFilled(vec2(0, 0), vec2(150, 70), rgbm.from0255(18, 21, 29, 0.85), 10)
+      ui.drawRectFilled(vec2(0, 0), vec2(150, 70), WindowsColor, 10)
       ui.drawRectFilled(vec2(5, 5), vec2(75, 65), rgbm.from0255(255, 255, 255, 1), 5)
       ui.drawRectFilled(vec2(7, 7), vec2(73, 63), rgbm.from0255(0, 0, 0, 1), 5)
       ui.drawRectFilled(vec2(9, 9), vec2(71, 61), rgbm.from0255(255, 255, 255, 1), 5)

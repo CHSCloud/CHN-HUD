@@ -12,9 +12,7 @@ local pedalsSettingsStore = ac.storage{
     handbrakeActive = false,
     textBarsActive = true,
     clutchActive = true,
-    fuelActive = true,
-    transparancy = 0.7,
-    windowColor = rgbm(0, 0, 0, 0.7)
+    fuelActive = true
 }
 
 WindowPedalsScale = pedalsSettingsStore.windowPedalsScale
@@ -27,7 +25,6 @@ ClutchActive = pedalsSettingsStore.clutchActive
 FuelActive = pedalsSettingsStore.fuelActive
 TextBarsActive = pedalsSettingsStore.textBarsActive
 HandbrakeActive = pedalsSettingsStore.handbrakeActive
-WindowColor = pedalsSettingsStore.windowColor
 
 
 function pedalsSettings.pedalsSettings()
@@ -39,9 +36,11 @@ function pedalsSettings.pedalsSettings()
     ui.setCursor(vec2(10, initPos))
     WindowPedalsScale = ui.slider("##Size", WindowPedalsScale, 0.7, 3, string.format("%.2f", WindowPedalsScale));
     pedalsSettingsStore.windowPedalsScale = WindowPedalsScale
-
+    
+    initPos = initPos + 35
+    ui.drawRectFilled(vec2(5, initPos), vec2(WindowSettingsSize.x - 5, initPos), rgbm.from0255(119, 118, 124, 0.3), 1)
     -- Direção:
-    initPos = initPos + 30
+    initPos = initPos + 10
     initPos2 = initPos
     ui.setCursor(vec2(20, initPos))
     ui.header(language.get("STEERING"))
@@ -82,8 +81,11 @@ function pedalsSettings.pedalsSettings()
         ui.dwriteTextAligned(language.get("ALERT_ABS"), 10, ui.Alignment.Center, ui.Alignment.Center, vec2(150, 35), false, rgbm(255, 0, 0, 1))  
     end
 
+    initPos = initPos + 35
+    ui.drawRectFilled(vec2(5, initPos), vec2(WindowSettingsSize.x - 5, initPos), rgbm.from0255(119, 118, 124, 0.3), 1)
+
     -- Pedais:
-    initPos = initPos + 30
+    initPos = initPos + 10
     ui.setCursor(vec2(20, initPos))
     ui.header(language.get("PEDALS"))
 
@@ -122,16 +124,7 @@ function pedalsSettings.pedalsSettings()
         pedalsSettingsStore.handbrakeActive = HandbrakeActive
     end
     --
-    local color = pedalsSettingsStore.windowColor
-    ui.pushItemWidth(150)
-    ui.setCursor(vec2(200, 200))
-    ui.colorPicker(language.get('COLOR'), color, ui.ColorPickerFlags.PickerHueBar + ui.ColorPickerFlags.NoInputs, 10, 20)
-
-    ui.setCursor(vec2(200, 330))
-    pedalsSettingsStore.transparancy = ui.slider(language.get('TRANSPARENCY'), pedalsSettingsStore.transparancy, 0, 1, string.format("%.2f", pedalsSettingsStore.transparancy));
-
-    pedalsSettingsStore.windowColor = rgbm(color.r, color.g, color.b, pedalsSettingsStore.transparancy)
-    ui.popItemWidth()
+    
 end
 
 return pedalsSettings

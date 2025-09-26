@@ -26,5 +26,7 @@
     "PIT_LANE": "Pit Lane",
     "SESSION_LAPS": "Voltas da sessão",
     "COLOR": "Cor",
-    "TRANSPARENCY": "Transparência"
+    "TRANSPARENCY": "Transparência",
+    "SELECT_COLOR": "Selecionar cor",
+    "RESET_COLOR": "Redefinir cor"
 }
