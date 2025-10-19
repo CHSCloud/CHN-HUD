@@ -87,6 +87,17 @@ function settings.windowMain()
     ui.tabItem(language.get("SESSION_LAPS"), sessionlapsSettings.sessionlapsSettings)
   end)
 
+ ----------------------------- PIN--------------------------------------
+  local pinnedpedals = ac.accessAppWindow("IMGUI_LUA_CHN HUD_pedal"):pinned()
+  local pinnedpitLane = ac.accessAppWindow("IMGUI_LUA_CHN HUD_pitLane"):pinned()
+  local pinnedSesionLaps = ac.accessAppWindow("IMGUI_LUA_CHN HUD_sessionLaps"):pinned()
+  ui.setCursor(vec2(220, 200))
+  if ui.checkbox("Edit Clip", pinnedpedals, pinnedSesionLaps, pinnedpitLane) then
+      ac.accessAppWindow("IMGUI_LUA_CHN HUD_pedal"):setPinned(not pinnedpedals)
+      ac.accessAppWindow("IMGUI_LUA_CHN HUD_sessionLaps"):setPinned(not pinnedSesionLaps)
+      ac.accessAppWindow("IMGUI_LUA_CHN HUD_pitLane"):setPinned(not pinnedpitLane)
+  end
+  ------------------------------------------------------------------------
 end
 
 return settings

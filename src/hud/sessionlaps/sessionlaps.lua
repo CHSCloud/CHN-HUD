@@ -67,7 +67,6 @@ function sessionlaps.windowMain()
     -- TEXT LAST
     ui.setCursor(vec2(9,0))
     ui.dwriteTextAligned(language.get("LAST"), 15, ui.Alignment.Start, ui.Alignment.Center, vec2(150, 25), false, WindowsColor)
-    
 end
 
 return sessionlaps
