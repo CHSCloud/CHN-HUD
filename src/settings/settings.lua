@@ -20,6 +20,7 @@ local settingsStorage = ac.storage{
 Optionlanguage  = language.getCurrentLanguage()
 SelectedSpeed = settingsStorage.selectedSpeed
 WindowsColor = settingsStorage.windowsColor
+SettingsActive = true
 
 WindowSettingsSize = vec2(450, 420)
 function update()
@@ -66,7 +67,7 @@ local function geral()
   ui.colorPicker(language.get('COLOR'), color, ui.ColorPickerFlags.PickerHueBar + ui.ColorPickerFlags.NoInputs, 10, 20)
 
   ui.setCursor(vec2(10, 350))
-  settingsStorage.transparancy = ui.slider(language.get('TRANSPARENCY'), settingsStorage.transparancy, 0, 1, string.format("%.2f", settingsStorage.transparancy));
+  settingsStorage.transparancy = ui.slider(language.get('TRANSPARENCY'), settingsStorage.transparancy, 0, 1, string.format("%.0f", settingsStorage.transparancy * 100));
 
   settingsStorage.windowsColor = rgbm(color.r, color.g, color.b, settingsStorage.transparancy)
   ui.popItemWidth()
@@ -76,6 +77,14 @@ local function geral()
     settingsStorage.windowsColor = rgbm.from0255(18, 21, 29, 0.85)
     settingsStorage.transparancy = 0.85
   end
+end
+
+function settings.windowOpenSettings()
+  SettingsActive = true
+end
+
+function settings.windowCloseSettings()
+  SettingsActive = false
 end
 
 function settings.windowMain()
