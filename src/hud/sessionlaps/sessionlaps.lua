@@ -15,6 +15,11 @@ function sessionlaps.windowMain()
 
     -- BACKGROUND
     ui.drawRectFilled(vec2(0, 0), vec2(240, 50), WindowsColor, 5)
+    -- BACKGROUND IMAGEM
+    ui.setCursor(vec2(-60,1))
+    ui.image("assets/lapbackground.png", vec2(240, 24):scale(0.9), rgbm.from0255(119, 118, 124, 1), ui.ImageFit.Fit)
+    ui.setCursor(vec2(-60,27))
+    ui.image("assets/lapbackground.png", vec2(240, 24):scale(0.9), rgbm.from0255(119, 118, 124, 1), ui.ImageFit.Fit)
     -- LINE
     ui.drawRectFilled(vec2(5, 26), vec2(235, 26), rgbm.from0255(119, 118, 124, 0.3), 1)
 
@@ -32,6 +37,7 @@ function sessionlaps.windowMain()
         end
         if not CAR.isLastLapValid then lastLap = "*" .. lastLap end
     end
+    ui.setCursor(vec2(20,0))
     ui.dwriteTextAligned(lastLap, 15, ui.Alignment.End, ui.Alignment.Center, vec2(160, 25), false, rgbm.from0255(255, 255, 255, 1))
 
     if CAR.previousLapTimeMs == CAR.bestLapTimeMs and CAR.isLastLapValid then
@@ -51,14 +57,16 @@ function sessionlaps.windowMain()
             bestLap = string.format("%d:%02d.%03d", minutes, seconds, milliseconds)
         end
     end
+    ui.setCursor(vec2(20,27))
     ui.dwriteTextAligned(bestLap, 15, ui.Alignment.End, ui.Alignment.Center, vec2(160, 25), false, rgbm.from0255(255, 255, 255, 1))
 
+    
     -- TEXT BEST
-    ui.setCursor(vec2(5,25))
-    ui.dwriteTextAligned(language.get("BEST"), 15, ui.Alignment.Start, ui.Alignment.Center, vec2(150, 25), false, rgbm.from0255(255, 203, 0, 1))
+    ui.setCursor(vec2(9,25))
+    ui.dwriteTextAligned(language.get("BEST"), 15, ui.Alignment.Start, ui.Alignment.Center, vec2(150, 25), false, WindowsColor)
     -- TEXT LAST
-    ui.setCursor(vec2(5,0))
-    ui.dwriteTextAligned(language.get("LAST"), 15, ui.Alignment.Start, ui.Alignment.Center, vec2(150, 25), false, rgbm.from0255(255, 203, 0, 1))
+    ui.setCursor(vec2(9,0))
+    ui.dwriteTextAligned(language.get("LAST"), 15, ui.Alignment.Start, ui.Alignment.Center, vec2(150, 25), false, WindowsColor)
 end
 
 return sessionlaps

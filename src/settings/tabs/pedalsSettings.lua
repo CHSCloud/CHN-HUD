@@ -37,6 +37,8 @@ function pedalsSettings.pedalsSettings()
     WindowPedalsScale = math.floor(ui.slider("##Size", WindowPedalsScale, 0.7, 3, string.format("%.2f", WindowPedalsScale)) * 100 + 0.5) / 100;
     pedalsSettingsStore.windowPedalsScale = WindowPedalsScale
     
+    
+
     initPos = initPos + 35
     ui.drawRectFilled(vec2(5, initPos), vec2(WindowSettingsSize.x - 5, initPos), rgbm.from0255(119, 118, 124, 0.3), 1)
     -- Direção:
