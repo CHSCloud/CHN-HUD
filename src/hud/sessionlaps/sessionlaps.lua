@@ -63,10 +63,10 @@ function sessionlaps.windowMain()
     
     -- TEXT BEST
     ui.setCursor(vec2(9,25))
-    ui.dwriteTextAligned(language.get("BEST"), 15, ui.Alignment.Start, ui.Alignment.Center, vec2(150, 25), false, WindowsColor)
+    ui.dwriteTextAligned(language.get("BEST"), 15, ui.Alignment.Start, ui.Alignment.Center, vec2(150, 25), false, rgbm(WindowsColor.r, WindowsColor.g, WindowsColor.b, 1))
     -- TEXT LAST
     ui.setCursor(vec2(9,0))
-    ui.dwriteTextAligned(language.get("LAST"), 15, ui.Alignment.Start, ui.Alignment.Center, vec2(150, 25), false, WindowsColor)
+    ui.dwriteTextAligned(language.get("LAST"), 15, ui.Alignment.Start, ui.Alignment.Center, vec2(150, 25), false, rgbm(WindowsColor.r, WindowsColor.g, WindowsColor.b, 1))
 end
 
 return sessionlaps
