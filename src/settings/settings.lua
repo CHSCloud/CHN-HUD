@@ -25,6 +25,9 @@ SettingsActive = true
 pin = settingsStorage.pin
 
 WindowSettingsSize = vec2(450, 420)
+
+
+local tabPin = false
 function update()
   SIM = ac.getSim()
   CAR = ac.getCar(SIM.focusedCar)
@@ -32,6 +35,9 @@ function update()
 end
   
 local function geral()
+  if(tabPin) then
+    tabPin = false
+  end
   ui.setCursor(vec2(10, 50))
   ui.header(language.get("LANGUAGE"))
   ui.setCursor(vec2(10, 70))
@@ -48,6 +54,7 @@ local function geral()
 
   ui.setCursor(vec2(10,100))
   if ui.button(language.get("APPLY")) then
+    tabPin = true
     language.setlanguage(Optionlanguage)
   end
 
@@ -107,13 +114,11 @@ end
 function settings.windowMain()
   ui.drawRectFilled(vec2(0, 0), WindowSettingsSize, rgbm.from0255(18, 21, 29, 0.85), 0)
   ui.tabBar('##ID',function ()
-    ui.tabItem(language.get("GENERAL"), geral)
+    ui.tabItem(language.get("GENERAL"), tabPin and ui.TabItemFlags.SetSelected, geral)
     ui.tabItem(language.get("PEDALS"), pedalsSettings.pedalsSettings)
     ui.tabItem(language.get("PIT_LANE"), pitLaneSettings.pitlaneSettings)
     ui.tabItem(language.get("SESSION_LAPS"), sessionlapsSettings.sessionlapsSettings)
   end)
-
- 
 end
 
 return settings
