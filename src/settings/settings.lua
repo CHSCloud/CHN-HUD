@@ -21,7 +21,7 @@ local settingsStorage = ac.storage{
 Optionlanguage  = language.getCurrentLanguage()
 SelectedSpeed = settingsStorage.selectedSpeed
 WindowsColor = settingsStorage.windowsColor
-SettingsActive = true
+SettingsActive = false
 pin = settingsStorage.pin
 
 WindowSettingsSize = vec2(450, 420)
