@@ -9,6 +9,7 @@
     "GENERAL": "General",
     "APPLY": "Apply",
     "PERCENTAGE": "Percentage of pedals",
+    "LIMIT_LINES": "Limit lines",
     "THROTTLE": "Throttle",
     "BRAKE": "Brake",
     "CLUTCH": "Clucth",
@@ -28,5 +29,6 @@
     "COLOR": "Color",
     "TRANSPARENCY": "Transparency",
     "SELECT_COLOR": "Select color",
-    "RESET_COLOR": "Reset color"
+    "RESET_COLOR": "Reset to default color",
+    "RESET_DEFAULT": "Reset to default"
 }

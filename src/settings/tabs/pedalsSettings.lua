@@ -9,10 +9,11 @@ local pedalsSettingsStore = ac.storage{
     acceleratorActive = true,
     brakeActive = true,
     breakeBiasActive = true,
+    clutchActive = true,
     handbrakeActive = false,
     textBarsActive = true,
-    clutchActive = true,
-    fuelActive = true
+    fuelActive = true,
+    pedalLimitsLines = false
 }
 
 WindowPedalsScale = pedalsSettingsStore.windowPedalsScale
@@ -22,10 +23,36 @@ AcceleratorActive = pedalsSettingsStore.acceleratorActive
 BrakeActive = pedalsSettingsStore.brakeActive
 BrakeBiasActive = pedalsSettingsStore.breakeBiasActive
 ClutchActive = pedalsSettingsStore.clutchActive
-FuelActive = pedalsSettingsStore.fuelActive
-TextBarsActive = pedalsSettingsStore.textBarsActive
 HandbrakeActive = pedalsSettingsStore.handbrakeActive
+TextBarsActive = pedalsSettingsStore.textBarsActive
+FuelActive = pedalsSettingsStore.fuelActive
+PedalLimitsLines = pedalsSettingsStore.pedalLimitsLines
 
+local function resetToDefault()
+    WindowPedalsScale = 1
+    WheelActive = true
+    ABSActive = true
+    AcceleratorActive = true
+    BrakeActive = true
+    BrakeBiasActive = true
+    ClutchActive = true
+    HandbrakeActive = false
+    TextBarsActive = true
+    FuelActive = true
+    PedalLimitsLines = false
+
+    pedalsSettingsStore.windowPedalsScale = WindowPedalsScale
+    pedalsSettingsStore.wheelActive = WheelActive
+    pedalsSettingsStore.ABSActive = ABSActive
+    pedalsSettingsStore.acceleratorActive = AcceleratorActive
+    pedalsSettingsStore.brakeActive = BrakeActive
+    pedalsSettingsStore.breakeBiasActive = BrakeBiasActive
+    pedalsSettingsStore.clutchActive = ClutchActive
+    pedalsSettingsStore.handbrakeActive = HandbrakeActive
+    pedalsSettingsStore.textBarsActive = TextBarsActive
+    pedalsSettingsStore.fuelActive = FuelActive
+    pedalsSettingsStore.pedalLimitsLines = PedalLimitsLines
+end
 
 function pedalsSettings.pedalsSettings()
     local initPos = 55
@@ -95,26 +122,28 @@ function pedalsSettings.pedalsSettings()
     ui.header(language.get("PEDALS"))
 
     initPos = initPos + 30
-    ui.setCursor(vec2(20, initPos))
+     ui.setCursor(vec2(20, initPos))
+    if ui.checkbox(language.get("THROTTLE"), AcceleratorActive) then
+        AcceleratorActive = not AcceleratorActive
+        pedalsSettingsStore.acceleratorActive = AcceleratorActive
+    end
+    ui.setCursor(vec2(150, initPos))
     if ui.checkbox(language.get("PERCENTAGE"), TextBarsActive) then
         TextBarsActive = not TextBarsActive
         pedalsSettingsStore.textBarsActive = TextBarsActive
     end
 
     initPos = initPos + 25
-    ui.setCursor(vec2(20, initPos))
-    if ui.checkbox(language.get("THROTTLE"), AcceleratorActive) then
-        AcceleratorActive = not AcceleratorActive
-        pedalsSettingsStore.acceleratorActive = AcceleratorActive
+    ui.setCursor(vec2(150, initPos))
+    if ui.checkbox(language.get("LIMIT_LINES"), PedalLimitsLines) then
+        PedalLimitsLines = not PedalLimitsLines
+        pedalsSettingsStore.pedalLimitsLines = PedalLimitsLines
     end
-
-    initPos = initPos + 25
     ui.setCursor(vec2(20, initPos))
     if ui.checkbox(language.get("BRAKE"), BrakeActive) then
         BrakeActive = not BrakeActive
         pedalsSettingsStore.brakeActive = BrakeActive
     end
-
     initPos = initPos + 25
     ui.setCursor(vec2(20, initPos))
     if ui.checkbox(language.get("CLUTCH"), ClutchActive) then
@@ -129,7 +158,11 @@ function pedalsSettings.pedalsSettings()
         pedalsSettingsStore.handbrakeActive = HandbrakeActive
     end
     --
-    
+    initPos = initPos + 40
+    ui.setCursor(vec2(20, initPos))
+    if ui.button(language.get("RESET_DEFAULT")) then
+        resetToDefault()
+    end
 end
 
 return pedalsSettings

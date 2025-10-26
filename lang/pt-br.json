@@ -9,6 +9,7 @@
     "GENERAL": "Geral",
     "APPLY": "Aplicar",
     "PERCENTAGE": "Porcentagem dos pedais",
+    "LIMIT_LINES": "Linhas de limite",
     "THROTTLE": "Acelerador",
     "BRAKE": "Freio",
     "CLUTCH": "Embreagem",
@@ -28,5 +29,6 @@
     "COLOR": "Cor",
     "TRANSPARENCY": "Transparência",
     "SELECT_COLOR": "Selecionar cor",
-    "RESET_COLOR": "Redefinir cor"
+    "RESET_COLOR": "Redefinir para cor padrão",
+    "RESET_DEFAULT": "Redefinir para o padrão"
 }

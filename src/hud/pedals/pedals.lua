@@ -13,7 +13,7 @@ function pedals.windowMain()
     local currentWindowHeight = 90 * WindowPedalsScale - paddingTop -- Altura da tela
     if BrakeBiasActive or FuelActive then currentWindowHeight = 107 * WindowPedalsScale - paddingTop end -- Altura da tela
     --RGB's
-    barBackground = rgbm.from0255(55, 55, 63, 0.85)
+    barBackgroundColor = rgbm.from0255(55, 55, 63, 0.85)
 
     -- Posições dos textos das barras:
     local posyTextBars = -2 * WindowPedalsScale 
@@ -32,6 +32,11 @@ function pedals.windowMain()
     
     local barSize = vec2(20, 60) * WindowPedalsScale -- Tamanho das barras
     local barSpace = 4 * WindowPedalsScale --Comprimento do padding das barras
+
+    -- Barras no modo de limites:
+    local barLimitSize = vec2(20, 6) * WindowPedalsScale -- Tamanho do limite das barras
+    local barMidleSize = vec2(20, 44) * WindowPedalsScale -- Tamanho do meio barras
+    local barPaddingMidle = 2 * WindowPedalsScale --Comprimento do padding das barras
     
     ui.drawRectFilled(vec2(0, 0), currentWindowSize, WindowsColor, 10 * WindowPedalsScale)
     
@@ -82,8 +87,37 @@ function pedals.windowMain()
           ui.dwriteTextAligned("∞", fontBarInfinite, ui.Alignment.Center, ui.Alignment.Start, vec2(20, 30):scale(WindowPedalsScale), false, rgbm.from0255(0, 89, 208, 1))
         end
       end
-      ui.drawRectFilled(posBar, posBar + barSize, barBackground)
-      ui.drawRectFilled(posBar + vec2(0, (CAR.clutch * barSize.y)), posBar + barSize,  rgbm.from0255(0, 89, 208, 1))
+
+      if PedalLimitsLines then
+        ui.drawRectFilled(posBar, posBar + barLimitSize, barBackgroundColor)
+
+        ui.drawRectFilled(
+          posBar + vec2(0, barLimitSize.y + barPaddingMidle), 
+          posBar + vec2(0, barLimitSize.y + barPaddingMidle) + barMidleSize, 
+          barBackgroundColor
+        )
+
+        ui.drawRectFilled(
+          posBar + vec2(0, barLimitSize.y + barMidleSize.y + 2 * barPaddingMidle), 
+          posBar + vec2(0, barLimitSize.y + barMidleSize.y + 2 * barPaddingMidle) + barLimitSize, 
+          barBackgroundColor
+        )
+        
+        if CAR.clutch == 0 then
+          ui.drawRectFilled(posBar, posBar + barLimitSize, rgbm.from0255(0, 89, 208, 1))
+        end
+        if CAR.clutch < 1 then
+          ui.drawRectFilled(
+            posBar + vec2(0, barLimitSize.y + 2 * barPaddingMidle + barMidleSize.y),
+            posBar + vec2(0, barLimitSize.y + 2 * barPaddingMidle + barMidleSize.y) + barLimitSize, 
+            rgbm.from0255(0, 89, 208, 1)
+          )
+        end
+        ui.drawRectFilled(posBar + vec2(0, barLimitSize.y + barPaddingMidle + (CAR.clutch * barMidleSize.y)), posBar + vec2(0, barLimitSize.y + barPaddingMidle) + barMidleSize, rgbm.from0255(0, 89, 208, 1))
+      else
+        ui.drawRectFilled(posBar, posBar + barSize, barBackgroundColor)
+        ui.drawRectFilled(posBar + vec2(0, (CAR.clutch * barSize.y)), posBar + barSize,  rgbm.from0255(0, 89, 208, 1))
+      end
       currentWindowWidth = currentWindowWidth + barSize.x + barSpace
     end
     --
@@ -101,9 +135,37 @@ function pedals.windowMain()
           ui.dwriteTextAligned("∞", fontBarInfinite, ui.Alignment.Center, ui.Alignment.Start, vec2(20, 30):scale(WindowPedalsScale), false, rgbm.from0255(200, 0, 0, 1))
         end
       end
+      
       -- Barras freio:
-      ui.drawRectFilled(posBar, posBar + barSize, barBackground)
-      ui.drawRectFilled(posBar + vec2(0, barSize.y - (CAR.brake * barSize.y)), posBar + barSize,  rgbm.from0255(200, 0, 0, 1))
+      if PedalLimitsLines then
+        ui.drawRectFilled(posBar, posBar + barLimitSize, barBackgroundColor)
+
+        ui.drawRectFilled(
+          posBar + vec2(0, barLimitSize.y + barPaddingMidle), 
+          posBar + vec2(0, barLimitSize.y + barPaddingMidle) + barMidleSize, 
+          barBackgroundColor
+        )
+
+        ui.drawRectFilled(
+          posBar + vec2(0, barLimitSize.y + barMidleSize.y + 2 * barPaddingMidle), 
+          posBar + vec2(0, barLimitSize.y + barMidleSize.y + 2 * barPaddingMidle) + barLimitSize, 
+          barBackgroundColor
+        )
+        if CAR.brake > 0 then
+          ui.drawRectFilled(
+            posBar + vec2(0, barLimitSize.y + 2 * barPaddingMidle + barMidleSize.y),
+            posBar + vec2(0, barLimitSize.y + 2 * barPaddingMidle + barMidleSize.y) + barLimitSize, 
+            rgbm.from0255(200, 0, 0, 1)
+          )
+        end
+        if CAR.brake == 1 then
+          ui.drawRectFilled(posBar, posBar + barLimitSize, rgbm.from0255(200, 0, 0, 1))
+        end
+        ui.drawRectFilled(posBar + vec2(0, barLimitSize.y + barPaddingMidle + barMidleSize.y - (CAR.brake * barMidleSize.y)), posBar + vec2(0, barLimitSize.y + barPaddingMidle) + barMidleSize, rgbm.from0255(200, 0, 0, 1))
+      else
+        ui.drawRectFilled(posBar, posBar + barSize, barBackgroundColor)
+        ui.drawRectFilled(posBar + vec2(0, barSize.y - (CAR.brake * barSize.y)), posBar + barSize,  rgbm.from0255(200, 0, 0, 1))
+      end
       currentWindowWidth = currentWindowWidth + barSize.x + barSpace
     end
     --
@@ -122,8 +184,35 @@ function pedals.windowMain()
         end
       end
       -- Barras acelerador:
-      ui.drawRectFilled(posBar, posBar + barSize, barBackground)
-      ui.drawRectFilled(posBar + vec2(0, barSize.y - (CAR.gas * barSize.y)), posBar + barSize, rgbm.from0255(90, 212, 51, 1))
+      if PedalLimitsLines then
+        ui.drawRectFilled(posBar, posBar + barLimitSize, barBackgroundColor)
+
+        ui.drawRectFilled(
+          posBar + vec2(0, barLimitSize.y + barPaddingMidle), 
+          posBar + vec2(0, barLimitSize.y + barPaddingMidle) + barMidleSize, 
+          barBackgroundColor
+        )
+
+        ui.drawRectFilled(
+          posBar + vec2(0, barLimitSize.y + barMidleSize.y + 2 * barPaddingMidle), 
+          posBar + vec2(0, barLimitSize.y + barMidleSize.y + 2 * barPaddingMidle) + barLimitSize, 
+          barBackgroundColor
+        )
+        if CAR.gas > 0 then
+          ui.drawRectFilled(
+            posBar + vec2(0, barLimitSize.y + 2 * barPaddingMidle + barMidleSize.y),
+            posBar + vec2(0, barLimitSize.y + 2 * barPaddingMidle + barMidleSize.y) + barLimitSize, 
+            rgbm.from0255(90, 212, 51, 1)
+          )
+        end
+        if CAR.gas == 1 then
+          ui.drawRectFilled(posBar, posBar + barLimitSize, rgbm.from0255(90, 212, 51, 1))
+        end
+        ui.drawRectFilled(posBar + vec2(0, barLimitSize.y + barPaddingMidle + barMidleSize.y - (CAR.gas * barMidleSize.y)), posBar + vec2(0, barLimitSize.y + barPaddingMidle) + barMidleSize, rgbm.from0255(90, 212, 51, 1))
+      else
+        ui.drawRectFilled(posBar, posBar + barSize, barBackgroundColor)
+        ui.drawRectFilled(posBar + vec2(0, barSize.y - (CAR.gas * barSize.y)), posBar + barSize, rgbm.from0255(90, 212, 51, 1))
+      end
       currentWindowWidth = currentWindowWidth + barSize.x + barSpace
     end
     --
@@ -142,8 +231,35 @@ function pedals.windowMain()
         end
       end
       -- Barras Freio de mão:
-      ui.drawRectFilled(posBar, posBar + barSize, barBackground)
-      ui.drawRectFilled(posBar + vec2(0, barSize.y - (CAR.handbrake * barSize.y)), posBar + barSize, rgbm.from0255(255, 255, 0, 1))
+      if PedalLimitsLines then
+        ui.drawRectFilled(posBar, posBar + barLimitSize, barBackgroundColor)
+
+        ui.drawRectFilled(
+          posBar + vec2(0, barLimitSize.y + barPaddingMidle), 
+          posBar + vec2(0, barLimitSize.y + barPaddingMidle) + barMidleSize, 
+          barBackgroundColor
+        )
+
+        ui.drawRectFilled(
+          posBar + vec2(0, barLimitSize.y + barMidleSize.y + 2 * barPaddingMidle), 
+          posBar + vec2(0, barLimitSize.y + barMidleSize.y + 2 * barPaddingMidle) + barLimitSize, 
+          barBackgroundColor
+        )
+        if CAR.handbrake > 0 then
+          ui.drawRectFilled(
+            posBar + vec2(0, barLimitSize.y + 2 * barPaddingMidle + barMidleSize.y),
+            posBar + vec2(0, barLimitSize.y + 2 * barPaddingMidle + barMidleSize.y) + barLimitSize, 
+            rgbm.from0255(255, 255, 0, 1)
+          )
+        end
+        if CAR.handbrake == 1 then
+          ui.drawRectFilled(posBar, posBar + barLimitSize, rgbm.from0255(255, 255, 0, 1))
+        end
+        ui.drawRectFilled(posBar + vec2(0, barLimitSize.y + barPaddingMidle + barMidleSize.y - (CAR.handbrake * barMidleSize.y)), posBar + vec2(0, barLimitSize.y + barPaddingMidle) + barMidleSize, rgbm.from0255(255, 255, 0, 1))
+      else
+        ui.drawRectFilled(posBar, posBar + barSize, barBackgroundColor)
+        ui.drawRectFilled(posBar + vec2(0, barSize.y - (CAR.handbrake * barSize.y)), posBar + barSize, rgbm.from0255(255, 255, 0, 1))
+      end
       currentWindowWidth = currentWindowWidth + barSize.x + barSpace
     end
     --
@@ -165,7 +281,7 @@ function pedals.windowMain()
       if CAR.absInAction then
         ui.image("assets/ABS.png", vec2(80,80):scale(WindowPedalsScale), rgbm(255, 0, 0, 1),ui.ImageFit.Fit)
       else
-        ui.image("assets/ABS.png", vec2(80,80):scale(WindowPedalsScale), barBackground, ui.ImageFit.Fit)
+        ui.image("assets/ABS.png", vec2(80,80):scale(WindowPedalsScale), barBackgroundColor, ui.ImageFit.Fit)
       end
         currentWindowWidth = currentWindowWidth + absBackgroundSize.x
     end
