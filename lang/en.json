@@ -29,5 +29,6 @@
     "COLOR": "Color",
     "TRANSPARENCY": "Transparency",
     "SELECT_COLOR": "Select color",
-    "RESET_COLOR": "Reset to default color"
+    "RESET_COLOR": "Reset to default color",
+    "RESET_DEFAULT": "Reset to default"
 }

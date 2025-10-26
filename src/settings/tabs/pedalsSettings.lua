@@ -9,9 +9,9 @@ local pedalsSettingsStore = ac.storage{
     acceleratorActive = true,
     brakeActive = true,
     breakeBiasActive = true,
+    clutchActive = true,
     handbrakeActive = false,
     textBarsActive = true,
-    clutchActive = true,
     fuelActive = true,
     pedalLimitsLines = false
 }
@@ -23,11 +23,36 @@ AcceleratorActive = pedalsSettingsStore.acceleratorActive
 BrakeActive = pedalsSettingsStore.brakeActive
 BrakeBiasActive = pedalsSettingsStore.breakeBiasActive
 ClutchActive = pedalsSettingsStore.clutchActive
-FuelActive = pedalsSettingsStore.fuelActive
-TextBarsActive = pedalsSettingsStore.textBarsActive
 HandbrakeActive = pedalsSettingsStore.handbrakeActive
+TextBarsActive = pedalsSettingsStore.textBarsActive
+FuelActive = pedalsSettingsStore.fuelActive
 PedalLimitsLines = pedalsSettingsStore.pedalLimitsLines
 
+local function resetToDefault()
+    WindowPedalsScale = 1
+    WheelActive = true
+    ABSActive = true
+    AcceleratorActive = true
+    BrakeActive = true
+    BrakeBiasActive = true
+    ClutchActive = true
+    HandbrakeActive = false
+    TextBarsActive = true
+    FuelActive = true
+    PedalLimitsLines = false
+
+    pedalsSettingsStore.windowPedalsScale = WindowPedalsScale
+    pedalsSettingsStore.wheelActive = WheelActive
+    pedalsSettingsStore.ABSActive = ABSActive
+    pedalsSettingsStore.acceleratorActive = AcceleratorActive
+    pedalsSettingsStore.brakeActive = BrakeActive
+    pedalsSettingsStore.breakeBiasActive = BrakeBiasActive
+    pedalsSettingsStore.clutchActive = ClutchActive
+    pedalsSettingsStore.handbrakeActive = HandbrakeActive
+    pedalsSettingsStore.textBarsActive = TextBarsActive
+    pedalsSettingsStore.fuelActive = FuelActive
+    pedalsSettingsStore.pedalLimitsLines = PedalLimitsLines
+end
 
 function pedalsSettings.pedalsSettings()
     local initPos = 55
@@ -133,7 +158,11 @@ function pedalsSettings.pedalsSettings()
         pedalsSettingsStore.handbrakeActive = HandbrakeActive
     end
     --
-    
+    initPos = initPos + 40
+    ui.setCursor(vec2(20, initPos))
+    if ui.button(language.get("RESET_DEFAULT")) then
+        resetToDefault()
+    end
 end
 
 return pedalsSettings
