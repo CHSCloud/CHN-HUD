@@ -2,6 +2,7 @@ local pedalsSettings = require("src.settings.tabs.pedalsSettings")
 local pitLaneSettings = require("src.settings.tabs.pitLaneSettings")
 local sessionlapsSettings = require("src.settings.tabs.sessionLapsSettings")
 local language = require("lang.language")
+local config = require("common.config")
 
 local settings = {}
 
@@ -15,14 +16,13 @@ local settingsStorage = ac.storage{
     selectedSpeed = 1,
     transparancy = 0.85,
     windowsColor = rgbm.from0255(18, 21, 29, 0.85),
-    pin = false
+    
 }
 
 Optionlanguage  = language.getCurrentLanguage()
 SelectedSpeed = settingsStorage.selectedSpeed
 WindowsColor = settingsStorage.windowsColor
 SettingsActive = true
-pin = settingsStorage.pin
 
 WindowSettingsSize = vec2(450, 420)
 
@@ -88,17 +88,10 @@ local function geral()
   end
 
   ----------------------------- PIN--------------------------------------
-  local pinnedpedals = ac.accessAppWindow("IMGUI_LUA_CHN HUD_pedal"):pinned()
-  local pinnedpitLane = ac.accessAppWindow("IMGUI_LUA_CHN HUD_pitLane"):pinned()
-  local pinnedSesionLaps = ac.accessAppWindow("IMGUI_LUA_CHN HUD_sessionLaps"):pinned()
+  pinned = config.getWindow("HUD CHN"):pinned()
   ui.setCursor(vec2(220, 200))
-  if ui.checkbox("Edit Clip", pin) then
-    ac.accessAppWindow("IMGUI_LUA_CHN HUD_pedal"):setPinned(not pinnedpedals)
-    ac.accessAppWindow("IMGUI_LUA_CHN HUD_sessionLaps"):setPinned(not pinnedSesionLaps)
-    ac.accessAppWindow("IMGUI_LUA_CHN HUD_pitLane"):setPinned(not pinnedpitLane)
-
-    pin = not pin
-    settingsStorage.pin = pin
+  if ui.checkbox("Edit Clip", pinned) then
+    config.getWindow("HUD CHN"):setPinned(not pinned)
   end
   ------------------------------------------------------------------------
 end
