@@ -2,18 +2,43 @@ local language = require("lang.language")
 local pitlaneSettings = {}
 
 
-local pitSettingsStore = ac.storage{
+local pitSettingsStore = ac.storage {
     windowPitScale = 1,
+    optionPlate = "default"
 }
 
 WindowPitScale = pitSettingsStore.windowPitScale
+OptionPlate = pitSettingsStore.optionPlate
+
+local plates = {
+  ["default"] = language.get("DEFAULT"),
+  ["alert"] = language.get("ALERT_PIT")
+}
 
 function pitlaneSettings.pitlaneSettings()
-    ui.setCursor(vec2(10, 55))
+    local initPos = 55
+    ui.setCursor(vec2(10, initPos))
     ui.header(language.get("SIZE"))
-    ui.setCursor(vec2(10, 75))
+
+    initPos = initPos + 20
+    ui.setCursor(vec2(10, initPos))
     WindowPitScale = ui.slider("##Size", WindowPitScale, 0.7, 3, string.format("%.2f", WindowPitScale))
     pitSettingsStore.windowPitScale = WindowPitScale
+
+    initPos = initPos + 50
+    ui.setCursor(vec2(10, initPos))
+    ui.combo('##resolution', plates[OptionPlate], function ()
+        if ui.selectable(plates["default"]) then
+            OptionPlate = "default"
+            pitSettingsStore.optionPlate = OptionPlate
+        end
+
+        if ui.selectable(plates["alert"]) then
+            OptionPlate = "alert"
+            pitSettingsStore.optionPlate = OptionPlate
+        end
+    end)
+
 end
 
 return pitlaneSettings

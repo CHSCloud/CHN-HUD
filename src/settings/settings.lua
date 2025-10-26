@@ -23,7 +23,6 @@ Optionlanguage  = language.getCurrentLanguage()
 SelectedSpeed = settingsStorage.selectedSpeed
 WindowsColor = settingsStorage.windowsColor
 SettingsActive = false
-pin = settingsStorage.pin
 
 WindowSettingsSize = vec2(450, 420)
 
@@ -87,14 +86,6 @@ local function geral()
     settingsStorage.windowsColor = rgbm.from0255(18, 21, 29, 0.85)
     settingsStorage.transparancy = 0.85
   end
-
-  ----------------------------- PIN--------------------------------------
-  pinned = config.getWindow("HUD CHN"):pinned()
-  ui.setCursor(vec2(220, 200))
-  if ui.checkbox("Edit Clip", pinned) then
-    config.getWindow("HUD CHN"):setPinned(not pinned)
-  end
-  ------------------------------------------------------------------------
 end
 
 function settings.windowOpenSettings()

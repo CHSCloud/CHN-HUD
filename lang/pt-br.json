@@ -30,5 +30,7 @@
     "TRANSPARENCY": "Transparência",
     "SELECT_COLOR": "Selecionar cor",
     "RESET_COLOR": "Redefinir para cor padrão",
-    "RESET_DEFAULT": "Redefinir para o padrão"
+    "RESET_DEFAULT": "Redefinir para o padrão",
+    "DEFAULT": "Padrão",
+    "ALERT_PIT": "Alerta"
 }

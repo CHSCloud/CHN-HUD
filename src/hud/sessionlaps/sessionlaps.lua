@@ -1,5 +1,6 @@
 require("src.settings.settings")
 local language = require("lang.language")
+local config = require("common.config")
 local sessionlaps = {}
 
 previouBestlap = 0
@@ -13,15 +14,22 @@ end
 function sessionlaps.windowMain()
     ui.pushDWriteFont("fonts/Montserrat-Bold.ttf") -- FONT TEXT
 
+    local currentWindowWidth = 240 * WindowSessionLapsScale
+    local currentWindowHeight = 50 * WindowSessionLapsScale
+
     -- BACKGROUND
-    ui.drawRectFilled(vec2(0, 0), vec2(240, 50), WindowsColor, 5)
+    ui.drawRectFilled(vec2(0, 0), vec2(currentWindowWidth, currentWindowHeight), WindowsColor, 5 * WindowSessionLapsScale)
     -- BACKGROUND IMAGEM
-    ui.setCursor(vec2(-60,1))
-    ui.image("assets/lapbackground.png", vec2(240, 24):scale(0.9), rgbm.from0255(119, 118, 124, 1), ui.ImageFit.Fit)
-    ui.setCursor(vec2(-60,27))
-    ui.image("assets/lapbackground.png", vec2(240, 24):scale(0.9), rgbm.from0255(119, 118, 124, 1), ui.ImageFit.Fit)
+    ui.setCursor(vec2(-60,1):scale(WindowSessionLapsScale))
+    ui.image("assets/lapbackground.png", vec2(216, 21.6):scale(WindowSessionLapsScale), rgbm.from0255(255, 255, 255, 1), ui.ImageFit.Fit)
+    ui.setCursor(vec2(-60,1):scale(WindowSessionLapsScale))
+    ui.image("assets/lapbackground1.png", vec2(216, 21.6):scale(WindowSessionLapsScale), rgbm.from0255(255, 203, 0, 1), ui.ImageFit.Fit)
+    ui.setCursor(vec2(-60,27):scale(WindowSessionLapsScale))
+    ui.image("assets/lapbackground.png", vec2(216, 21.6):scale(WindowSessionLapsScale), rgbm.from0255(255, 255, 255, 1), ui.ImageFit.Fit)
+    ui.setCursor(vec2(-60,27):scale(WindowSessionLapsScale))
+    ui.image("assets/lapbackground1.png", vec2(216, 21.6):scale(WindowSessionLapsScale), rgbm.from0255(255, 203, 0, 1), ui.ImageFit.Fit)
     -- LINE
-    ui.drawRectFilled(vec2(5, 26), vec2(235, 26), rgbm.from0255(119, 118, 124, 0.3), 1)
+    ui.drawRectFilled(vec2(5, 26):scale(WindowSessionLapsScale), vec2(235, 26):scale(WindowSessionLapsScale), rgbm.from0255(119, 118, 124, 0.3), 1)
 
     -- LAST LAP
     if CAR.previousLapTimeMs == 0 then
@@ -37,8 +45,8 @@ function sessionlaps.windowMain()
         end
         if not CAR.isLastLapValid then lastLap = "*" .. lastLap end
     end
-    ui.setCursor(vec2(20,0))
-    ui.dwriteTextAligned(lastLap, 15, ui.Alignment.End, ui.Alignment.Center, vec2(160, 25), false, rgbm.from0255(255, 255, 255, 1))
+    ui.setCursor(vec2(20,0):scale(WindowSessionLapsScale))
+    ui.dwriteTextAligned(lastLap, 15 * WindowSessionLapsScale, ui.Alignment.End, ui.Alignment.Center, vec2(160, 25):scale(WindowSessionLapsScale), false, rgbm.from0255(255, 255, 255, 1))
 
     if CAR.previousLapTimeMs == CAR.bestLapTimeMs and CAR.isLastLapValid then
         previouBestlap = CAR.bestLapTimeMs
@@ -49,7 +57,7 @@ function sessionlaps.windowMain()
         bestLap = "-.---"
     else
         minutes = previouBestlap / 60E3
-        seconds = (minutes %1) * 60
+        seconds = (minutes % 1) * 60
         milliseconds = math.round((seconds % 1) * 1000)
         if minutes < 1 then
             bestLap = string.format("%d.%03d", seconds, milliseconds)
@@ -57,16 +65,18 @@ function sessionlaps.windowMain()
             bestLap = string.format("%d:%02d.%03d", minutes, seconds, milliseconds)
         end
     end
-    ui.setCursor(vec2(20,27))
-    ui.dwriteTextAligned(bestLap, 15, ui.Alignment.End, ui.Alignment.Center, vec2(160, 25), false, rgbm.from0255(255, 255, 255, 1))
+    ui.setCursor(vec2(20,27):scale(WindowSessionLapsScale))
+    ui.dwriteTextAligned(bestLap, 15 * WindowSessionLapsScale, ui.Alignment.End, ui.Alignment.Center, vec2(160, 25):scale(WindowSessionLapsScale), false, rgbm.from0255(255, 255, 255, 1))
 
     
     -- TEXT BEST
-    ui.setCursor(vec2(9,25))
-    ui.dwriteTextAligned(language.get("BEST"), 15, ui.Alignment.Start, ui.Alignment.Center, vec2(150, 25), false, rgbm(WindowsColor.r, WindowsColor.g, WindowsColor.b, 1))
+    ui.setCursor(vec2(9,25):scale(WindowSessionLapsScale))
+    ui.dwriteTextAligned(language.get("BEST"), 15 * WindowSessionLapsScale, ui.Alignment.Start, ui.Alignment.Center, vec2(150, 25):scale(WindowSessionLapsScale), false, rgbm(WindowsColor.r, WindowsColor.g, WindowsColor.b, 1))
     -- TEXT LAST
-    ui.setCursor(vec2(9,0))
-    ui.dwriteTextAligned(language.get("LAST"), 15, ui.Alignment.Start, ui.Alignment.Center, vec2(150, 25), false, rgbm(WindowsColor.r, WindowsColor.g, WindowsColor.b, 1))
+    ui.setCursor(vec2(9,0):scale(WindowSessionLapsScale))
+    ui.dwriteTextAligned(language.get("LAST"), 15 * WindowSessionLapsScale, ui.Alignment.Start, ui.Alignment.Center, vec2(150, 25):scale(WindowSessionLapsScale), false, rgbm(WindowsColor.r, WindowsColor.g, WindowsColor.b, 1))
+
+    config.resize(vec2(currentWindowWidth, currentWindowHeight), "Session Laps")
 end
 
 return sessionlaps
