@@ -27,8 +27,8 @@ function pedals.windowMain()
     local fontSpeed = 20 * WindowPedalsScale -- Tamanho da fonte do texto de velocidade
 
     local gearBackgroundWidth = 60 * WindowPedalsScale -- Tamanho do background do texto de velocidade e marcha
-    local wheelBackgroundSize = vec2(65 * WindowPedalsScale, currentWindowHeight) -- Tamanho do background do eixo do roda
-    local absBackgroundSize = vec2(80 * WindowPedalsScale, currentWindowHeight) -- Tamanho do background do ABS
+    local wheelBackgroundSize = vec2(55 * WindowPedalsScale, currentWindowHeight) -- Tamanho do background do eixo do roda
+    local absBackgroundSize = vec2(76 * WindowPedalsScale, currentWindowHeight) -- Tamanho do background do ABS
     
     local barSize = vec2(20, 60) * WindowPedalsScale -- Tamanho das barras
     local barSpace = 4 * WindowPedalsScale --Comprimento do padding das barras
@@ -286,16 +286,16 @@ function pedals.windowMain()
     -- Volante:
     if WheelActive then
       ui.beginRotation()
-      ui.setCursor(vec2(currentWindowWidth - 4, 18 * WindowPedalsScale - paddingTop))
+      ui.setCursor(vec2(currentWindowWidth - 4 * WindowPedalsScale, 18 * WindowPedalsScale - paddingTop))
       ui.image("assets/Wheel1.png", vec2(65, 72):scale(WindowPedalsScale), ui.ImageFit.Fit)
       ui.endRotation(90 - CAR.steer)
-      currentWindowWidth = currentWindowWidth + wheelBackgroundSize.x
+      currentWindowWidth = currentWindowWidth + wheelBackgroundSize.x + 12 * WindowPedalsScale + barSpace
     end
     --
 
     -- ABS:
     if ABSActive and CAR.absModes ~= 0 then
-      ui.setCursor(vec2(currentWindowWidth - 1, 13 * WindowPedalsScale - paddingTop))
+      ui.setCursor(vec2(currentWindowWidth - 9 * WindowPedalsScale, 13 * WindowPedalsScale - paddingTop))
       if CAR.absInAction then
         ui.image("assets/ABS.png", vec2(80,80):scale(WindowPedalsScale), rgbm(255, 0, 0, 1),ui.ImageFit.Fit)
       else
