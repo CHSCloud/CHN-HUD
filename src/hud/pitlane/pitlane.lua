@@ -57,6 +57,8 @@ function pitlane.windowMain()
         if(not (CAR.manualPitsSpeedLimiterEnabled or CAR.isInPitlane) and SettingsActive) then
           kmh_string = "--"
           limitPit_string = "--"
+          speedrgb = rgbm.from0255(255, 255, 255, 1)
+          currentWindowHeight = 70 * WindowPitScale
         else 
           -- SPEED
           if(SelectedSpeed == 1) then
