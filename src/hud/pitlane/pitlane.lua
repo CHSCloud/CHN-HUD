@@ -4,7 +4,7 @@ local config = require("common.config")
 local pitlane = {}
 
 function pitlane.windowMain()
-  local currentWindowWidth = 0
+  local currentWindowWidth = 150 * WindowPitScale
   local currentWindowHeight = 70 * WindowPitScale
 
   local posLimit = vec2(-10,5)
@@ -26,7 +26,6 @@ function pitlane.windowMain()
         end
         --Background:
         if OptionPlate == "default" then
-          currentWindowWidth = 150 * WindowPitScale
           ui.drawRectFilled(vec2(0, 0), vec2(currentWindowWidth, 70 * WindowPitScale), WindowsColor, 10 * WindowPitScale)
           ui.drawRectFilled(vec2(5, 5):scale(WindowPitScale), vec2(75, 65):scale(WindowPitScale), rgbm.from0255(255, 255, 255, 1), 5 * WindowPitScale)
           ui.drawRectFilled(vec2(7, 7):scale(WindowPitScale), vec2(73, 63):scale(WindowPitScale), rgbm.from0255(0, 0, 0, 1), 5 * WindowPitScale)
