@@ -10,23 +10,34 @@ local pitSettingsStore = ac.storage {
 WindowPitScale = pitSettingsStore.windowPitScale
 OptionPlate = pitSettingsStore.optionPlate
 
-local plates = {
-  ["default"] = language.get("DEFAULT"),
-  ["alert"] = language.get("ALERT_PIT")
-}
+local function resetToDefault()
+    WindowPitScale = 1
+    OptionPlate = "default"
+
+    pitSettingsStore.windowPitScale = WindowPitScale
+    pitSettingsStore.optionPlate = OptionPlate
+end
 
 function pitlaneSettings.pitlaneSettings()
+    local plates = {
+        ["default"] = language.get("DEFAULT"),
+        ["alert"] = language.get("ALERT_PIT")
+    }
+
     local initPos = 55
-    ui.setCursor(vec2(10, initPos))
+    ui.setCursor(vec2(15, initPos))
     ui.header(language.get("SIZE"))
 
     initPos = initPos + 20
-    ui.setCursor(vec2(10, initPos))
+    ui.setCursor(vec2(20, initPos))
     WindowPitScale = ui.slider("##Size", WindowPitScale, 0.7, 3, string.format("%.2f", WindowPitScale))
     pitSettingsStore.windowPitScale = WindowPitScale
 
-    initPos = initPos + 50
-    ui.setCursor(vec2(10, initPos))
+    initPos = initPos + 35
+    ui.setCursor(vec2(15, initPos))
+    ui.header(language.get("STYLE"))
+    initPos = initPos + 20
+    ui.setCursor(vec2(20, initPos))
     ui.combo('##resolution', plates[OptionPlate], function ()
         if ui.selectable(plates["default"]) then
             OptionPlate = "default"
@@ -39,6 +50,11 @@ function pitlaneSettings.pitlaneSettings()
         end
     end)
 
+    initPos = initPos + 40
+    ui.setCursor(vec2(20, initPos))
+    if ui.button(language.get("RESET_DEFAULT")) then
+        resetToDefault()
+    end
 end
 
 return pitlaneSettings

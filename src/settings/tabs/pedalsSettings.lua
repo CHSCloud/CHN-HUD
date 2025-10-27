@@ -57,10 +57,10 @@ end
 function pedalsSettings.pedalsSettings()
     local initPos = 55
     local initPos2
-    ui.setCursor(vec2(10, initPos))
+    ui.setCursor(vec2(15, initPos))
     ui.header(language.get("SIZE"))
     initPos = initPos + 20
-    ui.setCursor(vec2(10, initPos))
+    ui.setCursor(vec2(20, initPos))
     WindowPedalsScale = math.floor(ui.slider("##Size", WindowPedalsScale, 0.7, 3, string.format("%.2f", WindowPedalsScale)) * 100 + 0.5) / 100;
     pedalsSettingsStore.windowPedalsScale = WindowPedalsScale
     
@@ -71,12 +71,12 @@ function pedalsSettings.pedalsSettings()
     -- Direção:
     initPos = initPos + 10
     initPos2 = initPos
-    ui.setCursor(vec2(20, initPos))
+    ui.setCursor(vec2(15, initPos))
     ui.header(language.get("STEERING"))
 
     -- OUTROS:
     local posXOthers = 220
-    ui.setCursor(vec2(posXOthers, initPos2))
+    ui.setCursor(vec2(posXOthers - 5, initPos2))
     ui.header(language.get("OTHERS"))
   
     initPos2 = initPos2 + 25
@@ -118,10 +118,10 @@ function pedalsSettings.pedalsSettings()
 
     -- Pedais:
     initPos = initPos + 10
-    ui.setCursor(vec2(20, initPos))
+    ui.setCursor(vec2(15, initPos))
     ui.header(language.get("PEDALS"))
 
-    initPos = initPos + 30
+    initPos = initPos + 25
      ui.setCursor(vec2(20, initPos))
     if ui.checkbox(language.get("THROTTLE"), AcceleratorActive) then
         AcceleratorActive = not AcceleratorActive

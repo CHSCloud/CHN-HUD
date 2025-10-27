@@ -38,9 +38,9 @@ local function geral()
   if(tabPin) then
     tabPin = false
   end
-  ui.setCursor(vec2(10, 50))
+  ui.setCursor(vec2(15, 50))
   ui.header(language.get("LANGUAGE"))
-  ui.setCursor(vec2(10, 70))
+  ui.setCursor(vec2(20, 70))
 
   ui.combo('##resolution', languages[Optionlanguage], function ()
     if ui.selectable(languages["en"]) then
@@ -52,7 +52,7 @@ local function geral()
     end
   end)
 
-  ui.setCursor(vec2(10,100))
+  ui.setCursor(vec2(20,100))
   if ui.button(language.get("APPLY")) then
     tabPin = true
     language.setlanguage(Optionlanguage)
@@ -60,28 +60,28 @@ local function geral()
 
   ui.drawRectFilled(vec2(5, 130), vec2(WindowSettingsSize.x - 5, 130), rgbm.from0255(119, 118, 124, 0.3), 1)
   
-  ui.setCursor(vec2(10, 140))
+  ui.setCursor(vec2(15, 140))
   ui.header(language.get("SPEED"))
-  ui.setCursor(vec2(10, 160))
+  ui.setCursor(vec2(20, 160))
   SelectedSpeed = ui.combo("##Speed", SelectedSpeed , {"Km/h", "Mph"})
   settingsStorage.selectedSpeed = SelectedSpeed
 
   ui.drawRectFilled(vec2(5, 190), vec2(WindowSettingsSize.x - 5, 190), rgbm.from0255(119, 118, 124, 0.3), 1)
 
-  ui.setCursor(vec2(10, 200))
+  ui.setCursor(vec2(15, 200))
   ui.header(language.get("SELECT_COLOR"))
   local color = settingsStorage.windowsColor
   ui.pushItemWidth(150)
-  ui.setCursor(vec2(10, 220))
+  ui.setCursor(vec2(20, 220))
   ui.colorPicker(language.get('COLOR'), color, ui.ColorPickerFlags.PickerHueBar + ui.ColorPickerFlags.NoInputs, 10, 20)
 
-  ui.setCursor(vec2(10, 350))
+  ui.setCursor(vec2(20, 350))
   settingsStorage.transparancy = ui.slider(language.get('TRANSPARENCY'), settingsStorage.transparancy, 0, 1, string.format("%.0f", settingsStorage.transparancy * 100));
 
   settingsStorage.windowsColor = rgbm(color.r, color.g, color.b, settingsStorage.transparancy)
   ui.popItemWidth()
 
-  ui.setCursor(vec2(10, 380))
+  ui.setCursor(vec2(20, 380))
   if ui.button(language.get("RESET_COLOR")) then
     settingsStorage.windowsColor = rgbm.from0255(18, 21, 29, 0.85)
     settingsStorage.transparancy = 0.85
