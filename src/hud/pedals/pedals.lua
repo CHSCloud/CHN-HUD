@@ -26,7 +26,7 @@ function pedals.windowMain()
     local fontGear = 40 * WindowPedalsScale -- Tamanho da fonte do texto de marcha
     local fontSpeed = 20 * WindowPedalsScale -- Tamanho da fonte do texto de velocidade
 
-    local gearBackgroundWidth = 70 * WindowPedalsScale -- Tamanho do background do texto de velocidade e marcha
+    local gearBackgroundWidth = 60 * WindowPedalsScale -- Tamanho do background do texto de velocidade e marcha
     local wheelBackgroundSize = vec2(65 * WindowPedalsScale, currentWindowHeight) -- Tamanho do background do eixo do roda
     local absBackgroundSize = vec2(80 * WindowPedalsScale, currentWindowHeight) -- Tamanho do background do ABS
     
@@ -41,28 +41,46 @@ function pedals.windowMain()
     ui.drawRectFilled(vec2(0, 0), currentWindowSize, WindowsColor, 10 * WindowPedalsScale)
     
     -- Marcha:
-    currentWindowWidth = currentWindowWidth + gearBackgroundWidth
-    local gear = tostring(CAR.gear);
-    if gear == "0" then
-      gear = "N";
-    elseif gear == "-1" then
-      gear = "R";
+    if GearActive then
+      currentWindowWidth = gearBackgroundWidth
+      local gear = tostring(CAR.gear);
+      if gear == "0" then
+        gear = "N";
+      elseif gear == "-1" then
+        gear = "R";
+      end
+      if SpeedActive then
+        ui.setCursor(vec2(20, 28 - paddingTop/WindowPedalsScale):scale(WindowPedalsScale))
+        ui.dwriteTextAligned(gear, fontGear, ui.Alignment.Center, ui.Alignment.Center, vec2(30, 30):scale(WindowPedalsScale), false, rgbm.from0255(255, 203, 0, 1))
+      else
+        fontGear = 45 * WindowPedalsScale
+        ui.setCursor(vec2(20, 32 - paddingTop/WindowPedalsScale):scale(WindowPedalsScale))
+        ui.dwriteTextAligned(gear, fontGear, ui.Alignment.Center, ui.Alignment.Center, vec2(30, 40):scale(WindowPedalsScale), false, rgbm.from0255(255, 203, 0, 1))
+      end
     end
-    ui.setCursor(vec2(20, 28 - paddingTop/WindowPedalsScale):scale(WindowPedalsScale))
-    ui.dwriteTextAligned(gear, fontGear, ui.Alignment.Center, ui.Alignment.Center, vec2(30, 30):scale(WindowPedalsScale), false, rgbm.from0255(255, 203, 0, 1))
     --
 
     -- Velocidade:
-    local speed
-    if(SelectedSpeed == 1) then
-      speed = string.format("%.0f", CAR.speedKmh)
-    else
-      speed = string.format("%.0f", CAR.speedKmh * 0.621371)
+    if SpeedActive then
+      currentWindowWidth = gearBackgroundWidth
+      local speed
+      if(SelectedSpeed == 1) then
+        speed = string.format("%.0f", CAR.speedKmh)
+      else
+        speed = string.format("%.0f", CAR.speedKmh * 0.621371)
+      end
+      if GearActive then
+        ui.setCursor(vec2(11, 58 - paddingTop / WindowPedalsScale):scale(WindowPedalsScale))
+        ui.dwriteTextAligned(speed, fontSpeed, ui.Alignment.Center, ui.Alignment.Center, vec2(50, 30):scale(WindowPedalsScale), false, rgbm(255, 255, 255, 1))
+      else
+        fontSpeed = 25 * WindowPedalsScale
+        ui.setCursor(vec2(11, 36 - paddingTop / WindowPedalsScale):scale(WindowPedalsScale))
+        ui.dwriteTextAligned(speed, fontSpeed, ui.Alignment.Center, ui.Alignment.Center, vec2(50, 35):scale(WindowPedalsScale), false, rgbm(255, 255, 255, 1))
+      end
     end
-    ui.setCursor(vec2(11, 58 - paddingTop / WindowPedalsScale):scale(WindowPedalsScale))
-    ui.dwriteTextAligned(speed, fontSpeed, ui.Alignment.Center, ui.Alignment.Center, vec2(50, 30):scale(WindowPedalsScale), false, rgbm(255, 255, 255, 1))
     --
 
+    currentWindowWidth = currentWindowWidth + 6 * WindowPedalsScale + barSpace
     -- Brake Bias:
     if BrakeBiasActive then
       -- Text Brake Bias
@@ -289,6 +307,9 @@ function pedals.windowMain()
     
     -- Combustível:
     if FuelActive then
+      if BrakeBiasActive and currentWindowWidth < 110 * WindowPedalsScale then
+        currentWindowWidth = 110 * WindowPedalsScale
+      end
       ui.setCursor(vec2(currentWindowWidth - 48 * WindowPedalsScale, currentWindowHeight - 19 * WindowPedalsScale))
 
       if CAR.fuel < 5.005 then

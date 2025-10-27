@@ -24,7 +24,7 @@ SelectedSpeed = settingsStorage.selectedSpeed
 WindowsColor = settingsStorage.windowsColor
 SettingsActive = false
 
-WindowSettingsSize = vec2(450, 420)
+WindowSettingsSize = vec2(450, 450)
 
 
 local tabPin = false
@@ -38,10 +38,13 @@ local function geral()
   if(tabPin) then
     tabPin = false
   end
-  ui.setCursor(vec2(15, 50))
+  
+  local initPos = 50
+  ui.setCursor(vec2(15, initPos))
   ui.header(language.get("LANGUAGE"))
-  ui.setCursor(vec2(20, 70))
-
+  
+  initPos = initPos + 20
+  ui.setCursor(vec2(20, initPos))
   ui.combo('##resolution', languages[Optionlanguage], function ()
     if ui.selectable(languages["en"]) then
       Optionlanguage = "en"
@@ -52,36 +55,47 @@ local function geral()
     end
   end)
 
-  ui.setCursor(vec2(20,100))
+  initPos = initPos + 30
+  ui.setCursor(vec2(20, initPos))
   if ui.button(language.get("APPLY")) then
     tabPin = true
     language.setlanguage(Optionlanguage)
   end
 
-  ui.drawRectFilled(vec2(5, 130), vec2(WindowSettingsSize.x - 5, 130), rgbm.from0255(119, 118, 124, 0.3), 1)
+  initPos = initPos + 35
+  ui.drawRectFilled(vec2(5, initPos), vec2(WindowSettingsSize.x - 5, initPos), rgbm.from0255(119, 118, 124, 0.3), 1)
   
-  ui.setCursor(vec2(15, 140))
+  initPos = initPos + 10
+  ui.setCursor(vec2(15, initPos))
   ui.header(language.get("SPEED"))
-  ui.setCursor(vec2(20, 160))
+  
+  initPos = initPos + 20
+  ui.setCursor(vec2(20, initPos))
   SelectedSpeed = ui.combo("##Speed", SelectedSpeed , {"Km/h", "Mph"})
   settingsStorage.selectedSpeed = SelectedSpeed
 
-  ui.drawRectFilled(vec2(5, 190), vec2(WindowSettingsSize.x - 5, 190), rgbm.from0255(119, 118, 124, 0.3), 1)
+  initPos = initPos + 35
+  ui.drawRectFilled(vec2(5, initPos), vec2(WindowSettingsSize.x - 5, initPos), rgbm.from0255(119, 118, 124, 0.3), 1)
 
-  ui.setCursor(vec2(15, 200))
+  initPos = initPos + 20
+  ui.setCursor(vec2(15, initPos))
   ui.header(language.get("SELECT_COLOR"))
   local color = settingsStorage.windowsColor
   ui.pushItemWidth(150)
-  ui.setCursor(vec2(20, 220))
+  
+  initPos = initPos + 20
+  ui.setCursor(vec2(20, initPos))
   ui.colorPicker(language.get('COLOR'), color, ui.ColorPickerFlags.PickerHueBar + ui.ColorPickerFlags.NoInputs, 10, 20)
 
-  ui.setCursor(vec2(20, 350))
+  initPos = initPos + 130
+  ui.setCursor(vec2(20, initPos))
   settingsStorage.transparancy = ui.slider(language.get('TRANSPARENCY'), settingsStorage.transparancy, 0, 1, string.format("%.0f", settingsStorage.transparancy * 100));
 
   settingsStorage.windowsColor = rgbm(color.r, color.g, color.b, settingsStorage.transparancy)
   ui.popItemWidth()
 
-  ui.setCursor(vec2(20, 380))
+  initPos = initPos + 30
+  ui.setCursor(vec2(20, initPos))
   if ui.button(language.get("RESET_COLOR")) then
     settingsStorage.windowsColor = rgbm.from0255(18, 21, 29, 0.85)
     settingsStorage.transparancy = 0.85

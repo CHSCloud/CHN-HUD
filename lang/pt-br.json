@@ -1,11 +1,12 @@
 {
+    "GEAR": "Marcha",
+    "SPEED": "Velocidade",
     "WHEEL": "Volante",
     "SIZE": "Escala",
     "ABS": "ABS",
     "ALERT_ABS": "Este carro não possui ABS",
     "LANGUAGE": "Idioma",
     "ELEMENTS": "Conteúdo",
-    "SPEED": "Velocidade",
     "GENERAL": "Geral",
     "APPLY": "Aplicar",
     "PERCENTAGE": "Porcentagem dos pedais",

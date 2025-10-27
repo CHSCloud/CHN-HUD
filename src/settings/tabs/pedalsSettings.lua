@@ -4,6 +4,8 @@ local pedalsSettings = {}
 
 local pedalsSettingsStore = ac.storage{
     windowPedalsScale = 1,
+    gearActive = true,
+    speedActive = true,
     wheelActive = true,
     ABSActive = true,
     acceleratorActive = true,
@@ -17,6 +19,8 @@ local pedalsSettingsStore = ac.storage{
 }
 
 WindowPedalsScale = pedalsSettingsStore.windowPedalsScale
+GearActive = pedalsSettingsStore.gearActive
+SpeedActive = pedalsSettingsStore.speedActive
 WheelActive = pedalsSettingsStore.wheelActive
 ABSActive = pedalsSettingsStore.ABSActive
 AcceleratorActive = pedalsSettingsStore.acceleratorActive
@@ -30,6 +34,8 @@ PedalLimitsLines = pedalsSettingsStore.pedalLimitsLines
 
 local function resetToDefault()
     WindowPedalsScale = 1
+    GearActive = true
+    SpeedActive = true
     WheelActive = true
     ABSActive = true
     AcceleratorActive = true
@@ -42,6 +48,8 @@ local function resetToDefault()
     PedalLimitsLines = false
 
     pedalsSettingsStore.windowPedalsScale = WindowPedalsScale
+    pedalsSettingsStore.gearActive = GearActive
+    pedalsSettingsStore.speedActive = SpeedActive
     pedalsSettingsStore.wheelActive = WheelActive
     pedalsSettingsStore.ABSActive = ABSActive
     pedalsSettingsStore.acceleratorActive = AcceleratorActive
@@ -63,8 +71,6 @@ function pedalsSettings.pedalsSettings()
     ui.setCursor(vec2(20, initPos))
     WindowPedalsScale = math.floor(ui.slider("##Size", WindowPedalsScale, 0.7, 3, string.format("%.2f", WindowPedalsScale)) * 100 + 0.5) / 100;
     pedalsSettingsStore.windowPedalsScale = WindowPedalsScale
-    
-    
 
     initPos = initPos + 35
     ui.drawRectFilled(vec2(5, initPos), vec2(WindowSettingsSize.x - 5, initPos), rgbm.from0255(119, 118, 124, 0.3), 1)
@@ -74,25 +80,20 @@ function pedalsSettings.pedalsSettings()
     ui.setCursor(vec2(15, initPos))
     ui.header(language.get("STEERING"))
 
-    -- OUTROS:
-    local posXOthers = 220
-    ui.setCursor(vec2(posXOthers - 5, initPos2))
-    ui.header(language.get("OTHERS"))
-  
-    initPos2 = initPos2 + 25
-    ui.setCursor(vec2(posXOthers, initPos2))
-    if ui.checkbox(language.get("FUEL"), FuelActive) then
-        FuelActive = not FuelActive
-        pedalsSettingsStore.fuelActive = FuelActive
+    
+    initPos = initPos + 25
+    ui.setCursor(vec2(20, initPos))
+    if ui.checkbox(language.get("GEAR"), GearActive) then
+        GearActive = not GearActive
+        pedalsSettingsStore.gearActive= GearActive
     end
 
-    initPos2 = initPos2 + 25
-    ui.setCursor(vec2(posXOthers, initPos2))
-    if ui.checkbox(language.get("BRAKE_BIAS"), BrakeBiasActive) then
-        BrakeBiasActive = not BrakeBiasActive
-        pedalsSettingsStore.breakeBiasActive = BrakeBiasActive
+    initPos = initPos + 25
+    ui.setCursor(vec2(20, initPos))
+    if ui.checkbox(language.get("SPEED"), SpeedActive) then
+        SpeedActive = not SpeedActive
+        pedalsSettingsStore.speedActive = SpeedActive
     end
-    --
 
     initPos = initPos + 25
     ui.setCursor(vec2(20, initPos))
@@ -115,6 +116,27 @@ function pedalsSettings.pedalsSettings()
 
     initPos = initPos + 35
     ui.drawRectFilled(vec2(5, initPos), vec2(WindowSettingsSize.x - 5, initPos), rgbm.from0255(119, 118, 124, 0.3), 1)
+    --
+    
+    -- OUTROS:
+    local posXOthers = 240
+    ui.setCursor(vec2(posXOthers - 5, initPos2))
+    ui.header(language.get("OTHERS"))
+  
+    initPos2 = initPos2 + 25
+    ui.setCursor(vec2(posXOthers, initPos2))
+    if ui.checkbox(language.get("FUEL"), FuelActive) then
+        FuelActive = not FuelActive
+        pedalsSettingsStore.fuelActive = FuelActive
+    end
+
+    initPos2 = initPos2 + 25
+    ui.setCursor(vec2(posXOthers, initPos2))
+    if ui.checkbox(language.get("BRAKE_BIAS"), BrakeBiasActive) then
+        BrakeBiasActive = not BrakeBiasActive
+        pedalsSettingsStore.breakeBiasActive = BrakeBiasActive
+    end
+    --
 
     -- Pedais:
     initPos = initPos + 10
