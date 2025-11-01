@@ -314,23 +314,23 @@ function pedals.windowMain()
 
       if CAR.fuel < 5.005 then
         ui.dwriteTextAligned(string.format("%.2f", CAR.fuel), fontFuel, ui.Alignment.Center, ui.Alignment.Start, vec2(50, 30):scale(WindowPedalsScale), false, rgbm.from0255(200, 0, 0, 1))
-        ui.setCursor(vec2(currentWindowWidth - 53 * WindowPedalsScale, currentWindowHeight - 18.5 * WindowPedalsScale))
+        ui.setCursor(vec2(currentWindowWidth - 56 * WindowPedalsScale, currentWindowHeight - 18.5 * WindowPedalsScale))
         ui.image("assets/Fuel.png", vec2(16, 15):scale(WindowPedalsScale), rgbm.from0255(200, 0, 0, 1), ui.ImageFit.Fit)
 
       elseif CAR.fuel < 9.995 then
         ui.dwriteTextAligned(string.format("%.2f", CAR.fuel), fontFuel, ui.Alignment.Center, ui.Alignment.Start, vec2(50, 30):scale(WindowPedalsScale), false, rgbm.from0255(255, 203, 0, 1))
-        ui.setCursor(vec2(currentWindowWidth - 53 * WindowPedalsScale, currentWindowHeight - 18.5 * WindowPedalsScale))
+        ui.setCursor(vec2(currentWindowWidth - 56 * WindowPedalsScale, currentWindowHeight - 18.5 * WindowPedalsScale))
         ui.image("assets/Fuel.png", vec2(16, 15):scale(WindowPedalsScale), rgbm.from0255(255, 203, 0, 1), ui.ImageFit.Fit)
 
       else
         ui.dwriteTextAligned(string.format("%.2f", CAR.fuel), fontFuel, ui.Alignment.Center, ui.Alignment.Start, vec2(50, 30):scale(WindowPedalsScale), false, rgbm.from0255(255, 255, 255, 1))
 
         if CAR.fuel < 99.995 then
-          ui.setCursor(vec2(currentWindowWidth - (58 * WindowPedalsScale), currentWindowHeight - (18.5 * WindowPedalsScale)))
+          ui.setCursor(vec2(currentWindowWidth - (60 * WindowPedalsScale), currentWindowHeight - 18.5 * WindowPedalsScale))
           ui.image("assets/Fuel.png", vec2(16, 15):scale(WindowPedalsScale), rgbm.from0255(255, 255, 255, 1), ui.ImageFit.Fit)
 
         else
-          ui.setCursor(vec2(currentWindowWidth - 61 * WindowPedalsScale, currentWindowHeight - 18.5 * WindowPedalsScale))
+          ui.setCursor(vec2(currentWindowWidth - 63 * WindowPedalsScale, currentWindowHeight - 18.5 * WindowPedalsScale))
           ui.image("assets/Fuel.png", vec2(16, 15):scale(WindowPedalsScale), rgbm.from0255(255, 255, 255, 1), ui.ImageFit.Fit)
         end
       end
