@@ -64,6 +64,7 @@ end
 
 function pedalsSettings.pedalsSettings()
     local initPos = 55
+    local posXpedalStyle = 160
     local initPos2
     ui.setCursor(vec2(15, initPos))
     ui.header(language.get("SIZE"))
@@ -119,19 +120,18 @@ function pedalsSettings.pedalsSettings()
     --
     
     -- OUTROS:
-    local posXOthers = 240
-    ui.setCursor(vec2(posXOthers - 5, initPos2))
+    ui.setCursor(vec2(posXpedalStyle - 5, initPos2))
     ui.header(language.get("OTHERS"))
   
     initPos2 = initPos2 + 25
-    ui.setCursor(vec2(posXOthers, initPos2))
+    ui.setCursor(vec2(posXpedalStyle, initPos2))
     if ui.checkbox(language.get("FUEL"), FuelActive) then
         FuelActive = not FuelActive
         pedalsSettingsStore.fuelActive = FuelActive
     end
 
     initPos2 = initPos2 + 25
-    ui.setCursor(vec2(posXOthers, initPos2))
+    ui.setCursor(vec2(posXpedalStyle, initPos2))
     if ui.checkbox(language.get("BRAKE_BIAS"), BrakeBiasActive) then
         BrakeBiasActive = not BrakeBiasActive
         pedalsSettingsStore.breakeBiasActive = BrakeBiasActive
@@ -149,18 +149,24 @@ function pedalsSettings.pedalsSettings()
         AcceleratorActive = not AcceleratorActive
         pedalsSettingsStore.acceleratorActive = AcceleratorActive
     end
-    ui.setCursor(vec2(150, initPos))
+
+    --- Estilo dos pedais
+    ui.setCursor(vec2(posXpedalStyle - 5, initPos -25))
+    ui.header(language.get("PEDAL_STYLE"))
+    ui.setCursor(vec2(posXpedalStyle, initPos))
     if ui.checkbox(language.get("PERCENTAGE"), TextBarsActive) then
         TextBarsActive = not TextBarsActive
         pedalsSettingsStore.textBarsActive = TextBarsActive
     end
 
     initPos = initPos + 25
-    ui.setCursor(vec2(150, initPos))
+    ui.setCursor(vec2(posXpedalStyle, initPos))
     if ui.checkbox(language.get("LIMIT_LINES"), PedalLimitsLines) then
         PedalLimitsLines = not PedalLimitsLines
         pedalsSettingsStore.pedalLimitsLines = PedalLimitsLines
     end
+    ---
+
     ui.setCursor(vec2(20, initPos))
     if ui.checkbox(language.get("BRAKE"), BrakeActive) then
         BrakeActive = not BrakeActive
@@ -180,6 +186,7 @@ function pedalsSettings.pedalsSettings()
         pedalsSettingsStore.handbrakeActive = HandbrakeActive
     end
     --
+
     initPos = initPos + 40
     ui.setCursor(vec2(20, initPos))
     if ui.button(language.get("RESET_DEFAULT")) then
