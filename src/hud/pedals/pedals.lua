@@ -8,15 +8,15 @@ local currentWindowHeight = 0
 
 -- Configurações globais
 local barBackgroundColor = rgbm.from0255(55, 55, 63, 0.85)
-local fontBar = 15 * WindowPedalsScale
-local fontBarInfinite = 25 * WindowPedalsScale
-local posyTextBars = -2 * WindowPedalsScale 
-local posyInfiniteBars = -10 * WindowPedalsScale 
-local barSize = vec2(20, 60) * WindowPedalsScale
-local barSpace = 4 * WindowPedalsScale
-local barLimitSize = vec2(20, 6) * WindowPedalsScale
-local barMidleSize = vec2(20, 44) * WindowPedalsScale
-local barPaddingMidle = 2 * WindowPedalsScale
+local fontBar
+local fontBarInfinite
+local posyTextBars
+local posyInfiniteBars
+local barSize
+local barSpace
+local barLimitSize
+local barMidleSize
+local barPaddingMidle
 local paddingTop
 
 -- Desenha a marcha
@@ -293,6 +293,16 @@ end
 
 function pedals.windowMain()
   ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
+  barSize = vec2(20, 60) * WindowPedalsScale
+  fontBar = 15 * WindowPedalsScale
+  fontBarInfinite = 25 * WindowPedalsScale
+  posyTextBars = -2 * WindowPedalsScale 
+  posyInfiniteBars = -10 * WindowPedalsScale 
+  barSize = vec2(20, 60) * WindowPedalsScale
+  barSpace = 4 * WindowPedalsScale
+  barLimitSize = vec2(20, 6) * WindowPedalsScale
+  barMidleSize = vec2(20, 44) * WindowPedalsScale
+  barPaddingMidle = 2 * WindowPedalsScale
   
   -- Inicialização de variáveis
   paddingTop = 7 * WindowPedalsScale
