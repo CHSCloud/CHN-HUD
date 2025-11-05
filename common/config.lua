@@ -3,7 +3,7 @@ local config = {}
 local windows = {}
 
 local windowNames = {
-    "HUD CHN",
+    "Pedals",
     "Pit Lane",
     "Session Laps"
 }

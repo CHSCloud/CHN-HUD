@@ -329,7 +329,7 @@ function pedals.windowMain()
   contentTop = 0
   contentBottom = 0
 
-  if TextBarsActive and contentMidle > 0 then contentTop = 10 end
+  if TextBarsActive and contentMidle > 0 and (ClutchActive or BrakeActive or AcceleratorActive or HandbrakeActive) then contentTop = 10 end
   if BrakeBiasActive or FuelActive then contentBottom = 17 * WindowPedalsScale end
 
   currentWindowWidth = 0
@@ -387,7 +387,7 @@ function pedals.windowMain()
   --
 
   currentWindowSize = vec2(currentWindowWidth, currentWindowHeight)
-  config.resize(currentWindowSize, "HUD CHN")
+  config.resize(currentWindowSize, "Pedals")
 end
 
 return pedals
