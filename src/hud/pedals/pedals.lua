@@ -21,7 +21,7 @@ local barSpace -- Espaço entre as barras
 local barLimitSize -- Tamanho das linhas de limite das barras
 local barMidleSize -- Tamanho das barras intermediárias
 local barPaddingMidle -- Espaço entre as barras intermediárias
-local barBackgroundColor = rgbm.from0255(55, 55, 63, 0.85) -- Cor de fundo das barras
+local grayBackgroundColor = rgbm.from0255(55, 55, 63, 0.85) -- Cor de fundo das barras, abs, etc.
 
 -- Tamanho do espaço do conteúdo do topo
 local contentTop = 0
@@ -90,18 +90,18 @@ end
 -- Desenha barra com linhas de limite
 local function drawBarWithLimits(posBar, value, color, inverted)
   contentMidle = 73 * WindowPedalsScale
-  ui.drawRectFilled(posBar, posBar + barLimitSize, barBackgroundColor)
+  ui.drawRectFilled(posBar, posBar + barLimitSize, grayBackgroundColor)
   
   ui.drawRectFilled(
     posBar + vec2(0, barLimitSize.y + barPaddingMidle), 
     posBar + vec2(0, barLimitSize.y + barPaddingMidle) + barMidleSize, 
-    barBackgroundColor
+    grayBackgroundColor
   )
   
   ui.drawRectFilled(
     posBar + vec2(0, barLimitSize.y + barMidleSize.y + 2 * barPaddingMidle), 
     posBar + vec2(0, barLimitSize.y + barMidleSize.y + 2 * barPaddingMidle) + barLimitSize, 
-    barBackgroundColor
+    grayBackgroundColor
   )
   
   if inverted then
@@ -144,7 +144,7 @@ end
 -- Desenha barra simples
 local function drawBarSimple(posBar, value, color, inverted)
   contentMidle = 73 * WindowPedalsScale
-  ui.drawRectFilled(posBar, posBar + barSize, barBackgroundColor)
+  ui.drawRectFilled(posBar, posBar + barSize, grayBackgroundColor)
   
   if inverted then
     ui.drawRectFilled(posBar + vec2(0, (value * barSize.y)), posBar + barSize, color)
@@ -155,58 +155,73 @@ end
 
 -- Desenha rpm
 local function drawRpm()
-  local rpmHeight = 6 * WindowPedalsScale
-  local lenght = 10
-  local initPos = vec2(lenght, 5) * WindowPedalsScale
-  ui.drawRectFilled(initPos, vec2(currentWindowWidth - lenght * WindowPedalsScale, initPos.y + rpmHeight), barBackgroundColor, rpmHeight)
-  local lenghtRPM = ((currentWindowWidth - lenght * WindowPedalsScale) * CAR.rpm) / CAR.rpmLimiter
-  if lenghtRPM <= initPos.x then
-    lenghtRPM = initPos.x
-  end
-  local color = rgbm.from0255(90, 212, 51, 1)
-  if(CAR.rpm >= CAR.rpmLimiter - 600) then
-    color = rgbm.from0255(200, 0, 0, 1)
-  elseif (CAR.rpm >= CAR.rpmLimiter - 1500) then
-    color = rgbm.from0255(255, 255, 0, 1)
-  end
-  ui.drawRectFilled(initPos, vec2(lenghtRPM, initPos.y + rpmHeight), color, rpmHeight)
-end 
-
--- Desenha rpm
-local function drawRpm2()
-  local rpmHeight = 6 * WindowPedalsScale
   if currentWindowWidth < 150 * WindowPedalsScale then
     currentWindowWidth = 150 * WindowPedalsScale
   end
   local initPos = (currentWindowWidth / 2) - 72.5 * WindowPedalsScale
+  local rpmStart = CAR.rpmLimiter * 0.80
+  local rpmRange = CAR.rpmLimiter - rpmStart
 
-  local num = 9
-  local rpmThreshold = CAR.rpmLimiter * 0.80
-  local rpmRange = CAR.rpmLimiter - rpmThreshold
-  local level = 0
-  
-  if CAR.rpm >= rpmThreshold then
-    level = ((num * (CAR.rpm - rpmThreshold)) / rpmRange) + 1
-  end
-
-  local color = rgbm.from0255(90, 212, 51, 1)
-  if(CAR.rpm >= CAR.rpmLimiter * 0.96) then
-    color = rgbm.from0255(200, 0, 0, 1)
-
-  elseif (CAR.rpm >= CAR.rpmLimiter * 0.90) then
-    color = rgbm.from0255(255, 203, 0, 1)
-  end
-
-  for i = 1, num, 1 do
-    ui.setCursor(vec2(initPos, 1 * WindowPedalsScale))
-    if i > level then
-      color = barBackgroundColor
+  if RpmType == "default" then
+    local numCircles = 9
+    local level = 0
+    if CAR.rpm >= rpmStart then
+      level = ((numCircles * (CAR.rpm - rpmStart)) / rpmRange) + 1
     end
-    ui.image("assets/ledRpm.png", vec2(17, 17):scale(WindowPedalsScale), color, ui.ImageFit.Fit)
-    initPos = initPos + 16 * WindowPedalsScale
-  end
 
+    local color = rgbm.from0255(90, 212, 51, 1)
+    if (CAR.rpm >= CAR.rpmLimiter * 0.96) then
+      level = 10
+      if (8 * Timer) % 2 >= 1 then 
+          color = grayBackgroundColor
+      else 
+        color = rgbm.from0255(200, 0, 0, 1)
+      end
+
+    elseif(CAR.rpm >= CAR.rpmLimiter * 0.95) then
+      color = rgbm.from0255(200, 0, 0, 1)
+
+    elseif (CAR.rpm >= CAR.rpmLimiter * 0.90) then
+      color = rgbm.from0255(255, 203, 0, 1)
+    end
+
+    for i = 1, numCircles, 1 do
+      ui.setCursor(vec2(initPos, 1 * WindowPedalsScale))
+      if i > level then
+        color = grayBackgroundColor
+      end
+      ui.image("assets/ledRpm.png", vec2(17, 17):scale(WindowPedalsScale), color, ui.ImageFit.Fit)
+      initPos = initPos + 16 * WindowPedalsScale
+    end
+
+  elseif RpmType == "bar" then
+    local barHeight = 16 * WindowPedalsScale
+    ui.drawRectFilled(vec2(initPos, 4 * WindowPedalsScale), vec2(initPos + 145 * WindowPedalsScale, barHeight), grayBackgroundColor, 10 * WindowPedalsScale)
+
+    if CAR.rpm >= rpmStart then
+      local lenght = initPos + ((145 * WindowPedalsScale * (CAR.rpm - rpmStart)) / rpmRange)
+      local color = rgbm.from0255(90, 212, 51, 1)
+
+      if (CAR.rpm >= CAR.rpmLimiter * 0.96) then
+        lenght = initPos + 145 * WindowPedalsScale
+        if (8 * Timer) % 2 >= 1 then 
+            color = grayBackgroundColor
+        else 
+          color = rgbm.from0255(200, 0, 0, 1)
+        end
+
+      elseif(CAR.rpm >= CAR.rpmLimiter * 0.95) then
+        color = rgbm.from0255(200, 0, 0, 1)
+
+      elseif (CAR.rpm >= CAR.rpmLimiter * 0.90) then
+        color = rgbm.from0255(255, 203, 0, 1)
+      end
+
+      ui.drawRectFilled(vec2(initPos, 4 * WindowPedalsScale), vec2(lenght, barHeight), color, 10 * WindowPedalsScale)
+    end 
+  end
 end 
+--
 
 -- Desenha a embreagem
 local function drawClutch()
@@ -312,7 +327,7 @@ local function drawABS()
   if CAR.absInAction then
     ui.image("assets/ABS.png", vec2(80,80):scale(WindowPedalsScale), rgbm(255, 0, 0, 1), ui.ImageFit.Fit)
   else
-    ui.image("assets/ABS.png", vec2(80,80):scale(WindowPedalsScale), barBackgroundColor, ui.ImageFit.Fit)
+    ui.image("assets/ABS.png", vec2(80,80):scale(WindowPedalsScale), grayBackgroundColor, ui.ImageFit.Fit)
   end
   
   currentWindowWidth = currentWindowWidth + absBackgroundSize.x
@@ -437,16 +452,14 @@ function pedals.windowMain()
   if BrakeBiasActive then
     drawBrakeBias()
   end
-  
-  
 
   if RpmActive then
-    drawRpm2()
+    drawRpm()
   end
+
   if FuelActive then
     drawFuel()
   end
-
   --
 
   currentWindowSize = vec2(currentWindowWidth, currentWindowHeight)

@@ -16,7 +16,8 @@ local pedalsSettingsStore = ac.storage{
     textBarsActive = true,
     fuelActive = true,
     pedalLimitsLines = false,
-    rpmActive = true
+    rpmActive = true,
+    rpmType = "default"
 }
 
 WindowPedalsScale = pedalsSettingsStore.windowPedalsScale
@@ -33,6 +34,14 @@ TextBarsActive = pedalsSettingsStore.textBarsActive
 FuelActive = pedalsSettingsStore.fuelActive
 PedalLimitsLines = pedalsSettingsStore.pedalLimitsLines
 RpmActive = pedalsSettingsStore.rpmActive
+RpmType = pedalsSettingsStore.rpmType
+
+local rpm = {
+    ["default"] = language.get("DEFAULT"),
+    ["bar"] = "Bar"
+}
+
+
 local function resetToDefault()
     WindowPedalsScale = 1
     GearActive = true
@@ -47,6 +56,8 @@ local function resetToDefault()
     TextBarsActive = true
     FuelActive = true
     PedalLimitsLines = false
+    RpmActive = true
+    RpmType = "default"
 
     pedalsSettingsStore.windowPedalsScale = WindowPedalsScale
     pedalsSettingsStore.gearActive = GearActive
@@ -61,11 +72,14 @@ local function resetToDefault()
     pedalsSettingsStore.textBarsActive = TextBarsActive
     pedalsSettingsStore.fuelActive = FuelActive
     pedalsSettingsStore.pedalLimitsLines = PedalLimitsLines
+    pedalsSettingsStore.rpmActive = RpmActive
+    pedalsSettingsStore.rpmType = RpmType
 end
 
 function pedalsSettings.pedalsSettings()
     local initPos = 55
-    local posXpedalStyle = 160
+    local posXOthers = 250
+    local posXStyle = 150
     local initPos2
     ui.setCursor(vec2(15, initPos))
     ui.header(language.get("SIZE"))
@@ -121,28 +135,45 @@ function pedalsSettings.pedalsSettings()
     --
     
     -- OUTROS:
-    ui.setCursor(vec2(posXpedalStyle - 5, initPos2))
+    ui.setCursor(vec2(posXOthers - 5, initPos2))
     ui.header(language.get("OTHERS"))
   
     initPos2 = initPos2 + 25
-    ui.setCursor(vec2(posXpedalStyle, initPos2))
+    ui.setCursor(vec2(posXOthers, initPos2))
     if ui.checkbox(language.get("FUEL"), FuelActive) then
         FuelActive = not FuelActive
         pedalsSettingsStore.fuelActive = FuelActive
     end
 
     initPos2 = initPos2 + 25
-    ui.setCursor(vec2(posXpedalStyle, initPos2))
+    ui.setCursor(vec2(posXOthers, initPos2))
     if ui.checkbox(language.get("BRAKE_BIAS"), BrakeBiasActive) then
         BrakeBiasActive = not BrakeBiasActive
         pedalsSettingsStore.breakeBiasActive = BrakeBiasActive
     end
 
     initPos2 = initPos2 + 25
-    ui.setCursor(vec2(posXpedalStyle, initPos2))
+    ui.setCursor(vec2(posXOthers, initPos2))
     if ui.checkbox("RPM", RpmActive) then
         RpmActive = not RpmActive
         pedalsSettingsStore.rpmActive = RpmActive
+    end
+
+    if RpmActive then
+        initPos2 = initPos2 + 25
+        ui.setCursor(vec2(posXOthers, initPos2))
+        ui.setNextItemWidth(100)
+        ui.combo('##resolution', rpm[RpmType], function ()
+            if ui.selectable(rpm["default"]) then
+                RpmType = "default"
+                pitSettingsStore.rpmType = RpmType
+            end
+
+            if ui.selectable(rpm["bar"]) then
+                RpmType = "bar"
+                pitSettingsStore.rpmType = RpmType
+            end
+        end)
     end
     --
 
@@ -159,16 +190,16 @@ function pedalsSettings.pedalsSettings()
     end
 
     --- Estilo dos pedais
-    ui.setCursor(vec2(posXpedalStyle - 5, initPos -25))
+    ui.setCursor(vec2(posXStyle - 5, initPos -25))
     ui.header(language.get("PEDAL_STYLE"))
-    ui.setCursor(vec2(posXpedalStyle, initPos))
+    ui.setCursor(vec2(posXStyle, initPos))
     if ui.checkbox(language.get("PERCENTAGE"), TextBarsActive) then
         TextBarsActive = not TextBarsActive
         pedalsSettingsStore.textBarsActive = TextBarsActive
     end
 
     initPos = initPos + 25
-    ui.setCursor(vec2(posXpedalStyle, initPos))
+    ui.setCursor(vec2(posXStyle, initPos))
     if ui.checkbox(language.get("LIMIT_LINES"), PedalLimitsLines) then
         PedalLimitsLines = not PedalLimitsLines
         pedalsSettingsStore.pedalLimitsLines = PedalLimitsLines

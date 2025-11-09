@@ -28,7 +28,7 @@ WindowSettingsSize = vec2(450, 450)
 
 
 local tabPin = false
-function update()
+function settings.updateSettings()
   SIM = ac.getSim()
   CAR = ac.getCar(SIM.focusedCar)
   MY_CAR = ac.getCar(0)

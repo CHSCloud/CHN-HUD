@@ -6,6 +6,10 @@ local pitSettingsStore = ac.storage {
     windowPitScale = 1,
     optionPlate = "default"
 }
+local plates = {
+    ["default"] = language.get("DEFAULT"),
+    ["alert"] = language.get("ALERT_PIT")
+}
 
 WindowPitScale = pitSettingsStore.windowPitScale
 OptionPlate = pitSettingsStore.optionPlate
@@ -19,11 +23,6 @@ local function resetToDefault()
 end
 
 function pitlaneSettings.pitlaneSettings()
-    local plates = {
-        ["default"] = language.get("DEFAULT"),
-        ["alert"] = language.get("ALERT_PIT")
-    }
-
     local initPos = 55
     ui.setCursor(vec2(15, initPos))
     ui.header(language.get("SIZE"))

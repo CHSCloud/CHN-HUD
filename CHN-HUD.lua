@@ -3,6 +3,8 @@ local pitlane = require("src.hud.pitlane.pitlane")
 local pedals = require("src.hud.pedals.pedals")
 local sessionlaps = require("src.hud.sessionlaps.sessionlaps")
 
+Timer = 0
+
 -- TELA DE CONFIGURAÇÕES
 function windowSettings()
   settings.windowMain()
@@ -27,4 +29,10 @@ end
 -- TELA DE VOLTAS DA SESSÃO
 function windowSessionlaps()
   sessionlaps.windowMain()
+end
+
+-- FUNÇÃO DE ATUALIZAÇÃO
+function script.update(dt)
+  Timer = Timer + dt
+  settings.updateSettings()
 end
