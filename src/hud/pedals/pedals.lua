@@ -22,7 +22,6 @@ local barLimitSize -- Tamanho das linhas de limite das barras
 local barMidleSize -- Tamanho das barras intermediárias
 local barPaddingMidle -- Espaço entre as barras intermediárias
 local barBackgroundColor = rgbm.from0255(55, 55, 63, 0.85) -- Cor de fundo das barras
-local fontGear = 40 * WindowPedalsScale
 
 -- Tamanho do espaço do conteúdo do topo
 local contentTop = 0
@@ -32,6 +31,7 @@ local contentBottom = 0
 -- Desenha a marcha
 local function drawGear()
   contentMidle = 73 * WindowPedalsScale
+  local fontGear = 40 * WindowPedalsScale
   local gearBackgroundWidth = 60 * WindowPedalsScale
 
   currentWindowWidth = gearBackgroundWidth
