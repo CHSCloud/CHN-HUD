@@ -163,7 +163,7 @@ function pedalsSettings.pedalsSettings()
         initPos2 = initPos2 + 25
         ui.setCursor(vec2(posXOthers, initPos2))
         ui.setNextItemWidth(100)
-        ui.combo('##resolution', rpm[RpmType], function ()
+        ui.combo('##rpmType', rpm[RpmType], function ()
             if ui.selectable(rpm["default"]) then
                 RpmType = "default"
                 pitSettingsStore.rpmType = RpmType
