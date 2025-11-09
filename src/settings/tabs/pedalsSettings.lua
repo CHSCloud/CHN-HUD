@@ -15,7 +15,8 @@ local pedalsSettingsStore = ac.storage{
     handbrakeActive = false,
     textBarsActive = true,
     fuelActive = true,
-    pedalLimitsLines = false
+    pedalLimitsLines = false,
+    rpmActive = true
 }
 
 WindowPedalsScale = pedalsSettingsStore.windowPedalsScale
@@ -31,7 +32,7 @@ HandbrakeActive = pedalsSettingsStore.handbrakeActive
 TextBarsActive = pedalsSettingsStore.textBarsActive
 FuelActive = pedalsSettingsStore.fuelActive
 PedalLimitsLines = pedalsSettingsStore.pedalLimitsLines
-
+RpmActive = pedalsSettingsStore.rpmActive
 local function resetToDefault()
     WindowPedalsScale = 1
     GearActive = true
@@ -135,6 +136,13 @@ function pedalsSettings.pedalsSettings()
     if ui.checkbox(language.get("BRAKE_BIAS"), BrakeBiasActive) then
         BrakeBiasActive = not BrakeBiasActive
         pedalsSettingsStore.breakeBiasActive = BrakeBiasActive
+    end
+
+    initPos2 = initPos2 + 25
+    ui.setCursor(vec2(posXpedalStyle, initPos2))
+    if ui.checkbox("RPM", RpmActive) then
+        RpmActive = not RpmActive
+        pedalsSettingsStore.rpmActive = RpmActive
     end
     --
 
