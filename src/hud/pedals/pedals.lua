@@ -188,21 +188,22 @@ local function drawRpm()
       if i > level then
         color = COLOR.GRAY_BG
       end
-      ui.drawCircleFilled(vec2(initPos, 12 * WindowPedalsScale), 8, color, 20)
+      ui.drawCircleFilled(vec2(initPos, 11 * WindowPedalsScale), 8 * WindowPedalsScale, color, 20 * WindowPedalsScale)
       initPos = initPos + 18 * WindowPedalsScale
     end
 
   elseif RpmType == "bar" then
-    local initPos = (currentWindowWidth / 2) - 72.5 * WindowPedalsScale
-    local barHeight = 16 * WindowPedalsScale
-    ui.drawRectFilled(vec2(initPos, 4 * WindowPedalsScale), vec2(initPos + 145 * WindowPedalsScale, barHeight), COLOR.GRAY_BG, 10 * WindowPedalsScale)
+    local width = 165
+    local initPos = (currentWindowWidth / 2) - (width / 2) * WindowPedalsScale
+    local barHeight = 18 * WindowPedalsScale
+    ui.drawRectFilled(vec2(initPos, 4 * WindowPedalsScale), vec2(initPos + width * WindowPedalsScale, barHeight), COLOR.GRAY_BG, 10 * WindowPedalsScale)
 
     if CAR.rpm >= rpmStart then
-      local lenght = initPos + ((145 * WindowPedalsScale * (CAR.rpm - rpmStart)) / rpmRange)
+      local lenght = initPos + ((width * WindowPedalsScale * (CAR.rpm - rpmStart)) / rpmRange)
       local color = COLOR.GREEN
 
       if (CAR.rpm >= CAR.rpmLimiter * 0.96) then
-        lenght = initPos + 145 * WindowPedalsScale
+        lenght = initPos + width * WindowPedalsScale
         if (8 * Timer) % 2 >= 1 then 
             color = COLOR.GRAY_BG
         else 
