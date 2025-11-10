@@ -21,15 +21,15 @@ function sessionlaps.windowMain()
     ui.drawRectFilled(vec2(0, 0), vec2(currentWindowWidth, currentWindowHeight), WindowsColor, 5 * WindowSessionLapsScale)
     -- BACKGROUND IMAGEM
     ui.setCursor(vec2(-60,1):scale(WindowSessionLapsScale))
-    ui.image("assets/lapbackground.png", vec2(216, 21.6):scale(WindowSessionLapsScale), rgbm.from0255(255, 255, 255, 1), ui.ImageFit.Fit)
+    ui.image("assets/lapbackground.png", vec2(216, 21.6):scale(WindowSessionLapsScale), COLOR.WHITE, ui.ImageFit.Fit)
     ui.setCursor(vec2(-60,1):scale(WindowSessionLapsScale))
-    ui.image("assets/lapbackground1.png", vec2(216, 21.6):scale(WindowSessionLapsScale), rgbm.from0255(255, 203, 0, 1), ui.ImageFit.Fit)
+    ui.image("assets/lapbackground1.png", vec2(216, 21.6):scale(WindowSessionLapsScale), COLOR.YELLOW_DARK, ui.ImageFit.Fit)
     ui.setCursor(vec2(-60,27):scale(WindowSessionLapsScale))
-    ui.image("assets/lapbackground.png", vec2(216, 21.6):scale(WindowSessionLapsScale), rgbm.from0255(255, 255, 255, 1), ui.ImageFit.Fit)
+    ui.image("assets/lapbackground.png", vec2(216, 21.6):scale(WindowSessionLapsScale), COLOR.WHITE, ui.ImageFit.Fit)
     ui.setCursor(vec2(-60,27):scale(WindowSessionLapsScale))
-    ui.image("assets/lapbackground1.png", vec2(216, 21.6):scale(WindowSessionLapsScale), rgbm.from0255(255, 203, 0, 1), ui.ImageFit.Fit)
+    ui.image("assets/lapbackground1.png", vec2(216, 21.6):scale(WindowSessionLapsScale), COLOR.YELLOW_DARK, ui.ImageFit.Fit)
     -- LINE
-    ui.drawRectFilled(vec2(5, 26):scale(WindowSessionLapsScale), vec2(235, 26):scale(WindowSessionLapsScale), rgbm.from0255(119, 118, 124, 0.3), 1)
+    ui.drawRectFilled(vec2(5, 26):scale(WindowSessionLapsScale), vec2(235, 26):scale(WindowSessionLapsScale), COLOR.GRAY, 1)
 
     -- LAST LAP
     if CAR.previousLapTimeMs == 0 then
@@ -46,7 +46,7 @@ function sessionlaps.windowMain()
         if not CAR.isLastLapValid then lastLap = "*" .. lastLap end
     end
     ui.setCursor(vec2(20,0):scale(WindowSessionLapsScale))
-    ui.dwriteTextAligned(lastLap, 15 * WindowSessionLapsScale, ui.Alignment.End, ui.Alignment.Center, vec2(160, 25):scale(WindowSessionLapsScale), false, rgbm.from0255(255, 255, 255, 1))
+    ui.dwriteTextAligned(lastLap, 15 * WindowSessionLapsScale, ui.Alignment.End, ui.Alignment.Center, vec2(160, 25):scale(WindowSessionLapsScale), false, COLOR.WHITE)
 
     if CAR.previousLapTimeMs == CAR.bestLapTimeMs and CAR.isLastLapValid then
         previouBestlap = CAR.bestLapTimeMs
@@ -66,7 +66,7 @@ function sessionlaps.windowMain()
         end
     end
     ui.setCursor(vec2(20,27):scale(WindowSessionLapsScale))
-    ui.dwriteTextAligned(bestLap, 15 * WindowSessionLapsScale, ui.Alignment.End, ui.Alignment.Center, vec2(160, 25):scale(WindowSessionLapsScale), false, rgbm.from0255(255, 255, 255, 1))
+    ui.dwriteTextAligned(bestLap, 15 * WindowSessionLapsScale, ui.Alignment.End, ui.Alignment.Center, vec2(160, 25):scale(WindowSessionLapsScale), false, COLOR.WHITE)
 
     
     -- TEXT BEST

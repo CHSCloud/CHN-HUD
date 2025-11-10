@@ -21,7 +21,6 @@ local barSpace -- Espaço entre as barras
 local barLimitSize -- Tamanho das linhas de limite das barras
 local barMidleSize -- Tamanho das barras intermediárias
 local barPaddingMidle -- Espaço entre as barras intermediárias
-local grayBackgroundColor = rgbm.from0255(55, 55, 63, 0.85) -- Cor de fundo das barras, abs, etc.
 
 -- Tamanho do espaço do conteúdo do topo
 local contentTop = 0
@@ -44,11 +43,11 @@ local function drawGear()
   
   if SpeedActive then
     ui.setCursor(vec2(20, 11 + contentTop):scale(WindowPedalsScale))
-    ui.dwriteTextAligned(gear, fontGear, ui.Alignment.Center, ui.Alignment.Center, vec2(30, 30):scale(WindowPedalsScale), false, rgbm.from0255(255, 203, 0, 1))
+    ui.dwriteTextAligned(gear, fontGear, ui.Alignment.Center, ui.Alignment.Center, vec2(30, 30):scale(WindowPedalsScale), false, COLOR.YELLOW_DARK)
   else
     fontGear = 45 * WindowPedalsScale
     ui.setCursor(vec2(20, 15 + contentTop):scale(WindowPedalsScale))
-    ui.dwriteTextAligned(gear, fontGear, ui.Alignment.Center, ui.Alignment.Center, vec2(30, 40):scale(WindowPedalsScale), false, rgbm.from0255(255, 203, 0, 1))
+    ui.dwriteTextAligned(gear, fontGear, ui.Alignment.Center, ui.Alignment.Center, vec2(30, 40):scale(WindowPedalsScale), false, COLOR.YELLOW_DARK)
   end
 end
 
@@ -68,11 +67,11 @@ local function drawSpeed()
   
   if GearActive then
     ui.setCursor(vec2(11, 41 + contentTop):scale(WindowPedalsScale))
-    ui.dwriteTextAligned(speed, fontSpeed, ui.Alignment.Center, ui.Alignment.Center, vec2(50, 30):scale(WindowPedalsScale), false, rgbm(255, 255, 255, 1))
+    ui.dwriteTextAligned(speed, fontSpeed, ui.Alignment.Center, ui.Alignment.Center, vec2(50, 30):scale(WindowPedalsScale), false, COLOR.WHITE)
   else
     fontSpeed = 25 * WindowPedalsScale
     ui.setCursor(vec2(11, 19 + contentTop):scale(WindowPedalsScale))
-    ui.dwriteTextAligned(speed, fontSpeed, ui.Alignment.Center, ui.Alignment.Center, vec2(50, 35):scale(WindowPedalsScale), false, rgbm(255, 255, 255, 1))
+    ui.dwriteTextAligned(speed, fontSpeed, ui.Alignment.Center, ui.Alignment.Center, vec2(50, 35):scale(WindowPedalsScale), false, COLOR.WHITE)
   end
 end
 
@@ -80,7 +79,7 @@ end
 local function drawBarText(value, color)
   contentMidle = 73 * WindowPedalsScale
   if value < 98.99 then
-    ui.dwriteTextAligned(string.format("%.0f", value), fontBar, ui.Alignment.Center, ui.Alignment.Start, vec2(20, 30):scale(WindowPedalsScale), false, rgbm.from0255(255, 255, 255, 1))
+    ui.dwriteTextAligned(string.format("%.0f", value), fontBar, ui.Alignment.Center, ui.Alignment.Start, vec2(20, 30):scale(WindowPedalsScale), false, COLOR.WHITE)
   else 
     ui.setCursor(vec2(currentWindowWidth, posyInfiniteBars))
     ui.dwriteTextAligned("∞", fontBarInfinite, ui.Alignment.Center, ui.Alignment.Start, vec2(20, 30):scale(WindowPedalsScale), false, color)
@@ -90,18 +89,18 @@ end
 -- Desenha barra com linhas de limite
 local function drawBarWithLimits(posBar, value, color, inverted)
   contentMidle = 73 * WindowPedalsScale
-  ui.drawRectFilled(posBar, posBar + barLimitSize, grayBackgroundColor)
+  ui.drawRectFilled(posBar, posBar + barLimitSize, COLOR.GRAY_BG)
   
   ui.drawRectFilled(
     posBar + vec2(0, barLimitSize.y + barPaddingMidle), 
     posBar + vec2(0, barLimitSize.y + barPaddingMidle) + barMidleSize, 
-    grayBackgroundColor
+    COLOR.GRAY_BG
   )
   
   ui.drawRectFilled(
     posBar + vec2(0, barLimitSize.y + barMidleSize.y + 2 * barPaddingMidle), 
     posBar + vec2(0, barLimitSize.y + barMidleSize.y + 2 * barPaddingMidle) + barLimitSize, 
-    grayBackgroundColor
+    COLOR.GRAY_BG
   )
   
   if inverted then
@@ -144,7 +143,7 @@ end
 -- Desenha barra simples
 local function drawBarSimple(posBar, value, color, inverted)
   contentMidle = 73 * WindowPedalsScale
-  ui.drawRectFilled(posBar, posBar + barSize, grayBackgroundColor)
+  ui.drawRectFilled(posBar, posBar + barSize, COLOR.GRAY_BG)
   
   if inverted then
     ui.drawRectFilled(posBar + vec2(0, (value * barSize.y)), posBar + barSize, color)
@@ -169,26 +168,26 @@ local function drawRpm()
       level = ((numCircles * (CAR.rpm - rpmStart)) / rpmRange) + 1
     end
 
-    local color = rgbm.from0255(90, 212, 51, 1)
+    local color = COLOR.GREEN
     if (CAR.rpm >= CAR.rpmLimiter * 0.96) then
       level = 10
       if (8 * Timer) % 2 >= 1 then 
-          color = grayBackgroundColor
+          color = COLOR.GRAY_BG
       else 
-        color = rgbm.from0255(200, 0, 0, 1)
+        color = COLOR.RED_DARK
       end
 
     elseif(CAR.rpm >= CAR.rpmLimiter * 0.95) then
-      color = rgbm.from0255(200, 0, 0, 1)
+      color = COLOR.RED_DARK
 
     elseif (CAR.rpm >= CAR.rpmLimiter * 0.90) then
-      color = rgbm.from0255(255, 203, 0, 1)
+      color = COLOR.YELLOW
     end
 
     for i = 1, numCircles, 1 do
       ui.setCursor(vec2(initPos, 1 * WindowPedalsScale))
       if i > level then
-        color = grayBackgroundColor
+        color = COLOR.GRAY_BG
       end
       ui.image("assets/ledRpm.png", vec2(17, 17):scale(WindowPedalsScale), color, ui.ImageFit.Fit)
       initPos = initPos + 16 * WindowPedalsScale
@@ -196,25 +195,25 @@ local function drawRpm()
 
   elseif RpmType == "bar" then
     local barHeight = 16 * WindowPedalsScale
-    ui.drawRectFilled(vec2(initPos, 4 * WindowPedalsScale), vec2(initPos + 145 * WindowPedalsScale, barHeight), grayBackgroundColor, 10 * WindowPedalsScale)
+    ui.drawRectFilled(vec2(initPos, 4 * WindowPedalsScale), vec2(initPos + 145 * WindowPedalsScale, barHeight), COLOR.GRAY_BG, 10 * WindowPedalsScale)
 
     if CAR.rpm >= rpmStart then
       local lenght = initPos + ((145 * WindowPedalsScale * (CAR.rpm - rpmStart)) / rpmRange)
-      local color = rgbm.from0255(90, 212, 51, 1)
+      local color = COLOR.GREEN
 
       if (CAR.rpm >= CAR.rpmLimiter * 0.96) then
         lenght = initPos + 145 * WindowPedalsScale
         if (8 * Timer) % 2 >= 1 then 
-            color = grayBackgroundColor
+            color = COLOR.GRAY_BG
         else 
-          color = rgbm.from0255(200, 0, 0, 1)
+          color = COLOR.RED_DARK
         end
 
       elseif(CAR.rpm >= CAR.rpmLimiter * 0.95) then
-        color = rgbm.from0255(200, 0, 0, 1)
+        color = COLOR.RED_DARK
 
       elseif (CAR.rpm >= CAR.rpmLimiter * 0.90) then
-        color = rgbm.from0255(255, 203, 0, 1)
+        color = COLOR.YELLOW
       end
 
       ui.drawRectFilled(vec2(initPos, 4 * WindowPedalsScale), vec2(lenght, barHeight), color, 10 * WindowPedalsScale)
@@ -230,13 +229,13 @@ local function drawClutch()
   
   if TextBarsActive then
     ui.setCursor(vec2(currentWindowWidth, posyTextBars))
-    drawBarText(100 - CAR.clutch * 100, rgbm.from0255(0, 89, 208, 1))
+    drawBarText(100 - CAR.clutch * 100, COLOR.BLUE)
   end
   
   if PedalLimitsLines then
-    drawBarWithLimits(posBar, CAR.clutch, rgbm.from0255(0, 89, 208, 1), true)
+    drawBarWithLimits(posBar, CAR.clutch, COLOR.BLUE, true)
   else
-    drawBarSimple(posBar, CAR.clutch, rgbm.from0255(0, 89, 208, 1), true)
+    drawBarSimple(posBar, CAR.clutch, COLOR.BLUE, true)
   end
   
   currentWindowWidth = currentWindowWidth + barSize.x + barSpace
@@ -249,13 +248,13 @@ local function drawBrake()
   
   if TextBarsActive then
     ui.setCursor(vec2(currentWindowWidth, posyTextBars))
-    drawBarText(CAR.brake * 100, rgbm.from0255(200, 0, 0, 1))
+    drawBarText(CAR.brake * 100, COLOR.RED_DARK)
   end
   
   if PedalLimitsLines then
-    drawBarWithLimits(posBar, CAR.brake, rgbm.from0255(200, 0, 0, 1), false)
+    drawBarWithLimits(posBar, CAR.brake, COLOR.RED_DARK, false)
   else
-    drawBarSimple(posBar, CAR.brake, rgbm.from0255(200, 0, 0, 1), false)
+    drawBarSimple(posBar, CAR.brake, COLOR.RED_DARK, false)
   end
   
   currentWindowWidth = currentWindowWidth + barSize.x + barSpace
@@ -269,13 +268,13 @@ local function drawAccelerator()
   
   if TextBarsActive then
     ui.setCursor(vec2(currentWindowWidth, posyTextBars))
-    drawBarText(CAR.gas * 100, rgbm.from0255(90, 212, 51, 1))
+    drawBarText(CAR.gas * 100, COLOR.GREEN)
   end
   
   if PedalLimitsLines then
-    drawBarWithLimits(posBar, CAR.gas, rgbm.from0255(90, 212, 51, 1), false)
+    drawBarWithLimits(posBar, CAR.gas, COLOR.GREEN, false)
   else
-    drawBarSimple(posBar, CAR.gas, rgbm.from0255(90, 212, 51, 1), false)
+    drawBarSimple(posBar, CAR.gas, COLOR.GREEN, false)
   end
   
   currentWindowWidth = currentWindowWidth + barSize.x + barSpace
@@ -289,17 +288,17 @@ local function drawHandbrake()
   if TextBarsActive then
     ui.setCursor(vec2(currentWindowWidth, posyTextBars))
     if CAR.handbrake < 1 then
-      ui.dwriteTextAligned(string.format("%.0f", CAR.handbrake * 100), fontBar, ui.Alignment.Center, ui.Alignment.Start, vec2(20, 30):scale(WindowPedalsScale), false, rgbm(255, 255, 255, 1))
+      ui.dwriteTextAligned(string.format("%.0f", CAR.handbrake * 100), fontBar, ui.Alignment.Center, ui.Alignment.Start, vec2(20, 30):scale(WindowPedalsScale), false, COLOR.WHITE)
     else 
       ui.setCursor(vec2(currentWindowWidth, posyInfiniteBars))
-      ui.dwriteTextAligned("∞", fontBarInfinite, ui.Alignment.Center, ui.Alignment.Start, vec2(20, 30):scale(WindowPedalsScale), false, rgbm(255, 255, 0, 1))
+      ui.dwriteTextAligned("∞", fontBarInfinite, ui.Alignment.Center, ui.Alignment.Start, vec2(20, 30):scale(WindowPedalsScale), false, COLOR.YELLOW)
     end
   end
   
   if PedalLimitsLines then
-    drawBarWithLimits(posBar, CAR.handbrake, rgbm.from0255(255, 255, 0, 1), false)
+    drawBarWithLimits(posBar, CAR.handbrake, COLOR.YELLOW, false)
   else
-    drawBarSimple(posBar, CAR.handbrake, rgbm.from0255(255, 255, 0, 1), false)
+    drawBarSimple(posBar, CAR.handbrake, COLOR.YELLOW, false)
   end
   
   currentWindowWidth = currentWindowWidth + barSize.x + barSpace
@@ -325,9 +324,9 @@ local function drawABS()
   
   ui.setCursor(vec2(currentWindowWidth - 9 * WindowPedalsScale, (-4 + contentTop) * WindowPedalsScale ))
   if CAR.absInAction then
-    ui.image("assets/ABS.png", vec2(80,80):scale(WindowPedalsScale), rgbm(255, 0, 0, 1), ui.ImageFit.Fit)
+    ui.image("assets/ABS.png", vec2(80,80):scale(WindowPedalsScale), COLOR.RED, ui.ImageFit.Fit)
   else
-    ui.image("assets/ABS.png", vec2(80,80):scale(WindowPedalsScale), grayBackgroundColor, ui.ImageFit.Fit)
+    ui.image("assets/ABS.png", vec2(80,80):scale(WindowPedalsScale), COLOR.GRAY_BG, ui.ImageFit.Fit)
   end
   
   currentWindowWidth = currentWindowWidth + absBackgroundSize.x
@@ -342,7 +341,7 @@ local function drawBrakeBias()
   end
   
   ui.setCursor(vec2(20 * WindowPedalsScale, currentWindowHeight - 19 * WindowPedalsScale))
-  ui.dwriteTextAligned(string.format("%.1f", CAR.brakeBias * 100), fontContentBottom, ui.Alignment.Center, ui.Alignment.Start, vec2(30, 30):scale(WindowPedalsScale), false, rgbm(255, 255, 255, 1))
+  ui.dwriteTextAligned(string.format("%.1f", CAR.brakeBias * 100), fontContentBottom, ui.Alignment.Center, ui.Alignment.Start, vec2(30, 30):scale(WindowPedalsScale), false, COLOR.WHITE)
   
   ui.setCursor(vec2(2 * WindowPedalsScale, currentWindowHeight - 21 * WindowPedalsScale))
   ui.image("assets/BrakeBias.png", vec2(19, 19):scale(WindowPedalsScale), ui.ImageFit.Fit)
@@ -360,14 +359,14 @@ local function drawFuel()
     currentWindowWidth = currentWindowWidth + (68 * WindowPedalsScale - currentWindowWidth)
   end
   
-  local fuelColor = rgbm.from0255(255, 255, 255, 1)
+  local fuelColor = COLOR.WHITE
   local xOffset = 48
   
   if CAR.fuel < 5.005 then
-    fuelColor = rgbm.from0255(200, 0, 0, 1)
+    fuelColor = COLOR.RED_DARK
     xOffset = 48
   elseif CAR.fuel < 9.995 then
-    fuelColor = rgbm.from0255(255, 203, 0, 1)
+    fuelColor = COLOR.YELLOW_DARK
     xOffset = 48
   elseif CAR.fuel >= 99.995 then
     xOffset = 51

@@ -11,12 +11,26 @@ local languages = {
   ["pt-br"] = "Português - Brasil"
 }
 
+
 local settingsStorage = ac.storage{
     optionlanguage = "en",
     selectedSpeed = 1,
     transparancy = 0.85,
     windowsColor = rgbm.from0255(18, 21, 29, 0.85),
     
+}
+
+COLOR = {
+  RED = rgbm.from0255(255, 0, 0, 1),
+  RED_DARK = rgbm.from0255(200, 0, 0, 1),
+  GREEN = rgbm.from0255(90, 212, 51, 1),
+  BLUE = rgbm.from0255(0, 89, 208, 1),
+  YELLOW = rgbm.from0255(255, 255, 0, 1),
+  YELLOW_DARK = rgbm.from0255(255, 203, 0, 1),
+  WHITE = rgbm.from0255(255, 255, 255, 1),
+  BLACK = rgbm.from0255(0, 0, 0, 1),
+  GRAY = rgbm.from0255(119, 118, 124, 0.3),
+  GRAY_BG = rgbm.from0255(55, 55, 63, 0.85)
 }
 
 Optionlanguage  = language.getCurrentLanguage()
@@ -63,7 +77,7 @@ local function geral()
   end
 
   initPos = initPos + 35
-  ui.drawRectFilled(vec2(5, initPos), vec2(WindowSettingsSize.x - 5, initPos), rgbm.from0255(119, 118, 124, 0.3), 1)
+  ui.drawRectFilled(vec2(5, initPos), vec2(WindowSettingsSize.x - 5, initPos), COLOR.GRAY, 1)
   
   initPos = initPos + 10
   ui.setCursor(vec2(15, initPos))
@@ -75,7 +89,7 @@ local function geral()
   settingsStorage.selectedSpeed = SelectedSpeed
 
   initPos = initPos + 35
-  ui.drawRectFilled(vec2(5, initPos), vec2(WindowSettingsSize.x - 5, initPos), rgbm.from0255(119, 118, 124, 0.3), 1)
+  ui.drawRectFilled(vec2(5, initPos), vec2(WindowSettingsSize.x - 5, initPos), COLOR.GRAY, 1)
 
   initPos = initPos + 20
   ui.setCursor(vec2(15, initPos))

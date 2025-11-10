@@ -89,7 +89,7 @@ function pedalsSettings.pedalsSettings()
     pedalsSettingsStore.windowPedalsScale = WindowPedalsScale
 
     initPos = initPos + 35
-    ui.drawRectFilled(vec2(5, initPos), vec2(WindowSettingsSize.x - 5, initPos), rgbm.from0255(119, 118, 124, 0.3), 1)
+    ui.drawRectFilled(vec2(5, initPos), vec2(WindowSettingsSize.x - 5, initPos), COLOR.GRAY, 1)
     -- Direção:
     initPos = initPos + 10
     initPos2 = initPos
@@ -127,11 +127,11 @@ function pedalsSettings.pedalsSettings()
     -- Alerta do ABS
     if CAR.absModes == 0 then
         ui.setCursor(vec2(70, initPos))
-        ui.dwriteTextAligned(language.get("ALERT_ABS"), 10, ui.Alignment.Center, ui.Alignment.Center, vec2(150, 25), false, rgbm(255, 0, 0, 1))  
+        ui.dwriteTextAligned(language.get("ALERT_ABS"), 10, ui.Alignment.Center, ui.Alignment.Center, vec2(150, 25), false, COLOR.RED)  
     end
 
     initPos = initPos + 35
-    ui.drawRectFilled(vec2(5, initPos), vec2(WindowSettingsSize.x - 5, initPos), rgbm.from0255(119, 118, 124, 0.3), 1)
+    ui.drawRectFilled(vec2(5, initPos), vec2(WindowSettingsSize.x - 5, initPos), COLOR.GRAY, 1)
     --
     
     -- OUTROS:
