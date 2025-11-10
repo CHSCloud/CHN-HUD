@@ -400,7 +400,7 @@ function pedals.windowMain()
   contentBottom = 0
 
   if TextBarsActive and contentMidle > 0 and (ClutchActive or BrakeActive or AcceleratorActive or HandbrakeActive) then contentTop = 10 end
-  if RpmActive then contentTop = contentTop + 20 end
+  if RpmActive then contentTop = contentTop + 22 end
   if BrakeBiasActive or FuelActive then contentBottom = 17 * WindowPedalsScale end
 
   currentWindowWidth = 0
