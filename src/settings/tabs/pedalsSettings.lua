@@ -166,12 +166,12 @@ function pedalsSettings.pedalsSettings()
         ui.combo('##rpmType', rpm[RpmType], function ()
             if ui.selectable(rpm["default"]) then
                 RpmType = "default"
-                pitSettingsStore.rpmType = RpmType
+                pedalsSettingsStore.rpmType = RpmType
             end
 
             if ui.selectable(rpm["bar"]) then
                 RpmType = "bar"
-                pitSettingsStore.rpmType = RpmType
+                pedalsSettingsStore.rpmType = RpmType
             end
         end)
     end

@@ -154,15 +154,15 @@ end
 
 -- Desenha rpm
 local function drawRpm()
-  if currentWindowWidth < 150 * WindowPedalsScale then
-    currentWindowWidth = 150 * WindowPedalsScale
+  if currentWindowWidth < 180 * WindowPedalsScale then
+    currentWindowWidth = 180 * WindowPedalsScale
   end
-  local initPos = (currentWindowWidth / 2) - 72.5 * WindowPedalsScale
   local rpmStart = CAR.rpmLimiter * 0.80
   local rpmRange = CAR.rpmLimiter - rpmStart
 
   if RpmType == "default" then
     local numCircles = 9
+    local initPos = (currentWindowWidth / 2) - (((numCircles - 1) * 18) / 2) * WindowPedalsScale
     local level = 0
     if CAR.rpm >= rpmStart then
       level = ((numCircles * (CAR.rpm - rpmStart)) / rpmRange) + 1
@@ -185,15 +185,15 @@ local function drawRpm()
     end
 
     for i = 1, numCircles, 1 do
-      ui.setCursor(vec2(initPos, 1 * WindowPedalsScale))
       if i > level then
         color = COLOR.GRAY_BG
       end
-      ui.image("assets/ledRpm.png", vec2(17, 17):scale(WindowPedalsScale), color, ui.ImageFit.Fit)
-      initPos = initPos + 16 * WindowPedalsScale
+      ui.drawCircleFilled(vec2(initPos, 12 * WindowPedalsScale), 8, color, 20)
+      initPos = initPos + 18 * WindowPedalsScale
     end
 
   elseif RpmType == "bar" then
+    local initPos = (currentWindowWidth / 2) - 72.5 * WindowPedalsScale
     local barHeight = 16 * WindowPedalsScale
     ui.drawRectFilled(vec2(initPos, 4 * WindowPedalsScale), vec2(initPos + 145 * WindowPedalsScale, barHeight), COLOR.GRAY_BG, 10 * WindowPedalsScale)
 
