@@ -161,16 +161,17 @@ local function drawRpm()
   local rpmRange = CAR.rpmLimiter - rpmStart
 
   if RpmType == "default" then
-    local numCircles = 9
-    local initPos = (currentWindowWidth / 2) - (((numCircles - 1) * 18) / 2) * WindowPedalsScale
+    local spaceCircles = (currentWindowWidth * 0.95) / (NumCircles * WindowPedalsScale)
+    if spaceCircles > 18 then spaceCircles = 18 end
+    local initPos = (currentWindowWidth / 2) - (((NumCircles - 1) * spaceCircles) / 2) * WindowPedalsScale
     local level = 0
     if CAR.rpm >= rpmStart then
-      level = ((numCircles * (CAR.rpm - rpmStart)) / rpmRange) + 1
+      level = ((NumCircles * (CAR.rpm - rpmStart)) / rpmRange) + 1
     end
 
     local color = COLOR.GREEN
     if (CAR.rpm >= CAR.rpmLimiter * 0.96) then
-      level = 10
+      level = NumCircles 
       if (8 * Timer) % 2 >= 1 then 
           color = COLOR.GRAY_BG
       else 
@@ -184,26 +185,26 @@ local function drawRpm()
       color = COLOR.YELLOW
     end
 
-    for i = 1, numCircles, 1 do
+    for i = 1, NumCircles, 1 do
       if i > level then
         color = COLOR.GRAY_BG
       end
-      ui.drawCircleFilled(vec2(initPos, 11 * WindowPedalsScale), 8 * WindowPedalsScale, color, 20 * WindowPedalsScale)
-      initPos = initPos + 18 * WindowPedalsScale
+      ui.drawCircleFilled(vec2(initPos, 11 * WindowPedalsScale), (spaceCircles * 0.45) * WindowPedalsScale, color, 20 * WindowPedalsScale)
+      initPos = initPos + spaceCircles * WindowPedalsScale
     end
 
   elseif RpmType == "bar" then
-    local width = 165
-    local initPos = (currentWindowWidth / 2) - (width / 2) * WindowPedalsScale
+    local width = currentWindowWidth * BarLength
+    local initPos = (currentWindowWidth / 2) - (width / 2)
     local barHeight = 18 * WindowPedalsScale
-    ui.drawRectFilled(vec2(initPos, 4 * WindowPedalsScale), vec2(initPos + width * WindowPedalsScale, barHeight), COLOR.GRAY_BG, 10 * WindowPedalsScale)
+    ui.drawRectFilled(vec2(initPos, 4 * WindowPedalsScale), vec2(initPos + width, barHeight), COLOR.GRAY_BG, 10 * WindowPedalsScale)
 
     if CAR.rpm >= rpmStart then
-      local lenght = initPos + ((width * WindowPedalsScale * (CAR.rpm - rpmStart)) / rpmRange)
+      local lenght = initPos + ((width * (CAR.rpm - rpmStart)) / rpmRange)
       local color = COLOR.GREEN
 
       if (CAR.rpm >= CAR.rpmLimiter * 0.96) then
-        lenght = initPos + width * WindowPedalsScale
+        lenght = initPos + width
         if (8 * Timer) % 2 >= 1 then 
             color = COLOR.GRAY_BG
         else 

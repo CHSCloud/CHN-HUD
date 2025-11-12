@@ -34,6 +34,7 @@
     "RESET_COLOR": "Reset to default color",
     "RESET_DEFAULT": "Reset to default",
     "DEFAULT": "Default",
+    "BAR": "Bar",
     "ALERT_PIT": "Alert",
     "STYLE": "Estyle"
 }

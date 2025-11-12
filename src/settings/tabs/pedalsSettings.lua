@@ -17,7 +17,9 @@ local pedalsSettingsStore = ac.storage{
     fuelActive = true,
     pedalLimitsLines = false,
     rpmActive = true,
-    rpmType = "default"
+    rpmType = "default",
+    numCircles = 9,
+    barLength = 0.55
 }
 
 WindowPedalsScale = pedalsSettingsStore.windowPedalsScale
@@ -35,11 +37,8 @@ FuelActive = pedalsSettingsStore.fuelActive
 PedalLimitsLines = pedalsSettingsStore.pedalLimitsLines
 RpmActive = pedalsSettingsStore.rpmActive
 RpmType = pedalsSettingsStore.rpmType
-
-local rpm = {
-    ["default"] = language.get("DEFAULT"),
-    ["bar"] = "Bar"
-}
+NumCircles = pedalsSettingsStore.numCircles
+BarLength = pedalsSettingsStore.barLength
 
 
 local function resetToDefault()
@@ -58,6 +57,8 @@ local function resetToDefault()
     PedalLimitsLines = false
     RpmActive = true
     RpmType = "default"
+    NumCircles = 9
+    BarLength = 0.5
 
     pedalsSettingsStore.windowPedalsScale = WindowPedalsScale
     pedalsSettingsStore.gearActive = GearActive
@@ -74,11 +75,17 @@ local function resetToDefault()
     pedalsSettingsStore.pedalLimitsLines = PedalLimitsLines
     pedalsSettingsStore.rpmActive = RpmActive
     pedalsSettingsStore.rpmType = RpmType
+    pedalsSettingsStore.numCircles = NumCircles
+    BarLength = pedalsSettingsStore.barLength
 end
 
 function pedalsSettings.pedalsSettings()
+    local rpm = {
+        ["default"] = language.get("DEFAULT"),
+        ["bar"] = language.get("BAR")
+    }
     local initPos = 55
-    local posXOthers = 250
+    local posXOthers = 200
     local posXStyle = 150
     local initPos2
     ui.setCursor(vec2(15, initPos))
@@ -160,8 +167,7 @@ function pedalsSettings.pedalsSettings()
     end
 
     if RpmActive then
-        initPos2 = initPos2 + 25
-        ui.setCursor(vec2(posXOthers, initPos2))
+        ui.setCursor(vec2(posXOthers + 60, initPos2 + 2))
         ui.setNextItemWidth(100)
         ui.combo('##rpmType', rpm[RpmType], function ()
             if ui.selectable(rpm["default"]) then
@@ -174,7 +180,17 @@ function pedalsSettings.pedalsSettings()
                 pedalsSettingsStore.rpmType = RpmType
             end
         end)
+        if RpmType == "default" then
+            ui.setCursor(vec2(posXOthers, initPos2 + 30))
+            ui.setNextItemWidth(160)
+            NumCircles = math.floor(ui.slider("##NumCircles", NumCircles, 5, 15, string.format("%i", NumCircles)))
+        elseif RpmType == "bar" then
+            ui.setCursor(vec2(posXOthers, initPos2 + 30))
+            ui.setNextItemWidth(160)
+            BarLength = ui.slider("##BarLength", BarLength, 0.2, 0.95, (string.format("%.2f", BarLength) + 0.05) * 100 )
+        end
     end
+
     --
 
     -- Pedais:
