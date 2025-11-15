@@ -82,6 +82,7 @@ end
 function pedalsSettings.pedalsSettings()
     local rpm = {
         ["default"] = language.get("DEFAULT"),
+        ["dots-2"] = "Dots 2",
         ["bar"] = language.get("BAR")
     }
     local initPos = 55
@@ -174,13 +175,16 @@ function pedalsSettings.pedalsSettings()
                 RpmType = "default"
                 pedalsSettingsStore.rpmType = RpmType
             end
-
+            if ui.selectable(rpm["dots-2"]) then
+                RpmType = "dots-2"
+                pedalsSettingsStore.rpmType = RpmType
+            end
             if ui.selectable(rpm["bar"]) then
                 RpmType = "bar"
                 pedalsSettingsStore.rpmType = RpmType
             end
         end)
-        if RpmType == "default" then
+        if RpmType == "default" or RpmType == "dots-2" then
             ui.setCursor(vec2(posXOthers, initPos2 + 30))
             ui.setNextItemWidth(160)
             NumCircles = math.floor(ui.slider("##NumCircles", NumCircles, 5, 15, string.format("%i", NumCircles)))

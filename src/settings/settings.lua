@@ -25,6 +25,7 @@ COLOR = {
   RED_DARK = rgbm.from0255(200, 0, 0, 1),
   GREEN = rgbm.from0255(90, 212, 51, 1),
   BLUE = rgbm.from0255(0, 89, 208, 1),
+  BLUE_SKY = rgbm.from0255(0, 191, 255, 1),
   YELLOW = rgbm.from0255(255, 255, 0, 1),
   YELLOW_DARK = rgbm.from0255(255, 203, 0, 1),
   WHITE = rgbm.from0255(255, 255, 255, 1),
@@ -61,20 +62,17 @@ local function geral()
   ui.setCursor(vec2(20, initPos))
   ui.combo('##resolution', languages[Optionlanguage], function ()
     if ui.selectable(languages["en"]) then
+      tabPin = true
       Optionlanguage = "en"
+      language.setlanguage(Optionlanguage)
     end
 
     if ui.selectable(languages["pt-br"]) then
+      tabPin = true
       Optionlanguage = "pt-br"
+    language.setlanguage(Optionlanguage)
     end
   end)
-
-  initPos = initPos + 30
-  ui.setCursor(vec2(20, initPos))
-  if ui.button(language.get("APPLY")) then
-    tabPin = true
-    language.setlanguage(Optionlanguage)
-  end
 
   initPos = initPos + 35
   ui.drawRectFilled(vec2(5, initPos), vec2(WindowSettingsSize.x - 5, initPos), COLOR.GRAY, 1)
