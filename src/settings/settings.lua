@@ -39,7 +39,7 @@ SelectedSpeed = settingsStorage.selectedSpeed
 WindowsColor = settingsStorage.windowsColor
 SettingsActive = false
 
-WindowSettingsSize = vec2(450, 450)
+WindowSettingsSize = vec2(550, 480)
 
 
 local tabPin = false

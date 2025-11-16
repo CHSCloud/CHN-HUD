@@ -18,6 +18,7 @@ local pedalsSettingsStore = ac.storage{
     pedalLimitsLines = false,
     rpmActive = true,
     rpmType = "default",
+    rpmProcessType = "default",
     numCircles = 9,
     barLength = 0.55
 }
@@ -37,6 +38,7 @@ FuelActive = pedalsSettingsStore.fuelActive
 PedalLimitsLines = pedalsSettingsStore.pedalLimitsLines
 RpmActive = pedalsSettingsStore.rpmActive
 RpmType = pedalsSettingsStore.rpmType
+RpmProcessType = pedalsSettingsStore.rpmProcessType
 NumCircles = pedalsSettingsStore.numCircles
 BarLength = pedalsSettingsStore.barLength
 
@@ -57,6 +59,7 @@ local function resetToDefault()
     PedalLimitsLines = false
     RpmActive = true
     RpmType = "default"
+    RpmProcessType = "default"
     NumCircles = 9
     BarLength = 0.5
 
@@ -76,19 +79,26 @@ local function resetToDefault()
     pedalsSettingsStore.rpmActive = RpmActive
     pedalsSettingsStore.rpmType = RpmType
     pedalsSettingsStore.numCircles = NumCircles
-    BarLength = pedalsSettingsStore.barLength
+    pedalsSettingsStore.barLength = BarLength
+    pedalsSettingsStore.rpmProcessType = RpmProcessType
 end
 
 function pedalsSettings.pedalsSettings()
     local rpm = {
-        ["default"] = language.get("DEFAULT"),
-        ["dots-2"] = "Dots 2",
+        ["default"] = "Shift Lights",
         ["bar"] = language.get("BAR")
     }
+    local processCircleType = {
+        ["default"] = language.get("DEFAULT"),
+        ["total"] = "Total"
+    }
     local initPos = 55
-    local posXOthers = 200
-    local posXStyle = 150
     local initPos2
+    local posXOthers = 150
+    local posXStyle = 150
+
+    local posRPM = initPos
+    local posXRPM = 280
     ui.setCursor(vec2(15, initPos))
     ui.header(language.get("SIZE"))
     initPos = initPos + 20
@@ -138,11 +148,12 @@ function pedalsSettings.pedalsSettings()
         ui.dwriteTextAligned(language.get("ALERT_ABS"), 10, ui.Alignment.Center, ui.Alignment.Center, vec2(150, 25), false, COLOR.RED)  
     end
 
-    initPos = initPos + 35
+    initPos = initPos + 50
     ui.drawRectFilled(vec2(5, initPos), vec2(WindowSettingsSize.x - 5, initPos), COLOR.GRAY, 1)
     --
     
     -- OUTROS:
+    posRPM = initPos2
     ui.setCursor(vec2(posXOthers - 5, initPos2))
     ui.header(language.get("OTHERS"))
   
@@ -160,23 +171,24 @@ function pedalsSettings.pedalsSettings()
         pedalsSettingsStore.breakeBiasActive = BrakeBiasActive
     end
 
-    initPos2 = initPos2 + 25
-    ui.setCursor(vec2(posXOthers, initPos2))
+    ui.setCursor(vec2(posXRPM - 5, posRPM))
+    ui.header("RPM")
+    posRPM = posRPM + 25
+    ui.setCursor(vec2(posXRPM, posRPM))
     if ui.checkbox("RPM", RpmActive) then
         RpmActive = not RpmActive
         pedalsSettingsStore.rpmActive = RpmActive
     end
 
     if RpmActive then
-        ui.setCursor(vec2(posXOthers + 60, initPos2 + 2))
+        posRPM = posRPM + 30
+        ui.setCursor(vec2(posXRPM, posRPM + 5))
+        ui.header("Type")
+        ui.setCursor(vec2(posXRPM + 30, posRPM))
         ui.setNextItemWidth(100)
         ui.combo('##rpmType', rpm[RpmType], function ()
             if ui.selectable(rpm["default"]) then
                 RpmType = "default"
-                pedalsSettingsStore.rpmType = RpmType
-            end
-            if ui.selectable(rpm["dots-2"]) then
-                RpmType = "dots-2"
                 pedalsSettingsStore.rpmType = RpmType
             end
             if ui.selectable(rpm["bar"]) then
@@ -184,15 +196,57 @@ function pedalsSettings.pedalsSettings()
                 pedalsSettingsStore.rpmType = RpmType
             end
         end)
-        if RpmType == "default" or RpmType == "dots-2" then
-            ui.setCursor(vec2(posXOthers, initPos2 + 30))
+        if RpmType == "default" then
+            local circlePos = 380
+            local color
+            posRPM = posRPM + 35
+            ui.setCursor(vec2(posXRPM, posRPM))
+            ui.header("Progress")
+            ui.setCursor(vec2(posXRPM + 50, posRPM - 5))
+            ui.setNextItemWidth(100)
+            ui.combo('##progress', processCircleType[RpmProcessType], function ()
+                if ui.selectable(processCircleType["default"]) then
+                    RpmProcessType = "default"
+                    pedalsSettingsStore.rpmProcessType = RpmProcessType
+                end
+                if ui.selectable(processCircleType["total"]) then
+                    RpmProcessType = "total"
+                    pedalsSettingsStore.rpmProcessType = RpmProcessType
+                end
+            end)
+            
+            for i = 1, 9, 1 do
+                if RpmProcessType == "default" then
+                    color = COLOR.GREEN
+                    if i > 7 then
+                        color = COLOR.RED_DARK
+                    elseif i > 4 then
+                        color = COLOR.YELLOW
+                    end
+                elseif RpmProcessType == "total" then
+                    color = COLOR.GREEN
+                end
+                
+                ui.drawCircleFilled(vec2(circlePos, 158), (10 * 0.45) * WindowPedalsScale, color, 20)
+                circlePos = circlePos + 12
+            end
+
+            posRPM = posRPM + 30
+            ui.setCursor(vec2(posXRPM, posRPM))
+            ui.header("Number of Circles")
+            ui.setCursor(vec2(posXRPM + 100, posRPM - 5))
             ui.setNextItemWidth(160)
-            NumCircles = math.floor(ui.slider("##NumCircles", NumCircles, 5, 15, string.format("%i", NumCircles)))
+            NumCircles = math.floor(ui.slider("##NumCircles", NumCircles, 6, 15, string.format("%i", NumCircles)))
         elseif RpmType == "bar" then
-            ui.setCursor(vec2(posXOthers, initPos2 + 30))
+            posRPM = posRPM + 35
+            ui.setCursor(vec2(posXRPM, posRPM))
+            ui.header("Percentage")
+            ui.setCursor(vec2(posXRPM + 70, posRPM - 5))
             ui.setNextItemWidth(160)
-            BarLength = ui.slider("##BarLength", BarLength, 0.2, 0.95, (string.format("%.2f", BarLength) + 0.05) * 100 )
+            BarLength = ui.slider("##BarLength", BarLength, 0.25, 0.95, string.format("%.0f%%", (BarLength+ 0.05) * 100) .. "%")
         end
+        
+        
     end
 
     --
