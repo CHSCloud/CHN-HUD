@@ -28,22 +28,22 @@ function pitlane.windowMain()
         if OptionPlate == "default" then
           ui.drawRectFilled(vec2(0, 0), vec2(currentWindowWidth, 70 * WindowPitScale), WindowsColor, 10 * WindowPitScale)
           ui.drawRectFilled(vec2(5, 5):scale(WindowPitScale), vec2(75, 65):scale(WindowPitScale), COLOR.WHITE, 5 * WindowPitScale)
-          ui.drawRectFilled(vec2(7, 7):scale(WindowPitScale), vec2(73, 63):scale(WindowPitScale), COLOR.BLACK, 5 * WindowPitScale)
-          ui.drawRectFilled(vec2(9, 9):scale(WindowPitScale), vec2(71, 61):scale(WindowPitScale), COLOR.WHITE, 5 * WindowPitScale) 
+          ui.drawRect(vec2(7, 7):scale(WindowPitScale), vec2(73, 63):scale(WindowPitScale), COLOR.BLACK, 4 * WindowPitScale, ui.CornerFlags.All, 1.5 * WindowPitScale)
         elseif OptionPlate == "alert" then
 
           currentWindowWidth = 135 * WindowPitScale
-          ui.image("assets/backgroundpit.png", vec2(currentWindowWidth, 70 * WindowPitScale), WindowsColor, ui.ImageFit.Fit)
-          ui.setCursor(vec2(1, 1):scale(WindowPitScale))
-          ui.image("assets/alertlimitrpm.png", vec2(68,68):scale(WindowPitScale), COLOR.WHITE, ui.ImageFit.Fit)
+          ui.drawRectFilled(vec2(0, 0):scale(WindowPitScale), vec2(135, 70):scale(WindowPitScale), WindowsColor, 100 * WindowPitScale)
+          ui.drawCircleFilled(vec2(35,35):scale(WindowPitScale), 34 * WindowPitScale, COLOR.WHITE, 40 * WindowPitScale)
+          ui.drawCircle(vec2(35,35):scale(WindowPitScale), 30 * WindowPitScale, COLOR.RED, 40 * WindowPitScale, 5 * WindowPitScale)
+
           posLimit = vec2(-15,10)
           fontLimit = 13 * WindowPitScale
           posSpeedLimit = vec2(0,22)
           fontSpeedLimit = 23 * WindowPitScale
 
-          posYou = vec2(50,5)
-          posSpeedYou = vec2(67, 22)
-          fontSpeedYou = 28 * WindowPitScale
+          posYou = vec2(45,5)
+          posSpeedYou = vec2(62, 22)
+          fontSpeedYou = 25 * WindowPitScale
 
           fontSlowDown = 12 * WindowPitScale
         end
@@ -71,9 +71,11 @@ function pitlane.windowMain()
           if CAR.speedKmh <= CAR.speedLimiter then
             speedrgb = COLOR.WHITE
           elseif CAR.speedKmh > CAR.speedLimiter + 1 then
-            ui.drawRectFilled(vec2(10, 75):scale(WindowPitScale), vec2(currentWindowWidth - 10 * WindowPitScale, currentWindowHeight), rgbm.from0255(50, 0, 0, 0.85), 10 * WindowPitScale)
-            ui.setCursor(vec2(0,75):scale(WindowPitScale))
-            ui.dwriteTextAligned(language.get("SLOW_DOWN"), fontSlowDown, ui.Alignment.Center, ui.Alignment.Center, vec2(currentWindowWidth, 25 * WindowPitScale), false, rgbm.from0255(230, 0, 0, 1))
+            if (5 * Timer) % 2 >= 1 then 
+              ui.drawRectFilled(vec2(10, 75):scale(WindowPitScale), vec2(currentWindowWidth - 10 * WindowPitScale, currentWindowHeight), rgbm.from0255(50, 0, 0, 0.85), 10 * WindowPitScale)
+              ui.setCursor(vec2(0,75):scale(WindowPitScale))
+              ui.dwriteTextAligned(language.get("SLOW_DOWN"), fontSlowDown, ui.Alignment.Center, ui.Alignment.Center, vec2(currentWindowWidth, 25 * WindowPitScale), false, rgbm.from0255(230, 0, 0, 1))
+            end
             speedrgb = COLOR.RED
           end
         end

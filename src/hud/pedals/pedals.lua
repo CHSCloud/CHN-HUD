@@ -362,11 +362,11 @@ local function drawBrakeBias()
     currentWindowWidth = currentWindowWidth + (60 * WindowPedalsScale - currentWindowWidth)
   end
   
-  ui.setCursor(vec2(20 * WindowPedalsScale, currentWindowHeight - 19 * WindowPedalsScale))
+  ui.setCursor(vec2(22 * WindowPedalsScale, currentWindowHeight - 19 * WindowPedalsScale))
   ui.dwriteTextAligned(string.format("%.1f", CAR.brakeBias * 100), fontContentBottom, ui.Alignment.Center, ui.Alignment.Start, vec2(30, 30):scale(WindowPedalsScale), false, COLOR.WHITE)
   
-  ui.setCursor(vec2(2 * WindowPedalsScale, currentWindowHeight - 21 * WindowPedalsScale))
-  ui.image("assets/BrakeBias.png", vec2(19, 19):scale(WindowPedalsScale), ui.ImageFit.Fit)
+  ui.setCursor(vec2(5 * WindowPedalsScale, currentWindowHeight - 18.5 * WindowPedalsScale))
+  ui.image("assets/BrakeBias.png", vec2(16, 16):scale(WindowPedalsScale), ui.ImageFit.Fit)
 end
 
 
@@ -393,13 +393,25 @@ local function drawFuel()
   elseif CAR.fuel >= 99.995 then
     xOffset = 51
   end
-  
+  if (8 * Timer) % 2 >= 1 then 
+    color = COLOR.GRAY_BG
+  else 
+    color = COLOR.RED_DARK
+  end
+
   ui.setCursor(vec2(currentWindowWidth - xOffset * WindowPedalsScale, currentWindowHeight - 19 * WindowPedalsScale))
-  ui.dwriteTextAligned(string.format("%.2f", CAR.fuel), fontContentBottom, ui.Alignment.Center, ui.Alignment.Start, vec2(50, 30):scale(WindowPedalsScale), false, fuelColor)
+  ui.dwriteTextAligned(string.format("%.2f", math.max(0, CAR.fuel)), fontContentBottom, ui.Alignment.Center, ui.Alignment.Start, vec2(50, 30):scale(WindowPedalsScale), false, fuelColor)
   
   local iconXOffset = (CAR.fuel >= 99.995) and 65 or ((CAR.fuel >= 9.995) and 59 or 56)
   ui.setCursor(vec2(currentWindowWidth - iconXOffset * WindowPedalsScale, currentWindowHeight - 18.5 * WindowPedalsScale))
-  ui.image("assets/Fuel.png", vec2(16, 15):scale(WindowPedalsScale), fuelColor, ui.ImageFit.Fit)
+  if CAR.fuel < 5.005 then
+    if (4 * Timer) % 2 >= 1 then 
+      ui.image("assets/Fuel.png", vec2(16, 15):scale(WindowPedalsScale), fuelColor, ui.ImageFit.Fit)
+    end
+  else 
+    ui.image("assets/Fuel.png", vec2(16, 15):scale(WindowPedalsScale), fuelColor, ui.ImageFit.Fit)
+  end
+  
 end
 
 function pedals.windowMain()

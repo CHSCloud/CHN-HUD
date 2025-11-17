@@ -181,6 +181,11 @@ function pedalsSettings.pedalsSettings()
     end
 
     if RpmActive then
+        local exampleRPMX = 380
+        local exampleRPMY = 158
+        local color1
+        local color2
+        local color3
         posRPM = posRPM + 30
         ui.setCursor(vec2(posXRPM, posRPM + 5))
         ui.header("Type")
@@ -197,8 +202,6 @@ function pedalsSettings.pedalsSettings()
             end
         end)
         if RpmType == "default" then
-            local circlePos = 380
-            local color
             posRPM = posRPM + 35
             ui.setCursor(vec2(posXRPM, posRPM))
             ui.header("Progress")
@@ -214,33 +217,62 @@ function pedalsSettings.pedalsSettings()
                     pedalsSettingsStore.rpmProcessType = RpmProcessType
                 end
             end)
-            
-            for i = 1, 9, 1 do
-                if RpmProcessType == "default" then
-                    color = COLOR.GREEN
+
+            if RpmProcessType == "default" then
+                for i = 1, 9, 1 do
+                    color1 = COLOR.GREEN
+                    color2 = COLOR.GREEN
+                    color3 = COLOR.GREEN
                     if i > 7 then
-                        color = COLOR.RED_DARK
+                        color1 = COLOR.GRAY_BG
+                        color2 = COLOR.GRAY_BG
+                        color3 = COLOR.RED_DARK
                     elseif i > 4 then
-                        color = COLOR.YELLOW
+                        color1 = COLOR.GRAY_BG
+                        color2 = COLOR.YELLOW
+                        color3 = COLOR.YELLOW
                     end
-                elseif RpmProcessType == "total" then
-                    color = COLOR.GREEN
+                    ui.drawCircleFilled(vec2(exampleRPMX, exampleRPMY - 30), 5, color1, 20)
+                    ui.drawCircleFilled(vec2(exampleRPMX, exampleRPMY - 15), 5, color2, 20)
+                    ui.drawCircleFilled(vec2(exampleRPMX, exampleRPMY), 5, color3, 20)
+                    exampleRPMX = exampleRPMX + 11
                 end
-                
-                ui.drawCircleFilled(vec2(circlePos, 158), (10 * 0.45) * WindowPedalsScale, color, 20)
-                circlePos = circlePos + 12
+            elseif RpmProcessType == "total" then
+                for i = 1, 9, 1 do
+                    color1 = COLOR.GREEN
+                    color2 = COLOR.YELLOW
+                    color3 = COLOR.RED_DARK
+                    if i > 7 then
+                        color1 = COLOR.GRAY_BG
+                        color2 = COLOR.GRAY_BG
+                    elseif i > 4 then
+                        color1 = COLOR.GRAY_BG
+                    end
+                    ui.drawCircleFilled(vec2(exampleRPMX, exampleRPMY - 30), 5, color1, 20)
+                    ui.drawCircleFilled(vec2(exampleRPMX, exampleRPMY - 15), 5, color2, 20)
+                    ui.drawCircleFilled(vec2(exampleRPMX, exampleRPMY), 5, color3, 20)
+                    exampleRPMX = exampleRPMX + 11
+                end
             end
+            
 
             posRPM = posRPM + 30
             ui.setCursor(vec2(posXRPM, posRPM))
             ui.header("Number of Circles")
             ui.setCursor(vec2(posXRPM + 100, posRPM - 5))
             ui.setNextItemWidth(160)
-            NumCircles = math.floor(ui.slider("##NumCircles", NumCircles, 6, 15, string.format("%i", NumCircles)))
+            NumCircles = math.floor(ui.slider("##NumCircles", NumCircles, 6, 25, string.format("%i", NumCircles)))
         elseif RpmType == "bar" then
             posRPM = posRPM + 35
             ui.setCursor(vec2(posXRPM, posRPM))
             ui.header("Percentage")
+            
+            ui.drawRectFilled(vec2(exampleRPMX - 5, exampleRPMY - 35), vec2(exampleRPMX - 5 + 98, exampleRPMY - 25), COLOR.GRAY_BG, 10)
+            ui.drawRectFilled(vec2(exampleRPMX - 5, exampleRPMY - 35), vec2(exampleRPMX - 5 + (98 * 0.45), exampleRPMY - 25), COLOR.GREEN, 10)
+
+            ui.drawRectFilled(vec2(exampleRPMX - 5, exampleRPMY - 20), vec2(exampleRPMX - 5 + 98, exampleRPMY - 10), COLOR.GRAY_BG, 10)
+            ui.drawRectFilled(vec2(exampleRPMX - 5, exampleRPMY - 20), vec2(exampleRPMX - 5 + (98 * 0.70), exampleRPMY - 10), COLOR.YELLOW, 10)
+            ui.drawRectFilled(vec2(exampleRPMX - 5, exampleRPMY - 5), vec2(exampleRPMX - 5 + 98, exampleRPMY + 5), COLOR.RED_DARK, 10)
             ui.setCursor(vec2(posXRPM + 70, posRPM - 5))
             ui.setNextItemWidth(160)
             BarLength = ui.slider("##BarLength", BarLength, 0.25, 0.95, string.format("%.0f%%", (BarLength+ 0.05) * 100) .. "%")
@@ -248,7 +280,6 @@ function pedalsSettings.pedalsSettings()
         
         
     end
-
     --
 
     -- Pedais:
