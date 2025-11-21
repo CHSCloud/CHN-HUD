@@ -32,7 +32,7 @@ function pitlane.windowMain()
         elseif OptionPlate == "alert" then
 
           currentWindowWidth = 135 * WindowPitScale
-          ui.drawRectFilled(vec2(0, 0):scale(WindowPitScale), vec2(135, 70):scale(WindowPitScale), WindowsColor, 100 * WindowPitScale)
+          ui.drawRectFilled(vec2(0, 0):scale(WindowPitScale), vec2(135, 70):scale(WindowPitScale), WindowsColor, 35 * WindowPitScale, ui.CornerFlags.All)
           ui.drawCircleFilled(vec2(35,35):scale(WindowPitScale), 34 * WindowPitScale, COLOR.WHITE, 40 * WindowPitScale)
           ui.drawCircle(vec2(35,35):scale(WindowPitScale), 30 * WindowPitScale, COLOR.RED, 40 * WindowPitScale, 5 * WindowPitScale)
 
