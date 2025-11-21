@@ -27,13 +27,30 @@ local contentTop = 0
 local contentMidle = 0
 local contentBottom = 0
 
+-- Marcha atual
+local currentGear = 0
+local fontGear = 40 * WindowPedalsScale
+local gearBackgroundWidth = 60 * WindowPedalsScale
+
+--Anima Marcha
+local function animateGear(gear) 
+  if fontGear < 40 * WindowPedalsScale then
+    if (40 * Timer) % 2 >= 1 then 
+      fontGear = fontGear + 10 * WindowPedalsScale
+    end
+  end
+end
+
 -- Desenha a marcha
 local function drawGear()
   contentMidle = 73 * WindowPedalsScale
-  local fontGear = 40 * WindowPedalsScale
-  local gearBackgroundWidth = 60 * WindowPedalsScale
 
   currentWindowWidth = gearBackgroundWidth
+  if currentGear ~= CAR.gear then
+    fontGear = 0
+    currentGear = CAR.gear
+  end
+  animateGear(currentGear)
   local gear = tostring(CAR.gear)
   if gear == "0" then
     gear = "N"
