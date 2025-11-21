@@ -98,7 +98,7 @@ function pedalsSettings.pedalsSettings()
     local posXStyle = 150
 
     local posRPM = initPos
-    local posXRPM = 280
+    local posXRPM = 330
     ui.setCursor(vec2(15, initPos))
     ui.header(language.get("SIZE"))
     initPos = initPos + 20
@@ -181,7 +181,7 @@ function pedalsSettings.pedalsSettings()
     end
 
     if RpmActive then
-        local exampleRPMX = 380
+        local exampleRPMX = 420
         local exampleRPMY = 158
         local color1
         local color2
