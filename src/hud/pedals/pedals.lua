@@ -38,6 +38,8 @@ local function animateGear(gear)
     if (40 * Timer) % 2 >= 1 then 
       fontGear = fontGear + 10 * WindowPedalsScale
     end
+  else
+    fontGear = 40 * WindowPedalsScale
   end
 end
 
