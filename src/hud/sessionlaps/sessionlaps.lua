@@ -77,6 +77,7 @@ function sessionlaps.windowMain()
     ui.dwriteTextAligned(language.get("LAST"), 15 * WindowSessionLapsScale, ui.Alignment.Start, ui.Alignment.Center, vec2(150, 25):scale(WindowSessionLapsScale), false, rgbm(WindowsColor.r, WindowsColor.g, WindowsColor.b, 1))
 
     config.resize(vec2(currentWindowWidth, currentWindowHeight), "Session Laps")
+    config.pinWindow("Session Laps", vec2(currentWindowWidth, currentWindowHeight))
 end
 
 return sessionlaps

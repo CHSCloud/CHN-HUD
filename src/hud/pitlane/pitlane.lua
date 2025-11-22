@@ -91,6 +91,7 @@ function pitlane.windowMain()
   end
 
   config.resize(vec2(currentWindowWidth, currentWindowHeight), "Pit Lane")
+  config.pinWindow("Pit Lane", vec2(currentWindowWidth, currentWindowHeight))
 end
 
 return pitlane

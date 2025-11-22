@@ -517,12 +517,8 @@ function pedals.windowMain()
 
   currentWindowSize = vec2(currentWindowWidth, currentWindowHeight)
   config.resize(currentWindowSize, "Pedals")
-  local win = config.getWindow("Pedals")
-  --settings.is_inside(ui.mouseLocalPos(), center, size / 2)
-  if config.isMouseInWindow(ui.mouseLocalPos(), currentWindowSize) and ui.mouseClicked(ui.MouseButton.Right) and  win ~= nil then
-      local pin_state = win:pinned()
-      win:setPinned(not pin_state)
-  end
+
+  config.pinWindow("Pedals", currentWindowSize)
 end
 
 return pedals
