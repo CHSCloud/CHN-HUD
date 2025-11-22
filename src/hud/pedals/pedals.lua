@@ -36,13 +36,13 @@ local gearBackgroundWidth = 60 * WindowPedalsScale
 local fontSpeed = 20 * WindowPedalsScale
 
 --Animação da Marcha
-local function animateGear() 
-  if fontGear < 40 * WindowPedalsScale then
+local function animateGear(maxFontGear) 
+  if fontGear < maxFontGear then
     if (40 * Timer) % 2 >= 1 then 
       fontGear = fontGear + 10 * WindowPedalsScale
     end
   else
-    fontGear = 40 * WindowPedalsScale
+    fontGear = maxFontGear
   end
 end
 
@@ -55,7 +55,6 @@ local function drawGear()
     fontGear = 0
     currentGear = CAR.gear
   end
-  animateGear()
   local gear = tostring(CAR.gear)
   if gear == "0" then
     gear = "N"
@@ -64,10 +63,11 @@ local function drawGear()
   end
   
   if SpeedActive then
+    animateGear(40 * WindowPedalsScale)
     ui.setCursor(vec2(20, 11 + contentTop):scale(WindowPedalsScale))
     ui.dwriteTextAligned(gear, fontGear, ui.Alignment.Center, ui.Alignment.Center, vec2(30, 30):scale(WindowPedalsScale), false, COLOR.YELLOW_DARK)
   else
-    fontGear = 45 * WindowPedalsScale
+    animateGear(45 * WindowPedalsScale)
     ui.setCursor(vec2(20, 15 + contentTop):scale(WindowPedalsScale))
     ui.dwriteTextAligned(gear, fontGear, ui.Alignment.Center, ui.Alignment.Center, vec2(30, 40):scale(WindowPedalsScale), false, COLOR.YELLOW_DARK)
   end
