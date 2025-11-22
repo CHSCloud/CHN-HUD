@@ -1,5 +1,6 @@
 require("src.settings.settings")
 local language = require("lang.language")
+local pinCheckBox = require("src.ui.pinCheckBox")
 local config = require("common.config")
 local sessionlaps = {}
 
@@ -76,8 +77,16 @@ function sessionlaps.windowMain()
     ui.setCursor(vec2(9,0):scale(WindowSessionLapsScale))
     ui.dwriteTextAligned(language.get("LAST"), 15 * WindowSessionLapsScale, ui.Alignment.Start, ui.Alignment.Center, vec2(150, 25):scale(WindowSessionLapsScale), false, rgbm(WindowsColor.r, WindowsColor.g, WindowsColor.b, 1))
 
-    config.resize(vec2(currentWindowWidth, currentWindowHeight), "Session Laps")
-    config.pinWindow("Session Laps", vec2(currentWindowWidth, currentWindowHeight))
+    local currentWindowSize = vec2(currentWindowWidth, currentWindowHeight)
+
+    config.resize(currentWindowSize, "Session Laps")
+
+    config.pinWindow("Session Laps", currentWindowSize)
+
+    if config.isMouseInWindow(ui.mouseLocalPos(), currentWindowSize + vec2(20 * WindowSessionLapsScale, 0))then
+        config.resize(currentWindowSize + vec2(22 * WindowSessionLapsScale, 0), "Session Laps")
+        pinCheckBox.main(vec2(currentWindowWidth + 2 * WindowSessionLapsScale, 10 * WindowSessionLapsScale), WindowSessionLapsScale, config.getWindow("Session Laps"):pinned())
+    end
 end
 
 return sessionlaps

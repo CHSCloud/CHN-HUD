@@ -1,5 +1,6 @@
 require("src.settings.settings")
 local config = require("common.config")
+local pinCheckBox = require("src.ui.pinCheckBox")
 local pedals = {}
 
 local currentWindowSize = vec2(0, 0)
@@ -519,6 +520,10 @@ function pedals.windowMain()
   config.resize(currentWindowSize, "Pedals")
 
   config.pinWindow("Pedals", currentWindowSize)
+  if config.isMouseInWindow(ui.mouseLocalPos(), currentWindowSize + vec2(20 * WindowPedalsScale, 0))then
+    config.resize(currentWindowSize + vec2(22 * WindowPedalsScale, 0), "Pedals")
+    pinCheckBox.main(vec2(currentWindowWidth + 2 * WindowPedalsScale, 10 * WindowPedalsScale), WindowPedalsScale, config.getWindow("Pedals"):pinned())
+  end
 end
 
 return pedals

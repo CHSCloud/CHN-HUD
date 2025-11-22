@@ -1,5 +1,6 @@
 require("src.settings.settings")
 local language = require("lang.language")
+local pinCheckBox = require("src.ui.pinCheckBox")
 local config = require("common.config")
 local pitlane = {}
 
@@ -90,8 +91,15 @@ function pitlane.windowMain()
     end 
   end
 
-  config.resize(vec2(currentWindowWidth, currentWindowHeight), "Pit Lane")
+  local currentWindowSize = vec2(currentWindowWidth, currentWindowHeight)
+  config.resize(currentWindowSize, "Pit Lane")
+
   config.pinWindow("Pit Lane", vec2(currentWindowWidth, currentWindowHeight))
+
+  if config.isMouseInWindow(ui.mouseLocalPos(), currentWindowSize + vec2(20 * WindowPitScale, 0))then
+    config.resize(currentWindowSize + vec2(22 * WindowPitScale, 0), "Pit Lane")
+    pinCheckBox.main(vec2(currentWindowWidth + 2 * WindowPitScale, 10 * WindowPitScale), WindowPitScale, config.getWindow("Pit Lane"):pinned())
+  end
 end
 
 return pitlane
