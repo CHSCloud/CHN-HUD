@@ -2,7 +2,7 @@ local config = {}
 
 local windows = {}
 
-local configStorage = ac.storage{
+local pinStorage = ac.storage{
     ["Pedals"] = false,
     ["Pit Lane"] = false,
     ["Session Laps"] = false
@@ -24,7 +24,7 @@ function config.init()
                 if all[i].name ~= nil then
                     window = ac.accessAppWindow(all[i].name)
                     if window ~= nil then
-                        window:setPinned(configStorage[all[i].title])
+                        window:setPinned(pinStorage[all[i].title])
                         windows[windowNames[j]] = window
                     end
                 end
@@ -62,7 +62,7 @@ function config.pinWindow(nameWindow, windowSize)
     local win = config.getWindow(nameWindow)
     if config.isMouseInWindow(ui.mouseLocalPos(), windowSize) and ui.mouseClicked(ui.MouseButton.Right) and  win ~= nil then
         local pin = win:pinned()
-        configStorage[nameWindow] = not pin
+        pinStorage[nameWindow] = not pin
         win:setPinned(not pin)
     end
 end
