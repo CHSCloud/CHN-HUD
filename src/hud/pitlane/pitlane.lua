@@ -7,6 +7,8 @@ local pitlane = {}
 function pitlane.windowMain()
   local currentWindowWidth = 150 * WindowPitScale
   local currentWindowHeight = 70 * WindowPitScale
+  local currentWindowSize
+
   local posLimit = vec2(-10,5)
   local fontLimit = 16 * WindowPitScale
   local posSpeedLimit = vec2(6, 22)
@@ -17,6 +19,10 @@ function pitlane.windowMain()
   local posSpeedYou = vec2(80, 22)
   local fontSpeedYou = 30 * WindowPitScale 
   local fontSlowDown = 15 * WindowPitScale
+
+  local kmh_string
+  local limitPit_string
+  local speedrgb
 
   if SIM.focusedCar == 0 then
       ui.pushDWriteFont("fonts/Montserrat-Bold.ttf") -- FONTE DO TEXTO
@@ -60,7 +66,7 @@ function pitlane.windowMain()
           currentWindowHeight = 70 * WindowPitScale
         else 
           -- SPEED
-          if(SelectedSpeed == 1) then
+          if(SelectedSpeed == "Km/h") then
             kmh_string = string.format("%.0f", CAR.speedKmh)
             limitPit_string = string.format("%.0f", CAR.speedLimiter)
           else
@@ -87,7 +93,7 @@ function pitlane.windowMain()
     end 
   end
 
-  local currentWindowSize = vec2(currentWindowWidth, currentWindowHeight)
+  currentWindowSize = vec2(currentWindowWidth, currentWindowHeight)
   config.resize(currentWindowSize, "Pit Lane")
 
   config.pinWindow("Pit Lane", currentWindowSize)

@@ -81,7 +81,7 @@ local function drawSpeed()
   currentWindowWidth = gearBackgroundWidth
   fontSpeed = 20 * WindowPedalsScale
   local speed
-  if(SelectedSpeed == 1) then
+  if(SelectedSpeed == "Km/h") then
     speed = string.format("%.0f", CAR.speedKmh)
   else
     speed = string.format("%.0f", CAR.speedKmh * 0.621371)
@@ -414,11 +414,6 @@ local function drawFuel()
     xOffset = 48
   elseif CAR.fuel >= 99.995 then
     xOffset = 51
-  end
-  if (8 * Timer) % 2 >= 1 then 
-    color = COLOR.GRAY_BG
-  else 
-    color = COLOR.RED_DARK
   end
 
   ui.setCursor(vec2(currentWindowWidth - xOffset * WindowPedalsScale, currentWindowHeight - 19 * WindowPedalsScale))

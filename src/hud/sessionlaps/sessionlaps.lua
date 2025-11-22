@@ -4,7 +4,7 @@ local pinCheckBox = require("src.ui.pinCheckBox")
 local config = require("common.config")
 local sessionlaps = {}
 
-previouBestlap = 0
+local previouBestlap = 0
 
 if ac.onSessionStart then
     ac.onSessionStart(function()
@@ -17,6 +17,13 @@ function sessionlaps.windowMain()
 
     local currentWindowWidth = 240 * WindowSessionLapsScale
     local currentWindowHeight = 50 * WindowSessionLapsScale
+    local currentWindowSize
+    
+    local lastLap
+    local minutes
+    local seconds
+    local milliseconds
+    local bestLap
 
     -- BACKGROUND
     ui.drawRectFilled(vec2(0, 0), vec2(currentWindowWidth, currentWindowHeight), WindowsColor, 5 * WindowSessionLapsScale)
@@ -77,7 +84,7 @@ function sessionlaps.windowMain()
     ui.setCursor(vec2(9,0):scale(WindowSessionLapsScale))
     ui.dwriteTextAligned(language.get("LAST"), 15 * WindowSessionLapsScale, ui.Alignment.Start, ui.Alignment.Center, vec2(150, 25):scale(WindowSessionLapsScale), false, rgbm(WindowsColor.r, WindowsColor.g, WindowsColor.b, 1))
 
-    local currentWindowSize = vec2(currentWindowWidth, currentWindowHeight)
+    currentWindowSize = vec2(currentWindowWidth, currentWindowHeight)
 
     config.resize(currentWindowSize, "Session Laps")
 
