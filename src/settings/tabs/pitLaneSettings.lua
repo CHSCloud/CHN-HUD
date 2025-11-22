@@ -23,6 +23,7 @@ local function resetToDefault()
 end
 
 function pitlaneSettings.pitlaneSettings()
+    
     local initPos = 55
     ui.setCursor(vec2(15, initPos))
     ui.header(language.get("SIZE"))

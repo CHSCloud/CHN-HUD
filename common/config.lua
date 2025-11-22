@@ -38,6 +38,14 @@ function config.resize(size, nameWindow)
     window:resize(size * ui_info.uiScale)
 end
 
+function config.isMouseInWindow(mousePos, size)
+    if mousePos.x < 0 then return false end
+    if mousePos.x > size.x then return false end
+    if mousePos.y < 0 then return false end
+    if mousePos.y > size.y then return false end
+    return true
+end
+
 config.init()
 
 return config

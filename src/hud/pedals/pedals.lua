@@ -30,14 +30,14 @@ local contentBottom = 0
 -- Marcha
 local currentGear = 0
 local fontGear = 40 * WindowPedalsScale
-local gearBackgroundWidth = 60 * WindowPedalsScale
+local gearBackgroundWidth
 
 -- Velocidade
-local fontSpeed = 20 * WindowPedalsScale
+local fontSpeed
 
 --Animação da Marcha
 local function animateGear(maxFontGear) 
-  if fontGear < maxFontGear then
+  if fontGear < maxFontGear - 3 then
     if (40 * Timer) % 2 >= 1 then 
       fontGear = fontGear + 10 * WindowPedalsScale
     end
@@ -49,7 +49,7 @@ end
 -- Desenha a marcha
 local function drawGear()
   contentMidle = 73 * WindowPedalsScale
-
+  gearBackgroundWidth = 60 * WindowPedalsScale
   currentWindowWidth = gearBackgroundWidth
   if currentGear ~= CAR.gear then
     fontGear = 0
@@ -76,7 +76,9 @@ end
 -- Desenha a velocidade
 local function drawSpeed()
   contentMidle = 73 * WindowPedalsScale
+  gearBackgroundWidth = 60 * WindowPedalsScale
   currentWindowWidth = gearBackgroundWidth
+  fontSpeed = 20 * WindowPedalsScale
   local speed
   if(SelectedSpeed == 1) then
     speed = string.format("%.0f", CAR.speedKmh)
@@ -462,7 +464,6 @@ function pedals.windowMain()
   
   -- Desenha background principal
   ui.drawRectFilled(vec2(0, 0), currentWindowSize, WindowsColor, 10 * WindowPedalsScale)
-  
   -- Desenha componentes
 
   if GearActive then
@@ -516,6 +517,12 @@ function pedals.windowMain()
 
   currentWindowSize = vec2(currentWindowWidth, currentWindowHeight)
   config.resize(currentWindowSize, "Pedals")
+  local win = config.getWindow("Pedals")
+  --settings.is_inside(ui.mouseLocalPos(), center, size / 2)
+  if config.isMouseInWindow(ui.mouseLocalPos(), currentWindowSize) and ui.mouseClicked(ui.MouseButton.Right) and  win ~= nil then
+      local pin_state = win:pinned()
+      win:setPinned(not pin_state)
+  end
 end
 
 return pedals

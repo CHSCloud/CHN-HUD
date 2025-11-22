@@ -3,21 +3,24 @@ local language = require("lang.language")
 local config = require("common.config")
 local pitlane = {}
 
+local currentWindowWidth = 150 * WindowPitScale
+local currentWindowHeight = 70 * WindowPitScale
+local initialPos = vec2(10,10)
+
+
 function pitlane.windowMain()
-  local currentWindowWidth = 150 * WindowPitScale
-  local currentWindowHeight = 70 * WindowPitScale
 
   local posLimit = vec2(-10,5)
-  local fontLimit = 17 * WindowPitScale
+  local fontLimit = 16 * WindowPitScale
   local posSpeedLimit = vec2(6, 22)
   local fontSpeedLimit = 30 * WindowPitScale
 
   local posYou = vec2(63,5)
   local fontYou = 17 * WindowPitScale
   local posSpeedYou = vec2(80, 22)
-  local fontSpeedYou = 30 * WindowPitScale
-
+  local fontSpeedYou = 30 * WindowPitScale 
   local fontSlowDown = 15 * WindowPitScale
+
   if SIM.focusedCar == 0 then
       ui.pushDWriteFont("fonts/Montserrat-Bold.ttf") -- FONTE DO TEXTO
       if CAR.manualPitsSpeedLimiterEnabled or CAR.isInPitlane or SettingsActive then
@@ -86,6 +89,7 @@ function pitlane.windowMain()
         ui.dwriteTextAligned(limitPit_string, fontSpeedLimit, ui.Alignment.Center, ui.Alignment.Center, vec2(69, 40):scale(WindowPitScale), false, COLOR.BLACK)
     end 
   end
+
   config.resize(vec2(currentWindowWidth, currentWindowHeight), "Pit Lane")
 end
 
