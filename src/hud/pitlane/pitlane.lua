@@ -4,13 +4,9 @@ local pinCheckBox = require("src.ui.pinCheckBox")
 local config = require("common.config")
 local pitlane = {}
 
-local currentWindowWidth = 150 * WindowPitScale
-local currentWindowHeight = 70 * WindowPitScale
-local initialPos = vec2(10,10)
-
-
 function pitlane.windowMain()
-
+  local currentWindowWidth = 150 * WindowPitScale
+  local currentWindowHeight = 70 * WindowPitScale
   local posLimit = vec2(-10,5)
   local fontLimit = 16 * WindowPitScale
   local posSpeedLimit = vec2(6, 22)
@@ -94,11 +90,11 @@ function pitlane.windowMain()
   local currentWindowSize = vec2(currentWindowWidth, currentWindowHeight)
   config.resize(currentWindowSize, "Pit Lane")
 
-  config.pinWindow("Pit Lane", vec2(currentWindowWidth, currentWindowHeight))
+  config.pinWindow("Pit Lane", currentWindowSize)
 
   if config.isMouseInWindow(ui.mouseLocalPos(), currentWindowSize + vec2(20 * WindowPitScale, 0))then
-    config.resize(currentWindowSize + vec2(22 * WindowPitScale, 0), "Pit Lane")
-    pinCheckBox.main(vec2(currentWindowWidth + 2 * WindowPitScale, 10 * WindowPitScale), WindowPitScale, config.getWindow("Pit Lane"):pinned())
+      config.resize(currentWindowSize + vec2(22 * WindowPitScale), "Pit Lane")
+      pinCheckBox.main(vec2(currentWindowWidth + 2 * WindowPitScale, 10 * WindowPitScale), WindowPitScale, config.getWindow("Pit Lane"):pinned())
   end
 end
 
