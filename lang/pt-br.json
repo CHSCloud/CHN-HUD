@@ -43,5 +43,17 @@
     "PROGRESS": "Progresso",
     "SHIFT_LIGHTS": "Luzes de mudança",
     "PIN_ALL_APPS": "Fixar todos os aplicativos",
-    "NUM_LIGHTS": "Número de luzes"
+    "NUM_LIGHTS": "Número de luzes",
+    "WHITE_FLAG": "Bandeira Branca",
+    "BLUE_FLAG": "Bandeira Azul",
+    "FASTER_CAR": "Carro Mais Rápido",
+    "CAUTION": "Cuidado",
+    "YELLOW_FLAG": "Bandeira Amarela",
+    "ONE_LAP_LEFT": "Uma Volta Restante",
+    "CHECKERED_FLAG": "Bandeira Quadriculada",
+    "FINISHED": "Finalizado",
+    "BLACK_FLAG": "Bandeira Preta",
+    "RETURN_TO_PITS": "Retornar aos Boxes",
+    "PENALTY_FLAG": "Bandeira de Penalidade",
+    "STOP": "Pare"
 }

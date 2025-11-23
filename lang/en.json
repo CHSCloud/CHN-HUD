@@ -43,6 +43,17 @@
     "PROGRESS": "Progress",
     "SHIFT_LIGHTS": "Shift Lights",
     "PIN_ALL_APPS": "Pin all apps",
-    "NUM_LIGHTS": "Num of lights"
-
+    "NUM_LIGHTS": "Num of lights",
+    "WHITE_FLAG": "White Flag",
+    "BLUE_FLAG": "Blue Flag",
+    "FASTER_CAR": "Faster Car",
+    "CAUTION": "Caution",
+    "YELLOW_FLAG": "Yellow Flag",
+    "ONE_LAP_LEFT": "One Lap Left",
+    "CHECKERED_FLAG": "Checkered Flag",
+    "FINISHED": "Finished",
+    "BLACK_FLAG": "Black Flag",
+    "RETURN_TO_PITS": "Return To Pits",
+    "PENALTY_FLAG": "Penalty Flag",
+    "STOP": "Stop"
 }
