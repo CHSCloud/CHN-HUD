@@ -1,13 +1,13 @@
----@diagnostic disable: undefined-field
 local language = {}
 
-local settings = ac.storage{
+local languageSettings = ac.storage {
     currentLanguage = "en"
 }
 
 local translations = {}
+
 local function loadTranslations()
-    local file_path = ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\CHN-HUD\\lang\\" .. settings.currentLanguage .. ".json"
+    local file_path = ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\CHN-HUD\\lang\\" .. languageSettings.currentLanguage .. ".json"
 
     if io.fileExists(file_path) then
         local content = io.load(file_path)
@@ -18,7 +18,7 @@ local function loadTranslations()
 end
 
 function language.setlanguage(key)
-    settings.currentLanguage = key
+    languageSettings.currentLanguage = key
     loadTranslations()
 end
 
@@ -27,7 +27,7 @@ function language.get(key)
 end
 
 function language.getCurrentLanguage()
-    return settings.currentLanguage
+    return languageSettings.currentLanguage
 end
 
 loadTranslations()

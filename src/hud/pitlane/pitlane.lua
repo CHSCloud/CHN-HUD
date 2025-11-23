@@ -25,7 +25,7 @@ function pitlane.windowMain()
   local speedrgb
 
   if SIM.focusedCar == 0 then
-      ui.pushDWriteFont("fonts/Montserrat-Bold.ttf") -- FONTE DO TEXTO
+      ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
       if CAR.manualPitsSpeedLimiterEnabled or CAR.isInPitlane or SettingsActive then
         if CAR.speedKmh > CAR.speedLimiter + 1 then
           currentWindowHeight = 100 * pitlaneSettings.store.pitlaneScale
@@ -94,19 +94,10 @@ function pitlane.windowMain()
   end
 
   currentWindowSize = vec2(currentWindowWidth, currentWindowHeight)
-  config.resize(currentWindowSize, "Pit Lane")
 
-  if config.isMouseInWindow(ui.mouseLocalPos(), 0, currentWindowWidth + (PinCheckLenght + 2) * pitlaneSettings.store.pitlaneScale, 0, currentWindowHeight)then
-      config.resize(currentWindowSize + vec2((PinCheckLenght + 2) * pitlaneSettings.store.pitlaneScale), "Pit Lane")
-      if ui.mouseClicked(ui.MouseButton.Right) then
-        config.pinWindow("Pit Lane")
-        PinAllApps = false
-      end
-      local isMouseInCheckBox = pinCheckBox.main(vec2(currentWindowWidth + 2 * pitlaneSettings.store.pitlaneScale, 10 * pitlaneSettings.store.pitlaneScale), pitlaneSettings.store.pitlaneScale, "Pit Lane", config.getWindow("Pit Lane"):pinned())
-      if isMouseInCheckBox then
-        config.resize(currentWindowSize + vec2((PinCheckLenght + 100) * pitlaneSettings.store.pitlaneScale), "Pit Lane")
-      end
-  end
+  config.resize(currentWindowSize, "Pit Lane")
+  
+  pinCheckBox.main(pitlaneSettings.store.pitlaneScale, "Pit Lane", config.getWindow("Pit Lane"):pinned(), currentWindowSize)
 end
 
 return pitlane

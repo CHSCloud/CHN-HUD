@@ -510,22 +510,12 @@ function pedals.windowMain()
     drawFuel()
   end
   --
-
+  
   currentWindowSize = vec2(currentWindowWidth, currentWindowHeight)
+
   config.resize(currentWindowSize, "Pedals")
 
-
-  if config.isMouseInWindow(ui.mouseLocalPos(), 0, currentWindowWidth + (PinCheckLenght + 2) * pedalsSettings.store.pedalsScale, 0, currentWindowHeight)then
-    config.resize(currentWindowSize + vec2((PinCheckLenght + 2) * pedalsSettings.store.pedalsScale), "Pedals")
-    if ui.mouseClicked(ui.MouseButton.Right) then
-      config.pinWindow("Pedals")
-      PinAllApps = false
-    end
-    local isMouseInCheckBox = pinCheckBox.main(vec2(currentWindowWidth + 2 * pedalsSettings.store.pedalsScale, 10 * pedalsSettings.store.pedalsScale), pedalsSettings.store.pedalsScale, "Pedals", config.getWindow("Pedals"):pinned())
-    if isMouseInCheckBox then
-      config.resize(currentWindowSize + vec2((PinCheckLenght + 100) * pedalsSettings.store.pedalsScale), "Pedals")
-    end
-  end
+  pinCheckBox.main(pedalsSettings.store.pedalsScale, "Pedals", config.getWindow("Pedals"):pinned(), currentWindowSize)
 end
 
 return pedals
