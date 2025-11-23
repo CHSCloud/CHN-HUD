@@ -57,7 +57,7 @@ function pinCheckBox.main(scale, nameWindow, isPinned, windowSize)
     if config.isMouseInWindow(ui.mouseLocalPos(), 0, windowSize.x + (maxLenght + 3) * scale, 0, windowSize.y) then
         
         if lenghts[nameWindow] < maxLenght then
-            if (10 * Timer) % 2 >= 1 then 
+            if (10 * Timer) % 4 >= 1 then 
                 lenghts[nameWindow] = lenghts[nameWindow] + 4
             end
         end
