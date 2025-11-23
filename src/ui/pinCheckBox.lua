@@ -2,7 +2,13 @@ local config = require("common.config")
 local language = require("lang.language")
 local pinCheckBox = {}
 
-local lenght = 20
+local maxLenght = 20
+
+local lenghts = {
+    ["Pedals"] = 0,
+    ["Pit Lane"] = 0,
+    ["Session Laps"] = 0,
+}
 
 --- @param pos vec2
 --- @param scale number 
@@ -11,20 +17,20 @@ local lenght = 20
 --- @return boolean
 local function checkBox(pos, scale, nameWindow, isPinned)
 
-    ui.drawRectFilled(pos, pos + vec2(lenght, lenght):scale(scale), COLOR.GRAY_BG, 2 * scale)
+    ui.drawRectFilled(pos, pos + vec2(lenghts[nameWindow], maxLenght):scale(scale), COLOR.GRAY_BG, 2 * scale)
 
-    if isPinned then
-        ui.drawLine(pos + vec2(4, 4):scale(scale), pos + vec2(lenght - 4, lenght - 4):scale(scale), COLOR.WHITE, 2 * scale)
-        ui.drawLine(pos + vec2(4, lenght - 4):scale(scale), pos + vec2(lenght - 4, 4):scale(scale), COLOR.WHITE, 2 * scale)
+    if isPinned and lenghts[nameWindow] == maxLenght then
+        ui.drawLine(pos + vec2(4, 4):scale(scale), pos + vec2(lenghts[nameWindow] - 4, lenghts[nameWindow] - 4):scale(scale), COLOR.WHITE, 2 * scale)
+        ui.drawLine(pos + vec2(4, lenghts[nameWindow] - 4):scale(scale), pos + vec2(lenghts[nameWindow] - 4, 4):scale(scale), COLOR.WHITE, 2 * scale)
     end
 
-    if config.isMouseInWindow(ui.mouseLocalPos(),pos.x, pos.x + lenght * scale, pos.y, pos.y + lenght * scale) then
+    if config.isMouseInWindow(ui.mouseLocalPos(),pos.x, pos.x + lenghts[nameWindow] * scale, pos.y, pos.y + lenghts[nameWindow] * scale) then
         if ui.mouseClicked(ui.MouseButton.Left) then
             config.pinWindow(nameWindow)
         end
 
-        ui.drawRectFilled( pos + vec2((lenght + 4)* scale), pos + vec2(100 * scale, pos.y + 10 * scale), rgbm.from0255(0,0,0,0.70), 4 *scale)
-        ui.setCursor(vec2(pos.x + (lenght + 4)* scale, pos.y))
+        ui.drawRectFilled( pos + vec2((lenghts[nameWindow] + 4)* scale), pos + vec2(100 * scale, pos.y + 10 * scale), rgbm.from0255(0,0,0,0.70), 4 *scale)
+        ui.setCursor(vec2(pos.x + (lenghts[nameWindow] + 4)* scale, pos.y))
 
         if isPinned then
             ui.dwriteTextAligned(language.get("PINNED"), 10 * scale, ui.Alignment.Center, ui.Alignment.Center, vec2(77 * scale, pos.y + 10 * scale))
@@ -34,6 +40,7 @@ local function checkBox(pos, scale, nameWindow, isPinned)
 
         return true
     end
+    return false
 end
 
 --- @param scale number 
@@ -41,16 +48,26 @@ end
 --- @param isPinned boolean
 --- @param windowSize vec2
 function pinCheckBox.main(scale, nameWindow, isPinned, windowSize)
-    if config.isMouseInWindow(ui.mouseLocalPos(), 0, windowSize.x + (lenght + 2) * scale, 0, windowSize.y)then
-        config.resize(windowSize + vec2((lenght + 2) * scale), nameWindow)
-
-        if ui.mouseClicked(ui.MouseButton.Right) then
+    if config.isMouseInWindow(ui.mouseLocalPos(), 0, windowSize.x, 0, windowSize.y) then
+        if ui.mouseClicked(ui.MouseButton.Right) then 
             config.pinWindow(nameWindow)
         end
+    end
 
-        if checkBox(vec2(windowSize.x + 2 * scale, 10 * scale), scale, nameWindow, isPinned) then
-            config.resize(windowSize + vec2((lenght + 100) * scale), nameWindow)
+    if config.isMouseInWindow(ui.mouseLocalPos(), 0, windowSize.x + (maxLenght + 3) * scale, 0, windowSize.y) then
+        
+        if lenghts[nameWindow] < maxLenght then
+            if (10 * Timer) % 2 >= 1 then 
+                lenghts[nameWindow] = lenghts[nameWindow] + 4
+            end
         end
+
+        config.resize(windowSize + vec2((maxLenght + 3) * scale, 0), nameWindow)
+        if checkBox(vec2(windowSize.x + 2 * scale, 10 * scale), scale, nameWindow, isPinned) then
+            config.resize(windowSize + vec2((maxLenght + 100) * scale), nameWindow)
+        end
+    else 
+        lenghts[nameWindow] = 0
     end
 end
 

@@ -510,7 +510,7 @@ function pedals.windowMain()
     drawFuel()
   end
   --
-  
+
   currentWindowSize = vec2(currentWindowWidth, currentWindowHeight)
 
   config.resize(currentWindowSize, "Pedals")
