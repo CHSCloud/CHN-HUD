@@ -68,10 +68,10 @@ function config.isMouseInWindow(mousePos, x1, x2, y1, y2)
 end
 
 --- @param nameWindow string
---- @return boolean
+--- @return boolean | nil
 function config.pinWindow(nameWindow)
     local win = config.getWindow(nameWindow)
-    if win == nil then return end
+    if win == nil then return nil end
     local pin = win:pinned()
     pinStorage[nameWindow] = not pin
     win:setPinned(not pin)

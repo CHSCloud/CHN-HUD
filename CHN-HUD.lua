@@ -6,28 +6,28 @@ local sessionlaps = require("src.hud.sessionlaps.sessionlaps")
 Timer = 0
 
 -- TELA DE CONFIGURAÇÕES
-function windowSettings()
+function WindowSettings()
   settings.windowMain()
 end
-function windowOpenSettings()
+function WindowOpenSettings()
   settings.windowOpenSettings()
 end
-function windowCloseSettings()
+function WindowCloseSettings()
   settings.windowCloseSettings()
 end
 
 -- TELA DOS PEDAIS
-function windowPedals()
+function WindowPedals()
   pedals.windowMain()
 end
 
 -- TELA DO PIT LANE
-function windowPitLane()
+function WindowPitLane()
   pitlane.windowMain()
 end
 
 -- TELA DE VOLTAS DA SESSÃO
-function windowSessionlaps()
+function WindowSessionlaps()
   sessionlaps.windowMain()
 end
 
