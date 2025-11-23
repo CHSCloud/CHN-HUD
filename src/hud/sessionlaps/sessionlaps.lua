@@ -88,7 +88,7 @@ function sessionlaps.windowMain()
 
     config.resize(currentWindowSize, "Session Laps")
 
-    if config.isMouseInWindow(ui.mouseLocalPos(), 0, currentWindowWidth + (PinCheckLenght + 2) * WindowPedalsScale, 0, currentWindowHeight)then
+    if config.isMouseInWindow(ui.mouseLocalPos(), 0, currentWindowWidth + (PinCheckLenght + 2) * pedalsSettings.scale, 0, currentWindowHeight)then
         config.resize(currentWindowSize + vec2((PinCheckLenght + 2) * WindowSessionLapsScale), "Session Laps")
         if ui.mouseClicked(ui.MouseButton.Right) then
             config.pinWindow("Session Laps")
@@ -96,7 +96,7 @@ function sessionlaps.windowMain()
         end
         local isMouseInCheckBox = pinCheckBox.main(vec2(currentWindowWidth + 2 * WindowSessionLapsScale, 10 * WindowSessionLapsScale), WindowSessionLapsScale, "Session Laps" ,config.getWindow("Session Laps"):pinned())
         if isMouseInCheckBox then
-            config.resize(currentWindowSize + vec2((PinCheckLenght + 100) * WindowPedalsScale), "Session Laps")
+            config.resize(currentWindowSize + vec2((PinCheckLenght + 100) * pedalsSettings.scale), "Session Laps")
         end
     end
 end

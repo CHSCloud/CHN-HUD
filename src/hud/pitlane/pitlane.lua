@@ -96,7 +96,7 @@ function pitlane.windowMain()
   currentWindowSize = vec2(currentWindowWidth, currentWindowHeight)
   config.resize(currentWindowSize, "Pit Lane")
 
-  if config.isMouseInWindow(ui.mouseLocalPos(), 0, currentWindowWidth + (PinCheckLenght + 2) * WindowPedalsScale, 0, currentWindowHeight)then
+  if config.isMouseInWindow(ui.mouseLocalPos(), 0, currentWindowWidth + (PinCheckLenght + 2) * pedalsSettings.scale, 0, currentWindowHeight)then
       config.resize(currentWindowSize + vec2((PinCheckLenght + 2) * WindowPitScale), "Pit Lane")
       if ui.mouseClicked(ui.MouseButton.Right) then
         config.pinWindow("Pit Lane")
@@ -104,7 +104,7 @@ function pitlane.windowMain()
       end
       local isMouseInCheckBox = pinCheckBox.main(vec2(currentWindowWidth + 2 * WindowPitScale, 10 * WindowPitScale), WindowPitScale, "Pit Lane", config.getWindow("Pit Lane"):pinned())
       if isMouseInCheckBox then
-        config.resize(currentWindowSize + vec2((PinCheckLenght + 100) * WindowPedalsScale), "Pit Lane")
+        config.resize(currentWindowSize + vec2((PinCheckLenght + 100) * pedalsSettings.scale), "Pit Lane")
       end
   end
 end

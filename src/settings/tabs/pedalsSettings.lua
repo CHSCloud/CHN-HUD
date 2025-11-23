@@ -19,68 +19,68 @@ local pedalsSettingsStore = ac.storage{
     rpmActive = true,
     rpmType = "default",
     rpmProcessType = "default",
-    numCircles = 9,
+    numLights = 9,
     barLength = 0.55
 }
 
-WindowPedalsScale = pedalsSettingsStore.windowPedalsScale
-GearActive = pedalsSettingsStore.gearActive
-SpeedActive = pedalsSettingsStore.speedActive
-WheelActive = pedalsSettingsStore.wheelActive
-ABSActive = pedalsSettingsStore.ABSActive
-AcceleratorActive = pedalsSettingsStore.acceleratorActive
-BrakeActive = pedalsSettingsStore.brakeActive
-BrakeBiasActive = pedalsSettingsStore.breakeBiasActive
-ClutchActive = pedalsSettingsStore.clutchActive
-HandbrakeActive = pedalsSettingsStore.handbrakeActive
-TextBarsActive = pedalsSettingsStore.textBarsActive
-FuelActive = pedalsSettingsStore.fuelActive
-PedalLimitsLines = pedalsSettingsStore.pedalLimitsLines
-RpmActive = pedalsSettingsStore.rpmActive
-RpmType = pedalsSettingsStore.rpmType
-RpmProcessType = pedalsSettingsStore.rpmProcessType
-NumCircles = pedalsSettingsStore.numCircles
-BarLength = pedalsSettingsStore.barLength
+pedalsSettings.scale = pedalsSettingsStore.windowPedalsScale
+pedalsSettings.gearActive = pedalsSettingsStore.gearActive
+pedalsSettings.speedActive = pedalsSettingsStore.speedActive
+pedalsSettings.wheelActive = pedalsSettingsStore.wheelActive
+pedalsSettings.absActive = pedalsSettingsStore.ABSActive
+pedalsSettings.acceleratorActive = pedalsSettingsStore.acceleratorActive
+pedalsSettings.brakeActive = pedalsSettingsStore.brakeActive
+pedalsSettings.brakeBiasActive = pedalsSettingsStore.breakeBiasActive
+pedalsSettings.clutchActive = pedalsSettingsStore.clutchActive
+pedalsSettings.handbrakeActive = pedalsSettingsStore.handbrakeActive
+pedalsSettings.textBarsActive = pedalsSettingsStore.textBarsActive
+pedalsSettings.fuelActive = pedalsSettingsStore.fuelActive
+pedalsSettings.pedalLimitsLines = pedalsSettingsStore.pedalLimitsLines
+pedalsSettings.rpmActive = pedalsSettingsStore.rpmActive
+pedalsSettings.rpmType = pedalsSettingsStore.rpmType
+pedalsSettings.rpmProcessType = pedalsSettingsStore.rpmProcessType
+pedalsSettings.numLights = pedalsSettingsStore.numLights
+pedalsSettings.barLength = pedalsSettingsStore.barLength
 
 
 local function resetToDefault()
-    WindowPedalsScale = 1
-    GearActive = true
-    SpeedActive = true
-    WheelActive = true
-    ABSActive = true
-    AcceleratorActive = true
-    BrakeActive = true
-    BrakeBiasActive = true
-    ClutchActive = true
-    HandbrakeActive = false
-    TextBarsActive = false
-    FuelActive = true
-    PedalLimitsLines = true
-    RpmActive = true
-    RpmType = "default"
-    RpmProcessType = "default"
-    NumCircles = 9
-    BarLength = 0.5
+    pedalsSettings.scale = 1
+    pedalsSettings.gearActive = true
+    pedalsSettings.speedActive = true
+    pedalsSettings.wheelActive = true
+    pedalsSettings.absActive = true
+    pedalsSettings.acceleratorActive = true
+    pedalsSettings.brakeActive = true
+    pedalsSettings.brakeBiasActive = true
+    pedalsSettings.clutchActive = true
+    pedalsSettings.handbrakeActive = false
+    pedalsSettings.textBarsActive = false
+    pedalsSettings.fuelActive = true
+    pedalsSettings.pedalLimitsLines = true
+    pedalsSettings.rpmActive = true
+    pedalsSettings.rpmType = "default"
+    pedalsSettings.rpmProcessType = "default"
+    pedalsSettings.numLights = 9
+    pedalsSettings.barLength = 0.5
 
-    pedalsSettingsStore.windowPedalsScale = WindowPedalsScale
-    pedalsSettingsStore.gearActive = GearActive
-    pedalsSettingsStore.speedActive = SpeedActive
-    pedalsSettingsStore.wheelActive = WheelActive
-    pedalsSettingsStore.ABSActive = ABSActive
-    pedalsSettingsStore.acceleratorActive = AcceleratorActive
-    pedalsSettingsStore.brakeActive = BrakeActive
-    pedalsSettingsStore.breakeBiasActive = BrakeBiasActive
-    pedalsSettingsStore.clutchActive = ClutchActive
-    pedalsSettingsStore.handbrakeActive = HandbrakeActive
-    pedalsSettingsStore.textBarsActive = TextBarsActive
-    pedalsSettingsStore.fuelActive = FuelActive
-    pedalsSettingsStore.pedalLimitsLines = PedalLimitsLines
-    pedalsSettingsStore.rpmActive = RpmActive
-    pedalsSettingsStore.rpmType = RpmType
-    pedalsSettingsStore.numCircles = NumCircles
-    pedalsSettingsStore.barLength = BarLength
-    pedalsSettingsStore.rpmProcessType = RpmProcessType
+    pedalsSettingsStore.windowPedalsScale = pedalsSettings.scale
+    pedalsSettingsStore.gearActive = pedalsSettings.gearActive
+    pedalsSettingsStore.speedActive = pedalsSettings.speedActive
+    pedalsSettingsStore.wheelActive = pedalsSettings.wheelActive
+    pedalsSettingsStore.pedalsSettings.absActive = pedalsSettings.absActive
+    pedalsSettingsStore.acceleratorActive = pedalsSettings.acceleratorActive
+    pedalsSettingsStore.brakeActive = pedalsSettings.brakeActive
+    pedalsSettingsStore.breakeBiasActive = pedalsSettings.brakeBiasActive
+    pedalsSettingsStore.clutchActive = pedalsSettings.clutchActive
+    pedalsSettingsStore.handbrakeActive = pedalsSettings.handbrakeActive
+    pedalsSettingsStore.textBarsActive = pedalsSettings.textBarsActive
+    pedalsSettingsStore.fuelActive = pedalsSettings.fuelActive
+    pedalsSettingsStore.pedalLimitsLines = pedalsSettings.pedalLimitsLines
+    pedalsSettingsStore.rpmActive = pedalsSettings.rpmActive
+    pedalsSettingsStore.rpmType = pedalsSettings.rpmType
+    pedalsSettingsStore.numLights = pedalsSettings.numLights
+    pedalsSettingsStore.barLength = pedalsSettings.barLength
+    pedalsSettingsStore.rpmProcessType = pedalsSettings.rpmProcessType
 end
 
 function pedalsSettings.pedalsSettings()
@@ -103,8 +103,8 @@ function pedalsSettings.pedalsSettings()
     ui.header(language.get("SIZE"))
     initPos = initPos + 20
     ui.setCursor(vec2(20, initPos))
-    WindowPedalsScale = math.floor(ui.slider("##Size", WindowPedalsScale, 0.7, 3, string.format("%.2f", WindowPedalsScale)) * 100 + 0.5) / 100;
-    pedalsSettingsStore.windowPedalsScale = WindowPedalsScale
+    pedalsSettings.scale = math.floor(ui.slider("##Size", pedalsSettings.scale, 0.7, 3, string.format("%.2f", pedalsSettings.scale)) * 100 + 0.5) / 100;
+    pedalsSettingsStore.windowPedalsScale = pedalsSettings.scale
 
     initPos = initPos + 35
     ui.drawRectFilled(vec2(5, initPos), vec2(WindowSettingsSize.x - 5, initPos), COLOR.GRAY, 1)
@@ -117,30 +117,30 @@ function pedalsSettings.pedalsSettings()
     
     initPos = initPos + 25
     ui.setCursor(vec2(20, initPos))
-    if ui.checkbox(language.get("GEAR"), GearActive) then
-        GearActive = not GearActive
-        pedalsSettingsStore.gearActive= GearActive
+    if ui.checkbox(language.get("GEAR"), pedalsSettings.gearActive) then
+        pedalsSettings.gearActive = not pedalsSettings.gearActive
+        pedalsSettingsStore.gearActive= pedalsSettings.gearActive
     end
 
     initPos = initPos + 25
     ui.setCursor(vec2(20, initPos))
-    if ui.checkbox(language.get("SPEED"), SpeedActive) then
-        SpeedActive = not SpeedActive
-        pedalsSettingsStore.speedActive = SpeedActive
+    if ui.checkbox(language.get("SPEED"), pedalsSettings.speedActive) then
+        pedalsSettings.speedActive = not pedalsSettings.speedActive
+        pedalsSettingsStore.speedActive = pedalsSettings.speedActive
     end
 
     initPos = initPos + 25
     ui.setCursor(vec2(20, initPos))
-    if ui.checkbox(language.get("WHEEL"), WheelActive) then
-        WheelActive = not WheelActive
-        pedalsSettingsStore.wheelActive = WheelActive
+    if ui.checkbox(language.get("WHEEL"), pedalsSettings.wheelActive) then
+        pedalsSettings.wheelActive = not pedalsSettings.wheelActive
+        pedalsSettingsStore.wheelActive = pedalsSettings.wheelActive
     end
 
     initPos = initPos + 25
     ui.setCursor(vec2(20, initPos))
-    if ui.checkbox(language.get("ABS"), ABSActive) then
-        ABSActive = not ABSActive
-        pedalsSettingsStore.ABSActive = ABSActive
+    if ui.checkbox(language.get("ABS"), pedalsSettings.absActive) then
+        pedalsSettings.absActive = not pedalsSettings.absActive
+        pedalsSettingsStore.pedalsSettings.absActive = pedalsSettings.absActive
     end
     -- Alerta do ABS
     if CAR.absModes == 0 then
@@ -159,28 +159,28 @@ function pedalsSettings.pedalsSettings()
   
     initPos2 = initPos2 + 25
     ui.setCursor(vec2(posXOthers, initPos2))
-    if ui.checkbox(language.get("FUEL"), FuelActive) then
-        FuelActive = not FuelActive
-        pedalsSettingsStore.fuelActive = FuelActive
+    if ui.checkbox(language.get("FUEL"), pedalsSettings.fuelActive) then
+        pedalsSettings.fuelActive = not pedalsSettings.fuelActive
+        pedalsSettingsStore.fuelActive = pedalsSettings.fuelActive
     end
 
     initPos2 = initPos2 + 25
     ui.setCursor(vec2(posXOthers, initPos2))
-    if ui.checkbox(language.get("BRAKE_BIAS"), BrakeBiasActive) then
-        BrakeBiasActive = not BrakeBiasActive
-        pedalsSettingsStore.breakeBiasActive = BrakeBiasActive
+    if ui.checkbox(language.get("BRAKE_BIAS"), pedalsSettings.brakeBiasActive) then
+        pedalsSettings.brakeBiasActive = not pedalsSettings.brakeBiasActive
+        pedalsSettingsStore.breakeBiasActive = pedalsSettings.brakeBiasActive
     end
 
     ui.setCursor(vec2(posXRPM - 5, posRPM))
     ui.header("RPM")
     posRPM = posRPM + 25
     ui.setCursor(vec2(posXRPM, posRPM))
-    if ui.checkbox("RPM", RpmActive) then
-        RpmActive = not RpmActive
-        pedalsSettingsStore.rpmActive = RpmActive
+    if ui.checkbox("RPM", pedalsSettings.rpmActive) then
+        pedalsSettings.rpmActive = not pedalsSettings.rpmActive
+        pedalsSettingsStore.rpmActive = pedalsSettings.rpmActive
     end
 
-    if RpmActive then
+    if pedalsSettings.rpmActive then
         local exampleRPMX = 420
         local exampleRPMY = 158
         local color1
@@ -191,34 +191,34 @@ function pedalsSettings.pedalsSettings()
         ui.header("Type")
         ui.setCursor(vec2(posXRPM + 30, posRPM))
         ui.setNextItemWidth(140)
-        ui.combo('##rpmType', rpm[RpmType], function ()
+        ui.combo('##rpmType', rpm[pedalsSettings.rpmType], function ()
             if ui.selectable(rpm["default"]) then
-                RpmType = "default"
-                pedalsSettingsStore.rpmType = RpmType
+                pedalsSettings.rpmType = "default"
+                pedalsSettingsStore.rpmType = pedalsSettings.rpmType
             end
             if ui.selectable(rpm["bar"]) then
-                RpmType = "bar"
-                pedalsSettingsStore.rpmType = RpmType
+                pedalsSettings.rpmType = "bar"
+                pedalsSettingsStore.rpmType = pedalsSettings.rpmType
             end
         end)
-        if RpmType == "default" then
+        if pedalsSettings.rpmType == "default" then
             posRPM = posRPM + 35
             ui.setCursor(vec2(posXRPM, posRPM))
             ui.header("Progress")
             ui.setCursor(vec2(posXRPM + 50, posRPM - 5))
             ui.setNextItemWidth(100)
-            ui.combo('##progress', processCircleType[RpmProcessType], function ()
+            ui.combo('##progress', processCircleType[pedalsSettings.rpmProcessType], function ()
                 if ui.selectable(processCircleType["default"]) then
-                    RpmProcessType = "default"
-                    pedalsSettingsStore.rpmProcessType = RpmProcessType
+                    pedalsSettings.rpmProcessType = "default"
+                    pedalsSettingsStore.rpmProcessType = pedalsSettings.rpmProcessType
                 end
                 if ui.selectable(processCircleType["total"]) then
-                    RpmProcessType = "total"
-                    pedalsSettingsStore.rpmProcessType = RpmProcessType
+                    pedalsSettings.rpmProcessType = "total"
+                    pedalsSettingsStore.rpmProcessType = pedalsSettings.rpmProcessType
                 end
             end)
 
-            if RpmProcessType == "default" then
+            if pedalsSettings.rpmProcessType == "default" then
                 for i = 1, 9, 1 do
                     color1 = COLOR.GREEN
                     color2 = COLOR.GREEN
@@ -237,7 +237,7 @@ function pedalsSettings.pedalsSettings()
                     ui.drawCircleFilled(vec2(exampleRPMX, exampleRPMY), 5, color3, 20)
                     exampleRPMX = exampleRPMX + 11
                 end
-            elseif RpmProcessType == "total" then
+            elseif pedalsSettings.rpmProcessType == "total" then
                 for i = 1, 9, 1 do
                     color1 = COLOR.GREEN
                     color2 = COLOR.YELLOW
@@ -261,8 +261,8 @@ function pedalsSettings.pedalsSettings()
             ui.header(language.get("NUM_LIGHTS"))
             ui.setCursor(vec2(posXRPM + 90, posRPM - 5))
             ui.setNextItemWidth(160)
-            NumCircles = math.floor(ui.slider("##NumCircles", NumCircles, 6, 25, string.format("%i", NumCircles)))
-        elseif RpmType == "bar" then
+            pedalsSettings.numLights = math.floor(ui.slider("##pedalsSettings.numLights", pedalsSettings.numLights, 6, 25, string.format("%i", pedalsSettings.numLights)))
+        elseif pedalsSettings.rpmType == "bar" then
             posRPM = posRPM + 35
             ui.setCursor(vec2(posXRPM, posRPM))
             ui.header("Percentage")
@@ -275,7 +275,7 @@ function pedalsSettings.pedalsSettings()
             ui.drawRectFilled(vec2(exampleRPMX - 5, exampleRPMY - 5), vec2(exampleRPMX - 5 + 98, exampleRPMY + 5), COLOR.RED_DARK, 10)
             ui.setCursor(vec2(posXRPM + 70, posRPM - 5))
             ui.setNextItemWidth(160)
-            BarLength = ui.slider("##BarLength", BarLength, 0.25, 0.95, string.format("%.0f%%", (BarLength+ 0.05) * 100) .. "%")
+            pedalsSettings.barLength = ui.slider("##pedalsSettings.barLength", pedalsSettings.barLength, 0.25, 0.95, string.format("%.0f%%", (pedalsSettings.barLength+ 0.05) * 100) .. "%")
         end
         
         
@@ -289,45 +289,45 @@ function pedalsSettings.pedalsSettings()
 
     initPos = initPos + 25
      ui.setCursor(vec2(20, initPos))
-    if ui.checkbox(language.get("THROTTLE"), AcceleratorActive) then
-        AcceleratorActive = not AcceleratorActive
-        pedalsSettingsStore.acceleratorActive = AcceleratorActive
+    if ui.checkbox(language.get("THROTTLE"), pedalsSettings.acceleratorActive) then
+        pedalsSettings.acceleratorActive = not pedalsSettings.acceleratorActive
+        pedalsSettingsStore.acceleratorActive = pedalsSettings.acceleratorActive
     end
 
     --- Estilo dos pedais
     ui.setCursor(vec2(posXStyle - 5, initPos -25))
     ui.header(language.get("PEDAL_STYLE"))
     ui.setCursor(vec2(posXStyle, initPos))
-    if ui.checkbox(language.get("PERCENTAGE"), TextBarsActive) then
-        TextBarsActive = not TextBarsActive
-        pedalsSettingsStore.textBarsActive = TextBarsActive
+    if ui.checkbox(language.get("PERCENTAGE"), pedalsSettings.textBarsActive) then
+        pedalsSettings.textBarsActive = not pedalsSettings.textBarsActive
+        pedalsSettingsStore.textBarsActive = pedalsSettings.textBarsActive
     end
 
     initPos = initPos + 25
     ui.setCursor(vec2(posXStyle, initPos))
-    if ui.checkbox(language.get("LIMIT_LINES"), PedalLimitsLines) then
-        PedalLimitsLines = not PedalLimitsLines
-        pedalsSettingsStore.pedalLimitsLines = PedalLimitsLines
+    if ui.checkbox(language.get("LIMIT_LINES"), pedalsSettings.pedalLimitsLines) then
+        pedalsSettings.pedalLimitsLines = not pedalsSettings.pedalLimitsLines
+        pedalsSettingsStore.pedalLimitsLines = pedalsSettings.pedalLimitsLines
     end
     ---
 
     ui.setCursor(vec2(20, initPos))
-    if ui.checkbox(language.get("BRAKE"), BrakeActive) then
-        BrakeActive = not BrakeActive
-        pedalsSettingsStore.brakeActive = BrakeActive
+    if ui.checkbox(language.get("BRAKE"), pedalsSettings.brakeActive) then
+        pedalsSettings.brakeActive = not pedalsSettings.brakeActive
+        pedalsSettingsStore.brakeActive = pedalsSettings.brakeActive
     end
     initPos = initPos + 25
     ui.setCursor(vec2(20, initPos))
-    if ui.checkbox(language.get("CLUTCH"), ClutchActive) then
-        ClutchActive = not ClutchActive
-        pedalsSettingsStore.clutchActive = ClutchActive
+    if ui.checkbox(language.get("CLUTCH"), pedalsSettings.clutchActive) then
+        pedalsSettings.clutchActive = not pedalsSettings.clutchActive
+        pedalsSettingsStore.clutchActive = pedalsSettings.clutchActive
     end
 
     initPos = initPos + 25
     ui.setCursor(vec2(20, initPos))
-    if ui.checkbox(language.get("HANDBRAKE"), HandbrakeActive) then
-        HandbrakeActive = not HandbrakeActive
-        pedalsSettingsStore.handbrakeActive = HandbrakeActive
+    if ui.checkbox(language.get("HANDBRAKE"), pedalsSettings.handbrakeActive) then
+        pedalsSettings.handbrakeActive = not pedalsSettings.handbrakeActive
+        pedalsSettingsStore.handbrakeActive = pedalsSettings.handbrakeActive
     end
     --
 
