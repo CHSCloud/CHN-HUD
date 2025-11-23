@@ -3,12 +3,17 @@ local config = {}
 
 local windows = {}
 
+local defaultValues = {
+    pinAllApps = false
+}
+
+config.store = ac.storage(defaultValues)
+
 local pinStorage = ac.storage{
     ["Pedals"] = false,
     ["Pit Lane"] = false,
-    ["Session Laps"] = false
+    ["Session Laps"] = false,
 }
-
 
 local windowNames = {
     "Pedals",
@@ -75,11 +80,13 @@ function config.pinWindow(nameWindow)
     local pin = win:pinned()
     pinStorage[nameWindow] = not pin
     win:setPinned(not pin)
+    config.store.pinAllApps = false
     return not pin
 end
 
 --- @param pin boolean
 function config.pinAllApps(pin)
+    config.store.pinAllApps = pin
     for index, name in ipairs(windowNames) do
         config.getWindow(name):setPinned(pin)
     end

@@ -11,15 +11,14 @@ local languages = {
   ["pt-br"] = "Português - Brasil"
 }
 
-
-local settingsStorage = ac.storage{
-    optionlanguage = "en",
+local defaultValues = {
+    optionLanguage = "en",
     selectedSpeed = "Km/h",
     transparancy = 0.85,
-    windowsColor = rgbm.from0255(18, 21, 29, 0.85),
-    pinAllApps = false
-    
+    windowsColor = rgbm.from0255(18, 21, 29, 0.85)
 }
+
+settings.store = ac.storage(defaultValues)
 
 COLOR = {
   RED = rgbm.from0255(255, 0, 0, 1),
@@ -35,15 +34,16 @@ COLOR = {
   GRAY_BG = rgbm.from0255(55, 55, 63, 0.85)
 }
 
-Optionlanguage  = language.getCurrentLanguage()
-SelectedSpeed = settingsStorage.selectedSpeed
-WindowsColor = settingsStorage.windowsColor
-PinAllApps = settingsStorage.pinAllApps
+local tabPin = false
 SettingsActive = false
-
+WindowsColor = settings.store.windowsColor
+SelectedSpeed = settings.store.selectedSpeed
 WindowSettingsSize = vec2(600, 480)
 
-local tabPin = false
+
+if settings.store.optionLanguage ~= language.getCurrentLanguage() then
+    language.setlanguage(settings.store.optionLanguage)
+end
 
 function settings.updateSettings()
   SIM = ac.getSim()
@@ -62,17 +62,19 @@ local function geral()
   
   initPos = initPos + 20
   ui.setCursor(vec2(20, initPos))
-  ui.combo('##resolution', languages[Optionlanguage], function ()
+  
+  -- Lógica de linguagem usando store direto
+  ui.combo('##resolution', languages[settings.store.optionLanguage], function ()
     if ui.selectable(languages["en"]) then
       tabPin = true
-      Optionlanguage = "en"
-      language.setlanguage(Optionlanguage)
+      settings.store.optionLanguage = "en"
+      language.setlanguage(settings.store.optionLanguage)
     end
 
     if ui.selectable(languages["pt-br"]) then
       tabPin = true
-      Optionlanguage = "pt-br"
-    language.setlanguage(Optionlanguage)
+      settings.store.optionLanguage = "pt-br"
+      language.setlanguage(settings.store.optionLanguage)
     end
   end)
 
@@ -85,51 +87,63 @@ local function geral()
   
   initPos = initPos + 20
   ui.setCursor(vec2(20, initPos))
-  ui.combo("##Speed", SelectedSpeed ,
+  
+  -- Lógica de velocidade usando store direto
+  ui.combo("##Speed", settings.store.selectedSpeed ,
     function ()
       if ui.selectable("Km/h") then
-        SelectedSpeed = "Km/h"
+        settings.store.selectedSpeed = "Km/h"
       end
 
       if ui.selectable("Mph") then
-        SelectedSpeed = "Mph"
+        settings.store.selectedSpeed = "Mph"
     end
   end)
   
-  settingsStorage.selectedSpeed = SelectedSpeed
-
   initPos = initPos + 35
   ui.drawRectFilled(vec2(5, initPos), vec2(WindowSettingsSize.x - 5, initPos), COLOR.GRAY, 1)
 
   initPos = initPos + 20
   ui.setCursor(vec2(300, initPos + 20))
-  if ui.checkbox(language.get("PIN_ALL_APPS"), PinAllApps) then
-    PinAllApps = not PinAllApps
-    settingsStorage.pinAllApps = PinAllApps
-    config.pinAllApps(PinAllApps)
+  
+  -- Checkbox Pin All Apps
+  if ui.checkbox(language.get("PIN_ALL_APPS"), config.store.pinAllApps) then
+    config.store.pinAllApps = not config.store.pinAllApps
+    config.pinAllApps(config.store.pinAllApps)
   end
   
+  -- Seção de Cores
   ui.setCursor(vec2(15, initPos))
   ui.header(language.get("SELECT_COLOR"))
-  local color = settingsStorage.windowsColor
+  
   ui.pushItemWidth(150)
   
   initPos = initPos + 20
   ui.setCursor(vec2(20, initPos))
-  ui.colorPicker(language.get('COLOR'), color, ui.ColorPickerFlags.PickerHueBar + ui.ColorPickerFlags.NoInputs)
+  
+  ui.colorPicker(language.get('COLOR'), settings.store.windowsColor, ui.ColorPickerFlags.PickerHueBar + ui.ColorPickerFlags.NoInputs)
 
   initPos = initPos + 130
   ui.setCursor(vec2(20, initPos))
-  settingsStorage.transparancy = ui.slider(language.get('TRANSPARENCY'), settingsStorage.transparancy, 0, 1, string.format("%.0f", settingsStorage.transparancy * 100));
+  
+  -- Slider de Transparência
+  local newAlpha = ui.slider(language.get('TRANSPARENCY'), settings.store.transparancy, 0, 1, string.format("%.0f", settings.store.transparancy * 100));
+  if ui.itemEdited() then
+      settings.store.transparancy = newAlpha
+  end
 
-  settingsStorage.windowsColor = rgbm(color.r, color.g, color.b, settingsStorage.transparancy)
+  -- Atualiza a cor final combinando RGB do picker + Alpha do slider
+  settings.store.windowsColor = rgbm(settings.store.windowsColor.r, settings.store.windowsColor.g, settings.store.windowsColor.b, settings.store.transparancy)
+  
   ui.popItemWidth()
 
   initPos = initPos + 30
   ui.setCursor(vec2(20, initPos))
+  
+  -- Reset Color
   if ui.button(language.get("RESET_COLOR")) then
-    settingsStorage.windowsColor = rgbm.from0255(18, 21, 29, 0.85)
-    settingsStorage.transparancy = 0.85
+    settings.store.windowsColor = rgbm.from0255(18, 21, 29, 0.85)
+    settings.store.transparancy = 0.85
   end
 end
 

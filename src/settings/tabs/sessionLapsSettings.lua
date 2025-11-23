@@ -1,16 +1,16 @@
 local language = require("lang.language")
 local sessionlapsSettings = {}
 
-local sessionlapsSettingsStorage = ac.storage {
-    windowSessionLapsScale = 1
+local defaultValues = {
+    sessionLapsScale = 1
 }
 
-WindowSessionLapsScale = sessionlapsSettingsStorage.windowSessionLapsScale
+sessionlapsSettings.store = ac.storage(defaultValues)
 
 local function resetToDefault()
-    WindowSessionLapsScale = 1
-
-    sessionlapsSettingsStorage.windowSessionLapsScale = WindowSessionLapsScale
+    for key, value in pairs(defaultValues) do
+        sessionlapsSettings.store[key] = value
+    end
 end
 
 function sessionlapsSettings.sessionlapsSettings()
@@ -20,8 +20,9 @@ function sessionlapsSettings.sessionlapsSettings()
 
     initPos = initPos + 20
     ui.setCursor(vec2(20, initPos))
-    WindowSessionLapsScale = ui.slider("##Size", WindowSessionLapsScale, 0.7, 3, string.format("%.2f", WindowSessionLapsScale))
-    sessionlapsSettingsStorage.windowSessionLapsScale = WindowSessionLapsScale
+    
+    -- Uso direto do store com a chave padronizada 'scale'
+    sessionlapsSettings.store.sessionLapsScale = ui.slider("##Size", sessionlapsSettings.store.sessionLapsScale, 0.7, 3, string.format("%.2f", sessionlapsSettings.store.sessionLapsScale))
 
     initPos = initPos + 40
     ui.setCursor(vec2(20, initPos))
