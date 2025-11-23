@@ -1,5 +1,6 @@
 require("src.settings.settings")
 local config = require("common.config")
+local language = require("lang.language")
 local pinCheckBox = {}
 
 PinCheckLenght = 20
@@ -22,9 +23,9 @@ function pinCheckBox.main(pos, scale, nameWindow, isPinned)
         ui.drawRectFilled( pos + vec2((PinCheckLenght + 4)* scale), pos + vec2(100 * scale, pos.y + 10 * scale), rgbm.from0255(0,0,0,0.70), 4 *scale)
         ui.setCursor(vec2(pos.x + (PinCheckLenght + 4)* scale, pos.y))
         if isPinned then
-            ui.dwriteTextAligned("PINNED", 10 * scale, ui.Alignment.Center, ui.Alignment.Center, vec2(77 * scale, pos.y + 10 * scale))
+            ui.dwriteTextAligned(language.get("PINNED"), 10 * scale, ui.Alignment.Center, ui.Alignment.Center, vec2(77 * scale, pos.y + 10 * scale))
         else 
-            ui.dwriteTextAligned("NOT PINNED", 10 * scale, ui.Alignment.Center, ui.Alignment.Center, vec2(77 * scale, pos.y + 10 * scale))
+            ui.dwriteTextAligned(language.get("NOT_PINNED"), 10 * scale, ui.Alignment.Center, ui.Alignment.Center, vec2(77 * scale, pos.y + 10 * scale))
         end
         return true
     end

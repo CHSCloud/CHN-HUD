@@ -102,11 +102,8 @@ local function geral()
   ui.drawRectFilled(vec2(5, initPos), vec2(WindowSettingsSize.x - 5, initPos), COLOR.GRAY, 1)
 
   initPos = initPos + 20
-
-  ui.setCursor(vec2(295, initPos))
-  ui.header("Pin")
   ui.setCursor(vec2(300, initPos + 20))
-  if ui.checkbox("Pin all apps", PinAllApps) then
+  if ui.checkbox(language.get("PIN_ALL_APPS"), PinAllApps) then
     PinAllApps = not PinAllApps
     settingsStorage.pinAllApps = PinAllApps
     config.pinAllApps(PinAllApps)

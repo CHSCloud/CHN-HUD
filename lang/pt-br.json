@@ -36,5 +36,12 @@
     "DEFAULT": "Padrão",
     "BAR": "Barra",
     "ALERT_PIT": "Alerta",
-    "STYLE": "Estilo"
+    "STYLE": "Estilo",
+    "PINNED": "FIXADO",
+    "NOT_PINNED": "DESAFIXADO",
+    "TYPE": "Tipo",
+    "PROGRESS": "Progresso",
+    "SHIFT_LIGHTS": "Luzes de mudança",
+    "PIN_ALL_APPS": "Fixar todos os aplicativos",
+    "NUM_LIGHTS": "Número de luzes"
 }

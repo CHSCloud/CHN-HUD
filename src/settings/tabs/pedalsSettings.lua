@@ -85,7 +85,7 @@ end
 
 function pedalsSettings.pedalsSettings()
     local rpm = {
-        ["default"] = "Shift Lights",
+        ["default"] = language.get("SHIFT_LIGHTS"),
         ["bar"] = language.get("BAR")
     }
     local processCircleType = {
@@ -190,7 +190,7 @@ function pedalsSettings.pedalsSettings()
         ui.setCursor(vec2(posXRPM, posRPM + 5))
         ui.header("Type")
         ui.setCursor(vec2(posXRPM + 30, posRPM))
-        ui.setNextItemWidth(100)
+        ui.setNextItemWidth(140)
         ui.combo('##rpmType', rpm[RpmType], function ()
             if ui.selectable(rpm["default"]) then
                 RpmType = "default"
@@ -258,8 +258,8 @@ function pedalsSettings.pedalsSettings()
 
             posRPM = posRPM + 30
             ui.setCursor(vec2(posXRPM, posRPM))
-            ui.header("Number of Circles")
-            ui.setCursor(vec2(posXRPM + 100, posRPM - 5))
+            ui.header(language.get("NUM_LIGHTS"))
+            ui.setCursor(vec2(posXRPM + 90, posRPM - 5))
             ui.setNextItemWidth(160)
             NumCircles = math.floor(ui.slider("##NumCircles", NumCircles, 6, 25, string.format("%i", NumCircles)))
         elseif RpmType == "bar" then

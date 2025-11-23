@@ -36,5 +36,13 @@
     "DEFAULT": "Default",
     "BAR": "Bar",
     "ALERT_PIT": "Alert",
-    "STYLE": "Estyle"
+    "STYLE": "Estyle",
+    "PINNED": "PINNED",
+    "NOT_PINNED": "NOT PINNED",
+    "TYPE": "Type",
+    "PROGRESS": "Progress",
+    "SHIFT_LIGHTS": "Shift Lights",
+    "PIN_ALL_APPS": "Pin all apps",
+    "NUM_LIGHTS": "Num of lights"
+
 }
