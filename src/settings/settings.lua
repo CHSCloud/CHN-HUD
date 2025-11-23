@@ -14,9 +14,10 @@ local languages = {
 
 local settingsStorage = ac.storage{
     optionlanguage = "en",
-    selectedSpeed = 1,
+    selectedSpeed = "Km/h",
     transparancy = 0.85,
     windowsColor = rgbm.from0255(18, 21, 29, 0.85),
+    pinAllApps = false
     
 }
 
@@ -37,12 +38,13 @@ COLOR = {
 Optionlanguage  = language.getCurrentLanguage()
 SelectedSpeed = settingsStorage.selectedSpeed
 WindowsColor = settingsStorage.windowsColor
+PinAllApps = settingsStorage.pinAllApps
 SettingsActive = false
 
 WindowSettingsSize = vec2(600, 480)
 
-
 local tabPin = false
+
 function settings.updateSettings()
   SIM = ac.getSim()
   CAR = ac.getCar(SIM.focusedCar)
@@ -83,13 +85,30 @@ local function geral()
   
   initPos = initPos + 20
   ui.setCursor(vec2(20, initPos))
-  SelectedSpeed = ui.combo("##Speed", SelectedSpeed , {"Km/h", "Mph"})
+  ui.combo("##Speed", SelectedSpeed ,
+    function ()
+      if ui.selectable("Km/h") then
+        SelectedSpeed = "Km/h"
+      end
+
+      if ui.selectable("Mph") then
+        SelectedSpeed = "Mph"
+    end
+  end)
+  
   settingsStorage.selectedSpeed = SelectedSpeed
 
   initPos = initPos + 35
   ui.drawRectFilled(vec2(5, initPos), vec2(WindowSettingsSize.x - 5, initPos), COLOR.GRAY, 1)
 
   initPos = initPos + 20
+  ui.setCursor(vec2(300, initPos + 20))
+  if ui.checkbox(language.get("PIN_ALL_APPS"), PinAllApps) then
+    PinAllApps = not PinAllApps
+    settingsStorage.pinAllApps = PinAllApps
+    config.pinAllApps(PinAllApps)
+  end
+  
   ui.setCursor(vec2(15, initPos))
   ui.header(language.get("SELECT_COLOR"))
   local color = settingsStorage.windowsColor
@@ -97,7 +116,7 @@ local function geral()
   
   initPos = initPos + 20
   ui.setCursor(vec2(20, initPos))
-  ui.colorPicker(language.get('COLOR'), color, ui.ColorPickerFlags.PickerHueBar + ui.ColorPickerFlags.NoInputs, 10, 20)
+  ui.colorPicker(language.get('COLOR'), color, ui.ColorPickerFlags.PickerHueBar + ui.ColorPickerFlags.NoInputs)
 
   initPos = initPos + 130
   ui.setCursor(vec2(20, initPos))

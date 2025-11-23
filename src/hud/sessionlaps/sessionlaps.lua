@@ -4,7 +4,7 @@ local pinCheckBox = require("src.ui.pinCheckBox")
 local config = require("common.config")
 local sessionlaps = {}
 
-previouBestlap = 0
+local previouBestlap = 0
 
 if ac.onSessionStart then
     ac.onSessionStart(function()
@@ -17,6 +17,13 @@ function sessionlaps.windowMain()
 
     local currentWindowWidth = 240 * WindowSessionLapsScale
     local currentWindowHeight = 50 * WindowSessionLapsScale
+    local currentWindowSize
+    
+    local lastLap
+    local minutes
+    local seconds
+    local milliseconds
+    local bestLap
 
     -- BACKGROUND
     ui.drawRectFilled(vec2(0, 0), vec2(currentWindowWidth, currentWindowHeight), WindowsColor, 5 * WindowSessionLapsScale)
@@ -77,15 +84,20 @@ function sessionlaps.windowMain()
     ui.setCursor(vec2(9,0):scale(WindowSessionLapsScale))
     ui.dwriteTextAligned(language.get("LAST"), 15 * WindowSessionLapsScale, ui.Alignment.Start, ui.Alignment.Center, vec2(150, 25):scale(WindowSessionLapsScale), false, rgbm(WindowsColor.r, WindowsColor.g, WindowsColor.b, 1))
 
-    local currentWindowSize = vec2(currentWindowWidth, currentWindowHeight)
+    currentWindowSize = vec2(currentWindowWidth, currentWindowHeight)
 
     config.resize(currentWindowSize, "Session Laps")
 
-    config.pinWindow("Session Laps", currentWindowSize)
-
-    if config.isMouseInWindow(ui.mouseLocalPos(), currentWindowSize + vec2(20 * WindowSessionLapsScale, 0))then
-        config.resize(currentWindowSize + vec2(22 * WindowSessionLapsScale), "Session Laps")
-        pinCheckBox.main(vec2(currentWindowWidth + 2 * WindowSessionLapsScale, 10 * WindowSessionLapsScale), WindowSessionLapsScale, config.getWindow("Session Laps"):pinned())
+    if config.isMouseInWindow(ui.mouseLocalPos(), 0, currentWindowWidth + (PinCheckLenght + 2) * WindowPedalsScale, 0, currentWindowHeight)then
+        config.resize(currentWindowSize + vec2((PinCheckLenght + 2) * WindowSessionLapsScale), "Session Laps")
+        if ui.mouseClicked(ui.MouseButton.Right) then
+            config.pinWindow("Session Laps")
+            PinAllApps = false
+        end
+        local isMouseInCheckBox = pinCheckBox.main(vec2(currentWindowWidth + 2 * WindowSessionLapsScale, 10 * WindowSessionLapsScale), WindowSessionLapsScale, "Session Laps" ,config.getWindow("Session Laps"):pinned())
+        if isMouseInCheckBox then
+            config.resize(currentWindowSize + vec2((PinCheckLenght + 100) * WindowPedalsScale), "Session Laps")
+        end
     end
 end
 

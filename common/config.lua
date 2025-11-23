@@ -1,3 +1,4 @@
+
 local config = {}
 
 local windows = {}
@@ -54,26 +55,35 @@ function config.resize(size, nameWindow)
 end
 
 --- @param mousePos vec2
---- @param windowSize vec2
-function config.isMouseInWindow(mousePos, windowSize)
-    if mousePos.x < 0 then return false end
-    if mousePos.x > windowSize.x then return false end
-    if mousePos.y < 0 then return false end
-    if mousePos.y > windowSize.y then return false end
+--- @param x1 number
+--- @param x2 number
+--- @param y1 number
+--- @param y2 number
+function config.isMouseInWindow(mousePos, x1, x2, y1, y2)
+    if mousePos.x < x1 then return false end
+    if mousePos.x > x2 then return false end
+    if mousePos.y < y1 then return false end
+    if mousePos.y > y2 then return false end
     return true
 end
 
 --- @param nameWindow string
---- @param windowSize vec2
-function config.pinWindow(nameWindow, windowSize)
+--- @return boolean
+function config.pinWindow(nameWindow)
     local win = config.getWindow(nameWindow)
-    if config.isMouseInWindow(ui.mouseLocalPos(), windowSize) and ui.mouseClicked(ui.MouseButton.Right) and  win ~= nil then
-        local pin = win:pinned()
-        pinStorage[nameWindow] = not pin
-        win:setPinned(not pin)
-    end
+    if win == nil then return end
+    local pin = win:pinned()
+    pinStorage[nameWindow] = not pin
+    win:setPinned(not pin)
+    return not pin
 end
 
+--- @param pin boolean
+function config.pinAllApps(pin)
+    for index, name in ipairs(windowNames) do
+        config.getWindow(name):setPinned(pin)
+    end
+end
 
 config.init()
 

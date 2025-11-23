@@ -81,7 +81,7 @@ local function drawSpeed()
   currentWindowWidth = gearBackgroundWidth
   fontSpeed = 20 * WindowPedalsScale
   local speed
-  if(SelectedSpeed == 1) then
+  if(SelectedSpeed == "Km/h") then
     speed = string.format("%.0f", CAR.speedKmh)
   else
     speed = string.format("%.0f", CAR.speedKmh * 0.621371)
@@ -415,11 +415,6 @@ local function drawFuel()
   elseif CAR.fuel >= 99.995 then
     xOffset = 51
   end
-  if (8 * Timer) % 2 >= 1 then 
-    color = COLOR.GRAY_BG
-  else 
-    color = COLOR.RED_DARK
-  end
 
   ui.setCursor(vec2(currentWindowWidth - xOffset * WindowPedalsScale, currentWindowHeight - 19 * WindowPedalsScale))
   ui.dwriteTextAligned(string.format("%.2f", math.max(0, CAR.fuel)), fontContentBottom, ui.Alignment.Center, ui.Alignment.Start, vec2(50, 30):scale(WindowPedalsScale), false, fuelColor)
@@ -519,10 +514,17 @@ function pedals.windowMain()
   currentWindowSize = vec2(currentWindowWidth, currentWindowHeight)
   config.resize(currentWindowSize, "Pedals")
 
-  config.pinWindow("Pedals", currentWindowSize)
-  if config.isMouseInWindow(ui.mouseLocalPos(), currentWindowSize + vec2(20 * WindowPedalsScale, 0))then
-    config.resize(currentWindowSize + vec2(22 * WindowPedalsScale), "Pedals")
-    pinCheckBox.main(vec2(currentWindowWidth + 2 * WindowPedalsScale, 10 * WindowPedalsScale), WindowPedalsScale, config.getWindow("Pedals"):pinned())
+
+  if config.isMouseInWindow(ui.mouseLocalPos(), 0, currentWindowWidth + (PinCheckLenght + 2) * WindowPedalsScale, 0, currentWindowHeight)then
+    config.resize(currentWindowSize + vec2((PinCheckLenght + 2) * WindowPedalsScale), "Pedals")
+    if ui.mouseClicked(ui.MouseButton.Right) then
+      config.pinWindow("Pedals")
+      PinAllApps = false
+    end
+    local isMouseInCheckBox = pinCheckBox.main(vec2(currentWindowWidth + 2 * WindowPedalsScale, 10 * WindowPedalsScale), WindowPedalsScale, "Pedals", config.getWindow("Pedals"):pinned())
+    if isMouseInCheckBox then
+      config.resize(currentWindowSize + vec2((PinCheckLenght + 100) * WindowPedalsScale), "Pedals")
+    end
   end
 end
 
