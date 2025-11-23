@@ -514,10 +514,9 @@ function pedals.windowMain()
   currentWindowSize = vec2(currentWindowWidth, currentWindowHeight)
   config.resize(currentWindowSize, "Pedals")
 
-  config.pinWindow("Pedals", currentWindowSize)
-  if config.isMouseInWindow(ui.mouseLocalPos(), currentWindowSize + vec2(20 * WindowPedalsScale, 0))then
+  if config.isMouseInWindow(ui.mouseLocalPos(), 0, currentWindowWidth + 22 * WindowPedalsScale, 0, currentWindowHeight)then
     config.resize(currentWindowSize + vec2(22 * WindowPedalsScale), "Pedals")
-    pinCheckBox.main(vec2(currentWindowWidth + 2 * WindowPedalsScale, 10 * WindowPedalsScale), WindowPedalsScale, config.getWindow("Pedals"):pinned())
+    pinCheckBox.main(vec2(currentWindowWidth + 2 * WindowPedalsScale, 10 * WindowPedalsScale), WindowPedalsScale, "Pedals", config.getWindow("Pedals"):pinned())
   end
 end
 

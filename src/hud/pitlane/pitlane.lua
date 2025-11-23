@@ -95,12 +95,10 @@ function pitlane.windowMain()
 
   currentWindowSize = vec2(currentWindowWidth, currentWindowHeight)
   config.resize(currentWindowSize, "Pit Lane")
-
-  config.pinWindow("Pit Lane", currentWindowSize)
-
-  if config.isMouseInWindow(ui.mouseLocalPos(), currentWindowSize + vec2(20 * WindowPitScale, 0))then
+  
+  if config.isMouseInWindow(ui.mouseLocalPos(), 0, currentWindowWidth + 22 * WindowPedalsScale, 0, currentWindowHeight)then
       config.resize(currentWindowSize + vec2(22 * WindowPitScale), "Pit Lane")
-      pinCheckBox.main(vec2(currentWindowWidth + 2 * WindowPitScale, 10 * WindowPitScale), WindowPitScale, config.getWindow("Pit Lane"):pinned())
+      pinCheckBox.main(vec2(currentWindowWidth + 2 * WindowPitScale, 10 * WindowPitScale), WindowPitScale, "Pit Lane", config.getWindow("Pit Lane"):pinned())
   end
 end
 

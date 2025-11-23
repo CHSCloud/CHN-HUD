@@ -87,12 +87,10 @@ function sessionlaps.windowMain()
     currentWindowSize = vec2(currentWindowWidth, currentWindowHeight)
 
     config.resize(currentWindowSize, "Session Laps")
-
-    config.pinWindow("Session Laps", currentWindowSize)
-
-    if config.isMouseInWindow(ui.mouseLocalPos(), currentWindowSize + vec2(20 * WindowSessionLapsScale, 0))then
+    
+    if config.isMouseInWindow(ui.mouseLocalPos(), 0, currentWindowWidth + 22 * WindowPedalsScale, 0, currentWindowHeight)then
         config.resize(currentWindowSize + vec2(22 * WindowSessionLapsScale), "Session Laps")
-        pinCheckBox.main(vec2(currentWindowWidth + 2 * WindowSessionLapsScale, 10 * WindowSessionLapsScale), WindowSessionLapsScale, config.getWindow("Session Laps"):pinned())
+        pinCheckBox.main(vec2(currentWindowWidth + 2 * WindowSessionLapsScale, 10 * WindowSessionLapsScale), WindowSessionLapsScale, "Session Laps" ,config.getWindow("Session Laps"):pinned())
     end
 end
 
