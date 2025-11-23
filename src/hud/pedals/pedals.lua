@@ -30,7 +30,7 @@ local contentBottom = 0
 
 -- Marcha
 local currentGear = 0
-local fontGear = 40 * pedalsSettings.scale
+local fontGear = 40 * pedalsSettings.store.pedalsScale
 local gearBackgroundWidth
 
 -- Velocidade
@@ -40,7 +40,7 @@ local fontSpeed
 local function animateGear(maxFontGear) 
   if fontGear < maxFontGear - 3 then
     if (40 * Timer) % 2 >= 1 then 
-      fontGear = fontGear + 10 * pedalsSettings.scale
+      fontGear = fontGear + 10 * pedalsSettings.store.pedalsScale
     end
   else
     fontGear = maxFontGear
@@ -49,8 +49,8 @@ end
 
 -- Desenha a marcha
 local function drawGear()
-  contentMidle = 73 * pedalsSettings.scale
-  gearBackgroundWidth = 60 * pedalsSettings.scale
+  contentMidle = 73 * pedalsSettings.store.pedalsScale
+  gearBackgroundWidth = 60 * pedalsSettings.store.pedalsScale
   currentWindowWidth = gearBackgroundWidth
   if currentGear ~= CAR.gear then
     fontGear = 0
@@ -63,23 +63,23 @@ local function drawGear()
     gear = "R"
   end
   
-  if pedalsSettings.speedActive then
-    animateGear(40 * pedalsSettings.scale)
-    ui.setCursor(vec2(20, 11 + contentTop):scale(pedalsSettings.scale))
-    ui.dwriteTextAligned(gear, fontGear, ui.Alignment.Center, ui.Alignment.Center, vec2(30, 30):scale(pedalsSettings.scale), false, COLOR.YELLOW_DARK)
+  if pedalsSettings.store.speedActive then
+    animateGear(40 * pedalsSettings.store.pedalsScale)
+    ui.setCursor(vec2(20, 11 + contentTop):scale(pedalsSettings.store.pedalsScale))
+    ui.dwriteTextAligned(gear, fontGear, ui.Alignment.Center, ui.Alignment.Center, vec2(30, 30):scale(pedalsSettings.store.pedalsScale), false, COLOR.YELLOW_DARK)
   else
-    animateGear(45 * pedalsSettings.scale)
-    ui.setCursor(vec2(20, 15 + contentTop):scale(pedalsSettings.scale))
-    ui.dwriteTextAligned(gear, fontGear, ui.Alignment.Center, ui.Alignment.Center, vec2(30, 40):scale(pedalsSettings.scale), false, COLOR.YELLOW_DARK)
+    animateGear(45 * pedalsSettings.store.pedalsScale)
+    ui.setCursor(vec2(20, 15 + contentTop):scale(pedalsSettings.store.pedalsScale))
+    ui.dwriteTextAligned(gear, fontGear, ui.Alignment.Center, ui.Alignment.Center, vec2(30, 40):scale(pedalsSettings.store.pedalsScale), false, COLOR.YELLOW_DARK)
   end
 end
 
 -- Desenha a velocidade
 local function drawSpeed()
-  contentMidle = 73 * pedalsSettings.scale
-  gearBackgroundWidth = 60 * pedalsSettings.scale
+  contentMidle = 73 * pedalsSettings.store.pedalsScale
+  gearBackgroundWidth = 60 * pedalsSettings.store.pedalsScale
   currentWindowWidth = gearBackgroundWidth
-  fontSpeed = 20 * pedalsSettings.scale
+  fontSpeed = 20 * pedalsSettings.store.pedalsScale
   local speed
   if(SelectedSpeed == "Km/h") then
     speed = string.format("%.0f", CAR.speedKmh)
@@ -87,30 +87,30 @@ local function drawSpeed()
     speed = string.format("%.0f", CAR.speedKmh * 0.621371)
   end
   
-  if pedalsSettings.gearActive then
-    ui.setCursor(vec2(11, 41 + contentTop):scale(pedalsSettings.scale))
-    ui.dwriteTextAligned(speed, fontSpeed, ui.Alignment.Center, ui.Alignment.Center, vec2(50, 30):scale(pedalsSettings.scale), false, COLOR.WHITE)
+  if pedalsSettings.store.gearActive then
+    ui.setCursor(vec2(11, 41 + contentTop):scale(pedalsSettings.store.pedalsScale))
+    ui.dwriteTextAligned(speed, fontSpeed, ui.Alignment.Center, ui.Alignment.Center, vec2(50, 30):scale(pedalsSettings.store.pedalsScale), false, COLOR.WHITE)
   else
-    fontSpeed = 25 * pedalsSettings.scale
-    ui.setCursor(vec2(11, 19 + contentTop):scale(pedalsSettings.scale))
-    ui.dwriteTextAligned(speed, fontSpeed, ui.Alignment.Center, ui.Alignment.Center, vec2(50, 35):scale(pedalsSettings.scale), false, COLOR.WHITE)
+    fontSpeed = 25 * pedalsSettings.store.pedalsScale
+    ui.setCursor(vec2(11, 19 + contentTop):scale(pedalsSettings.store.pedalsScale))
+    ui.dwriteTextAligned(speed, fontSpeed, ui.Alignment.Center, ui.Alignment.Center, vec2(50, 35):scale(pedalsSettings.store.pedalsScale), false, COLOR.WHITE)
   end
 end
 
 -- Desenha texto da barra
 local function drawBarText(value, color)
-  contentMidle = 73 * pedalsSettings.scale
+  contentMidle = 73 * pedalsSettings.store.pedalsScale
   if value < 98.99 then
-    ui.dwriteTextAligned(string.format("%.0f", value), fontBar, ui.Alignment.Center, ui.Alignment.Start, vec2(20, 30):scale(pedalsSettings.scale), false, COLOR.WHITE)
+    ui.dwriteTextAligned(string.format("%.0f", value), fontBar, ui.Alignment.Center, ui.Alignment.Start, vec2(20, 30):scale(pedalsSettings.store.pedalsScale), false, COLOR.WHITE)
   else 
     ui.setCursor(vec2(currentWindowWidth, posyInfiniteBars))
-    ui.dwriteTextAligned("∞", fontBarInfinite, ui.Alignment.Center, ui.Alignment.Start, vec2(20, 30):scale(pedalsSettings.scale), false, color)
+    ui.dwriteTextAligned("∞", fontBarInfinite, ui.Alignment.Center, ui.Alignment.Start, vec2(20, 30):scale(pedalsSettings.store.pedalsScale), false, color)
   end
 end
 
 -- Desenha barra com linhas de limite
 local function drawBarWithLimits(posBar, value, color, inverted)
-  contentMidle = 73 * pedalsSettings.scale
+  contentMidle = 73 * pedalsSettings.store.pedalsScale
   ui.drawRectFilled(posBar, posBar + barLimitSize, COLOR.GRAY_BG)
   
   ui.drawRectFilled(
@@ -164,7 +164,7 @@ end
 
 -- Desenha barra simples
 local function drawBarSimple(posBar, value, color, inverted)
-  contentMidle = 73 * pedalsSettings.scale
+  contentMidle = 73 * pedalsSettings.store.pedalsScale
   ui.drawRectFilled(posBar, posBar + barSize, COLOR.GRAY_BG)
   
   if inverted then
@@ -176,26 +176,26 @@ end
 
 -- Desenha rpm
 local function drawRpm()
-  if currentWindowWidth < 180 * pedalsSettings.scale then
-    currentWindowWidth = 180 * pedalsSettings.scale
+  if currentWindowWidth < 180 * pedalsSettings.store.pedalsScale then
+    currentWindowWidth = 180 * pedalsSettings.store.pedalsScale
   end
   local rpmStart = CAR.rpmLimiter * 0.80
   local rpmFinal = CAR.rpmLimiter * 0.98
   local rpmRange =  rpmFinal - rpmStart
 
-  if pedalsSettings.rpmType == "default" then
-    local spaceCircles = (currentWindowWidth * 0.95) / (pedalsSettings.numLights * pedalsSettings.scale)
+  if pedalsSettings.store.rpmType == "default" then
+    local spaceCircles = (currentWindowWidth * 0.95) / (pedalsSettings.store.numLights * pedalsSettings.store.pedalsScale)
     if spaceCircles > 18 then spaceCircles = 18 end
-    local initPos = (currentWindowWidth / 2) - (((pedalsSettings.numLights - 1) * spaceCircles) / 2) * pedalsSettings.scale
+    local initPos = (currentWindowWidth / 2) - (((pedalsSettings.store.numLights - 1) * spaceCircles) / 2) * pedalsSettings.store.pedalsScale
     local level = 0
     if CAR.rpm >= rpmStart then
-      level = ((pedalsSettings.numLights * (CAR.rpm - rpmStart)) / rpmRange) + 1
+      level = ((pedalsSettings.store.numLights * (CAR.rpm - rpmStart)) / rpmRange) + 1
     end
     local color = COLOR.GREEN
-    if pedalsSettings.rpmProcessType == "default" then
-      for i = 1, pedalsSettings.numLights, 1 do
+    if pedalsSettings.store.rpmProcessType == "default" then
+      for i = 1, pedalsSettings.store.numLights, 1 do
         if (CAR.rpm >= rpmFinal * 0.98) then
-          level = pedalsSettings.numLights 
+          level = pedalsSettings.store.numLights 
           if (8 * Timer) % 2 >= 1 then 
             color = COLOR.GRAY_BG
           else 
@@ -203,17 +203,17 @@ local function drawRpm()
           end
         elseif i > level then
           color = COLOR.GRAY_BG
-        elseif i >= pedalsSettings.numLights * 0.78 then
+        elseif i >= pedalsSettings.store.numLights * 0.78 then
           color = COLOR.RED_DARK
-        elseif i >= pedalsSettings.numLights * 0.45 then
+        elseif i >= pedalsSettings.store.numLights * 0.45 then
           color = COLOR.YELLOW
         end
-        ui.drawCircleFilled(vec2(initPos, 11 * pedalsSettings.scale), (spaceCircles * 0.45) * pedalsSettings.scale, color, 20 * pedalsSettings.scale)
-        initPos = initPos + spaceCircles * pedalsSettings.scale
+        ui.drawCircleFilled(vec2(initPos, 11 * pedalsSettings.store.pedalsScale), (spaceCircles * 0.45) * pedalsSettings.store.pedalsScale, color, 20 * pedalsSettings.store.pedalsScale)
+        initPos = initPos + spaceCircles * pedalsSettings.store.pedalsScale
       end
-    elseif pedalsSettings.rpmProcessType == "total" then
+    elseif pedalsSettings.store.rpmProcessType == "total" then
       if (CAR.rpm >= CAR.rpmLimiter * 0.96) then
-        level = pedalsSettings.numLights 
+        level = pedalsSettings.store.numLights 
         if (8 * Timer) % 2 >= 1 then 
             color = COLOR.GRAY_BG
         else 
@@ -227,19 +227,19 @@ local function drawRpm()
         color = COLOR.YELLOW
       end
 
-      for i = 1, pedalsSettings.numLights, 1 do
+      for i = 1, pedalsSettings.store.numLights, 1 do
         if i > level then
           color = COLOR.GRAY_BG
         end
-        ui.drawCircleFilled(vec2(initPos, 11 * pedalsSettings.scale), (spaceCircles * 0.45) * pedalsSettings.scale, color, 20 * pedalsSettings.scale)
-        initPos = initPos + spaceCircles * pedalsSettings.scale
+        ui.drawCircleFilled(vec2(initPos, 11 * pedalsSettings.store.pedalsScale), (spaceCircles * 0.45) * pedalsSettings.store.pedalsScale, color, 20 * pedalsSettings.store.pedalsScale)
+        initPos = initPos + spaceCircles * pedalsSettings.store.pedalsScale
       end
     end
-  elseif pedalsSettings.rpmType == "bar" then
-    local width = currentWindowWidth * pedalsSettings.barLength
+  elseif pedalsSettings.store.rpmType == "bar" then
+    local width = currentWindowWidth * pedalsSettings.store.barLength
     local initPos = (currentWindowWidth / 2) - (width / 2)
-    local barHeight = 18 * pedalsSettings.scale
-    ui.drawRectFilled(vec2(initPos, 4 * pedalsSettings.scale), vec2(initPos + width, barHeight), COLOR.GRAY_BG, 10 * pedalsSettings.scale)
+    local barHeight = 18 * pedalsSettings.store.pedalsScale
+    ui.drawRectFilled(vec2(initPos, 4 * pedalsSettings.store.pedalsScale), vec2(initPos + width, barHeight), COLOR.GRAY_BG, 10 * pedalsSettings.store.pedalsScale)
 
     if CAR.rpm >= rpmStart then
       local lenght = initPos + ((width * (CAR.rpm - rpmStart)) / rpmRange)
@@ -260,7 +260,7 @@ local function drawRpm()
         color = COLOR.YELLOW
       end
 
-      ui.drawRectFilled(vec2(initPos, 4 * pedalsSettings.scale), vec2(lenght, barHeight), color, 10 * pedalsSettings.scale)
+      ui.drawRectFilled(vec2(initPos, 4 * pedalsSettings.store.pedalsScale), vec2(lenght, barHeight), color, 10 * pedalsSettings.store.pedalsScale)
     end 
   end
 end 
@@ -268,15 +268,15 @@ end
 
 -- Desenha a embreagem
 local function drawClutch()
-  contentMidle = 73 * pedalsSettings.scale
-  local posBar = vec2(currentWindowWidth, (6 + contentTop) * pedalsSettings.scale)
+  contentMidle = 73 * pedalsSettings.store.pedalsScale
+  local posBar = vec2(currentWindowWidth, (6 + contentTop) * pedalsSettings.store.pedalsScale)
   
-  if pedalsSettings.textBarsActive then
+  if pedalsSettings.store.textBarsActive then
     ui.setCursor(vec2(currentWindowWidth, posyTextBars))
     drawBarText(100 - CAR.clutch * 100, COLOR.BLUE)
   end
   
-  if pedalsSettings.pedalLimitsLines then
+  if pedalsSettings.store.pedalLimitsLines then
     drawBarWithLimits(posBar, CAR.clutch, COLOR.BLUE, true)
   else
     drawBarSimple(posBar, CAR.clutch, COLOR.BLUE, true)
@@ -287,15 +287,15 @@ end
 
 -- Desenha o freio
 local function drawBrake()
-  contentMidle = 73 * pedalsSettings.scale
-  local posBar = vec2(currentWindowWidth, (6 + contentTop) * pedalsSettings.scale)
+  contentMidle = 73 * pedalsSettings.store.pedalsScale
+  local posBar = vec2(currentWindowWidth, (6 + contentTop) * pedalsSettings.store.pedalsScale)
   
-  if pedalsSettings.textBarsActive then
+  if pedalsSettings.store.textBarsActive then
     ui.setCursor(vec2(currentWindowWidth, posyTextBars))
     drawBarText(CAR.brake * 100, COLOR.RED_DARK)
   end
   
-  if pedalsSettings.pedalLimitsLines then
+  if pedalsSettings.store.pedalLimitsLines then
     drawBarWithLimits(posBar, CAR.brake, COLOR.RED_DARK, false)
   else
     drawBarSimple(posBar, CAR.brake, COLOR.RED_DARK, false)
@@ -307,15 +307,15 @@ end
 
 -- Desenha o acelerador
 local function drawAccelerator()
-  contentMidle = 73 * pedalsSettings.scale
-  local posBar = vec2(currentWindowWidth, (6 + contentTop) * pedalsSettings.scale)
+  contentMidle = 73 * pedalsSettings.store.pedalsScale
+  local posBar = vec2(currentWindowWidth, (6 + contentTop) * pedalsSettings.store.pedalsScale)
   
-  if pedalsSettings.textBarsActive then
+  if pedalsSettings.store.textBarsActive then
     ui.setCursor(vec2(currentWindowWidth, posyTextBars))
     drawBarText(CAR.gas * 100, COLOR.GREEN)
   end
   
-  if pedalsSettings.pedalLimitsLines then
+  if pedalsSettings.store.pedalLimitsLines then
     drawBarWithLimits(posBar, CAR.gas, COLOR.GREEN, false)
   else
     drawBarSimple(posBar, CAR.gas, COLOR.GREEN, false)
@@ -326,20 +326,20 @@ end
 
 -- Desenha o freio de mão
 local function drawHandbrake()
-  contentMidle = 73 * pedalsSettings.scale
-  local posBar = vec2(currentWindowWidth, (6 + contentTop) * pedalsSettings.scale)
+  contentMidle = 73 * pedalsSettings.store.pedalsScale
+  local posBar = vec2(currentWindowWidth, (6 + contentTop) * pedalsSettings.store.pedalsScale)
   
-  if pedalsSettings.textBarsActive then
+  if pedalsSettings.store.textBarsActive then
     ui.setCursor(vec2(currentWindowWidth, posyTextBars))
     if CAR.handbrake < 1 then
-      ui.dwriteTextAligned(string.format("%.0f", CAR.handbrake * 100), fontBar, ui.Alignment.Center, ui.Alignment.Start, vec2(20, 30):scale(pedalsSettings.scale), false, COLOR.WHITE)
+      ui.dwriteTextAligned(string.format("%.0f", CAR.handbrake * 100), fontBar, ui.Alignment.Center, ui.Alignment.Start, vec2(20, 30):scale(pedalsSettings.store.pedalsScale), false, COLOR.WHITE)
     else 
       ui.setCursor(vec2(currentWindowWidth, posyInfiniteBars))
-      ui.dwriteTextAligned("∞", fontBarInfinite, ui.Alignment.Center, ui.Alignment.Start, vec2(20, 30):scale(pedalsSettings.scale), false, COLOR.YELLOW)
+      ui.dwriteTextAligned("∞", fontBarInfinite, ui.Alignment.Center, ui.Alignment.Start, vec2(20, 30):scale(pedalsSettings.store.pedalsScale), false, COLOR.YELLOW)
     end
   end
   
-  if pedalsSettings.pedalLimitsLines then
+  if pedalsSettings.store.pedalLimitsLines then
     drawBarWithLimits(posBar, CAR.handbrake, COLOR.YELLOW, false)
   else
     drawBarSimple(posBar, CAR.handbrake, COLOR.YELLOW, false)
@@ -350,27 +350,27 @@ end
 
 -- Desenha o volante
 local function drawWheel()
-  contentMidle = 73 * pedalsSettings.scale
-  local wheelBackgroundSize = vec2(55 * pedalsSettings.scale, currentWindowHeight)
+  contentMidle = 73 * pedalsSettings.store.pedalsScale
+  local wheelBackgroundSize = vec2(55 * pedalsSettings.store.pedalsScale, currentWindowHeight)
   
   ui.beginRotation()
-  ui.setCursor(vec2(currentWindowWidth - 4 * pedalsSettings.scale, (1 + contentTop) * pedalsSettings.scale ))
-  ui.image("assets/Wheel1.png", vec2(65, 72):scale(pedalsSettings.scale), ui.ImageFit.Fit)
+  ui.setCursor(vec2(currentWindowWidth - 4 * pedalsSettings.store.pedalsScale, (1 + contentTop) * pedalsSettings.store.pedalsScale ))
+  ui.image("assets/Wheel1.png", vec2(65, 72):scale(pedalsSettings.store.pedalsScale), ui.ImageFit.Fit)
   ui.endRotation(90 - CAR.steer)
   
-  currentWindowWidth = currentWindowWidth + wheelBackgroundSize.x + 12 * pedalsSettings.scale + barSpace
+  currentWindowWidth = currentWindowWidth + wheelBackgroundSize.x + 12 * pedalsSettings.store.pedalsScale + barSpace
 end
 
 -- Desenha o ABS
 local function drawABS()
-  contentMidle = 73 * pedalsSettings.scale
-  local absBackgroundSize = vec2(76 * pedalsSettings.scale, currentWindowHeight)
+  contentMidle = 73 * pedalsSettings.store.pedalsScale
+  local absBackgroundSize = vec2(76 * pedalsSettings.store.pedalsScale, currentWindowHeight)
   
-  ui.setCursor(vec2(currentWindowWidth - 9 * pedalsSettings.scale, (-4 + contentTop) * pedalsSettings.scale ))
+  ui.setCursor(vec2(currentWindowWidth - 9 * pedalsSettings.store.pedalsScale, (-4 + contentTop) * pedalsSettings.store.pedalsScale ))
   if CAR.absInAction then
-    ui.image("assets/ABS.png", vec2(80,80):scale(pedalsSettings.scale), COLOR.RED, ui.ImageFit.Fit)
+    ui.image("assets/ABS.png", vec2(80,80):scale(pedalsSettings.store.pedalsScale), COLOR.RED, ui.ImageFit.Fit)
   else
-    ui.image("assets/ABS.png", vec2(80,80):scale(pedalsSettings.scale), COLOR.GRAY_BG, ui.ImageFit.Fit)
+    ui.image("assets/ABS.png", vec2(80,80):scale(pedalsSettings.store.pedalsScale), COLOR.GRAY_BG, ui.ImageFit.Fit)
   end
   
   currentWindowWidth = currentWindowWidth + absBackgroundSize.x
@@ -378,29 +378,29 @@ end
 
 -- Desenha o brake bias
 local function drawBrakeBias()
-  if contentMidle == 0 then contentMidle = 3 * pedalsSettings.scale end
+  if contentMidle == 0 then contentMidle = 3 * pedalsSettings.store.pedalsScale end
 
-  if (currentWindowWidth < 60 * pedalsSettings.scale) then
-    currentWindowWidth = currentWindowWidth + (60 * pedalsSettings.scale - currentWindowWidth)
+  if (currentWindowWidth < 60 * pedalsSettings.store.pedalsScale) then
+    currentWindowWidth = currentWindowWidth + (60 * pedalsSettings.store.pedalsScale - currentWindowWidth)
   end
   
-  ui.setCursor(vec2(22 * pedalsSettings.scale, currentWindowHeight - 19 * pedalsSettings.scale))
-  ui.dwriteTextAligned(string.format("%.1f", CAR.brakeBias * 100), fontContentBottom, ui.Alignment.Center, ui.Alignment.Start, vec2(30, 30):scale(pedalsSettings.scale), false, COLOR.WHITE)
+  ui.setCursor(vec2(22 * pedalsSettings.store.pedalsScale, currentWindowHeight - 19 * pedalsSettings.store.pedalsScale))
+  ui.dwriteTextAligned(string.format("%.1f", CAR.brakeBias * 100), fontContentBottom, ui.Alignment.Center, ui.Alignment.Start, vec2(30, 30):scale(pedalsSettings.store.pedalsScale), false, COLOR.WHITE)
   
-  ui.setCursor(vec2(5 * pedalsSettings.scale, currentWindowHeight - 18.5 * pedalsSettings.scale))
-  ui.image("assets/BrakeBias.png", vec2(16, 16):scale(pedalsSettings.scale), ui.ImageFit.Fit)
+  ui.setCursor(vec2(5 * pedalsSettings.store.pedalsScale, currentWindowHeight - 18.5 * pedalsSettings.store.pedalsScale))
+  ui.image("assets/BrakeBias.png", vec2(16, 16):scale(pedalsSettings.store.pedalsScale), ui.ImageFit.Fit)
 end
 
 
 -- Desenha o combustível
 local function drawFuel()
-  if contentMidle == 0 then contentMidle = 3 * pedalsSettings.scale end
+  if contentMidle == 0 then contentMidle = 3 * pedalsSettings.store.pedalsScale end
 
-  if pedalsSettings.brakeBiasActive and currentWindowWidth < 115 * pedalsSettings.scale then
-    currentWindowWidth = 115 * pedalsSettings.scale
+  if pedalsSettings.store.brakeBiasActive and currentWindowWidth < 115 * pedalsSettings.store.pedalsScale then
+    currentWindowWidth = 115 * pedalsSettings.store.pedalsScale
   end
-  if (currentWindowWidth < 68 * pedalsSettings.scale) then
-    currentWindowWidth = currentWindowWidth + (68 * pedalsSettings.scale - currentWindowWidth)
+  if (currentWindowWidth < 68 * pedalsSettings.store.pedalsScale) then
+    currentWindowWidth = currentWindowWidth + (68 * pedalsSettings.store.pedalsScale - currentWindowWidth)
   end
   
   local fuelColor = COLOR.WHITE
@@ -416,97 +416,97 @@ local function drawFuel()
     xOffset = 51
   end
 
-  ui.setCursor(vec2(currentWindowWidth - xOffset * pedalsSettings.scale, currentWindowHeight - 19 * pedalsSettings.scale))
-  ui.dwriteTextAligned(string.format("%.2f", math.max(0, CAR.fuel)), fontContentBottom, ui.Alignment.Center, ui.Alignment.Start, vec2(50, 30):scale(pedalsSettings.scale), false, fuelColor)
+  ui.setCursor(vec2(currentWindowWidth - xOffset * pedalsSettings.store.pedalsScale, currentWindowHeight - 19 * pedalsSettings.store.pedalsScale))
+  ui.dwriteTextAligned(string.format("%.2f", math.max(0, CAR.fuel)), fontContentBottom, ui.Alignment.Center, ui.Alignment.Start, vec2(50, 30):scale(pedalsSettings.store.pedalsScale), false, fuelColor)
   
   local iconXOffset = (CAR.fuel >= 99.995) and 65 or ((CAR.fuel >= 9.995) and 59 or 56)
-  ui.setCursor(vec2(currentWindowWidth - iconXOffset * pedalsSettings.scale, currentWindowHeight - 18.5 * pedalsSettings.scale))
+  ui.setCursor(vec2(currentWindowWidth - iconXOffset * pedalsSettings.store.pedalsScale, currentWindowHeight - 18.5 * pedalsSettings.store.pedalsScale))
   if CAR.fuel < 5.005 then
     if (4 * Timer) % 2 >= 1 then 
-      ui.image("assets/Fuel.png", vec2(16, 15):scale(pedalsSettings.scale), fuelColor, ui.ImageFit.Fit)
+      ui.image("assets/Fuel.png", vec2(16, 15):scale(pedalsSettings.store.pedalsScale), fuelColor, ui.ImageFit.Fit)
     end
   else 
-    ui.image("assets/Fuel.png", vec2(16, 15):scale(pedalsSettings.scale), fuelColor, ui.ImageFit.Fit)
+    ui.image("assets/Fuel.png", vec2(16, 15):scale(pedalsSettings.store.pedalsScale), fuelColor, ui.ImageFit.Fit)
   end
   
 end
 
 function pedals.windowMain()
   ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
-  fontBar = 15 * pedalsSettings.scale
-  fontBarInfinite = 25 * pedalsSettings.scale
-  fontContentBottom = 13 * pedalsSettings.scale
+  fontBar = 15 * pedalsSettings.store.pedalsScale
+  fontBarInfinite = 25 * pedalsSettings.store.pedalsScale
+  fontContentBottom = 13 * pedalsSettings.store.pedalsScale
 
-  posyTextBars = (-12 + contentTop) * pedalsSettings.scale
-  posyInfiniteBars = (-20 + contentTop) * pedalsSettings.scale 
+  posyTextBars = (-12 + contentTop) * pedalsSettings.store.pedalsScale
+  posyInfiniteBars = (-20 + contentTop) * pedalsSettings.store.pedalsScale 
 
-  barSize = vec2(20, 60) * pedalsSettings.scale
-  barSpace = 4 * pedalsSettings.scale
-  barLimitSize = vec2(20, 6) * pedalsSettings.scale
-  barMidleSize = vec2(20, 44) * pedalsSettings.scale
-  barPaddingMidle = 2 * pedalsSettings.scale
+  barSize = vec2(20, 60) * pedalsSettings.store.pedalsScale
+  barSpace = 4 * pedalsSettings.store.pedalsScale
+  barLimitSize = vec2(20, 6) * pedalsSettings.store.pedalsScale
+  barMidleSize = vec2(20, 44) * pedalsSettings.store.pedalsScale
+  barPaddingMidle = 2 * pedalsSettings.store.pedalsScale
 
   contentTop = 0
   contentBottom = 0
 
-  if pedalsSettings.textBarsActive and contentMidle > 0 and (pedalsSettings.clutchActive or pedalsSettings.brakeActive or pedalsSettings.acceleratorActive or pedalsSettings.handbrakeActive) then contentTop = 10 end
-  if pedalsSettings.rpmActive then contentTop = contentTop + 22 end
-  if pedalsSettings.brakeBiasActive or pedalsSettings.fuelActive then contentBottom = 17 * pedalsSettings.scale end
+  if pedalsSettings.store.textBarsActive and contentMidle > 0 and (pedalsSettings.store.clutchActive or pedalsSettings.store.brakeActive or pedalsSettings.store.acceleratorActive or pedalsSettings.store.handbrakeActive) then contentTop = 10 end
+  if pedalsSettings.store.rpmActive then contentTop = contentTop + 22 end
+  if pedalsSettings.store.brakeBiasActive or pedalsSettings.store.fuelActive then contentBottom = 17 * pedalsSettings.store.pedalsScale end
 
   currentWindowWidth = 0
-  currentWindowHeight = contentMidle + contentTop * pedalsSettings.scale + contentBottom
+  currentWindowHeight = contentMidle + contentTop * pedalsSettings.store.pedalsScale + contentBottom
 
   contentMidle = 0
   
   -- Desenha background principal
-  ui.drawRectFilled(vec2(0, 0), currentWindowSize, WindowsColor, 10 * pedalsSettings.scale)
+  ui.drawRectFilled(vec2(0, 0), currentWindowSize, WindowsColor, 10 * pedalsSettings.store.pedalsScale)
   -- Desenha componentes
 
-  if pedalsSettings.gearActive then
+  if pedalsSettings.store.gearActive then
     drawGear()
   end
   
-  if pedalsSettings.speedActive then
+  if pedalsSettings.store.speedActive then
     drawSpeed()
   end
   
-  currentWindowWidth = currentWindowWidth + 6 * pedalsSettings.scale + barSpace
+  currentWindowWidth = currentWindowWidth + 6 * pedalsSettings.store.pedalsScale + barSpace
   
-  if pedalsSettings.clutchActive then
+  if pedalsSettings.store.clutchActive then
     drawClutch()
   end
   
-  if pedalsSettings.brakeActive then
+  if pedalsSettings.store.brakeActive then
     drawBrake()
   end
   
-  if pedalsSettings.acceleratorActive then
+  if pedalsSettings.store.acceleratorActive then
     drawAccelerator()
   end
   
-  if pedalsSettings.handbrakeActive then
+  if pedalsSettings.store.handbrakeActive then
     drawHandbrake()
   end
   
-  currentWindowWidth = currentWindowWidth + 6 * pedalsSettings.scale
+  currentWindowWidth = currentWindowWidth + 6 * pedalsSettings.store.pedalsScale
   
-  if pedalsSettings.wheelActive then
+  if pedalsSettings.store.wheelActive then
     drawWheel()
   end
   
-  if pedalsSettings.absActive and CAR.absModes ~= 0 then
+  if pedalsSettings.store.absActive and CAR.absModes ~= 0 then
     drawABS()
   end
   
-  if pedalsSettings.brakeBiasActive then
+  if pedalsSettings.store.brakeBiasActive then
     drawBrakeBias()
   end
 
-  if pedalsSettings.rpmActive then
+  if pedalsSettings.store.rpmActive then
     drawRpm()
   end
 
-  if pedalsSettings.fuelActive then
+  if pedalsSettings.store.fuelActive then
     drawFuel()
   end
   --
@@ -515,15 +515,15 @@ function pedals.windowMain()
   config.resize(currentWindowSize, "Pedals")
 
 
-  if config.isMouseInWindow(ui.mouseLocalPos(), 0, currentWindowWidth + (PinCheckLenght + 2) * pedalsSettings.scale, 0, currentWindowHeight)then
-    config.resize(currentWindowSize + vec2((PinCheckLenght + 2) * pedalsSettings.scale), "Pedals")
+  if config.isMouseInWindow(ui.mouseLocalPos(), 0, currentWindowWidth + (PinCheckLenght + 2) * pedalsSettings.store.pedalsScale, 0, currentWindowHeight)then
+    config.resize(currentWindowSize + vec2((PinCheckLenght + 2) * pedalsSettings.store.pedalsScale), "Pedals")
     if ui.mouseClicked(ui.MouseButton.Right) then
       config.pinWindow("Pedals")
       PinAllApps = false
     end
-    local isMouseInCheckBox = pinCheckBox.main(vec2(currentWindowWidth + 2 * pedalsSettings.scale, 10 * pedalsSettings.scale), pedalsSettings.scale, "Pedals", config.getWindow("Pedals"):pinned())
+    local isMouseInCheckBox = pinCheckBox.main(vec2(currentWindowWidth + 2 * pedalsSettings.store.pedalsScale, 10 * pedalsSettings.store.pedalsScale), pedalsSettings.store.pedalsScale, "Pedals", config.getWindow("Pedals"):pinned())
     if isMouseInCheckBox then
-      config.resize(currentWindowSize + vec2((PinCheckLenght + 100) * pedalsSettings.scale), "Pedals")
+      config.resize(currentWindowSize + vec2((PinCheckLenght + 100) * pedalsSettings.store.pedalsScale), "Pedals")
     end
   end
 end

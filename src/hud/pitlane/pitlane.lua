@@ -1,24 +1,24 @@
-require("src.settings.settings")
+local pitlaneSettings = require("src.settings.tabs.pitLaneSettings")
 local language = require("lang.language")
 local pinCheckBox = require("src.ui.pinCheckBox")
 local config = require("common.config")
 local pitlane = {}
 
 function pitlane.windowMain()
-  local currentWindowWidth = 150 * WindowPitScale
-  local currentWindowHeight = 70 * WindowPitScale
+  local currentWindowWidth = 150 * pitlaneSettings.store.pitlaneScale
+  local currentWindowHeight = 70 * pitlaneSettings.store.pitlaneScale
   local currentWindowSize
 
   local posLimit = vec2(-10,5)
-  local fontLimit = 16 * WindowPitScale
+  local fontLimit = 16 * pitlaneSettings.store.pitlaneScale
   local posSpeedLimit = vec2(6, 22)
-  local fontSpeedLimit = 30 * WindowPitScale
+  local fontSpeedLimit = 30 * pitlaneSettings.store.pitlaneScale
 
   local posYou = vec2(63,5)
-  local fontYou = 17 * WindowPitScale
+  local fontYou = 17 * pitlaneSettings.store.pitlaneScale
   local posSpeedYou = vec2(80, 22)
-  local fontSpeedYou = 30 * WindowPitScale 
-  local fontSlowDown = 15 * WindowPitScale
+  local fontSpeedYou = 30 * pitlaneSettings.store.pitlaneScale 
+  local fontSlowDown = 15 * pitlaneSettings.store.pitlaneScale
 
   local kmh_string
   local limitPit_string
@@ -28,42 +28,42 @@ function pitlane.windowMain()
       ui.pushDWriteFont("fonts/Montserrat-Bold.ttf") -- FONTE DO TEXTO
       if CAR.manualPitsSpeedLimiterEnabled or CAR.isInPitlane or SettingsActive then
         if CAR.speedKmh > CAR.speedLimiter + 1 then
-          currentWindowHeight = 100 * WindowPitScale
+          currentWindowHeight = 100 * pitlaneSettings.store.pitlaneScale
         end
         --Background:
-        if OptionPlate == "default" then
-          ui.drawRectFilled(vec2(0, 0), vec2(currentWindowWidth, 70 * WindowPitScale), WindowsColor, 10 * WindowPitScale)
-          ui.drawRectFilled(vec2(5, 5):scale(WindowPitScale), vec2(75, 65):scale(WindowPitScale), COLOR.WHITE, 5 * WindowPitScale)
-          ui.drawRect(vec2(7, 7):scale(WindowPitScale), vec2(73, 63):scale(WindowPitScale), COLOR.BLACK, 4 * WindowPitScale, ui.CornerFlags.All, 1.5 * WindowPitScale)
-        elseif OptionPlate == "alert" then
+        if pitlaneSettings.store.optionPlate == "default" then
+          ui.drawRectFilled(vec2(0, 0), vec2(currentWindowWidth, 70 * pitlaneSettings.store.pitlaneScale), WindowsColor, 10 * pitlaneSettings.store.pitlaneScale)
+          ui.drawRectFilled(vec2(5, 5):scale(pitlaneSettings.store.pitlaneScale), vec2(75, 65):scale(pitlaneSettings.store.pitlaneScale), COLOR.WHITE, 5 * pitlaneSettings.store.pitlaneScale)
+          ui.drawRect(vec2(7, 7):scale(pitlaneSettings.store.pitlaneScale), vec2(73, 63):scale(pitlaneSettings.store.pitlaneScale), COLOR.BLACK, 4 * pitlaneSettings.store.pitlaneScale, ui.CornerFlags.All, 1.5 * pitlaneSettings.store.pitlaneScale)
+        elseif pitlaneSettings.store.optionPlate == "alert" then
 
-          currentWindowWidth = 135 * WindowPitScale
-          ui.drawRectFilled(vec2(0, 0):scale(WindowPitScale), vec2(135, 70):scale(WindowPitScale), WindowsColor, 35 * WindowPitScale, ui.CornerFlags.All)
-          ui.drawCircleFilled(vec2(35,35):scale(WindowPitScale), 34 * WindowPitScale, COLOR.WHITE, 40 * WindowPitScale)
-          ui.drawCircle(vec2(35,35):scale(WindowPitScale), 30 * WindowPitScale, COLOR.RED, 40 * WindowPitScale, 5 * WindowPitScale)
+          currentWindowWidth = 135 * pitlaneSettings.store.pitlaneScale
+          ui.drawRectFilled(vec2(0, 0):scale(pitlaneSettings.store.pitlaneScale), vec2(135, 70):scale(pitlaneSettings.store.pitlaneScale), WindowsColor, 35 * pitlaneSettings.store.pitlaneScale, ui.CornerFlags.All)
+          ui.drawCircleFilled(vec2(35,35):scale(pitlaneSettings.store.pitlaneScale), 34 * pitlaneSettings.store.pitlaneScale, COLOR.WHITE, 40 * pitlaneSettings.store.pitlaneScale)
+          ui.drawCircle(vec2(35,35):scale(pitlaneSettings.store.pitlaneScale), 30 * pitlaneSettings.store.pitlaneScale, COLOR.RED, 40 * pitlaneSettings.store.pitlaneScale, 5 * pitlaneSettings.store.pitlaneScale)
 
           posLimit = vec2(-15,10)
-          fontLimit = 13 * WindowPitScale
+          fontLimit = 13 * pitlaneSettings.store.pitlaneScale
           posSpeedLimit = vec2(0,22)
-          fontSpeedLimit = 23 * WindowPitScale
+          fontSpeedLimit = 23 * pitlaneSettings.store.pitlaneScale
 
           posYou = vec2(45,5)
           posSpeedYou = vec2(62, 22)
-          fontSpeedYou = 25 * WindowPitScale
+          fontSpeedYou = 25 * pitlaneSettings.store.pitlaneScale
 
-          fontSlowDown = 12 * WindowPitScale
+          fontSlowDown = 12 * pitlaneSettings.store.pitlaneScale
         end
         
-        ui.setCursor(posLimit:scale(WindowPitScale))
-        ui.dwriteTextAligned(language.get("LIMIT"), fontLimit, ui.Alignment.Center, ui.Alignment.Center, vec2(100, 25):scale(WindowPitScale), false, COLOR.BLACK)
-        ui.setCursor(posYou:scale(WindowPitScale))
-        ui.dwriteTextAligned(language.get("YOU"), fontYou, ui.Alignment.Center, ui.Alignment.Center, vec2(100, 25):scale(WindowPitScale), false, COLOR.YELLOW_DARK)
+        ui.setCursor(posLimit:scale(pitlaneSettings.store.pitlaneScale))
+        ui.dwriteTextAligned(language.get("LIMIT"), fontLimit, ui.Alignment.Center, ui.Alignment.Center, vec2(100, 25):scale(pitlaneSettings.store.pitlaneScale), false, COLOR.BLACK)
+        ui.setCursor(posYou:scale(pitlaneSettings.store.pitlaneScale))
+        ui.dwriteTextAligned(language.get("YOU"), fontYou, ui.Alignment.Center, ui.Alignment.Center, vec2(100, 25):scale(pitlaneSettings.store.pitlaneScale), false, COLOR.YELLOW_DARK)
 
         if(not (CAR.manualPitsSpeedLimiterEnabled or CAR.isInPitlane) and SettingsActive) then
           kmh_string = "--"
           limitPit_string = "--"
           speedrgb = COLOR.WHITE
-          currentWindowHeight = 70 * WindowPitScale
+          currentWindowHeight = 70 * pitlaneSettings.store.pitlaneScale
         else 
           -- SPEED
           if(SelectedSpeed == "Km/h") then
@@ -78,33 +78,33 @@ function pitlane.windowMain()
             speedrgb = COLOR.WHITE
           elseif CAR.speedKmh > CAR.speedLimiter + 1 then
             if (5 * Timer) % 2 >= 1 then 
-              ui.drawRectFilled(vec2(10, 75):scale(WindowPitScale), vec2(currentWindowWidth - 10 * WindowPitScale, currentWindowHeight), rgbm.from0255(50, 0, 0, 0.85), 10 * WindowPitScale)
-              ui.setCursor(vec2(0,75):scale(WindowPitScale))
-              ui.dwriteTextAligned(language.get("SLOW_DOWN"), fontSlowDown, ui.Alignment.Center, ui.Alignment.Center, vec2(currentWindowWidth, 25 * WindowPitScale), false, rgbm.from0255(230, 0, 0, 1))
+              ui.drawRectFilled(vec2(10, 75):scale(pitlaneSettings.store.pitlaneScale), vec2(currentWindowWidth - 10 * pitlaneSettings.store.pitlaneScale, currentWindowHeight), rgbm.from0255(50, 0, 0, 0.85), 10 * pitlaneSettings.store.pitlaneScale)
+              ui.setCursor(vec2(0,75):scale(pitlaneSettings.store.pitlaneScale))
+              ui.dwriteTextAligned(language.get("SLOW_DOWN"), fontSlowDown, ui.Alignment.Center, ui.Alignment.Center, vec2(currentWindowWidth, 25 * pitlaneSettings.store.pitlaneScale), false, rgbm.from0255(230, 0, 0, 1))
             end
             speedrgb = COLOR.RED
           end
         end
-        ui.setCursor(posSpeedYou:scale(WindowPitScale))
-        ui.dwriteTextAligned(kmh_string, fontSpeedYou, ui.Alignment.Center, ui.Alignment.Center, vec2(65, 40):scale(WindowPitScale), false, speedrgb)
+        ui.setCursor(posSpeedYou:scale(pitlaneSettings.store.pitlaneScale))
+        ui.dwriteTextAligned(kmh_string, fontSpeedYou, ui.Alignment.Center, ui.Alignment.Center, vec2(65, 40):scale(pitlaneSettings.store.pitlaneScale), false, speedrgb)
 
-        ui.setCursor(posSpeedLimit:scale(WindowPitScale))
-        ui.dwriteTextAligned(limitPit_string, fontSpeedLimit, ui.Alignment.Center, ui.Alignment.Center, vec2(69, 40):scale(WindowPitScale), false, COLOR.BLACK)
+        ui.setCursor(posSpeedLimit:scale(pitlaneSettings.store.pitlaneScale))
+        ui.dwriteTextAligned(limitPit_string, fontSpeedLimit, ui.Alignment.Center, ui.Alignment.Center, vec2(69, 40):scale(pitlaneSettings.store.pitlaneScale), false, COLOR.BLACK)
     end 
   end
 
   currentWindowSize = vec2(currentWindowWidth, currentWindowHeight)
   config.resize(currentWindowSize, "Pit Lane")
 
-  if config.isMouseInWindow(ui.mouseLocalPos(), 0, currentWindowWidth + (PinCheckLenght + 2) * pedalsSettings.scale, 0, currentWindowHeight)then
-      config.resize(currentWindowSize + vec2((PinCheckLenght + 2) * WindowPitScale), "Pit Lane")
+  if config.isMouseInWindow(ui.mouseLocalPos(), 0, currentWindowWidth + (PinCheckLenght + 2) * pitlaneSettings.store.pitlaneScale, 0, currentWindowHeight)then
+      config.resize(currentWindowSize + vec2((PinCheckLenght + 2) * pitlaneSettings.store.pitlaneScale), "Pit Lane")
       if ui.mouseClicked(ui.MouseButton.Right) then
         config.pinWindow("Pit Lane")
         PinAllApps = false
       end
-      local isMouseInCheckBox = pinCheckBox.main(vec2(currentWindowWidth + 2 * WindowPitScale, 10 * WindowPitScale), WindowPitScale, "Pit Lane", config.getWindow("Pit Lane"):pinned())
+      local isMouseInCheckBox = pinCheckBox.main(vec2(currentWindowWidth + 2 * pitlaneSettings.store.pitlaneScale, 10 * pitlaneSettings.store.pitlaneScale), pitlaneSettings.store.pitlaneScale, "Pit Lane", config.getWindow("Pit Lane"):pinned())
       if isMouseInCheckBox then
-        config.resize(currentWindowSize + vec2((PinCheckLenght + 100) * pedalsSettings.scale), "Pit Lane")
+        config.resize(currentWindowSize + vec2((PinCheckLenght + 100) * pitlaneSettings.store.pitlaneScale), "Pit Lane")
       end
   end
 end
