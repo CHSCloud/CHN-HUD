@@ -98,7 +98,14 @@ function pitlane.windowMain()
 
   if config.isMouseInWindow(ui.mouseLocalPos(), 0, currentWindowWidth + (PinCheckLenght + 2) * WindowPedalsScale, 0, currentWindowHeight)then
       config.resize(currentWindowSize + vec2((PinCheckLenght + 2) * WindowPitScale), "Pit Lane")
-      pinCheckBox.main(vec2(currentWindowWidth + 2 * WindowPitScale, 10 * WindowPitScale), WindowPitScale, "Pit Lane", config.getWindow("Pit Lane"):pinned())
+      if ui.mouseClicked(ui.MouseButton.Right) then
+        config.pinWindow("Pit Lane")
+        PinAllApps = false
+      end
+      local isMouseInCheckBox = pinCheckBox.main(vec2(currentWindowWidth + 2 * WindowPitScale, 10 * WindowPitScale), WindowPitScale, "Pit Lane", config.getWindow("Pit Lane"):pinned())
+      if isMouseInCheckBox then
+        config.resize(currentWindowSize + vec2((PinCheckLenght + 100) * WindowPedalsScale), "Pit Lane")
+      end
   end
 end
 

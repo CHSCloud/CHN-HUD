@@ -1,3 +1,4 @@
+
 local config = {}
 
 local windows = {}
@@ -67,14 +68,22 @@ function config.isMouseInWindow(mousePos, x1, x2, y1, y2)
 end
 
 --- @param nameWindow string
+--- @return boolean
 function config.pinWindow(nameWindow)
     local win = config.getWindow(nameWindow)
     if win == nil then return end
     local pin = win:pinned()
     pinStorage[nameWindow] = not pin
     win:setPinned(not pin)
+    return not pin
 end
 
+--- @param pin boolean
+function config.pinAllApps(pin)
+    for index, name in ipairs(windowNames) do
+        config.getWindow(name):setPinned(pin)
+    end
+end
 
 config.init()
 

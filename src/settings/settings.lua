@@ -17,6 +17,7 @@ local settingsStorage = ac.storage{
     selectedSpeed = "Km/h",
     transparancy = 0.85,
     windowsColor = rgbm.from0255(18, 21, 29, 0.85),
+    pinAllApps = false
     
 }
 
@@ -37,6 +38,7 @@ COLOR = {
 Optionlanguage  = language.getCurrentLanguage()
 SelectedSpeed = settingsStorage.selectedSpeed
 WindowsColor = settingsStorage.windowsColor
+PinAllApps = settingsStorage.pinAllApps
 SettingsActive = false
 
 WindowSettingsSize = vec2(600, 480)
@@ -100,6 +102,16 @@ local function geral()
   ui.drawRectFilled(vec2(5, initPos), vec2(WindowSettingsSize.x - 5, initPos), COLOR.GRAY, 1)
 
   initPos = initPos + 20
+
+  ui.setCursor(vec2(295, initPos))
+  ui.header("Pin")
+  ui.setCursor(vec2(300, initPos + 20))
+  if ui.checkbox("Pin all apps", PinAllApps) then
+    PinAllApps = not PinAllApps
+    settingsStorage.pinAllApps = PinAllApps
+    config.pinAllApps(PinAllApps)
+  end
+  
   ui.setCursor(vec2(15, initPos))
   ui.header(language.get("SELECT_COLOR"))
   local color = settingsStorage.windowsColor
