@@ -192,7 +192,7 @@ function pedalsSettings.pedalsSettings()
     pedalsSettings.store.textBarsActive = simpleCheckbox.main(language.get("PERCENTAGE"), pedalsSettings.store.textBarsActive, posXStyle, initPos)
 
     initPos = initPos + 25
-    pedalsSettings.store.pedalLimitsLines = simpleCheckbox.main(language.get("LIpedalsSettingsIT_LINES"), pedalsSettings.store.pedalLimitsLines, posXStyle, initPos)
+    pedalsSettings.store.pedalLimitsLines = simpleCheckbox.main(language.get("LIMIT_LINES"), pedalsSettings.store.pedalLimitsLines, posXStyle, initPos)
 
     ui.setCursor(vec2(20, initPos))
     pedalsSettings.store.brakeActive = simpleCheckbox.main(language.get("BRAKE"), pedalsSettings.store.brakeActive, 20, initPos)
