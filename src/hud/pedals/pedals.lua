@@ -176,9 +176,6 @@ end
 
 -- Desenha rpm
 local function drawRpm()
-  if currentWindowWidth < 180 * pedalsSettings.store.pedalsScale then
-    currentWindowWidth = 180 * pedalsSettings.store.pedalsScale
-  end
   local rpmStart = CAR.rpmLimiter * 0.80
   local rpmFinal = CAR.rpmLimiter * 0.98
   local rpmRange =  rpmFinal - rpmStart
@@ -396,8 +393,8 @@ end
 local function drawFuel()
   if contentMidle == 0 then contentMidle = 3 * pedalsSettings.store.pedalsScale end
 
-  if pedalsSettings.store.brakeBiasActive and currentWindowWidth < 115 * pedalsSettings.store.pedalsScale then
-    currentWindowWidth = 115 * pedalsSettings.store.pedalsScale
+  if pedalsSettings.store.brakeBiasActive and currentWindowWidth < 120 * pedalsSettings.store.pedalsScale then
+    currentWindowWidth = 120 * pedalsSettings.store.pedalsScale
   end
   if (currentWindowWidth < 68 * pedalsSettings.store.pedalsScale) then
     currentWindowWidth = currentWindowWidth + (68 * pedalsSettings.store.pedalsScale - currentWindowWidth)
@@ -472,7 +469,7 @@ function pedals.windowMain()
     drawSpeed()
   end
   
-  currentWindowWidth = currentWindowWidth + 6 * pedalsSettings.store.pedalsScale + barSpace
+  currentWindowWidth = currentWindowWidth + 7 * pedalsSettings.store.pedalsScale + barSpace
   
   if pedalsSettings.store.clutchActive then
     drawClutch()
@@ -490,7 +487,7 @@ function pedals.windowMain()
     drawHandbrake()
   end
   
-  currentWindowWidth = currentWindowWidth + 6 * pedalsSettings.store.pedalsScale
+  currentWindowWidth = currentWindowWidth + 7 * pedalsSettings.store.pedalsScale
   
   if pedalsSettings.store.wheelActive then
     drawWheel()
@@ -504,12 +501,12 @@ function pedals.windowMain()
     drawBrakeBias()
   end
 
-  if pedalsSettings.store.rpmActive then
-    drawRpm()
-  end
-
   if pedalsSettings.store.fuelActive then
     drawFuel()
+  end
+
+  if pedalsSettings.store.rpmActive then
+    drawRpm()
   end
   --
 
