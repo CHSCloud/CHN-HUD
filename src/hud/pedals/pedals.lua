@@ -464,6 +464,8 @@ function pedals.windowMain()
 
   if pedalsSettings.store.gearActive then
     drawGear()
+  else 
+    fontGear = 0
   end
   
   if pedalsSettings.store.speedActive then
