@@ -350,10 +350,28 @@ local function drawWheel()
   contentMidle = 73 * pedalsSettings.store.pedalsScale
   local wheelBackgroundSize = vec2(55 * pedalsSettings.store.pedalsScale, currentWindowHeight)
   
-  ui.beginRotation()
-  ui.setCursor(vec2(currentWindowWidth - 4 * pedalsSettings.store.pedalsScale, (1 + contentTop) * pedalsSettings.store.pedalsScale ))
-  ui.image("assets/Wheel1.png", vec2(65, 72):scale(pedalsSettings.store.pedalsScale), ui.ImageFit.Fit)
-  ui.endRotation(90 - CAR.steer)
+  local p1 = currentWindowWidth - 4 * pedalsSettings.store.pedalsScale
+  local p2 = (1 + contentTop) * pedalsSettings.store.pedalsScale 
+  local width = 65 * pedalsSettings.store.pedalsScale
+  local height = 72 * pedalsSettings.store.pedalsScale
+  if pedalsSettings.store.wheelType == "default" then
+    ui.setCursor(vec2(p1, p2))
+    ui.beginRotation()
+    ui.image("assets/Wheel1.png", vec2(width, height), ui.ImageFit.Fit)
+    ui.endRotation(90 - CAR.steer)
+  elseif pedalsSettings.store.wheelType == "simple" then
+    local thickness = 7 * pedalsSettings.store.pedalsScale
+    local lenght = 5 * pedalsSettings.store.pedalsScale
+    ui.beginRotation()
+    ui.drawCircle(vec2(p1 + (width / 2),  p2 + (height / 2)), width / 2 - thickness, COLOR.GRAY_BG, 50 , thickness)
+    ui.drawRectFilled(
+      vec2(p1 + (width / 2) - lenght, p2 + thickness),
+      vec2(p1 + (width / 2) + lenght, p2 +  15 * pedalsSettings.store.pedalsScale),
+      COLOR.YELLOW_DARK,
+      2 * pedalsSettings.store.pedalsScale
+    )
+    ui.endRotation(90 - CAR.steer)
+  end
   
   currentWindowWidth = currentWindowWidth + wheelBackgroundSize.x + 12 * pedalsSettings.store.pedalsScale + barSpace
 end

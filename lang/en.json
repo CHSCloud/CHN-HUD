@@ -56,5 +56,6 @@
     "RETURN_TO_PITS": "Return To Pits",
     "PENALTY_FLAG": "Penalty Flag",
     "STOP": "Stop",
-    "STARTING_LIGHTS": "Starting Lights"
+    "STARTING_LIGHTS": "Starting Lights",
+    "SIMPLE": "Simple"
 }

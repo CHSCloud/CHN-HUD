@@ -17,6 +17,7 @@ local defaultValues = {
     fuelActive = true,
     pedalLimitsLines = true,
     rpmActive = true,
+    wheelType = "default",
     rpmType = "default",
     rpmProcessType = "default",
     numLights = 9,
@@ -32,6 +33,10 @@ local function resetToDefault()
 end
 
 function pedalsSettings.pedalsSettings()
+    local wheelLabels = {
+        ["default"] = language.get("DEFAULT"),
+        ["simple"] = language.get("SIMPLE")
+    }
     local rpmLabels = {
         ["default"] = language.get("SHIFT_LIGHTS"),
         ["bar"] = language.get("BAR")
@@ -72,8 +77,20 @@ function pedalsSettings.pedalsSettings()
     initPos = initPos + 25; 
     pedalsSettings.store.speedActive = simpleCheckbox.main(language.get("SPEED"), pedalsSettings.store.speedActive, 20, initPos)
     
-    initPos = initPos + 25; 
+    initPos = initPos + 25;
     pedalsSettings.store.wheelActive = simpleCheckbox.main(language.get("WHEEL"), pedalsSettings.store.wheelActive, 20, initPos)
+    if pedalsSettings.store.wheelActive then
+        -- Combo Wheel Type
+        initPos = initPos + 25;
+        ui.setCursor(vec2(40, initPos + 5))
+        ui.header(language.get("TYPE"))
+        ui.setCursor(vec2(80, initPos))
+        ui.setNextItemWidth(100)
+        ui.combo('##wheelType', wheelLabels[pedalsSettings.store.wheelType], function ()
+            if ui.selectable(wheelLabels["default"]) then pedalsSettings.store.wheelType = "default" end
+            if ui.selectable(wheelLabels["simple"]) then pedalsSettings.store.wheelType = "simple" end
+        end)
+    end
     
     initPos = initPos + 25; 
     pedalsSettings.store.absActive = simpleCheckbox.main(language.get("ABS"), pedalsSettings.store.absActive, 20, initPos)
