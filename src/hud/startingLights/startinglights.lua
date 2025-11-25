@@ -20,8 +20,8 @@ function startingLights.windowMain()
     local thickness = 1.5 * startingLightsSettings.store.startingLightsScale
     local distanceBorder = 4 * startingLightsSettings.store.startingLightsScale
     local polygons = 50
-    local rounding = 10 * startingLightsSettings.store.startingLightsScale
-    local rounding2 = 6 * startingLightsSettings.store.startingLightsScale
+    local rounding = 50 * startingLightsSettings.store.startingLightsScale
+    local rounding2 = 50 * startingLightsSettings.store.startingLightsScale
     local currentWindowHeight = 3 * radius + distanceBorder
     local currentWindowWidth = (4 * distance) + 3 * radius + distanceBorder
     config.resize(vec2(currentWindowWidth, currentWindowHeight), "Starting Lights")
@@ -31,20 +31,20 @@ function startingLights.windowMain()
             ui.drawRectFilled(vec2(0, 0), vec2(currentWindowWidth, currentWindowHeight), WindowsColor, rounding)
             ui.drawRect(vec2(distanceBorder, distanceBorder), vec2(currentWindowWidth - distanceBorder, currentWindowHeight - distanceBorder), COLOR.WHITE, rounding2, ui.CornerFlags.All, thickness)
 
-            ui.drawCircleFilled(vec2(pos, currentWindowHeight / 2), map(SIM.currentSessionTime, -10000, -8000, 0, radius), COLOR.GREEN, polygons)
-            ui.drawCircleFilled(vec2(pos + distance, currentWindowHeight / 2), map(SIM.currentSessionTime, -8000, -6000, 0, radius), COLOR.GREEN, polygons)
-            ui.drawCircleFilled(vec2(pos + distance * 2, currentWindowHeight / 2), map(SIM.currentSessionTime, -6000, -4000, 0, radius), COLOR.GREEN, polygons)
-            ui.drawCircleFilled(vec2(pos + distance * 3, currentWindowHeight / 2), map(SIM.currentSessionTime, -4000, -2000, 0, radius), COLOR.GREEN, polygons)
-            ui.drawCircleFilled(vec2(pos + distance * 4, currentWindowHeight / 2), map(SIM.currentSessionTime, -2000, 0, 0, radius), COLOR.GREEN, polygons)
+            ui.drawCircleFilled(vec2(pos, currentWindowHeight / 2), map(SIM.currentSessionTime, -10000, -8000, 0, radius), COLOR.RED, polygons)
+            ui.drawCircleFilled(vec2(pos + distance, currentWindowHeight / 2), map(SIM.currentSessionTime, -8000, -6000, 0, radius), COLOR.RED, polygons)
+            ui.drawCircleFilled(vec2(pos + distance * 2, currentWindowHeight / 2), map(SIM.currentSessionTime, -6000, -4000, 0, radius), COLOR.RED, polygons)
+            ui.drawCircleFilled(vec2(pos + distance * 3, currentWindowHeight / 2), map(SIM.currentSessionTime, -4000, -2000, 0, radius), COLOR.RED, polygons)
+            ui.drawCircleFilled(vec2(pos + distance * 4, currentWindowHeight / 2), map(SIM.currentSessionTime, -2000, 0, 0, radius), COLOR.RED, polygons)
         elseif SIM.currentSessionTime < 4000 then
             ui.drawRectFilled(vec2(0, 0), vec2(currentWindowWidth, currentWindowHeight), WindowsColor, rounding)
             ui.drawRect(vec2(distanceBorder, distanceBorder), vec2(currentWindowWidth - distanceBorder, currentWindowHeight - distanceBorder), COLOR.WHITE, rounding2, ui.CornerFlags.All, thickness)
             if 6 * Timer % 2 > 1 then
-                ui.drawCircleFilled(vec2(pos, currentWindowHeight / 2), radius, COLOR.RED, polygons)
-                ui.drawCircleFilled(vec2(pos + distance, currentWindowHeight / 2), radius, COLOR.RED, polygons)
-                ui.drawCircleFilled(vec2(pos + distance * 2, currentWindowHeight / 2), radius, COLOR.RED, polygons)
-                ui.drawCircleFilled(vec2(pos + distance * 3, currentWindowHeight / 2), radius, COLOR.RED, polygons)
-                ui.drawCircleFilled(vec2(pos + distance * 4, currentWindowHeight / 2), radius, COLOR.RED, polygons)
+                ui.drawCircleFilled(vec2(pos, currentWindowHeight / 2), radius, COLOR.GREEN, polygons)
+                ui.drawCircleFilled(vec2(pos + distance, currentWindowHeight / 2), radius, COLOR.GREEN, polygons)
+                ui.drawCircleFilled(vec2(pos + distance * 2, currentWindowHeight / 2), radius, COLOR.GREEN, polygons)
+                ui.drawCircleFilled(vec2(pos + distance * 3, currentWindowHeight / 2), radius, COLOR.GREEN, polygons)
+                ui.drawCircleFilled(vec2(pos + distance * 4, currentWindowHeight / 2), radius, COLOR.GREEN, polygons)
             end
         elseif SettingsActive then
             ui.drawRectFilled(vec2(0, 0), vec2(currentWindowWidth, currentWindowHeight), WindowsColor, rounding)
