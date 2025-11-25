@@ -32,9 +32,9 @@ function startingLights.windowMain()
     local distanceBorder = 4 * startingLightsSettings.store.startingLightsScale
     --Polígonos dos círculos
     local polygons = 50
-    -- Bordas
-    local rounding = 10 * startingLightsSettings.store.startingLightsScale
-    local rounding2 = 6 * startingLightsSettings.store.startingLightsScale
+    local rounding = 50 * startingLightsSettings.store.startingLightsScale
+    local rounding2 = 50 * startingLightsSettings.store.startingLightsScale
+
     -- Proporções da tela
     local currentWindowHeight = 3 * radius + distanceBorder
     local currentWindowWidth = ((startingLightsSettings.store.numStartingLights - 1) * distance) + 3 * radius + distanceBorder
@@ -56,7 +56,7 @@ function startingLights.windowMain()
             -- Círculos Verdes
             local add = 10000 / startingLightsSettings.store.numStartingLights
             for i = -10000, 0, add do
-                ui.drawCircleFilled(vec2(pos + current * distance , currentWindowHeight / 2), convertInterval(SIM.currentSessionTime, i, i + add, 0, radius), COLOR.GREEN, polygons) 
+                ui.drawCircleFilled(vec2(pos + current * distance , currentWindowHeight / 2), convertInterval(SIM.currentSessionTime, i, i + add, 0, radius), COLOR.RED, polygons) 
                 current = current + 1
             end
         elseif SIM.currentSessionTime < 4000 then
@@ -67,7 +67,7 @@ function startingLights.windowMain()
             -- Cículos vermelhos
             if 6 * Timer % 2 > 1 then
                 for i = 0, startingLightsSettings.store.numStartingLights - 1, 1 do
-                    ui.drawCircleFilled(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.RED, polygons)
+                    ui.drawCircleFilled(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.GREEN, polygons)
                 end
             end
         elseif SettingsActive then
