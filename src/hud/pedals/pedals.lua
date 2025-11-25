@@ -176,6 +176,9 @@ end
 
 -- Desenha rpm
 local function drawRpm()
+    if (currentWindowWidth < 68 * pedalsSettings.store.pedalsScale) then
+    currentWindowWidth = currentWindowWidth + (68 * pedalsSettings.store.pedalsScale - currentWindowWidth)
+  end
   local rpmStart = CAR.rpmLimiter * 0.80
   local rpmFinal = CAR.rpmLimiter * 0.98
   local rpmRange =  rpmFinal - rpmStart
