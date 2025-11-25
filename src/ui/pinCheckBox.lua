@@ -23,7 +23,7 @@ local function checkBox(pos, scale, nameWindow, isPinned)
         ui.drawLine(pos + vec2(4, 4):scale(scale), pos + vec2(lenghts[nameWindow] - 4, lenghts[nameWindow] - 4):scale(scale), COLOR.WHITE, 2 * scale)
         ui.drawLine(pos + vec2(4, lenghts[nameWindow] - 4):scale(scale), pos + vec2(lenghts[nameWindow] - 4, 4):scale(scale), COLOR.WHITE, 2 * scale)
     end
-
+    
     if config.isMouseInWindow(ui.mouseLocalPos(),pos.x, pos.x + lenghts[nameWindow] * scale, pos.y, pos.y + lenghts[nameWindow] * scale) then
         if ui.mouseClicked(ui.MouseButton.Left) then
             config.pinWindow(nameWindow)

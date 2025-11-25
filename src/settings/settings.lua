@@ -43,7 +43,7 @@ WindowSettingsSize = vec2(600, 480)
 
 
 if settings.store.optionLanguage ~= language.getCurrentLanguage() then
-    language.setlanguage(settings.store.optionLanguage)
+  language.setlanguage(settings.store.optionLanguage)
 end
 
 function settings.updateSettings()

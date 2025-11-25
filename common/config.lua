@@ -66,6 +66,7 @@ end
 --- @param x2 number
 --- @param y1 number
 --- @param y2 number
+--- @return boolean
 function config.isMouseInWindow(mousePos, x1, x2, y1, y2)
     if mousePos.x < x1 then return false end
     if mousePos.x > x2 then return false end
