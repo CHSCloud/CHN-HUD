@@ -15,15 +15,15 @@ end
 
 function startingLights.windowMain()
     local radius = 20 * startingLightsSettings.store.startingLightsScale
-    local pos = radius + radius / 2
+    local pos = radius + radius / 2 + 2 * startingLightsSettings.store.startingLightsScale
     local distance = radius * 2 + radius / 2
     local thickness = 1.5 * startingLightsSettings.store.startingLightsScale
     local distanceBorder = 4 * startingLightsSettings.store.startingLightsScale
     local polygons = 50
     local rounding = 10 * startingLightsSettings.store.startingLightsScale
     local rounding2 = 6 * startingLightsSettings.store.startingLightsScale
-    local currentWindowHeight = 2 * radius + radius
-    local currentWindowWidth = (4 * distance) + radius * 2 + radius
+    local currentWindowHeight = 3 * radius + distanceBorder
+    local currentWindowWidth = (4 * distance) + 3 * radius + distanceBorder
 
     if(SIM.currentSessionTime < 0) then
         ui.drawRectFilled(vec2(0, 0), vec2(currentWindowWidth, currentWindowHeight), WindowsColor, rounding)
