@@ -55,5 +55,6 @@
     "BLACK_FLAG": "Black Flag",
     "RETURN_TO_PITS": "Return To Pits",
     "PENALTY_FLAG": "Penalty Flag",
-    "STOP": "Stop"
+    "STOP": "Stop",
+    "STARTING_LIGHTS": "Starting Lights"
 }

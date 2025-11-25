@@ -3,7 +3,7 @@ local pitlane = require("src.hud.pitlane.pitlane")
 local pedals = require("src.hud.pedals.pedals")
 local sessionlaps = require("src.hud.sessionlaps.sessionlaps")
 local sessionflags = require("src.hud.sessionflags.sessionflags")
-local startingLights = require("src.hud.starting-lights.starting-lights")
+local startingLights = require("src.hud.startingLights.startingLights")
 
 Timer = 0
 

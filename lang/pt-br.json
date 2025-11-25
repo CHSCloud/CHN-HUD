@@ -55,5 +55,6 @@
     "BLACK_FLAG": "Bandeira Preta",
     "RETURN_TO_PITS": "Retornar aos Boxes",
     "PENALTY_FLAG": "Bandeira de Penalidade",
-    "STOP": "Pare"
+    "STOP": "Pare",
+    "STARTING_LIGHTS": "Luzes de largada"
 }

@@ -1,6 +1,7 @@
 local pedalsSettings = require("src.settings.tabs.pedalsSettings")
 local pitLaneSettings = require("src.settings.tabs.pitLaneSettings")
 local sessionlapsSettings = require("src.settings.tabs.sessionLapsSettings")
+local startingLightsSettings = require("src.settings.tabs.startingLightsSettings")
 local language = require("lang.language")
 local config = require("common.config")
 
@@ -162,6 +163,7 @@ function settings.windowMain()
     ui.tabItem(language.get("PEDALS"), pedalsSettings.pedalsSettings)
     ui.tabItem(language.get("PIT_LANE"), pitLaneSettings.pitlaneSettings)
     ui.tabItem(language.get("SESSION_LAPS"), sessionlapsSettings.sessionlapsSettings)
+    ui.tabItem(language.get("STARTING_LIGHTS"), startingLightsSettings.startingLightsSettings)
   end)
 end
 
