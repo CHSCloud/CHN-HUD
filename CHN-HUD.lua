@@ -3,6 +3,7 @@ local pitlane = require("src.hud.pitlane.pitlane")
 local pedals = require("src.hud.pedals.pedals")
 local sessionlaps = require("src.hud.sessionlaps.sessionlaps")
 local sessionflags = require("src.hud.sessionflags.sessionflags")
+local startingLights = require("src.hud.starting-lights.starting-lights")
 
 Timer = 0
 
@@ -27,9 +28,14 @@ function WindowPitLane()
   pitlane.windowMain()
 end
 
--- TELA DO PIT LANE
-function windowSessionflags()
+-- TELA DE BANDEIRAS
+function WindowSessionflags()
   sessionflags.windowMain()
+end
+
+-- TELA DE LUZES DE LARGADA
+function WindowStartingLights()
+  startingLights.windowMain()
 end
 
 -- TELA DE VOLTAS DA SESSÃO
