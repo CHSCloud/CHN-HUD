@@ -39,7 +39,7 @@ local tabPin = false
 SettingsActive = false
 WindowsColor = settings.store.windowsColor
 SelectedSpeed = settings.store.selectedSpeed
-WindowSettingsSize = vec2(600, 480)
+WindowSettingsSize = vec2(700, 460)
 
 
 if settings.store.optionLanguage ~= language.getCurrentLanguage() then
@@ -65,6 +65,7 @@ local function geral()
   ui.setCursor(vec2(20, initPos))
   
   -- Lógica de linguagem usando store direto
+  ui.setNextItemWidth(150)
   ui.combo('##resolution', languages[settings.store.optionLanguage], function ()
     if ui.selectable(languages["en"]) then
       tabPin = true
@@ -90,6 +91,7 @@ local function geral()
   ui.setCursor(vec2(20, initPos))
   
   -- Lógica de velocidade usando store direto
+  ui.setNextItemWidth(150)
   ui.combo("##Speed", settings.store.selectedSpeed ,
     function ()
       if ui.selectable("Km/h") then
@@ -165,6 +167,8 @@ function settings.windowMain()
     ui.tabItem(language.get("SESSION_LAPS"), sessionlapsSettings.sessionlapsSettings)
     ui.tabItem(language.get("STARTING_LIGHTS"), startingLightsSettings.startingLightsSettings)
   end)
+
+  config.resize(WindowSettingsSize, "Settings CHN")
 end
 
 return settings

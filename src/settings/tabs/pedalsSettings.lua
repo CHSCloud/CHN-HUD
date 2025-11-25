@@ -48,9 +48,9 @@ function pedalsSettings.pedalsSettings()
     
     -- Layout
     local initPos = 55
-    local posXOthers = 150
+    local posXOthers = 250
     local posXStyle = 150
-    local posXRPpedalsSettings = 330
+    local posXRPMpedalsSettings = 440
     
     ui.setCursor(vec2(15, initPos))
     ui.header(language.get("SIZE"))
@@ -81,10 +81,10 @@ function pedalsSettings.pedalsSettings()
     pedalsSettings.store.wheelActive = simpleCheckbox.main(language.get("WHEEL"), pedalsSettings.store.wheelActive, 20, initPos)
     if pedalsSettings.store.wheelActive then
         -- Combo Wheel Type
-        initPos = initPos + 25;
-        ui.setCursor(vec2(40, initPos + 5))
-        ui.header(language.get("TYPE"))
-        ui.setCursor(vec2(80, initPos))
+        local posXWheelType = 40
+        ui.setCursor(vec2(95, initPos + 5))
+        ui.header("|  ".. language.get("TYPE"))
+        ui.setCursor(vec2(130, initPos))
         ui.setNextItemWidth(100)
         ui.combo('##wheelType', wheelLabels[pedalsSettings.store.wheelType], function ()
             if ui.selectable(wheelLabels["default"]) then pedalsSettings.store.wheelType = "default" end
@@ -105,7 +105,7 @@ function pedalsSettings.pedalsSettings()
     ui.drawRectFilled(vec2(5, initPos), vec2(WindowSettingsSize.x - 5, initPos), COLOR.GRAY, 1)
 
     -- OUTROS
-    local posRPpedalsSettings = initPos2
+    local posRPMpedalsSettings = initPos2
     ui.setCursor(vec2(posXOthers - 5, initPos2))
     ui.header(language.get("OTHERS"))
   
@@ -117,21 +117,21 @@ function pedalsSettings.pedalsSettings()
     -- 
 
     -- RPM
-    ui.setCursor(vec2(posXRPpedalsSettings - 5, posRPpedalsSettings))
+    ui.setCursor(vec2(posXRPMpedalsSettings - 5, posRPMpedalsSettings))
     ui.header("RPM")
     
-    posRPpedalsSettings = posRPpedalsSettings + 25
-    pedalsSettings.store.rpmActive = simpleCheckbox.main("RPM", pedalsSettings.store.rpmActive, posXRPpedalsSettings, posRPpedalsSettings)
+    posRPMpedalsSettings = posRPMpedalsSettings + 25
+    pedalsSettings.store.rpmActive = simpleCheckbox.main("RPM", pedalsSettings.store.rpmActive, posXRPMpedalsSettings, posRPMpedalsSettings)
 
     if pedalsSettings.store.rpmActive then
-        local exampleRPpedalsSettingsX = 420
+        local exampleRPpedalsSettingsX = 515        
         local exampleRPpedalsSettingsY = 158
         
-        posRPpedalsSettings = posRPpedalsSettings + 30
-        ui.setCursor(vec2(posXRPpedalsSettings, posRPpedalsSettings + 5))
+        posRPMpedalsSettings = posRPMpedalsSettings + 30
+        ui.setCursor(vec2(posXRPMpedalsSettings, posRPMpedalsSettings + 5))
         ui.header(language.get("TYPE"))
         
-        ui.setCursor(vec2(posXRPpedalsSettings + 30, posRPpedalsSettings))
+        ui.setCursor(vec2(posXRPMpedalsSettings + 30, posRPMpedalsSettings))
         ui.setNextItemWidth(140)
         
         -- Combo RPM Type
@@ -141,11 +141,11 @@ function pedalsSettings.pedalsSettings()
         end)
 
         if pedalsSettings.store.rpmType == "default" then
-            posRPpedalsSettings = posRPpedalsSettings + 35
-            ui.setCursor(vec2(posXRPpedalsSettings, posRPpedalsSettings))
+            posRPMpedalsSettings = posRPMpedalsSettings + 35
+            ui.setCursor(vec2(posXRPMpedalsSettings, posRPMpedalsSettings))
             ui.header(language.get("PROGRESS"))
             
-            ui.setCursor(vec2(posXRPpedalsSettings + 50, posRPpedalsSettings - 5))
+            ui.setCursor(vec2(posXRPMpedalsSettings + 50, posRPMpedalsSettings - 5))
             ui.setNextItemWidth(100)
             
             ui.combo('##progress', processCircleType[pedalsSettings.store.rpmProcessType], function ()
@@ -171,23 +171,27 @@ function pedalsSettings.pedalsSettings()
                 exampleRPpedalsSettingsX = exampleRPpedalsSettingsX + 11
             end
 
-            posRPpedalsSettings = posRPpedalsSettings + 30
-            ui.setCursor(vec2(posXRPpedalsSettings, posRPpedalsSettings))
+            posRPMpedalsSettings = posRPMpedalsSettings + 30
+            ui.setCursor(vec2(posXRPMpedalsSettings, posRPMpedalsSettings))
             ui.header(language.get("NUM_LIGHTS"))
-            ui.setCursor(vec2(posXRPpedalsSettings + 90, posRPpedalsSettings - 5))
+            ui.setCursor(vec2(posXRPMpedalsSettings + 90, posRPMpedalsSettings - 5))
             ui.setNextItemWidth(160)
             
             pedalsSettings.store.numLights = math.floor(ui.slider("##numLights", pedalsSettings.store.numLights, 6, 25, string.format("%i", pedalsSettings.store.numLights)))
 
         elseif pedalsSettings.store.rpmType == "bar" then
-            posRPpedalsSettings = posRPpedalsSettings + 35
-            ui.setCursor(vec2(posXRPpedalsSettings, posRPpedalsSettings))
+            posRPMpedalsSettings = posRPMpedalsSettings + 35
+            ui.setCursor(vec2(posXRPMpedalsSettings, posRPMpedalsSettings))
             ui.header("Percentage")
         
             ui.drawRectFilled(vec2(exampleRPpedalsSettingsX - 5, exampleRPpedalsSettingsY - 35), vec2(exampleRPpedalsSettingsX + 93, exampleRPpedalsSettingsY - 25), COLOR.GRAY_BG, 10)
             ui.drawRectFilled(vec2(exampleRPpedalsSettingsX - 5, exampleRPpedalsSettingsY - 35), vec2(exampleRPpedalsSettingsX - 5 + (98 * 0.45), exampleRPpedalsSettingsY - 25), COLOR.GREEN, 10)
+            ui.drawRectFilled(vec2(exampleRPpedalsSettingsX - 5, exampleRPpedalsSettingsY - 20), vec2(exampleRPpedalsSettingsX + 93, exampleRPpedalsSettingsY - 10), COLOR.GRAY_BG, 10)
+            ui.drawRectFilled(vec2(exampleRPpedalsSettingsX - 5, exampleRPpedalsSettingsY - 20), vec2(exampleRPpedalsSettingsX - 5 + (98 * 0.75), exampleRPpedalsSettingsY - 10), COLOR.YELLOW, 10)
+            ui.drawRectFilled(vec2(exampleRPpedalsSettingsX - 5, exampleRPpedalsSettingsY - 5), vec2(exampleRPpedalsSettingsX + 93, exampleRPpedalsSettingsY + 5), COLOR.GRAY_BG, 10)
+            ui.drawRectFilled(vec2(exampleRPpedalsSettingsX - 5, exampleRPpedalsSettingsY - 5), vec2(exampleRPpedalsSettingsX - 5 + (98), exampleRPpedalsSettingsY + 5), COLOR.RED, 10)
             
-            ui.setCursor(vec2(posXRPpedalsSettings + 70, posRPpedalsSettings - 5))
+            ui.setCursor(vec2(posXRPMpedalsSettings + 70, posRPMpedalsSettings - 5))
             ui.setNextItemWidth(160)
             pedalsSettings.store.barLength = ui.slider("##barLength", pedalsSettings.store.barLength, 0.25, 0.95, string.format("%.0f%%", (pedalsSettings.store.barLength+ 0.05) * 100) .. "%")
         end

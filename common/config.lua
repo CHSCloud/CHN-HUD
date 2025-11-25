@@ -10,6 +10,7 @@ local defaultValues = {
 config.store = ac.storage(defaultValues)
 
 local pinStorage = ac.storage{
+    ["Settings CHN"] = false,
     ["Pedals"] = false,
     ["Pit Lane"] = false,
     ["Session Laps"] = false,
@@ -17,6 +18,7 @@ local pinStorage = ac.storage{
 }
 
 local windowNames = {
+    "Settings CHN",
     "Pedals",
     "Pit Lane",
     "Session Laps",
@@ -32,7 +34,9 @@ function config.init()
                 if all[i].name ~= nil then
                     window = ac.accessAppWindow(all[i].name)
                     if window ~= nil then
-                        window:setPinned(pinStorage[all[i].title])
+                        if all[i].title ~= "Settings CHN" then
+                            window:setPinned(pinStorage[all[i].title])
+                        end
                         windows[windowNames[j]] = window
                     end
                 end
@@ -91,7 +95,9 @@ end
 function config.pinAllApps(pin)
     config.store.pinAllApps = pin
     for index, name in ipairs(windowNames) do
-        config.getWindow(name):setPinned(pin)
+        if name ~= "Settings CHN" then
+            config.getWindow(name):setPinned(pin)
+        end
     end
 end
 
