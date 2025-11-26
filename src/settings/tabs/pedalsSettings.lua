@@ -34,7 +34,7 @@ end
 
 function pedalsSettings.pedalsSettings()
     local wheelLabels = {
-        ["default"] = language.get("DEFAULT"),
+        ["default"] = "Iracing",
         ["simple"] = language.get("SIMPLE")
     }
     local rpmLabels = {

@@ -4,8 +4,6 @@ local pinCheckBox = require("src.ui.pinCheckBox")
 local config = require("common.config")
 local sessionflags = {}
 
-
-
 function sessionflags.windowMain()
     --Bandeira branca config
     if SettingsActive then
@@ -70,8 +68,16 @@ function sessionflags.windowMain()
         ui.dwriteTextAligned(language.get("RETURN_TO_PITS"), 13, ui.Alignment.Start, ui.Alignment.End, vec2(105, 50), COLOR.WHITE)
         ui.setCursor(vec2(10, 125))
         ui.dwriteTextAligned(language.get("PENALTY_FLAG"), 10, ui.Alignment.Start, ui.Alignment.Center, vec2(105, 25), COLOR.WHITE)
+    -- Bandeira verde
+    elseif SIM.raceFlagType == ac.FlagType.Start and SIM.currentSessionTime < 20000 then
+        ui.drawRectFilled(vec2(0, 0), vec2(110, 150), WindowsColor, 10)
+        ui.setCursor(vec2(5,0))
+        ui.image("assets/flags/greenFlag.png", vec2(100, 100))
+        ui.setCursor(vec2(10, 79))
+        ui.dwriteTextAligned(language.get("GO_GO_GO"), 13, ui.Alignment.Start, ui.Alignment.End, vec2(105, 50), COLOR.WHITE)
+        ui.setCursor(vec2(10, 125))
+        ui.dwriteTextAligned(language.get("GREEN_FLAG"), 10, ui.Alignment.Start, ui.Alignment.Center, vec2(105, 25), COLOR.WHITE)
     end
-
 end
 
 return sessionflags

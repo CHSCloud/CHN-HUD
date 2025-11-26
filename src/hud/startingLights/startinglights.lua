@@ -51,23 +51,39 @@ function startingLights.windowMain()
             -- Círculos do background
             for i = 0, startingLightsSettings.store.numStartingLights - 1, 1 do
                 ui.drawCircleFilled(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.GRAY_BG, polygons)
+                ui.drawCircle(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.GRAY_BG, polygons, 2 * startingLightsSettings.store.startingLightsScale)
             end
 
             -- Círculos Verdes
-            local add = 10000 / startingLightsSettings.store.numStartingLights
-            for i = -10000, 0, add do
-                ui.drawCircleFilled(vec2(pos + current * distance , currentWindowHeight / 2), convertInterval(SIM.currentSessionTime, i, i + add, 0, radius), COLOR.RED, polygons) 
+            local add = 5000 / startingLightsSettings.store.numStartingLights
+            for i = -7000, -2000, add do
+                
+                if SIM.currentSessionTime > i and i < -2000 then
+                    ui.drawCircleFilled(vec2(pos + current * distance , currentWindowHeight / 2), convertInterval(SIM.currentSessionTime, i, i + add, 0, radius), COLOR.RED, polygons)
+                end
                 current = current + 1
             end
-        elseif SIM.currentSessionTime < 4000 then
+        elseif SIM.currentSessionTime < 6000 then
             -- Background
             ui.drawRectFilled(vec2(0, 0), vec2(currentWindowWidth, currentWindowHeight), WindowsColor, rounding)
             ui.drawRect(vec2(distanceBorder, distanceBorder), vec2(currentWindowWidth - distanceBorder, currentWindowHeight - distanceBorder), COLOR.WHITE, rounding2, ui.CornerFlags.All, thickness)
             
-            -- Cículos vermelhos
-            if 6 * Timer % 2 > 1 then
+            -- Cículos verdes
+            if 2 * Timer % 2 > 1 then
                 for i = 0, startingLightsSettings.store.numStartingLights - 1, 1 do
-                    ui.drawCircleFilled(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.GREEN, polygons)
+                    if i % 2 == 0 then
+                        ui.drawCircleFilled(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.GREEN, polygons)
+                    else
+                        ui.drawCircleFilled(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.GRAY_BG, polygons)
+                    end
+                end
+            else
+                for i = 0, startingLightsSettings.store.numStartingLights - 1, 1 do
+                    if i % 2 == 1 then
+                        ui.drawCircleFilled(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.GREEN, polygons)
+                    else
+                        ui.drawCircleFilled(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.GRAY_BG, polygons)
+                    end
                 end
             end
         elseif SettingsActive then
