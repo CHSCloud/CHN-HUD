@@ -5,17 +5,6 @@ local config = require("common.config")
 local sessionflags = {}
 
 function sessionflags.windowMain()
-
-    ui.drawRectFilled(vec2(0, 0), vec2(130, 150), WindowsColor, 10)
-        ui.setCursor(vec2(10,-5))
-        ui.image("assets/flags/blueFlag.png", vec2(110, 110))
-        ui.setCursor(vec2(10, 85))
-        ui.dwriteTextAligned(language.get("FASTEST_CAR_APPROACHING"), 13, ui.Alignment.Start, ui.Alignment.End, vec2(130, 50), true, COLOR.WHITE)
-        ui.setCursor(vec2(10, 128))
-        ui.dwriteTextAligned(language.get("BLUE_FLAG"), 10, ui.Alignment.Start, ui.Alignment.Center, vec2(130, 25), true, COLOR.WHITE)
-
-
-
     --Bandeira branca config
     if SettingsActive then
         ui.drawRectFilled(vec2(0, 0), vec2(130, 150), WindowsColor, 10)
