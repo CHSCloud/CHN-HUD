@@ -29,13 +29,14 @@ local function checkBox(pos, scale, nameWindow, isPinned)
             config.pinWindow(nameWindow)
         end
 
-        ui.drawRectFilled( pos + vec2((lenghts[nameWindow] + 4)* scale), pos + vec2(100 * scale, pos.y + 10 * scale), rgbm.from0255(0,0,0,0.70), 4 *scale)
+        ui.drawRectFilled(pos + vec2((lenghts[nameWindow] + 4)* scale, 0), pos + vec2(100 * scale, lenghts[nameWindow] * scale), rgbm.from0255(0,0,0,0.70), 4 *scale)
+
         ui.setCursor(vec2(pos.x + (lenghts[nameWindow] + 4)* scale, pos.y))
 
         if isPinned then
-            ui.dwriteTextAligned(language.get("PINNED"), 10 * scale, ui.Alignment.Center, ui.Alignment.Center, vec2(77 * scale, pos.y + 10 * scale))
+            ui.dwriteTextAligned(language.get("PINNED"), 10 * scale, ui.Alignment.Center, ui.Alignment.Center, vec2(77 * scale, maxLenght * scale))
         else 
-            ui.dwriteTextAligned(language.get("NOT_PINNED"), 10 * scale, ui.Alignment.Center, ui.Alignment.Center, vec2(77 * scale, pos.y + 10 * scale))
+            ui.dwriteTextAligned(language.get("NOT_PINNED"), 10 * scale, ui.Alignment.Center, ui.Alignment.Center, vec2(77 * scale, maxLenght * scale))
         end
 
         return true
@@ -63,7 +64,7 @@ function pinCheckBox.main(scale, nameWindow, isPinned, windowSize)
         end
 
         config.resize(windowSize + vec2((maxLenght + 3) * scale, 0), nameWindow)
-        if checkBox(vec2(windowSize.x + 2 * scale, 10 * scale), scale, nameWindow, isPinned) then
+        if checkBox(vec2(windowSize.x + 2 * scale, windowSize.y / 2 - (maxLenght * scale) / 2), scale, nameWindow, isPinned) then
             config.resize(windowSize + vec2((maxLenght + 100) * scale), nameWindow)
         end
     else 
