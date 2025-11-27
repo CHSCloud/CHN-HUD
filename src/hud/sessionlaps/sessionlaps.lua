@@ -16,7 +16,7 @@ function sessionlaps.windowMain()
     ui.pushDWriteFont("fonts/Montserrat-Bold.ttf") -- FONT TEXT
 
     local currentWindowWidth = 240 * sessionlapsSettings.store.sessionLapsScale
-    local currentWindowHeight = 50 * sessionlapsSettings.store.sessionLapsScale
+    local currentWindowHeight = 80 * sessionlapsSettings.store.sessionLapsScale
     local currentWindowSize
     
     local lastLap
@@ -24,6 +24,7 @@ function sessionlaps.windowMain()
     local seconds
     local milliseconds
     local bestLap
+    local currentLap
 
     -- BACKGROUND
     ui.drawRectFilled(vec2(0, 0), vec2(currentWindowWidth, currentWindowHeight), WindowsColor, 5 * sessionlapsSettings.store.sessionLapsScale)
@@ -32,16 +33,33 @@ function sessionlaps.windowMain()
     ui.image("assets/lapbackground.png", vec2(216, 21.6):scale(sessionlapsSettings.store.sessionLapsScale), COLOR.WHITE, ui.ImageFit.Fit)
     ui.setCursor(vec2(-60,1):scale(sessionlapsSettings.store.sessionLapsScale))
     ui.image("assets/lapbackground1.png", vec2(216, 21.6):scale(sessionlapsSettings.store.sessionLapsScale), COLOR.YELLOW_DARK, ui.ImageFit.Fit)
+
     ui.setCursor(vec2(-60,27):scale(sessionlapsSettings.store.sessionLapsScale))
     ui.image("assets/lapbackground.png", vec2(216, 21.6):scale(sessionlapsSettings.store.sessionLapsScale), COLOR.WHITE, ui.ImageFit.Fit)
     ui.setCursor(vec2(-60,27):scale(sessionlapsSettings.store.sessionLapsScale))
     ui.image("assets/lapbackground1.png", vec2(216, 21.6):scale(sessionlapsSettings.store.sessionLapsScale), COLOR.YELLOW_DARK, ui.ImageFit.Fit)
+
+    ui.setCursor(vec2(-60,53):scale(sessionlapsSettings.store.sessionLapsScale))
+    ui.image("assets/lapbackground.png", vec2(216, 21.6):scale(sessionlapsSettings.store.sessionLapsScale), COLOR.WHITE, ui.ImageFit.Fit)
+    ui.setCursor(vec2(-60,53):scale(sessionlapsSettings.store.sessionLapsScale))
+    ui.image("assets/lapbackground1.png", vec2(216, 21.6):scale(sessionlapsSettings.store.sessionLapsScale), COLOR.YELLOW_DARK, ui.ImageFit.Fit)
     -- LINE
     ui.drawRectFilled(vec2(5, 26):scale(sessionlapsSettings.store.sessionLapsScale), vec2(235, 26):scale(sessionlapsSettings.store.sessionLapsScale), COLOR.GRAY, 1)
 
+    minutes = CAR.lapTimeMs / 60E3
+    seconds = (minutes %1) * 60
+    milliseconds = math.round((seconds % 1) * 1000)
+    if minutes < 1 then
+        currentLap = string.format("%d.%03d", seconds, milliseconds)
+    else
+        currentLap = string.format("%d:%02d.%03d", minutes, seconds, milliseconds)
+    end
+    ui.setCursor(vec2(140,0):scale(sessionlapsSettings.store.sessionLapsScale))
+    ui.dwriteTextAligned(currentLap, 15 * sessionlapsSettings.store.sessionLapsScale, ui.Alignment.Start, ui.Alignment.Center, vec2(160, 25):scale(sessionlapsSettings.store.sessionLapsScale), false, COLOR.WHITE)
+
     -- LAST LAP
     if CAR.previousLapTimeMs == 0 then
-        lastLap = "-.---"
+        lastLap = "-:--.---"
     else
         minutes = CAR.previousLapTimeMs / 60E3
         seconds = (minutes %1) * 60
@@ -53,8 +71,8 @@ function sessionlaps.windowMain()
         end
         if not CAR.isLastLapValid then lastLap = "*" .. lastLap end
     end
-    ui.setCursor(vec2(20,0):scale(sessionlapsSettings.store.sessionLapsScale))
-    ui.dwriteTextAligned(lastLap, 15 * sessionlapsSettings.store.sessionLapsScale, ui.Alignment.End, ui.Alignment.Center, vec2(160, 25):scale(sessionlapsSettings.store.sessionLapsScale), false, COLOR.WHITE)
+    ui.setCursor(vec2(140,27):scale(sessionlapsSettings.store.sessionLapsScale))
+    ui.dwriteTextAligned(lastLap, 15 * sessionlapsSettings.store.sessionLapsScale, ui.Alignment.Start, ui.Alignment.Center, vec2(160, 25):scale(sessionlapsSettings.store.sessionLapsScale), false, COLOR.WHITE)
 
     if CAR.previousLapTimeMs == CAR.bestLapTimeMs and CAR.isLastLapValid then
         previouBestlap = CAR.bestLapTimeMs
@@ -62,7 +80,7 @@ function sessionlaps.windowMain()
 
     -- BEST LAP
     if previouBestlap == 0 then
-        bestLap = "-.---"
+        bestLap = "-:--.---"
     else
         minutes = previouBestlap / 60E3
         seconds = (minutes % 1) * 60
@@ -73,16 +91,20 @@ function sessionlaps.windowMain()
             bestLap = string.format("%d:%02d.%03d", minutes, seconds, milliseconds)
         end
     end
-    ui.setCursor(vec2(20,27):scale(sessionlapsSettings.store.sessionLapsScale))
-    ui.dwriteTextAligned(bestLap, 15 * sessionlapsSettings.store.sessionLapsScale, ui.Alignment.End, ui.Alignment.Center, vec2(160, 25):scale(sessionlapsSettings.store.sessionLapsScale), false, COLOR.WHITE)
+    ui.setCursor(vec2(140,53):scale(sessionlapsSettings.store.sessionLapsScale))
+    ui.dwriteTextAligned(bestLap, 15 * sessionlapsSettings.store.sessionLapsScale, ui.Alignment.Start, ui.Alignment.Center, vec2(160, 25):scale(sessionlapsSettings.store.sessionLapsScale), false, COLOR.WHITE)
 
-    
-    -- TEXT BEST
-    ui.setCursor(vec2(9,25):scale(sessionlapsSettings.store.sessionLapsScale))
-    ui.dwriteTextAligned(language.get("BEST"), 15 * sessionlapsSettings.store.sessionLapsScale, ui.Alignment.Start, ui.Alignment.Center, vec2(150, 25):scale(sessionlapsSettings.store.sessionLapsScale), false, rgbm(WindowsColor.r, WindowsColor.g, WindowsColor.b, 1))
     -- TEXT LAST
     ui.setCursor(vec2(9,0):scale(sessionlapsSettings.store.sessionLapsScale))
+    ui.dwriteTextAligned("Atual:", 15 * sessionlapsSettings.store.sessionLapsScale, ui.Alignment.Start, ui.Alignment.Center, vec2(150, 25):scale(sessionlapsSettings.store.sessionLapsScale), false, rgbm(WindowsColor.r, WindowsColor.g, WindowsColor.b, 1))
+    
+    -- TEXT LAST
+    ui.setCursor(vec2(9,25):scale(sessionlapsSettings.store.sessionLapsScale))
     ui.dwriteTextAligned(language.get("LAST"), 15 * sessionlapsSettings.store.sessionLapsScale, ui.Alignment.Start, ui.Alignment.Center, vec2(150, 25):scale(sessionlapsSettings.store.sessionLapsScale), false, rgbm(WindowsColor.r, WindowsColor.g, WindowsColor.b, 1))
+
+    -- TEXT BEST
+    ui.setCursor(vec2(9,50):scale(sessionlapsSettings.store.sessionLapsScale))
+    ui.dwriteTextAligned(language.get("BEST"), 15 * sessionlapsSettings.store.sessionLapsScale, ui.Alignment.Start, ui.Alignment.Center, vec2(150, 25):scale(sessionlapsSettings.store.sessionLapsScale), false, rgbm(WindowsColor.r, WindowsColor.g, WindowsColor.b, 1))
 
     currentWindowSize = vec2(currentWindowWidth, currentWindowHeight)
 
