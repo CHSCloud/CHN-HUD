@@ -49,11 +49,7 @@ function sessionlaps.windowMain()
     minutes = CAR.lapTimeMs / 60E3
     seconds = (minutes %1) * 60
     milliseconds = math.round((seconds % 1) * 1000)
-    if minutes < 1 then
-        currentLap = string.format("%d.%03d", seconds, milliseconds)
-    else
-        currentLap = string.format("%d:%02d.%03d", minutes, seconds, milliseconds)
-    end
+    currentLap = string.format("%d:%02d.%03d", minutes, seconds, milliseconds)
     ui.setCursor(vec2(140,0):scale(sessionlapsSettings.store.sessionLapsScale))
     ui.dwriteTextAligned(currentLap, 15 * sessionlapsSettings.store.sessionLapsScale, ui.Alignment.Start, ui.Alignment.Center, vec2(160, 25):scale(sessionlapsSettings.store.sessionLapsScale), false, COLOR.WHITE)
 
@@ -64,11 +60,7 @@ function sessionlaps.windowMain()
         minutes = CAR.previousLapTimeMs / 60E3
         seconds = (minutes %1) * 60
         milliseconds = math.round((seconds % 1) * 1000)
-        if minutes < 1 then
-            lastLap = string.format("%d.%03d", seconds, milliseconds)
-        else
-            lastLap = string.format("%d:%02d.%03d", minutes, seconds, milliseconds)
-        end
+        lastLap = string.format("%d:%02d.%03d", minutes, seconds, milliseconds)
         if not CAR.isLastLapValid then lastLap = "*" .. lastLap end
     end
     ui.setCursor(vec2(140,27):scale(sessionlapsSettings.store.sessionLapsScale))
@@ -85,11 +77,7 @@ function sessionlaps.windowMain()
         minutes = previouBestlap / 60E3
         seconds = (minutes % 1) * 60
         milliseconds = math.round((seconds % 1) * 1000)
-        if minutes < 1 then
-            bestLap = string.format("%d.%03d", seconds, milliseconds)
-        else
-            bestLap = string.format("%d:%02d.%03d", minutes, seconds, milliseconds)
-        end
+        bestLap = string.format("%d:%02d.%03d", minutes, seconds, milliseconds)
     end
     ui.setCursor(vec2(140,53):scale(sessionlapsSettings.store.sessionLapsScale))
     ui.dwriteTextAligned(bestLap, 15 * sessionlapsSettings.store.sessionLapsScale, ui.Alignment.Start, ui.Alignment.Center, vec2(160, 25):scale(sessionlapsSettings.store.sessionLapsScale), false, COLOR.WHITE)
