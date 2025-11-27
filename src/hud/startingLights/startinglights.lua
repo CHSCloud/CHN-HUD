@@ -51,16 +51,17 @@ function startingLights.windowMain()
             -- Círculos do background
             for i = 0, startingLightsSettings.store.numStartingLights - 1, 1 do
                 ui.drawCircleFilled(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.GRAY_BG, polygons)
-                ui.drawCircle(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.GRAY_BG, polygons, 2 * startingLightsSettings.store.startingLightsScale)
+                ui.drawCircle(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.WHITE, polygons, thickness)
             end
 
-            -- Círculos Verdes
+            -- Círculos Vermelhos
             local add = 5000 / startingLightsSettings.store.numStartingLights
             for i = -7000, -2000, add do
                 
                 if SIM.currentSessionTime > i and i < -2000 then
                     ui.drawCircleFilled(vec2(pos + current * distance , currentWindowHeight / 2), convertInterval(SIM.currentSessionTime, i, i + add, 0, radius), COLOR.RED, polygons)
-                end
+                    ui.drawCircle(vec2(pos + current * distance , currentWindowHeight / 2), radius, COLOR.WHITE, polygons, thickness)
+                end 
                 current = current + 1
             end
         elseif SIM.currentSessionTime < 6000 then
@@ -76,6 +77,7 @@ function startingLights.windowMain()
                     else
                         ui.drawCircleFilled(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.GRAY_BG, polygons)
                     end
+                    ui.drawCircle(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.WHITE, polygons, thickness)
                 end
             else
                 for i = 0, startingLightsSettings.store.numStartingLights - 1, 1 do
@@ -84,6 +86,7 @@ function startingLights.windowMain()
                     else
                         ui.drawCircleFilled(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.GRAY_BG, polygons)
                     end
+                    ui.drawCircle(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.WHITE, polygons, thickness)
                 end
             end
         elseif SettingsActive then
@@ -94,6 +97,7 @@ function startingLights.windowMain()
             -- Círculos Azuis
             for i = 0, startingLightsSettings.store.numStartingLights - 1, 1 do
                 ui.drawCircleFilled(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.BLUE, polygons)
+                ui.drawCircle(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.WHITE, polygons, thickness)
             end
             pinCheckBox.main(startingLightsSettings.store.startingLightsScale, "Starting Lights", config.getWindow("Starting Lights"):pinned(), vec2(currentWindowWidth, currentWindowHeight))
         end
@@ -105,6 +109,7 @@ function startingLights.windowMain()
         -- Círculos Azuis
         for i = 0, startingLightsSettings.store.numStartingLights - 1, 1 do
             ui.drawCircleFilled(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.BLUE, polygons)
+            ui.drawCircle(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.WHITE, polygons, thickness)
         end
         pinCheckBox.main(startingLightsSettings.store.startingLightsScale, "Starting Lights", config.getWindow("Starting Lights"):pinned(), vec2(currentWindowWidth, currentWindowHeight))
     end
