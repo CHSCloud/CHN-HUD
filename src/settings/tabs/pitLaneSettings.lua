@@ -1,12 +1,12 @@
 local language = require("lang.language")
-local pitlaneSettings = {}
+local pitLaneSettings = {}
 
 local defaultValues = {
-    pitlaneScale = 1,
+    pitLaneScale = 1,
     optionPlate = "default"
 }
 
-pitlaneSettings.store = ac.storage(defaultValues)
+pitLaneSettings.store = ac.storage(defaultValues)
 
 local plates = {
     ["default"] = language.get("DEFAULT"),
@@ -15,11 +15,11 @@ local plates = {
 
 local function resetToDefault()
     for key, value in pairs(defaultValues) do
-        pitlaneSettings.store[key] = value
+        pitLaneSettings.store[key] = value
     end
 end
 
-function pitlaneSettings.pitlaneSettings()
+function pitLaneSettings.pitLaneSettings()
     
     local initPos = 55
     ui.setCursor(vec2(15, initPos))
@@ -29,7 +29,7 @@ function pitlaneSettings.pitlaneSettings()
     ui.setCursor(vec2(20, initPos))
     
     -- Uso direto do store com a chave padronizada 'scale'
-    pitlaneSettings.store.pitlaneScale = ui.slider("##Size", pitlaneSettings.store.pitlaneScale, 0.7, 3, string.format("%.2f", pitlaneSettings.store.pitlaneScale))
+    pitLaneSettings.store.pitLaneScale = ui.slider("##Size", pitLaneSettings.store.pitLaneScale, 0.7, 3, string.format("%.2f", pitLaneSettings.store.pitLaneScale))
 
     initPos = initPos + 35
     ui.setCursor(vec2(15, initPos))
@@ -38,13 +38,13 @@ function pitlaneSettings.pitlaneSettings()
     ui.setCursor(vec2(20, initPos))
     
     -- Combo box atualizando direto o store
-    ui.combo('##resolution', plates[pitlaneSettings.store.optionPlate], function ()
+    ui.combo('##resolution', plates[pitLaneSettings.store.optionPlate], function ()
         if ui.selectable(plates["default"]) then
-            pitlaneSettings.store.optionPlate = "default"
+            pitLaneSettings.store.optionPlate = "default"
         end
 
         if ui.selectable(plates["alert"]) then
-            pitlaneSettings.store.optionPlate = "alert"
+            pitLaneSettings.store.optionPlate = "alert"
         end
     end)
 
@@ -55,4 +55,4 @@ function pitlaneSettings.pitlaneSettings()
     end
 end
 
-return pitlaneSettings
+return pitLaneSettings

@@ -3,14 +3,14 @@ local sessionFlagsSettings = require("src.settings.tabs.sessionFlagsSettings")
 local language = require("lang.language")
 local pinCheckBox = require("src.ui.pinCheckBox")
 local config = require("common.config")
-local sessionflags = {}
+local sessionFlags = {}
 
 local add = -1
 local lenght = 110
 local currentTime = 0
 local isRestart = false
 
-function sessionflags.windowMain()
+function sessionFlags.windowMain()
     if currentTime > SIM.currentSessionTime then
         currentTime = 0
     end
@@ -115,4 +115,4 @@ function sessionflags.windowMain()
     pinCheckBox.main(1, "Session Flags", config.getWindow("Session Flags"):pinned(), currentWindowSize)
 end
 
-return sessionflags
+return sessionFlags
