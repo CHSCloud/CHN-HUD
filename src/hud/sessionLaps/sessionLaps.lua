@@ -44,15 +44,22 @@ function sessionLaps.windowMain()
     ui.setCursor(vec2(-60,53):scale(sessionLapsSettings.store.sessionLapsScale))
     ui.image("assets/lapbackground1.png", vec2(216, 21.6):scale(sessionLapsSettings.store.sessionLapsScale), COLOR.YELLOW_DARK, ui.ImageFit.Fit)
     -- LINE
-    ui.drawRectFilled(vec2(5, 26):scale(sessionLapsSettings.store.sessionLapsScale), vec2(235, 26):scale(sessionLapsSettings.store.sessionLapsScale), COLOR.GRAY, 1)
+    ui.drawRectFilled(vec2(5, 26):scale(sessionLapsSettings.store.sessionLapsScale), vec2(235, 27):scale(sessionLapsSettings.store.sessionLapsScale), COLOR.GRAY, 1)
+    
+    -- LINE
+    ui.drawRectFilled(vec2(5, 52):scale(sessionLapsSettings.store.sessionLapsScale), vec2(235, 53):scale(sessionLapsSettings.store.sessionLapsScale), COLOR.GRAY, 1)
 
     minutes = CAR.lapTimeMs / 60E3
     seconds = (minutes %1) * 60
     milliseconds = math.round((seconds % 1) * 1000)
     currentLap = string.format("%d:%02d.%03d", minutes, seconds, milliseconds)
+
+    if not CAR.isLapValid then 
+        ui.setCursor(vec2(132,0):scale(sessionLapsSettings.store.sessionLapsScale))
+        ui.dwriteTextAligned("*", 15 * sessionLapsSettings.store.sessionLapsScale, ui.Alignment.Start, ui.Alignment.Center, vec2(160, 25):scale(sessionLapsSettings.store.sessionLapsScale), false, COLOR.RED)
+    end
     ui.setCursor(vec2(140,0):scale(sessionLapsSettings.store.sessionLapsScale))
     ui.dwriteTextAligned(currentLap, 15 * sessionLapsSettings.store.sessionLapsScale, ui.Alignment.Start, ui.Alignment.Center, vec2(160, 25):scale(sessionLapsSettings.store.sessionLapsScale), false, COLOR.WHITE)
-
     -- LAST LAP
     if CAR.previousLapTimeMs == 0 then
         lastLap = "-:--.---"
@@ -61,7 +68,10 @@ function sessionLaps.windowMain()
         seconds = (minutes %1) * 60
         milliseconds = math.round((seconds % 1) * 1000)
         lastLap = string.format("%d:%02d.%03d", minutes, seconds, milliseconds)
-        if not CAR.isLastLapValid then lastLap = "*" .. lastLap end
+        if not CAR.isLastLapValid then 
+            ui.setCursor(vec2(132,27):scale(sessionLapsSettings.store.sessionLapsScale))
+            ui.dwriteTextAligned("*", 15 * sessionLapsSettings.store.sessionLapsScale, ui.Alignment.Start, ui.Alignment.Center, vec2(160, 25):scale(sessionLapsSettings.store.sessionLapsScale), false, COLOR.RED)
+        end
     end
     ui.setCursor(vec2(140,27):scale(sessionLapsSettings.store.sessionLapsScale))
     ui.dwriteTextAligned(lastLap, 15 * sessionLapsSettings.store.sessionLapsScale, ui.Alignment.Start, ui.Alignment.Center, vec2(160, 25):scale(sessionLapsSettings.store.sessionLapsScale), false, COLOR.WHITE)
