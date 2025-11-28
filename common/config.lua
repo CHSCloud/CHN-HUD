@@ -14,7 +14,8 @@ local pinStorage = ac.storage{
     ["Pedals"] = false,
     ["Pit Lane"] = false,
     ["Session Laps"] = false,
-    ["Starting Lights"] = false
+    ["Starting Lights"] = false,
+    ["Session Flags"] = false
 }
 
 local windowNames = {
@@ -22,7 +23,8 @@ local windowNames = {
     "Pedals",
     "Pit Lane",
     "Session Laps",
-    "Starting Lights"
+    "Starting Lights",
+    "Session Flags"
 }
 
 function config.init()
