@@ -1,8 +1,12 @@
 local language = require("lang.language")
+local simpleCheckbox = require("src.ui.simpleCheckbox")
 local sessionLapsSettings = {}
 
 local defaultValues = {
-    sessionLapsScale = 1
+    sessionLapsScale = 1,
+    currentLapActive = true,
+    lastLapActive = true,
+    bestLapActive = true,
 }
 
 sessionLapsSettings.store = ac.storage(defaultValues)
@@ -23,6 +27,20 @@ function sessionLapsSettings.sessionLapsSettings()
     
     -- Uso direto do store com a chave padronizada 'scale'
     sessionLapsSettings.store.sessionLapsScale = ui.slider("##Size", sessionLapsSettings.store.sessionLapsScale, 0.7, 3, string.format("%.2f", sessionLapsSettings.store.sessionLapsScale))
+
+    
+    initPos = initPos + 40
+    ui.setCursor(vec2(15, initPos))
+    ui.header(language.get("LAPS"))
+    initPos = initPos + 20
+    sessionLapsSettings.store.currentLapActive = simpleCheckbox.main(language.get("CURRENT"), sessionLapsSettings.store.currentLapActive, 20, initPos)
+
+    initPos = initPos + 25
+    sessionLapsSettings.store.lastLapActive = simpleCheckbox.main(language.get("LAST"), sessionLapsSettings.store.lastLapActive, 20, initPos)
+
+    initPos = initPos + 25
+    sessionLapsSettings.store.bestLapActive = simpleCheckbox.main(language.get("BEST"), sessionLapsSettings.store.bestLapActive, 20, initPos)
+
 
     initPos = initPos + 40
     ui.setCursor(vec2(20, initPos))
