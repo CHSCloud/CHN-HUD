@@ -40,7 +40,7 @@ function pitLane.windowMain()
           currentWindowWidth = 135 * pitLaneSettings.store.pitLaneScale
           ui.drawRectFilled(vec2(0, 0):scale(pitLaneSettings.store.pitLaneScale), vec2(135, 70):scale(pitLaneSettings.store.pitLaneScale), WindowsColor, 35 * pitLaneSettings.store.pitLaneScale, ui.CornerFlags.All)
           ui.drawCircleFilled(vec2(35,35):scale(pitLaneSettings.store.pitLaneScale), 34 * pitLaneSettings.store.pitLaneScale, COLOR.WHITE, 40 * pitLaneSettings.store.pitLaneScale)
-          ui.drawCircle(vec2(35,35):scale(pitLaneSettings.store.pitLaneScale), 30 * pitLaneSettings.store.pitLaneScale, COLOR.RED, 40 * pitLaneSettings.store.pitLaneScale, 5 * pitLaneSettings.store.pitLaneScale)
+          ui.drawCircle(vec2(35,35):scale(pitLaneSettings.store.pitLaneScale), 31 * pitLaneSettings.store.pitLaneScale, COLOR.RED, 40 * pitLaneSettings.store.pitLaneScale, 5 * pitLaneSettings.store.pitLaneScale)
 
           posLimit = vec2(-15,10)
           fontLimit = 13 * pitLaneSettings.store.pitLaneScale
