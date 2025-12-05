@@ -31,7 +31,7 @@ function startingLightsSettings.startingLightsSettings()
     ui.header(language.get("NUM_LIGHTS"))
     initPos = initPos + 20
     ui.setCursor(vec2(20, initPos))
-    startingLightsSettings.store.numStartingLights = math.floor(ui.slider("##NumLightsStart", startingLightsSettings.store.numStartingLights, 3, 15, string.format("%i", startingLightsSettings.store.numStartingLights)))
+    startingLightsSettings.store.numStartingLights = math.floor(ui.slider("##NumLightsStart", startingLightsSettings.store.numStartingLights, 4, 10, string.format("%i", startingLightsSettings.store.numStartingLights)))
 
     initPos = initPos + 40
     ui.setCursor(vec2(20, initPos))

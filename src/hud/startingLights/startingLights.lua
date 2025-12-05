@@ -43,7 +43,7 @@ function startingLights.windowMain()
 
     if SIM.raceSessionType == ac.SessionType.Race then
         local current = 0
-        if(SIM.currentSessionTime < 0) then
+        if SIM.timeToSessionStart < 10000 and SIM.timeToSessionStart > 0 then
             -- Background
             ui.drawRectFilled(vec2(0, 0), vec2(currentWindowWidth, currentWindowHeight), WindowsColor, rounding)
             ui.drawRect(vec2(distanceBorder, distanceBorder), vec2(currentWindowWidth - distanceBorder, currentWindowHeight - distanceBorder), COLOR.WHITE, rounding2, ui.CornerFlags.All, thickness)
@@ -55,16 +55,16 @@ function startingLights.windowMain()
             end
 
             -- Círculos Vermelhos
-            local add = 5000 / startingLightsSettings.store.numStartingLights
-            for i = -7000, -2000, add do
+            local add = -(5000 / startingLightsSettings.store.numStartingLights)
+            for i = 7000, 2000, add do
                 
-                if SIM.currentSessionTime > i and i < -2000 then
-                    ui.drawCircleFilled(vec2(pos + current * distance , currentWindowHeight / 2), convertInterval(SIM.currentSessionTime, i, i + add, 0, radius), COLOR.RED, polygons)
+                if SIM.timeToSessionStart < i and i > 2000 then
+                    ui.drawCircleFilled(vec2(pos + current * distance , currentWindowHeight / 2), convertInterval(SIM.timeToSessionStart, i, i + add, 0, radius), COLOR.RED, polygons)
                     ui.drawCircle(vec2(pos + current * distance , currentWindowHeight / 2), radius, COLOR.WHITE, polygons, thickness)
                 end 
                 current = current + 1
             end
-        elseif SIM.currentSessionTime < 6000 then
+        elseif SIM.timeToSessionStart > -6000 and SIM.timeToSessionStart < 0 then
             -- Background
             ui.drawRectFilled(vec2(0, 0), vec2(currentWindowWidth, currentWindowHeight), WindowsColor, rounding)
             ui.drawRect(vec2(distanceBorder, distanceBorder), vec2(currentWindowWidth - distanceBorder, currentWindowHeight - distanceBorder), COLOR.WHITE, rounding2, ui.CornerFlags.All, thickness)
