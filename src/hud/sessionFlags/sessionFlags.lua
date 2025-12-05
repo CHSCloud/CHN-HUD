@@ -114,7 +114,7 @@ function sessionFlags.windowMain()
         ui.dwriteTextAligned(language.get("PENALTY_FLAG"), fontSize2, ui.Alignment.Start, ui.Alignment.Center, vec2(130, 25):scale(sessionFlagsSettings.store.sessionFlagsScale),true , COLOR.WHITE)
 
     -- Bandeira verde
-    elseif SIM.raceFlagType == ac.FlagType.Start and SIM.currentSessionTime < 20000 then
+    elseif SIM.raceFlagType == ac.FlagType.Start and SIM.timeToSessionStart > -20000 then
         ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
         ui.drawRectFilled(vec2(0, 0), currentWindowSize, WindowsColor, rounding)
         ui.setCursor(posFlag)
