@@ -102,6 +102,7 @@ local function geral()
       if ui.selectable("Mph") then
         settings.store.selectedSpeed = "Mph"
     end
+    SelectedSpeed = settings.store.selectedSpeed
   end)
   
   initPos = initPos + 35
