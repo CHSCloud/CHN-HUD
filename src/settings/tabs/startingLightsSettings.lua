@@ -4,7 +4,7 @@ local startingLightsSettings = {}
 
 local defaultValues = {
     startingLightsScale = 1,
-    numStartingLights = 5
+    numStartingLights = 4
 }
 
 startingLightsSettings.store = ac.storage(defaultValues)
