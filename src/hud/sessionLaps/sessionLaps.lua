@@ -83,8 +83,8 @@ function sessionLaps.windowMain()
         ui.setCursor(vec2(9,currentWindowHeight):scale(sessionLapsSettings.store.sessionLapsScale))
         ui.dwriteTextAligned(language.get("LAST"), 15 * sessionLapsSettings.store.sessionLapsScale, ui.Alignment.Start, ui.Alignment.Center, vec2(150, 25):scale(sessionLapsSettings.store.sessionLapsScale), false, rgbm(WindowsColor.r, WindowsColor.g, WindowsColor.b, 1))
         -- LINE
-        ui.drawRectFilled(vec2(5, currentWindowHeight * 2):scale(sessionLapsSettings.store.sessionLapsScale), vec2(235, currentWindowHeight * 2 + 1):scale(sessionLapsSettings.store.sessionLapsScale), COLOR.GRAY, 1)
         currentWindowHeight = currentWindowHeight + 26
+        ui.drawRectFilled(vec2(5, currentWindowHeight):scale(sessionLapsSettings.store.sessionLapsScale), vec2(235, currentWindowHeight + 1):scale(sessionLapsSettings.store.sessionLapsScale), COLOR.GRAY, 1)
     end
     -- 
 
@@ -108,7 +108,7 @@ function sessionLaps.windowMain()
         end
         ui.setCursor(vec2(140,currentWindowHeight):scale(sessionLapsSettings.store.sessionLapsScale))
         ui.dwriteTextAligned(bestLap, 15 * sessionLapsSettings.store.sessionLapsScale, ui.Alignment.Start, ui.Alignment.Center, vec2(160, 25):scale(sessionLapsSettings.store.sessionLapsScale), false, COLOR.WHITE)
-
+        
         -- Texto BEST
         ui.setCursor(vec2(9,currentWindowHeight - 1):scale(sessionLapsSettings.store.sessionLapsScale))
         ui.dwriteTextAligned(language.get("BEST"), 15 * sessionLapsSettings.store.sessionLapsScale, ui.Alignment.Start, ui.Alignment.Center, vec2(150, 25):scale(sessionLapsSettings.store.sessionLapsScale), false, rgbm(WindowsColor.r, WindowsColor.g, WindowsColor.b, 1))

@@ -360,7 +360,7 @@ local function drawWheel()
   if pedalsSettings.store.wheelType == "default" then
     ui.setCursor(vec2(p1, p2))
     ui.beginRotation()
-    ui.image("assets/Wheel1.png", vec2(width, height), ui.ImageFit.Fit)
+    ui.image("assets/Wheel.png", vec2(width, height), ui.ImageFit.Fit)
     ui.endRotation(90 - CAR.steer)
   elseif pedalsSettings.store.wheelType == "simple" then
     local thickness = 7 * pedalsSettings.store.pedalsScale
