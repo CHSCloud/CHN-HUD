@@ -99,7 +99,6 @@ function startingLights.windowMain()
                 ui.drawCircleFilled(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.BLUE, polygons)
                 ui.drawCircle(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.WHITE, polygons, thickness)
             end
-            pinCheckBox.main(startingLightsSettings.store.startingLightsScale, "Starting Lights", config.getWindow("Starting Lights"):pinned(), vec2(currentWindowWidth, currentWindowHeight))
         end
     elseif SettingsActive then
         -- Background
@@ -111,8 +110,8 @@ function startingLights.windowMain()
             ui.drawCircleFilled(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.BLUE, polygons)
             ui.drawCircle(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.WHITE, polygons, thickness)
         end
-        pinCheckBox.main(startingLightsSettings.store.startingLightsScale, "Starting Lights", config.getWindow("Starting Lights"):pinned(), vec2(currentWindowWidth, currentWindowHeight))
     end
+    pinCheckBox.main(startingLightsSettings.store.startingLightsScale, "Starting Lights", config.getWindow("Starting Lights"):pinned(), vec2(currentWindowWidth, currentWindowHeight))
 end
 
 return startingLights
