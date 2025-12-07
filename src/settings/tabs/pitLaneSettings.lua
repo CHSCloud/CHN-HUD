@@ -8,11 +8,6 @@ local defaultValues = {
 
 pitLaneSettings.store = ac.storage(defaultValues)
 
-local plates = {
-    ["default"] = language.get("DEFAULT"),
-    ["alert"] = language.get("ALERT_PIT")
-}
-
 local function resetToDefault()
     for key, value in pairs(defaultValues) do
         pitLaneSettings.store[key] = value
@@ -20,6 +15,10 @@ local function resetToDefault()
 end
 
 function pitLaneSettings.pitLaneSettings()
+    local plates = {
+        ["default"] = language.get("DEFAULT"),
+        ["alert"] = language.get("ALERT_PIT")
+    }
     
     local initPos = 55
     ui.setCursor(vec2(15, initPos))
