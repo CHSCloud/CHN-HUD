@@ -7,6 +7,26 @@ local maxPos = vec2(-math.huge, -math.huge) -- Posição máxima da pista
 local totalPoints = 500 -- Número total de pontos no mapa
 local mapPoints = {} -- Pontos do mapa
 
+-- Centros da tela
+local screenCenterX
+local screenCenterY
+
+-- Dimensões da pista
+local trackWidth
+local trackHeight
+-- Centros da pista
+local trackCenterX
+local trackCenterY
+
+-- Área de desenho do mapa
+local drawAreaW
+local drawAreaH
+
+-- Escala final do mapa
+local finalScale
+
+local padding -- Limite do mapa
+
 local function initMap()
     for i = 0, 1, 1 / totalPoints do
         local posWorld = ac.trackCoordinateToWorld(vec3(0, 0, i))
@@ -18,41 +38,20 @@ local function initMap()
         if posWorld2D.x > maxPos.x then maxPos.x = posWorld2D.x end
         if posWorld2D.y > maxPos.y then maxPos.y = posWorld2D.y end
     end
+
+    -- Dimensões finais da pista
+    trackWidth = maxPos.x - minPos.x
+    trackHeight = maxPos.y - minPos.y
+
+    -- Centros da pista
+    trackCenterX = (minPos.x + maxPos.x) / 2
+    trackCenterY = (minPos.y + maxPos.y) / 2
 end
 
-function map.windowMain()
-    local currenWindowSize = vec2(500, 500):scale(mapSettings.store.mapScale)
-    local padding = 40 * mapSettings.store.mapScale -- Reduzi um pouco para aproveitar espaço
-    local thickness = 5 * mapSettings.store.mapScale
-
-    -- 1. Desenhar o fundo
-    ui.drawRectFilled(vec2(0, 0), currenWindowSize, rgbm(0, 0, 0, 0.5), 40)
-
-    -- 2. Calcular dimensões da pista e da área de desenho
-    local trackWidth = maxPos.x - minPos.x
-    local trackHeight = maxPos.y - minPos.y
-    
-    local drawAreaW = currenWindowSize.x - (padding * 2)
-    local drawAreaH = currenWindowSize.y - (padding * 2)
-
-    -- 3. Calcular a escala (O SEGREDO ESTÁ AQUI)
-    -- Descobrimos quanto teríamos que reduzir para caber na largura e na altura
-    local scaleX = drawAreaW / trackWidth
-    local scaleY = drawAreaH / trackHeight
-    
-    -- Usamos a MENOR escala para garantir que a pista caiba inteira sem distorcer
-    local finalScale = math.min(scaleX, scaleY)
-
-    -- 4. Calcular os centros para centralizar o mapa
-    local trackCenterX = (minPos.x + maxPos.x) / 2
-    local trackCenterY = (minPos.y + maxPos.y) / 2
-    
-    local screenCenterX = currenWindowSize.x / 2
-    local screenCenterY = currenWindowSize.y / 2
-
-    ui.beginRotation()
+--- @param thickness number
+--- @param color rgbm
+local function drawMap(thickness, color)
     ui.pathClear()
-    
     for i, point in ipairs(mapPoints) do
         local offsetX = (point.x - trackCenterX) * finalScale
         local offsetY = (point.y - trackCenterY) * finalScale
@@ -62,9 +61,32 @@ function map.windowMain()
         
         ui.pathLineTo(vec2(finalX, finalY))
     end
-    
-    ui.pathStroke(COLOR.WHITE, true, thickness)
+    ui.pathStroke(color, true, thickness * 2)
+end
+
+function map.windowMain()
+    local currenWindowSize = vec2(500, 500):scale(mapSettings.store.mapScale)
+    padding = 40 * mapSettings.store.mapScale
+    local thickness = 5 * mapSettings.store.mapScale
+
+    -- Background
+    ui.drawRectFilled(vec2(0, 0), currenWindowSize, WindowsColor, 20 * mapSettings.store.mapScale)
+
+    screenCenterX = currenWindowSize.x / 2
+    screenCenterY = currenWindowSize.y / 2
+
+    drawAreaW = currenWindowSize.x - (padding * 2)
+    drawAreaH = currenWindowSize.y - (padding * 2)
+
+    local scaleX = drawAreaW / trackWidth
+    local scaleY = drawAreaH / trackHeight
+    finalScale = math.min(scaleX, scaleY)
+
+    ui.beginRotation()
+    drawMap(thickness * 2, COLOR.WHITE)
+    drawMap(thickness, COLOR.RED)
     ui.endRotation(mapSettings.store.angle)
+    
     config.resize(currenWindowSize, "Map")
 end
 

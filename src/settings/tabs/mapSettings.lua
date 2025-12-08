@@ -4,7 +4,7 @@ local language = require("lang.language")
 
 local defaultValues = {
     mapScale = 1,
-    angle = 0
+    angle = 0,
 }
 
 
