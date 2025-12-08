@@ -3,6 +3,8 @@ local pitLaneSettings = require("src.settings.tabs.pitLaneSettings")
 local sessionLapsSettings = require("src.settings.tabs.sessionLapsSettings")
 local startingLightsSettings = require("src.settings.tabs.startingLightsSettings")
 local sessionFlagsSettings = require("src.settings.tabs.sessionFlagsSettings")
+local mapSettings = require("src.settings.tabs.mapSettings")
+
 local language = require("lang.language")
 local config = require("common.config")
 
@@ -169,6 +171,7 @@ function settings.windowMain()
     ui.tabItem(language.get("SESSION_LAPS"), sessionLapsSettings.sessionLapsSettings)
     ui.tabItem(language.get("STARTING_LIGHTS"), startingLightsSettings.startingLightsSettings)
     ui.tabItem("Session Flags", sessionFlagsSettings.sessionFlagsSettings)
+    ui.tabItem("Map", mapSettings.mapSettings)
   end)
 
   config.resize(WindowSettingsSize, "Settings CHN")

@@ -4,6 +4,7 @@ local pedals = require("src.hud.pedals.pedals")
 local sessionLaps = require("src.hud.sessionLaps.sessionLaps")
 local sessionFlags = require("src.hud.sessionFlags.sessionFlags")
 local startingLights = require("src.hud.startingLights.startingLights")
+local map = require("src.hud.map.map")
 
 Timer = 0
 
@@ -41,6 +42,11 @@ end
 -- TELA DE VOLTAS DA SESSÃO
 function WindowSessionlaps()
   sessionLaps.windowMain()
+end
+
+-- TELA DO MAPA
+function WindowMap()
+  map.windowMain()
 end
 
 -- FUNÇÃO DE ATUALIZAÇÃO

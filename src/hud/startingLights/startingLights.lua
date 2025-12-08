@@ -3,22 +3,6 @@ local pinCheckBox = require("src.ui.pinCheckBox")
 local startingLightsSettings = require("src.settings.tabs.startingLightsSettings")
 local startingLights = {}
 
---- @param value number
---- @param inMin number
---- @param inMax number
---- @param outMin number
---- @param outMax number
---- @return number
-local function convertInterval(value, inMin, inMax, outMin, outMax)
-    local output = outMin + (value - inMin) * (outMax - outMin) / (inMax - inMin)
-    if output > outMax then
-        output = outMax
-    elseif output < outMin then
-        output = outMin
-    end
-    return output
-end
-
 function startingLights.windowMain()
     -- Raio
     local radius = 20 * startingLightsSettings.store.startingLightsScale
@@ -59,7 +43,7 @@ function startingLights.windowMain()
             for i = 7000, 2000, add do
                 
                 if SIM.timeToSessionStart < i and i > 2000 and current <= startingLightsSettings.store.numStartingLights - 1 then
-                    ui.drawCircleFilled(vec2(pos + current * distance , currentWindowHeight / 2), convertInterval(SIM.timeToSessionStart, i, i + add, 0, radius), COLOR.RED, polygons)
+                    ui.drawCircleFilled(vec2(pos + current * distance , currentWindowHeight / 2), config.convertInterval(SIM.timeToSessionStart, i, i + add, 0, radius), COLOR.RED, polygons)
                     ui.drawCircle(vec2(pos + current * distance , currentWindowHeight / 2), radius, COLOR.WHITE, polygons, thickness)
                 end 
                 current = current + 1

@@ -15,7 +15,8 @@ local pinStorage = ac.storage{
     ["Pit Lane"] = false,
     ["Session Laps"] = false,
     ["Starting Lights"] = false,
-    ["Session Flags"] = false
+    ["Session Flags"] = false,
+    ["Map"] = false
 }
 
 local windowNames = {
@@ -24,7 +25,8 @@ local windowNames = {
     "Pit Lane",
     "Session Laps",
     "Starting Lights",
-    "Session Flags"
+    "Session Flags",
+    "Map"
 }
 
 function config.init()
@@ -45,6 +47,22 @@ function config.init()
             end
         end
     end
+end
+
+--- @param value number
+--- @param inMin number
+--- @param inMax number
+--- @param outMin number
+--- @param outMax number
+--- @return number
+function config.convertInterval(value, inMin, inMax, outMin, outMax)
+    local output = outMin + (value - inMin) * (outMax - outMin) / (inMax - inMin)
+    if output > outMax then
+        output = outMax
+    elseif output < outMin then
+        output = outMin
+    end
+    return output
 end
 
 --- @param name string
