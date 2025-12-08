@@ -51,7 +51,6 @@ end
 --- @param thickness number
 --- @param color rgbm
 local function drawMap(thickness, color)
-    ui.pathClear()
     for i, point in ipairs(mapPoints) do
         local offsetX = (point.x - trackCenterX) * finalScale
         local offsetY = (point.y - trackCenterY) * finalScale
@@ -61,13 +60,39 @@ local function drawMap(thickness, color)
         
         ui.pathLineTo(vec2(finalX, finalY))
     end
-    ui.pathStroke(color, true, thickness * 2)
+    ui.pathStroke(color, true, thickness)
+end
+
+--- @param thickness number
+--- @param color rgbm
+local function drawSectors(thickness, color)
+    local sectors = SIM.lapSplits
+    for i, sector in ipairs(sectors) do
+        local posWorld = ac.trackCoordinateToWorld(vec3(0, 0, sector - 0.003))
+        local pos1 = vec2(posWorld.x, posWorld.z)
+        local initX = screenCenterX + (pos1.x - trackCenterX) * finalScale
+        local initY = screenCenterY + (pos1.y - trackCenterY) * finalScale
+
+        posWorld = ac.trackCoordinateToWorld(vec3(0, 0, sector + 0.003))
+        local pos2 = vec2(posWorld.x, posWorld.z)
+        local finalX = screenCenterX + (pos2.x - trackCenterX) * finalScale
+        local finalY = screenCenterY + (pos2.y - trackCenterY) * finalScale
+
+        ui.pathLineTo(vec2(initX, initY))
+        ui.pathLineTo(vec2(finalX, finalY))
+        if i == 0 then
+            ui.pathStroke(COLOR.GREEN, false, thickness)
+            
+        else 
+            ui.pathStroke(color, false, thickness)
+        end
+    end
 end
 
 function map.windowMain()
     local currenWindowSize = vec2(500, 500):scale(mapSettings.store.mapScale)
     padding = 40 * mapSettings.store.mapScale
-    local thickness = 5 * mapSettings.store.mapScale
+    local thickness = 8 * mapSettings.store.mapScale
 
     -- Background
     ui.drawRectFilled(vec2(0, 0), currenWindowSize, WindowsColor, 20 * mapSettings.store.mapScale)
@@ -84,7 +109,8 @@ function map.windowMain()
 
     ui.beginRotation()
     drawMap(thickness * 2, COLOR.WHITE)
-    drawMap(thickness, COLOR.RED)
+    drawMap(thickness, COLOR.BLACK)
+    drawSectors(thickness * 2, COLOR.RED)
     ui.endRotation(mapSettings.store.angle)
     
     config.resize(currenWindowSize, "Map")
