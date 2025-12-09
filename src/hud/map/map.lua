@@ -141,6 +141,7 @@ local function drawPLayers(lenght)
 end
 
 function map.windowMain()
+    ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
     local currenWindowSize = vec2(500, 500):scale(mapSettings.store.mapScale)
     padding = 10 * mapSettings.store.mapScale
     local thickness = 8 * mapSettings.store.mapScale
@@ -177,7 +178,7 @@ function map.windowMain()
     drawPLayers(thickness * 3)
     
     config.resize(currenWindowSize, "Map")
-    pinCheckBox.main(mapSettings.store.mapScale, "Map", config.getWindow("Map"):pinned(), currenWindowSize)
+    pinCheckBox.main(mapSettings.store.mapScale * 1.5, "Map", config.getWindow("Map"):pinned(), currenWindowSize)
 end
 
 initMap()
