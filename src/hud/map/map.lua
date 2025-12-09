@@ -1,4 +1,5 @@
 local config = require("common.config")
+local pinCheckBox = require("src.ui.pinCheckBox")
 local mapSettings = require("src.settings.tabs.mapSettings")
 local map = {}
 
@@ -13,15 +14,14 @@ local screenCenterY
 local centerScreen
 
 -- Dimensões da pista
-local trackWidth
-local trackHeight
+local trackLength
+
 -- Centros da pista
 local trackCenterX
 local trackCenterY
 
 -- Área de desenho do mapa
-local drawAreaW
-local drawAreaH
+local drawAreaLenght
 
 -- Escala final do mapa
 local finalScale
@@ -52,9 +52,8 @@ local function initMap()
         if posWorld2D.y > maxPos.y then maxPos.y = posWorld2D.y end
     end
 
-    -- Dimensões finais da pista
-    trackWidth = maxPos.x - minPos.x
-    trackHeight = maxPos.y - minPos.y
+    -- Comprimento da pista
+    trackLength = config.calculateDistance(minPos, maxPos)
 
     -- Centros da pista
     trackCenterX = (minPos.x + maxPos.x) / 2
@@ -75,7 +74,7 @@ local function drawMap(thickness, color)
         
         ui.pathLineTo(vec2(finalX, finalY))
     end
-    ui.pathStroke(color, true, thickness)
+    ui.pathStroke(color, false, thickness)
 end
 
 --- @param thickness number
@@ -143,7 +142,7 @@ end
 
 function map.windowMain()
     local currenWindowSize = vec2(500, 500):scale(mapSettings.store.mapScale)
-    padding = 40 * mapSettings.store.mapScale
+    padding = 10 * mapSettings.store.mapScale
     local thickness = 8 * mapSettings.store.mapScale
 
     
@@ -169,21 +168,16 @@ function map.windowMain()
     screenCenterY = currenWindowSize.y / 2
     centerScreen = vec2(screenCenterX, screenCenterY)
 
-    drawAreaW = currenWindowSize.x - (padding * 2)
-    drawAreaH = currenWindowSize.y - (padding * 2)
+    drawAreaLenght = currenWindowSize.y - (padding * 2)
+    finalScale = drawAreaLenght / trackLength
 
-    local scaleX = drawAreaW / trackWidth
-    local scaleY = drawAreaH / trackHeight
-    finalScale = math.min(scaleX, scaleY)
-
-    --ui.beginRotation()
     drawMap(thickness * 2, COLOR.WHITE)
     drawMap(thickness, COLOR.BLACK)
     drawSectors(thickness * 2, COLOR.RED)
-    --ui.endRotation(mapSettings.store.angle)
     drawPLayers(thickness * 3)
     
     config.resize(currenWindowSize, "Map")
+    pinCheckBox.main(mapSettings.store.mapScale, "Map", config.getWindow("Map"):pinned(), currenWindowSize)
 end
 
 initMap()

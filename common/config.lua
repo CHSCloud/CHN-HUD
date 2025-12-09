@@ -65,6 +65,15 @@ function config.convertInterval(value, inMin, inMax, outMin, outMax)
     return output
 end
 
+--- @param p1 vec2
+--- @param p2 vec2
+--- @return number
+function config.calculateDistance(p1, p2)
+    local dx = p2.x - p1.x
+    local dy = p2.y - p1.y
+    return math.sqrt(dx*dx + dy*dy)
+end
+
 --- @param name string
 function config.getWindow(name)
     local data = windows[name]
