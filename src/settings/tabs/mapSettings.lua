@@ -3,7 +3,7 @@ local config = require("common.config")
 local language = require("lang.language")
 
 local defaultValues = {
-    mapScale = 1,
+    mapScale = 0.7,
     angle = 0,
 }
 
@@ -24,7 +24,7 @@ function mapSettings.mapSettings()
     ui.header(language.get("SIZE"))
     initPos = initPos + 20
     ui.setCursor(vec2(20, initPos))
-    mapSettings.store.mapScale = ui.slider("##Size", mapSettings.store.mapScale, 0.7, 3, string.format("%.2f", mapSettings.store.mapScale))
+    mapSettings.store.mapScale = ui.slider("##Size", mapSettings.store.mapScale, 0.4, 2, string.format("%.2f", mapSettings.store.mapScale))
     initPos = initPos + 20
 
     
