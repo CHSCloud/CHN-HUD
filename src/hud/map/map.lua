@@ -149,13 +149,20 @@ function map.windowMain()
     
     if config.isMouseInWindow(ui.mouseLocalPos(), 0, ui.windowSize().x, 0, ui.windowSize().y) then
         if transparancy < 0.85 then
-            if 20 * Timer % 2 >= 1 then
+            if 20 * Timer % 6 >= 1 then
                 transparancy = transparancy + 0.1
             end
         end
         ui.drawRectFilled(vec2(0, 0), currenWindowSize, rgbm(WindowsColor.r,WindowsColor.g,WindowsColor.b, transparancy), 20 * mapSettings.store.mapScale)
     else
-        transparancy = 0
+        if transparancy > 0 then
+            if 20 * Timer % 6 >= 1 then
+                transparancy = transparancy - 0.1
+            end
+             ui.drawRectFilled(vec2(0, 0), currenWindowSize, rgbm(WindowsColor.r,WindowsColor.g,WindowsColor.b, transparancy), 20 * mapSettings.store.mapScale)
+        else
+            transparancy = 0
+        end
     end
 
     screenCenterX = currenWindowSize.x / 2
