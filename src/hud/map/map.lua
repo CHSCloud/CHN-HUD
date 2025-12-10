@@ -172,8 +172,8 @@ function map.windowMain()
     drawAreaLenght = currenWindowSize.y - (padding * 2)
     finalScale = drawAreaLenght / trackLength
 
-    drawMap(thickness * 2, COLOR.WHITE)
-    drawMap(thickness, COLOR.BLACK)
+    drawMap(thickness * 2, mapSettings.store.colorBorder)
+    drawMap(thickness, mapSettings.store.colorTrack)
     drawSectors(thickness * 2, COLOR.RED)
     drawPLayers(thickness * 3)
     
