@@ -5,7 +5,7 @@ local map = {}
 
 local minPos = vec2(math.huge, math.huge) -- Posição mínima da pista
 local maxPos = vec2(-math.huge, -math.huge) -- Posição máxima da pista
-local totalPoints = 500 -- Número total de pontos no mapa
+local totalPoints = 1500 -- Número total de pontos no mapa
 local mapPoints = {} -- Pontos do mapa
 
 -- Centros da tela
@@ -41,6 +41,8 @@ local function rotateVec(vec, angleDeg)
 end
 
 local function initMap()
+
+
     for i = 0, 1, 1 / totalPoints do
         local posWorld = ac.trackCoordinateToWorld(vec3(0, 0, i))
         local posWorld2D = vec2(posWorld.x, posWorld.z)
@@ -74,21 +76,22 @@ local function drawMap(thickness, color)
         
         ui.pathLineTo(vec2(finalX, finalY))
     end
-    ui.pathStroke(color, false, thickness)
+    ui.pathStroke(color, true, thickness)
 end
 
 --- @param thickness number
 --- @param color rgbm
 local function drawSectors(thickness, color)
     local sectors = SIM.lapSplits
+
     for i, sector in ipairs(sectors) do
-        local posWorld = ac.trackCoordinateToWorld(vec3(0, 0, sector - 0.003))
+        local posWorld = ac.trackCoordinateToWorld(vec3(0, 0, sector - 0.002))
         local pos1 = vec2(posWorld.x, posWorld.z)
         local rotatePosInit = rotateVec(vec2((pos1.x - trackCenterX) * finalScale, (pos1.y - trackCenterY) * finalScale), mapSettings.store.angle)
         local initX = screenCenterX + rotatePosInit.x
         local initY = screenCenterY + rotatePosInit.y
 
-        posWorld = ac.trackCoordinateToWorld(vec3(0, 0, sector + 0.003))
+        posWorld = ac.trackCoordinateToWorld(vec3(0, 0, sector + 0.002))
         local pos2 = vec2(posWorld.x, posWorld.z)
         local rotatePosFinal = rotateVec(vec2((pos2.x - trackCenterX) * finalScale, (pos2.y - trackCenterY) * finalScale), mapSettings.store.angle)
         local finalX = screenCenterX + rotatePosFinal.x
@@ -97,7 +100,7 @@ local function drawSectors(thickness, color)
         ui.pathLineTo(vec2(initX, initY))
         ui.pathLineTo(vec2(finalX, finalY))
         if i == 0 then
-            ui.pathStroke(COLOR.GREEN, false, thickness)
+            ui.pathStroke(COLOR.RED, false, thickness)
             
         else 
             ui.pathStroke(color, false, thickness)
@@ -122,23 +125,75 @@ end
 
 --- @param lenght number
 local function drawPLayers(lenght)
-    local indexCar
     for i, car in ac.iterateCars.leaderboard() do
-        if car.index ~= 0 then
-            if car.racePosition == 1 then
-                indexCar = car.index
-            end
-            drawPLayer(car, lenght, COLOR.RED)
+        if car.index ~= SIM.focusedCar then
+            drawPLayer(car, lenght, COLOR.WHITE)
         end
     end
-    local car = ac.getCar(0)
-    if car == nil then return end
-    drawPLayer(car, lenght, COLOR.GREEN)
-
-    car = ac.getCar(indexCar)
+    local car = ac.getCar(SIM.focusedCar)
     if car == nil then return end
     drawPLayer(car, lenght, COLOR.YELLOW)
 end
+
+--- @param thickness number
+--- @param color rgbm
+local function drawDRS(thickness, color)
+    local ini = ac.INIConfig.trackData("drs_zones.ini")
+    if ini ~= nil then
+        local sections = ini['sections']
+        for section_name, section_data in pairs(sections) do
+            -- we don't really care about the order we put them in
+            local data_zstart     = section_data['START']
+            local data_zdetection = section_data['DETECTION']
+            local data_zend       = section_data['END']
+
+            local zstart = nil
+            local zdetection = nil
+            local zend = nil
+            if data_zstart     ~= nil then zstart     = data_zstart[1]     end
+            if data_zdetection ~= nil then zdetection = data_zdetection[1] end
+            if data_zend       ~= nil then zend       = data_zend[1]       end
+
+            if zstart     ~= nil then zstart     = stringify.parse(zstart)     end
+            if zdetection ~= nil then zdetection = stringify.parse(zdetection) end
+            if zend       ~= nil then zend       = stringify.parse(zend)       end
+
+            local posWorld = ac.trackCoordinateToWorld(vec3(0, 0, tonumber(zstart) - 0.002))
+            local pos1 = vec2(posWorld.x, posWorld.z)
+            local rotatePosInit = rotateVec(vec2((pos1.x - trackCenterX) * finalScale, (pos1.y - trackCenterY) * finalScale), mapSettings.store.angle)
+            local initX = screenCenterX + rotatePosInit.x
+            local initY = screenCenterY + rotatePosInit.y
+
+            posWorld = ac.trackCoordinateToWorld(vec3(0, 0, tonumber(zstart) + 0.002))
+            local pos2 = vec2(posWorld.x, posWorld.z)
+            local rotatePosFinal = rotateVec(vec2((pos2.x - trackCenterX) * finalScale, (pos2.y - trackCenterY) * finalScale), mapSettings.store.angle)
+            local finalX = screenCenterX + rotatePosFinal.x
+            local finalY = screenCenterY + rotatePosFinal.y
+            
+            ui.pathLineTo(vec2(initX, initY))
+            ui.pathLineTo(vec2(finalX, finalY))
+            ui.pathStroke(color, false, thickness)
+
+            posWorld = ac.trackCoordinateToWorld(vec3(0, 0, tonumber(zend) - 0.002))
+            local pos1 = vec2(posWorld.x, posWorld.z)
+            local rotatePosInit = rotateVec(vec2((pos1.x - trackCenterX) * finalScale, (pos1.y - trackCenterY) * finalScale), mapSettings.store.angle)
+            local initX = screenCenterX + rotatePosInit.x
+            local initY = screenCenterY + rotatePosInit.y
+
+            posWorld = ac.trackCoordinateToWorld(vec3(0, 0, tonumber(zend) + 0.002))
+            local pos2 = vec2(posWorld.x, posWorld.z)
+            local rotatePosFinal = rotateVec(vec2((pos2.x - trackCenterX) * finalScale, (pos2.y - trackCenterY) * finalScale), mapSettings.store.angle)
+            local finalX = screenCenterX + rotatePosFinal.x
+            local finalY = screenCenterY + rotatePosFinal.y
+            
+            ui.pathLineTo(vec2(initX, initY))
+            ui.pathLineTo(vec2(finalX, finalY))
+            ui.pathStroke(color, false, thickness)
+        end
+    end
+end
+
+
 
 function map.windowMain()
     ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
@@ -172,9 +227,10 @@ function map.windowMain()
     drawAreaLenght = currenWindowSize.y - (padding * 2)
     finalScale = drawAreaLenght / trackLength
 
-    drawMap(thickness * 2, mapSettings.store.colorBorder)
-    drawMap(thickness, mapSettings.store.colorTrack)
-    drawSectors(thickness * 2, COLOR.RED)
+    drawMap(mapSettings.store.trackLenght + mapSettings.store.borderLenght * 2, mapSettings.store.colorBorder)
+    drawMap(mapSettings.store.trackLenght, mapSettings.store.colorTrack)
+    drawDRS(mapSettings.store.trackLenght, COLOR.GREEN)
+    drawSectors(mapSettings.store.trackLenght, mapSettings.store.colorSectors)
     drawPLayers(thickness * 3)
     
     config.resize(currenWindowSize, "Map")
