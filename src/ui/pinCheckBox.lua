@@ -8,6 +8,7 @@ local lenghts = {
     ["Pedals"] = 0,
     ["Pit Lane"] = 0,
     ["Session Laps"] = 0,
+    ["Map"] = 0
 }
 
 --- @param pos vec2
