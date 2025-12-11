@@ -1,4 +1,3 @@
-require("src.settings.settings")
 local sessionFlagsSettings = require("src.settings.tabs.sessionFlagsSettings")
 local language = require("lang.language")
 local pinCheckBox = require("src.ui.pinCheckBox")

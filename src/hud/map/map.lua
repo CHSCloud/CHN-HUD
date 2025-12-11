@@ -2,11 +2,12 @@ local config = require("common.config")
 local pinCheckBox = require("src.ui.pinCheckBox")
 local mapSettings = require("src.settings.tabs.mapSettings")
 local map = {}
-
 local minPos = vec2(math.huge, math.huge) -- Posição mínima da pista
 local maxPos = vec2(-math.huge, -math.huge) -- Posição máxima da pista
-local totalPoints = 1500 -- Número total de pontos no mapa
+local totalPoints
 local mapPoints = {} -- Pontos do mapa
+local sectors = {}
+local drs = {}
 
 -- Centros da tela
 local screenCenterX
@@ -41,17 +42,52 @@ local function rotateVec(vec, angleDeg)
 end
 
 local function initMap()
+    totalPoints = config.remapInterval(SIM.trackLengthM, 0, 4000, 0, 450)
 
-
+    -- Armazenando pontos do mapa
     for i = 0, 1, 1 / totalPoints do
         local posWorld = ac.trackCoordinateToWorld(vec3(0, 0, i))
         local posWorld2D = vec2(posWorld.x, posWorld.z)
         table.insert(mapPoints, posWorld2D)
 
+        -- Definindo limites do mapa
         if posWorld2D.x < minPos.x then minPos.x = posWorld2D.x end
         if posWorld2D.y < minPos.y then minPos.y = posWorld2D.y end
         if posWorld2D.x > maxPos.x then maxPos.x = posWorld2D.x end
         if posWorld2D.y > maxPos.y then maxPos.y = posWorld2D.y end
+    end
+
+    -- Armazenando sectores
+    for i, sector in ipairs(SIM.lapSplits) do
+        local start = ac.trackCoordinateToWorld(vec3(0, 0, sector - 0.002))
+        local final = ac.trackCoordinateToWorld(vec3(0, 0, sector + 0.002))
+        table.insert(sectors, {
+            start = vec2(start.x, start.z),
+            final = vec2(final.x, final.z)
+        })
+    end
+
+    -- Armazenando DRS
+    local ini = ac.INIConfig.trackData("drs_zones.ini")
+    if ini ~= nil then
+        local sections = ini['sections']
+        for name, data in pairs(sections) do
+            local dataStart = data['START']
+            local dataFinal = data['END']
+            
+            local start1 = ac.trackCoordinateToWorld(vec3(0, 0, tonumber(dataStart[1]) - 0.002))
+            local final1 = ac.trackCoordinateToWorld(vec3(0, 0, tonumber(dataStart[1]) + 0.002))
+            local start2 = ac.trackCoordinateToWorld(vec3(0, 0, tonumber(dataFinal[1]) - 0.002))
+            local final2 = ac.trackCoordinateToWorld(vec3(0, 0, tonumber(dataFinal[1]) + 0.002))
+            if dataStart[1] ~= nil and dataFinal[1] ~= nil then
+                table.insert(drs, {
+                    start1 = vec2(start1.x, start1.z),
+                    final1 = vec2(final1.x, final1.z),
+                    start2 = vec2(start2.x, start2.z),
+                    final2 = vec2(final2.x, final2.z)
+                })
+            end
+        end
     end
 
     -- Comprimento da pista
@@ -82,28 +118,16 @@ end
 --- @param thickness number
 --- @param color rgbm
 local function drawSectors(thickness, color)
-    local sectors = SIM.lapSplits
-
     for i, sector in ipairs(sectors) do
-        local posWorld = ac.trackCoordinateToWorld(vec3(0, 0, sector - 0.002))
-        local pos1 = vec2(posWorld.x, posWorld.z)
-        local rotatePosInit = rotateVec(vec2((pos1.x - trackCenterX) * finalScale, (pos1.y - trackCenterY) * finalScale), mapSettings.store.angle)
-        local initX = screenCenterX + rotatePosInit.x
-        local initY = screenCenterY + rotatePosInit.y
+        local rotatePosInit = rotateVec(vec2((sector.start.x - trackCenterX) * finalScale, (sector.start.y - trackCenterY) * finalScale), mapSettings.store.angle)
+        local init = vec2(math.floor(screenCenterX + rotatePosInit.x), math.floor(screenCenterY + rotatePosInit.y))
 
-        posWorld = ac.trackCoordinateToWorld(vec3(0, 0, sector + 0.002))
-        local pos2 = vec2(posWorld.x, posWorld.z)
-        local rotatePosFinal = rotateVec(vec2((pos2.x - trackCenterX) * finalScale, (pos2.y - trackCenterY) * finalScale), mapSettings.store.angle)
-        local finalX = screenCenterX + rotatePosFinal.x
-        local finalY = screenCenterY + rotatePosFinal.y
-        
-        ui.pathLineTo(vec2(initX, initY))
-        ui.pathLineTo(vec2(finalX, finalY))
-        if i == 0 then
-            ui.pathStroke(COLOR.RED, false, thickness)
-            
+        local rotatePosFinal = rotateVec(vec2((sector.final.x - trackCenterX) * finalScale, (sector.final.y - trackCenterY) * finalScale), mapSettings.store.angle)
+        local final = vec2(math.floor(screenCenterX + rotatePosFinal.x), math.floor(screenCenterY + rotatePosFinal.y))
+        if i == 1 then
+            ui.drawLine(init, final, COLOR.RED, thickness)
         else 
-            ui.pathStroke(color, false, thickness)
+            ui.drawLine(init, final, color, thickness)
         end
     end
 end
@@ -138,58 +162,20 @@ end
 --- @param thickness number
 --- @param color rgbm
 local function drawDRS(thickness, color)
-    local ini = ac.INIConfig.trackData("drs_zones.ini")
-    if ini ~= nil then
-        local sections = ini['sections']
-        for section_name, section_data in pairs(sections) do
-            -- we don't really care about the order we put them in
-            local data_zstart     = section_data['START']
-            local data_zdetection = section_data['DETECTION']
-            local data_zend       = section_data['END']
+    for i, data in pairs(drs) do
+        local rotatePosInit = rotateVec(vec2((data.start1.x - trackCenterX) * finalScale, (data.start1.y - trackCenterY) * finalScale), mapSettings.store.angle)
+        local init = vec2(math.floor(screenCenterX + rotatePosInit.x), math.floor(screenCenterY + rotatePosInit.y))
 
-            local zstart = nil
-            local zdetection = nil
-            local zend = nil
-            if data_zstart     ~= nil then zstart     = data_zstart[1]     end
-            if data_zdetection ~= nil then zdetection = data_zdetection[1] end
-            if data_zend       ~= nil then zend       = data_zend[1]       end
+        local rotatePosFinal = rotateVec(vec2((data.final1.x - trackCenterX) * finalScale, (data.final1.y - trackCenterY) * finalScale), mapSettings.store.angle)
+        local final = vec2(math.floor(screenCenterX + rotatePosFinal.x), math.floor(screenCenterY + rotatePosFinal.y))
+        ui.drawLine(init, final, color, thickness)
 
-            if zstart     ~= nil then zstart     = stringify.parse(zstart)     end
-            if zdetection ~= nil then zdetection = stringify.parse(zdetection) end
-            if zend       ~= nil then zend       = stringify.parse(zend)       end
+        rotatePosInit = rotateVec(vec2((data.start2.x - trackCenterX) * finalScale, (data.start2.y - trackCenterY) * finalScale), mapSettings.store.angle)
+        init = vec2(math.floor(screenCenterX + rotatePosInit.x), math.floor(screenCenterY + rotatePosInit.y))
 
-            local posWorld = ac.trackCoordinateToWorld(vec3(0, 0, tonumber(zstart) - 0.002))
-            local pos1 = vec2(posWorld.x, posWorld.z)
-            local rotatePosInit = rotateVec(vec2((pos1.x - trackCenterX) * finalScale, (pos1.y - trackCenterY) * finalScale), mapSettings.store.angle)
-            local initX = screenCenterX + rotatePosInit.x
-            local initY = screenCenterY + rotatePosInit.y
-
-            posWorld = ac.trackCoordinateToWorld(vec3(0, 0, tonumber(zstart) + 0.002))
-            local pos2 = vec2(posWorld.x, posWorld.z)
-            local rotatePosFinal = rotateVec(vec2((pos2.x - trackCenterX) * finalScale, (pos2.y - trackCenterY) * finalScale), mapSettings.store.angle)
-            local finalX = screenCenterX + rotatePosFinal.x
-            local finalY = screenCenterY + rotatePosFinal.y
-            
-            ui.pathLineTo(vec2(initX, initY))
-            ui.pathLineTo(vec2(finalX, finalY))
-            ui.pathStroke(color, false, thickness)
-
-            posWorld = ac.trackCoordinateToWorld(vec3(0, 0, tonumber(zend) - 0.002))
-            local pos1 = vec2(posWorld.x, posWorld.z)
-            local rotatePosInit = rotateVec(vec2((pos1.x - trackCenterX) * finalScale, (pos1.y - trackCenterY) * finalScale), mapSettings.store.angle)
-            local initX = screenCenterX + rotatePosInit.x
-            local initY = screenCenterY + rotatePosInit.y
-
-            posWorld = ac.trackCoordinateToWorld(vec3(0, 0, tonumber(zend) + 0.002))
-            local pos2 = vec2(posWorld.x, posWorld.z)
-            local rotatePosFinal = rotateVec(vec2((pos2.x - trackCenterX) * finalScale, (pos2.y - trackCenterY) * finalScale), mapSettings.store.angle)
-            local finalX = screenCenterX + rotatePosFinal.x
-            local finalY = screenCenterY + rotatePosFinal.y
-            
-            ui.pathLineTo(vec2(initX, initY))
-            ui.pathLineTo(vec2(finalX, finalY))
-            ui.pathStroke(color, false, thickness)
-        end
+        rotatePosFinal = rotateVec(vec2((data.final2.x - trackCenterX) * finalScale, (data.final2.y - trackCenterY) * finalScale), mapSettings.store.angle)
+        final = vec2(math.floor(screenCenterX + rotatePosFinal.x), math.floor(screenCenterY + rotatePosFinal.y))
+        ui.drawLine(init, final, color, thickness)
     end
 end
 
@@ -227,10 +213,10 @@ function map.windowMain()
     drawAreaLenght = currenWindowSize.y - (padding * 2)
     finalScale = drawAreaLenght / trackLength
 
-    drawMap(mapSettings.store.trackLenght + mapSettings.store.borderLenght * 2, mapSettings.store.colorBorder)
-    drawMap(mapSettings.store.trackLenght, mapSettings.store.colorTrack)
-    drawDRS(mapSettings.store.trackLenght, COLOR.GREEN)
-    drawSectors(mapSettings.store.trackLenght, mapSettings.store.colorSectors)
+    drawMap((mapSettings.store.trackLenght + mapSettings.store.borderLenght * 2) * mapSettings.store.mapScale, mapSettings.store.colorBorder)
+    drawMap(mapSettings.store.trackLenght * mapSettings.store.mapScale, mapSettings.store.colorTrack)
+    drawDRS(mapSettings.store.trackLenght * mapSettings.store.mapScale, COLOR.GREEN)
+    drawSectors(mapSettings.store.trackLenght * mapSettings.store.mapScale, mapSettings.store.colorSectors)
     drawPLayers(thickness * 3)
     
     config.resize(currenWindowSize, "Map")

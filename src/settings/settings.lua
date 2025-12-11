@@ -43,7 +43,9 @@ SettingsActive = false
 WindowsColor = settings.store.windowsColor
 SelectedSpeed = settings.store.selectedSpeed
 WindowSettingsSize = vec2(700, 460)
-
+SIM = ac.getSim()
+CAR = ac.getCar(SIM.focusedCar)
+MY_CAR = ac.getCar(0)
 
 if settings.store.optionLanguage ~= language.getCurrentLanguage() then
   language.setlanguage(settings.store.optionLanguage)

@@ -55,7 +55,7 @@ end
 --- @param outMin number
 --- @param outMax number
 --- @return number
-function config.convertInterval(value, inMin, inMax, outMin, outMax)
+function config.remapIntervalWithLimits(value, inMin, inMax, outMin, outMax)
     local output = outMin + (value - inMin) * (outMax - outMin) / (inMax - inMin)
     if output > outMax then
         output = outMax
@@ -63,6 +63,16 @@ function config.convertInterval(value, inMin, inMax, outMin, outMax)
         output = outMin
     end
     return output
+end
+
+--- @param value number
+--- @param inMin number
+--- @param inMax number
+--- @param outMin number
+--- @param outMax number
+--- @return number
+function config.remapInterval(value, inMin, inMax, outMin, outMax)
+    return (outMin + (value - inMin) * (outMax - outMin) / (inMax - inMin))
 end
 
 --- @param p1 vec2

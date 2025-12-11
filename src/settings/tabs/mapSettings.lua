@@ -36,7 +36,7 @@ function mapSettings.mapSettings()
     ui.header(language.get("SIZE"))
     initPos = initPos + 20
     ui.setCursor(vec2(20, initPos))
-    mapSettings.store.mapScale = ui.slider("##Size", mapSettings.store.mapScale, 0.4, 2, string.format("%.2f", mapSettings.store.mapScale))
+    mapSettings.store.mapScale = ui.slider("##Size", mapSettings.store.mapScale, 0.5, 2, string.format("%.2f", mapSettings.store.mapScale))
     
 
     initPos = initPos + 25
@@ -52,7 +52,6 @@ function mapSettings.mapSettings()
     initPos = initPos + 20
     ui.setCursor(vec2(20, initPos))
     mapSettings.store.trackLenght = ui.slider("##TrackLenght", mapSettings.store.trackLenght, 4, 15, string.format("%.0f", mapSettings.store.trackLenght))
-
     initPos = initPos + 30
 
     mapSettings.store.borderActive = simpleCheckbox.main("Border", mapSettings.store.borderActive, 20, initPos)
@@ -71,46 +70,22 @@ function mapSettings.mapSettings()
     end
 
     initPos = initPos + 30
-    ui.setCursor(vec2(20, initPos))    
-    if ui.colorButton(
-            '##TrackColor',
-            mapSettings.store.colorTrack,
-            ui.ColorPickerFlags.AlphaBar + ui.ColorPickerFlags.AlphaPreview + ui.ColorPickerFlags.PickerHueBar) then
-        mapSettings.store.colorTrack = mapSettings.store.colorTrack
-    end
-    ui.setCursor(vec2(45, initPos + 5))
-    ui.dwriteText("Track", 10, COLOR.WHITE)
+    ui.setCursor(vec2(15, initPos))
+    ui.header("Map Colors")
 
     initPos = initPos + 30
-    ui.setCursor(vec2(45, initPos + 5))
-    ui.dwriteText("Sectors", 10, COLOR.WHITE)
-    ui.setCursor(vec2(20, initPos))  
-    if ui.colorButton(
-            '##SectorsColor',
-            mapSettings.store.colorSectors,
-            ui.ColorPickerFlags.AlphaBar + ui.ColorPickerFlags.AlphaPreview + ui.ColorPickerFlags.PickerHueBar) then
-        mapSettings.store.colorBorder = mapSettings.store.colorBorder
-    end
+    mapSettings.store.colorTrack = colorSelector.main("Track", mapSettings.store.colorTrack, vec2(20, initPos))
 
     initPos = initPos + 30
-    ui.setCursor(vec2(45, initPos + 5))
-    ui.dwriteText("Border", 10, COLOR.WHITE)
-    ui.setCursor(vec2(20, initPos))  
-    if ui.colorButton(
-            '##BorderColor',
-            mapSettings.store.colorBorder,
-            ui.ColorPickerFlags.AlphaBar + ui.ColorPickerFlags.AlphaPreview + ui.ColorPickerFlags.PickerHueBar) then
-        mapSettings.store.colorBorder = mapSettings.store.colorBorder
-    end
-    
-    --ui.colorPicker("track", mapSettings.store.colorTrack, ui.ColorPickerFlags.NoInputs + ui.ColorPickerFlags.NoSidePreview + ui.Color)
+    mapSettings.store.colorSectors = colorSelector.main("Sectors", mapSettings.store.colorSectors, vec2(20, initPos))
 
-    ui.setCursor(vec2(20, initPos + 100))
+    initPos = initPos + 30
+    mapSettings.store.colorBorder = colorSelector.main("Border", mapSettings.store.colorBorder, vec2(20, initPos))
+
+    ui.setCursor(vec2(20, initPos + 30))
     if ui.button(language.get("RESET_DEFAULT")) then
         resetToDefault()
     end
-    --colorTrackActive = colorSelector.main(mapSettings.store.colorTrack, "TRACK", vec2(50, initPos), 15, colorTrackActive)
-    --colorBorderActive = colorSelector.main(mapSettings.store.colorBorder, "BORDER", vec2(50, initPos + 35), 15, colorBorderActive)
 end
 
 return mapSettings

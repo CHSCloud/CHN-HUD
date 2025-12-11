@@ -43,7 +43,7 @@ function startingLights.windowMain()
             for i = 7000, 2000, add do
                 
                 if SIM.timeToSessionStart < i and i > 2000 and current <= startingLightsSettings.store.numStartingLights - 1 then
-                    ui.drawCircleFilled(vec2(pos + current * distance , currentWindowHeight / 2), config.convertInterval(SIM.timeToSessionStart, i, i + add, 0, radius), COLOR.RED, polygons)
+                    ui.drawCircleFilled(vec2(pos + current * distance , currentWindowHeight / 2), config.remapIntervalWithLimits(SIM.timeToSessionStart, i, i + add, 0, radius), COLOR.RED, polygons)
                     ui.drawCircle(vec2(pos + current * distance , currentWindowHeight / 2), radius, COLOR.WHITE, polygons, thickness)
                 end 
                 current = current + 1
