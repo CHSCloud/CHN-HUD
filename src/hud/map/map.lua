@@ -1,13 +1,15 @@
 local config = require("common.config")
 local pinCheckBox = require("src.ui.pinCheckBox")
 local mapSettings = require("src.settings.tabs.mapSettings")
+
 local map = {}
+
 local minPos = vec2(math.huge, math.huge) -- Posição mínima da pista
 local maxPos = vec2(-math.huge, -math.huge) -- Posição máxima da pista
-local totalPoints
+local totalPoints -- Total de pontos do mapa
 local mapPoints = {} -- Pontos do mapa
-local sectors = {}
-local drs = {}
+local sectors = {} -- Setores da pista
+local drs = {} -- DRS da pista
 
 -- Centros da tela
 local screenCenterX
@@ -136,9 +138,8 @@ end
 ---@param lenght number
 ---@param color rgbm
 local function drawPLayer(car, lenght, color)
-    local pos1 = vec2(car.position.x, car.position.z)
-    local posX = (pos1.x - trackCenterX) * finalScale
-    local posY = (pos1.y - trackCenterY) * finalScale
+    local posX = (car.position.x - trackCenterX) * finalScale
+    local posY = (car.position.z - trackCenterY) * finalScale
     local rotatedPos = rotateVec(vec2(posX, posY), mapSettings.store.angle)
     rotatedPos = centerScreen + rotatedPos
     ui.drawCircleFilled(rotatedPos, lenght / 1.5, color, 20)
@@ -151,35 +152,32 @@ end
 local function drawPLayers(lenght)
     for i, car in ac.iterateCars.leaderboard() do
         if car.index ~= SIM.focusedCar then
-            drawPLayer(car, lenght, COLOR.WHITE)
+            drawPLayer(car, lenght, mapSettings.store.colorEnemies)
         end
     end
     local car = ac.getCar(SIM.focusedCar)
     if car == nil then return end
-    drawPLayer(car, lenght, COLOR.YELLOW)
+    drawPLayer(car, lenght, mapSettings.store.colorPlayer)
 end
 
 --- @param thickness number
---- @param color rgbm
-local function drawDRS(thickness, color)
+local function drawDRS(thickness)
     for i, data in pairs(drs) do
         local rotatePosInit = rotateVec(vec2((data.start1.x - trackCenterX) * finalScale, (data.start1.y - trackCenterY) * finalScale), mapSettings.store.angle)
         local init = vec2(math.floor(screenCenterX + rotatePosInit.x), math.floor(screenCenterY + rotatePosInit.y))
 
         local rotatePosFinal = rotateVec(vec2((data.final1.x - trackCenterX) * finalScale, (data.final1.y - trackCenterY) * finalScale), mapSettings.store.angle)
         local final = vec2(math.floor(screenCenterX + rotatePosFinal.x), math.floor(screenCenterY + rotatePosFinal.y))
-        ui.drawLine(init, final, color, thickness)
+        ui.drawLine(init, final, mapSettings.store.colorDRS, thickness)
 
         rotatePosInit = rotateVec(vec2((data.start2.x - trackCenterX) * finalScale, (data.start2.y - trackCenterY) * finalScale), mapSettings.store.angle)
         init = vec2(math.floor(screenCenterX + rotatePosInit.x), math.floor(screenCenterY + rotatePosInit.y))
 
         rotatePosFinal = rotateVec(vec2((data.final2.x - trackCenterX) * finalScale, (data.final2.y - trackCenterY) * finalScale), mapSettings.store.angle)
         final = vec2(math.floor(screenCenterX + rotatePosFinal.x), math.floor(screenCenterY + rotatePosFinal.y))
-        ui.drawLine(init, final, color, thickness)
+        ui.drawLine(init, final, mapSettings.store.colorDRS, thickness)
     end
 end
-
-
 
 function map.windowMain()
     ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
@@ -187,7 +185,7 @@ function map.windowMain()
     padding = 10 * mapSettings.store.mapScale
     local thickness = 8 * mapSettings.store.mapScale
 
-    
+    -- Animação do Background
     if config.isMouseInWindow(ui.mouseLocalPos(), 0, ui.windowSize().x, 0, ui.windowSize().y) then
         if transparancy < 0.85 then
             if 20 * Timer % 6 >= 1 then
@@ -213,10 +211,15 @@ function map.windowMain()
     drawAreaLenght = currenWindowSize.y - (padding * 2)
     finalScale = drawAreaLenght / trackLength
 
+    -- Desenha borda
     drawMap((mapSettings.store.trackLenght + mapSettings.store.borderLenght * 2) * mapSettings.store.mapScale, mapSettings.store.colorBorder)
+    -- Desenha pista
     drawMap(mapSettings.store.trackLenght * mapSettings.store.mapScale, mapSettings.store.colorTrack)
-    drawDRS(mapSettings.store.trackLenght * mapSettings.store.mapScale, COLOR.GREEN)
+    -- Desenha DRS
+    drawDRS(mapSettings.store.trackLenght * mapSettings.store.mapScale)
+    -- Desenha setores
     drawSectors(mapSettings.store.trackLenght * mapSettings.store.mapScale, mapSettings.store.colorSectors)
+    -- Desenha jogadores
     drawPLayers(thickness * 3)
     
     config.resize(currenWindowSize, "Map")
