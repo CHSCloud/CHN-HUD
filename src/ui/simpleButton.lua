@@ -23,7 +23,7 @@ function SimpleButton:main(pos, key, text)
             self.pos = final
             self.key = key
         end
-        ui.drawRectFilled(pos, pos + size, COLOR.RED, 20)
+        ui.drawRectFilled(pos, pos + size, UserUI.accentColor, 20)
         ui.drawCircleFilled(pos + self.pos, size.y / 2.2, COLOR.WHITE, 20)
     else 
         if key ~= self.key and self.pos.x > init.x then

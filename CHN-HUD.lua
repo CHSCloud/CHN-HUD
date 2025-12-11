@@ -1,3 +1,8 @@
+Timer = 0
+SIM = ac.getSim()
+CAR = ac.getCar(SIM.focusedCar)
+UserUI = ac.getUI()
+
 local settings = require("src.settings.settings")
 local pitLane = require("src.hud.pitLane.pitLane")
 local pedals = require("src.hud.pedals.pedals")
@@ -5,8 +10,6 @@ local sessionLaps = require("src.hud.sessionLaps.sessionLaps")
 local sessionFlags = require("src.hud.sessionFlags.sessionFlags")
 local startingLights = require("src.hud.startingLights.startingLights")
 local map = require("src.hud.map.map")
-
-Timer = 0
 
 -- TELA DE CONFIGURAÇÕES
 function WindowSettings()
@@ -52,5 +55,7 @@ end
 -- FUNÇÃO DE ATUALIZAÇÃO
 function script.update(dt)
   Timer = Timer + dt
-  settings.updateSettings()
+  SIM = ac.getSim()
+  CAR = ac.getCar(SIM.focusedCar)
+  UserUI = ac.getUI()
 end

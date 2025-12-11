@@ -43,18 +43,9 @@ SettingsActive = false
 WindowsColor = settings.store.windowsColor
 SelectedSpeed = settings.store.selectedSpeed
 WindowSettingsSize = vec2(720, 460)
-SIM = ac.getSim()
-CAR = ac.getCar(SIM.focusedCar)
-MY_CAR = ac.getCar(0)
 
 if settings.store.optionLanguage ~= language.getCurrentLanguage() then
   language.setlanguage(settings.store.optionLanguage)
-end
-
-function settings.updateSettings()
-  SIM = ac.getSim()
-  CAR = ac.getCar(SIM.focusedCar)
-  MY_CAR = ac.getCar(0)
 end
   
 local function geral()
