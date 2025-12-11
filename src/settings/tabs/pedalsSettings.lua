@@ -1,5 +1,6 @@
 local language = require("lang.language")
 local simpleCheckbox = require("src.ui.simpleCheckBox")
+local SimpleButton = require("src.ui.simpleButton")
 local pedalsSettings = {} 
 
 local defaultValues = {
@@ -23,6 +24,20 @@ local defaultValues = {
     numLights = 9,
     barLength = 0.55
 }
+
+local gearButton = SimpleButton.new()
+local speedButton = SimpleButton.new()
+local wheelButton = SimpleButton.new()
+local absButton = SimpleButton.new()
+local acceleratorButton = SimpleButton.new()
+local brakeButton = SimpleButton.new()
+local brakeBiasButton = SimpleButton.new()
+local clutchButton = SimpleButton.new()
+local handbrakeButton = SimpleButton.new()
+local textBarsButton = SimpleButton.new()
+local fuelButton = SimpleButton.new()
+local pedalLimitsLinesButton = SimpleButton.new()
+local rpmButton = SimpleButton.new()
 
 pedalsSettings.store = ac.storage(defaultValues)
 
@@ -50,7 +65,7 @@ function pedalsSettings.pedalsSettings()
     local initPos = 55
     local posXOthers = 250
     local posXStyle = 150
-    local posXRPMpedalsSettings = 440
+    local posXRPMpedalsSettings = 460
     
     ui.setCursor(vec2(15, initPos))
     ui.header(language.get("SIZE"))
@@ -72,19 +87,18 @@ function pedalsSettings.pedalsSettings()
     ui.header(language.get("STEERING"))
     
     initPos = initPos + 25; 
-    pedalsSettings.store.gearActive = simpleCheckbox.main(language.get("GEAR"), pedalsSettings.store.gearActive, 20, initPos)
+    pedalsSettings.store.gearActive = gearButton:main(vec2(20,initPos), pedalsSettings.store.gearActive, language.get("GEAR"))
     
     initPos = initPos + 25; 
-    pedalsSettings.store.speedActive = simpleCheckbox.main(language.get("SPEED"), pedalsSettings.store.speedActive, 20, initPos)
+    pedalsSettings.store.speedActive = speedButton:main(vec2(20,initPos), pedalsSettings.store.speedActive, language.get("SPEED"))
     
     initPos = initPos + 25;
-    pedalsSettings.store.wheelActive = simpleCheckbox.main(language.get("WHEEL"), pedalsSettings.store.wheelActive, 20, initPos)
+    pedalsSettings.store.wheelActive = wheelButton:main(vec2(20,initPos), pedalsSettings.store.wheelActive, language.get("WHEEL"))
     if pedalsSettings.store.wheelActive then
         -- Combo Wheel Type
-        local posXWheelType = 40
-        ui.setCursor(vec2(95, initPos + 5))
+        ui.setCursor(vec2(120, initPos + 5))
         ui.header("|  ".. language.get("TYPE"))
-        ui.setCursor(vec2(130, initPos))
+        ui.setCursor(vec2(160, initPos))
         ui.setNextItemWidth(100)
         ui.combo('##wheelType', wheelLabels[pedalsSettings.store.wheelType], function ()
             if ui.selectable(wheelLabels["default"]) then pedalsSettings.store.wheelType = "default" end
@@ -93,7 +107,7 @@ function pedalsSettings.pedalsSettings()
     end
     
     initPos = initPos + 25; 
-    pedalsSettings.store.absActive = simpleCheckbox.main(language.get("ABS"), pedalsSettings.store.absActive, 20, initPos)
+    pedalsSettings.store.absActive = absButton:main(vec2(20,initPos), pedalsSettings.store.absActive, language.get("ABS"))
 
     -- Alerta do ABS
     if CAR.absModes == 0 then
@@ -110,10 +124,10 @@ function pedalsSettings.pedalsSettings()
     ui.header(language.get("OTHERS"))
   
     initPos2 = initPos2 + 25; 
-    pedalsSettings.store.fuelActive = simpleCheckbox.main(language.get("FUEL"), pedalsSettings.store.fuelActive, posXOthers, initPos2)
+    pedalsSettings.store.fuelActive = fuelButton:main(vec2(posXOthers,initPos2), pedalsSettings.store.fuelActive, language.get("FUEL"))
     
     initPos2 = initPos2 + 25; 
-    pedalsSettings.store.brakeBiasActive = simpleCheckbox.main(language.get("BRAKE_BIAS"), pedalsSettings.store.brakeBiasActive, posXOthers, initPos2)
+    pedalsSettings.store.brakeBiasActive = brakeBiasButton:main(vec2(posXOthers,initPos2), pedalsSettings.store.brakeBiasActive, language.get("BRAKE_BIAS"))
     -- 
 
     -- RPM
@@ -121,7 +135,7 @@ function pedalsSettings.pedalsSettings()
     ui.header("RPM")
     
     posRPMpedalsSettings = posRPMpedalsSettings + 25
-    pedalsSettings.store.rpmActive = simpleCheckbox.main("RPM", pedalsSettings.store.rpmActive, posXRPMpedalsSettings, posRPMpedalsSettings)
+    pedalsSettings.store.rpmActive = rpmButton:main(vec2(posXRPMpedalsSettings,posRPMpedalsSettings), pedalsSettings.store.rpmActive, language.get("RPM"))
 
     if pedalsSettings.store.rpmActive then
         local exampleRPpedalsSettingsX = 515        
@@ -205,26 +219,25 @@ function pedalsSettings.pedalsSettings()
     ui.header(language.get("PEDALS"))
 
     initPos = initPos + 25; 
-    pedalsSettings.store.acceleratorActive = simpleCheckbox.main(language.get("THROTTLE"), pedalsSettings.store.acceleratorActive, 20, initPos)
+    pedalsSettings.store.acceleratorActive = acceleratorButton:main(vec2(20,initPos), pedalsSettings.store.acceleratorActive, language.get("ACCELERATOR"))
 
     ui.setCursor(vec2(posXStyle - 5, initPos - 25))
     ui.header(language.get("PEDAL_STYLE"))
     
-    pedalsSettings.store.textBarsActive = simpleCheckbox.main(language.get("PERCENTAGE"), pedalsSettings.store.textBarsActive, posXStyle, initPos)
+    pedalsSettings.store.textBarsActive = textBarsButton:main(vec2(posXStyle,initPos), pedalsSettings.store.textBarsActive, language.get("PERCENTAGE"))
 
     initPos = initPos + 25
-    pedalsSettings.store.pedalLimitsLines = simpleCheckbox.main(language.get("LIMIT_LINES"), pedalsSettings.store.pedalLimitsLines, posXStyle, initPos)
+    pedalsSettings.store.pedalLimitsLines = pedalLimitsLinesButton:main(vec2(posXStyle,initPos), pedalsSettings.store.pedalLimitsLines, language.get("LIMIT_LINES"))
 
     ui.setCursor(vec2(20, initPos))
-    pedalsSettings.store.brakeActive = simpleCheckbox.main(language.get("BRAKE"), pedalsSettings.store.brakeActive, 20, initPos)
+    pedalsSettings.store.brakeActive = brakeButton:main(vec2(20,initPos), pedalsSettings.store.brakeActive, language.get("BRAKE"))
     
     initPos = initPos + 25; 
-    pedalsSettings.store.clutchActive = simpleCheckbox.main(language.get("CLUTCH"), pedalsSettings.store.clutchActive, 20, initPos)
+    pedalsSettings.store.clutchActive = clutchButton:main(vec2(20,initPos), pedalsSettings.store.clutchActive, language.get("CLUTCH"))
     
     initPos = initPos + 25; 
-    pedalsSettings.store.handbrakeActive = simpleCheckbox.main(language.get("HANDBRAKE"), pedalsSettings.store.handbrakeActive, 20, initPos)
+    pedalsSettings.store.handbrakeActive = handbrakeButton:main(vec2(20,initPos), pedalsSettings.store.handbrakeActive, language.get("HANDBRAKE"))
     --
-    
     -- Botão Reset
     initPos = initPos + 40
     ui.setCursor(vec2(20, initPos))
