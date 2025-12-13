@@ -1,5 +1,5 @@
 local language = require("lang.language")
-local simpleCheckbox = require("src.ui.simpleCheckbox")
+local SimpleButton = require("src.ui.simpleButton")
 local sessionLapsSettings = {}
 
 local defaultValues = {
@@ -8,6 +8,10 @@ local defaultValues = {
     lastLapActive = true,
     bestLapActive = true,
 }
+
+local currentLapButton = SimpleButton.new()
+local lastLapButton = SimpleButton.new()
+local bestLapButton = SimpleButton.new()
 
 sessionLapsSettings.store = ac.storage(defaultValues)
 
@@ -33,13 +37,13 @@ function sessionLapsSettings.sessionLapsSettings()
     ui.setCursor(vec2(15, initPos))
     ui.header(language.get("LAPS"))
     initPos = initPos + 20
-    sessionLapsSettings.store.currentLapActive = simpleCheckbox.main(language.get("CURRENT"), sessionLapsSettings.store.currentLapActive, 20, initPos)
+    sessionLapsSettings.store.currentLapActive = currentLapButton:main(vec2(20, initPos), sessionLapsSettings.store.currentLapActive, language.get("CURRENT"))
 
     initPos = initPos + 25
-    sessionLapsSettings.store.lastLapActive = simpleCheckbox.main(language.get("LAST"), sessionLapsSettings.store.lastLapActive, 20, initPos)
+    sessionLapsSettings.store.lastLapActive = lastLapButton:main(vec2(20, initPos), sessionLapsSettings.store.lastLapActive, language.get("LAST"))
 
     initPos = initPos + 25
-    sessionLapsSettings.store.bestLapActive = simpleCheckbox.main(language.get("BEST"), sessionLapsSettings.store.bestLapActive, 20, initPos)
+    sessionLapsSettings.store.bestLapActive = bestLapButton:main(vec2(20, initPos), sessionLapsSettings.store.bestLapActive, language.get("BEST"))
 
 
     initPos = initPos + 40

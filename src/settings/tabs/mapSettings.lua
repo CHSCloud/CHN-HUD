@@ -1,6 +1,6 @@
 local mapSettings = {}
 local colorSelector = require("src.ui.colorSelector")
-local simpleCheckbox = require("src.ui.simpleCheckBox")
+local SimpleButton = require("src.ui.simpleButton")
 local language = require("lang.language")
 
 local defaultValues = {
@@ -16,6 +16,8 @@ local defaultValues = {
     borderLenght = 4,
     trackLenght = 8
 }
+
+local borderButton = SimpleButton.new()
 
 mapSettings.store = ac.storage(defaultValues)
 
@@ -58,12 +60,12 @@ function mapSettings.mapSettings()
     mapSettings.store.trackLenght = ui.slider("##TrackLenght", mapSettings.store.trackLenght, 4, 15, string.format("%.0f", mapSettings.store.trackLenght))
     initPos = initPos + 30
 
-    mapSettings.store.borderActive = simpleCheckbox.main("Border", mapSettings.store.borderActive, 20, initPos)
+    mapSettings.store.borderActive = borderButton:main(vec2(20, initPos), mapSettings.store.borderActive, "Border")
     if mapSettings.store.borderActive then
         if mapSettings.store.borderLenght == -2 then
             mapSettings.store.borderLenght = 4
         end
-        ui.setCursor(vec2(100, initPos))
+        ui.setCursor(vec2(120, initPos))
         ui.setNextItemWidth(200)
         mapSettings.store.borderLenght = ui.slider("##BorderLenght", mapSettings.store.borderLenght, 1, 10, string.format("%.0f", mapSettings.store.borderLenght))
     else

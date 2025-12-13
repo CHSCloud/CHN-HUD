@@ -4,6 +4,7 @@ local sessionLapsSettings = require("src.settings.tabs.sessionLapsSettings")
 local startingLightsSettings = require("src.settings.tabs.startingLightsSettings")
 local sessionFlagsSettings = require("src.settings.tabs.sessionFlagsSettings")
 local mapSettings = require("src.settings.tabs.mapSettings")
+local SimpleButton = require("src.ui.simpleButton")
 
 local language = require("lang.language")
 local config = require("common.config")
@@ -21,6 +22,8 @@ local defaultValues = {
     transparancy = 0.85,
     windowsColor = rgbm.from0255(18, 21, 29, 0.85)
 }
+
+local pinButton = SimpleButton.new()
 
 settings.store = ac.storage(defaultValues)
 
@@ -107,10 +110,8 @@ local function geral()
   ui.setCursor(vec2(300, initPos + 20))
   
   -- Checkbox Pin All Apps
-  if ui.checkbox(language.get("PIN_ALL_APPS"), config.store.pinAllApps) then
-    config.store.pinAllApps = not config.store.pinAllApps
-    config.pinAllApps(config.store.pinAllApps)
-  end
+  config.store.pinAllApps = pinButton:main(vec2(300, initPos), config.store.pinAllApps, language.get("PIN_ALL_APPS"))
+  config.pinAllApps(config.store.pinAllApps)
   
   -- Seção de Cores
   ui.setCursor(vec2(15, initPos))
