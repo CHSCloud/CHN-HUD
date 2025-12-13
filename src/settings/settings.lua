@@ -4,7 +4,7 @@ local sessionLapsSettings = require("src.settings.tabs.sessionLapsSettings")
 local startingLightsSettings = require("src.settings.tabs.startingLightsSettings")
 local sessionFlagsSettings = require("src.settings.tabs.sessionFlagsSettings")
 local mapSettings = require("src.settings.tabs.mapSettings")
-local Button = require("src.ui.button")
+local ToggleButton = require("src.ui.toggleButton")
 local slider = require("src.ui.slider")
 
 local language = require("lang.language")
@@ -24,7 +24,7 @@ local defaultValues = {
     windowsColor = rgbm.from0255(18, 21, 29, 0.85)
 }
 
-local pinButton = Button.new()
+local pinButton = ToggleButton.new()
 settings.store = ac.storage(defaultValues)
 
 COLOR = {

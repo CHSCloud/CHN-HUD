@@ -1,9 +1,9 @@
 local config = require("common.config")
-local Button = {}
-Button.__index = Button
+local ToggleButton = {}
+ToggleButton.__index = ToggleButton
 
-function Button.new()
-    local self = setmetatable({}, Button)
+function ToggleButton.new()
+    local self = setmetatable({}, ToggleButton)
     self.pos = vec2(12, 10)
     return self
 end
@@ -12,7 +12,7 @@ end
 --- @param key boolean
 --- @param text string
 --- @return boolean -- Se foi clicado
-function Button:main(pos, key, text)
+function ToggleButton:main(pos, key, text)
     local size = vec2(40, 20)
     local init = vec2(12, 10)
     local final = vec2(28, 10)
@@ -41,4 +41,4 @@ function Button:main(pos, key, text)
     return false
 end
 
-return Button
+return ToggleButton

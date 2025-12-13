@@ -1,6 +1,6 @@
 local language = require("lang.language")
 local slider = require("src.ui.slider")
-local Button = require("src.ui.button")
+local ToggleButton = require("src.ui.toggleButton")
 local pedalsSettings = {} 
 
 local defaultValues = {
@@ -25,19 +25,19 @@ local defaultValues = {
     barLength = 0.55
 }
 
-local gearButton = Button.new()
-local speedButton = Button.new()
-local wheelButton = Button.new()
-local absButton = Button.new()
-local throttleButton = Button.new()
-local brakeButton = Button.new()
-local brakeBiasButton = Button.new()
-local clutchButton = Button.new()
-local handbrakeButton = Button.new()
-local textBarsButton = Button.new()
-local fuelButton = Button.new()
-local pedalLimitsLinesButton = Button.new()
-local rpmButton = Button.new()
+local gearButton = ToggleButton.new()
+local speedButton = ToggleButton.new()
+local wheelButton = ToggleButton.new()
+local absButton = ToggleButton.new()
+local throttleButton = ToggleButton.new()
+local brakeButton = ToggleButton.new()
+local brakeBiasButton = ToggleButton.new()
+local clutchButton = ToggleButton.new()
+local handbrakeButton = ToggleButton.new()
+local textBarsButton = ToggleButton.new()
+local fuelButton = ToggleButton.new()
+local pedalLimitsLinesButton = ToggleButton.new()
+local rpmButton = ToggleButton.new()
 
 pedalsSettings.store = ac.storage(defaultValues)
 

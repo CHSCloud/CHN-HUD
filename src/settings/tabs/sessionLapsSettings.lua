@@ -1,6 +1,6 @@
 local language = require("lang.language")
 local slider = require("src.ui.slider")
-local Button = require("src.ui.button")
+local ToggleButton = require("src.ui.toggleButton")
 local sessionLapsSettings = {}
 
 local defaultValues = {
@@ -10,9 +10,9 @@ local defaultValues = {
     bestLapActive = true,
 }
 
-local currentLapButton = Button.new()
-local lastLapButton = Button.new()
-local bestLapButton = Button.new()
+local currentLapButton = ToggleButton.new()
+local lastLapButton = ToggleButton.new()
+local bestLapButton = ToggleButton.new()
 
 sessionLapsSettings.store = ac.storage(defaultValues)
 

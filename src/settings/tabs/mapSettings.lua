@@ -1,7 +1,7 @@
 local mapSettings = {}
 local colorSelector = require("src.ui.colorSelector")
 local slider = require("src.ui.slider")
-local Button = require("src.ui.button")
+local ToggleButton = require("src.ui.toggleButton")
 local language = require("lang.language")
 
 local defaultValues = {
@@ -18,7 +18,7 @@ local defaultValues = {
     trackLenght = 8
 }
 
-local borderButton = Button.new()
+local borderButton = ToggleButton.new()
 
 mapSettings.store = ac.storage(defaultValues)
 
