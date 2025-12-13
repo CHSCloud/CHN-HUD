@@ -4,7 +4,7 @@ Button.__index = Button
 
 function Button.new()
     local self = setmetatable({}, Button)
-    self.pos = vec2(0, 10)
+    self.pos = vec2(12, 10)
     return self
 end
 

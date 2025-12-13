@@ -196,17 +196,10 @@ function pedalsSettings.pedalsSettings()
             end
 
             posRPMpedalsSettings = posRPMpedalsSettings + 30
-            ui.setCursor(vec2(posXRPMpedalsSettings, posRPMpedalsSettings))
-            ui.header(language.get("NUM_LIGHTS"))
-            ui.setCursor(vec2(posXRPMpedalsSettings + 90, posRPMpedalsSettings - 5))
-            ui.setNextItemWidth(160)
-            
-            pedalsSettings.store.numLights = math.floor(ui.slider("##numLights", pedalsSettings.store.numLights, 6, 25, string.format("%i", pedalsSettings.store.numLights)))
+            pedalsSettings.store.numLights = math.floor(slider.main(language.get("NUM_LIGHTS"), string.format("%i", pedalsSettings.store.numLights), vec2(posXRPMpedalsSettings, posRPMpedalsSettings), 135, pedalsSettings.store.numLights, 6, 25, slider.PosText.Start))
 
         elseif pedalsSettings.store.rpmType == "bar" then
             posRPMpedalsSettings = posRPMpedalsSettings + 35
-            ui.setCursor(vec2(posXRPMpedalsSettings, posRPMpedalsSettings))
-            ui.header("Percentage")
         
             ui.drawRectFilled(vec2(exampleRPpedalsSettingsX - 5, exampleRPpedalsSettingsY - 35), vec2(exampleRPpedalsSettingsX + 93, exampleRPpedalsSettingsY - 25), COLOR.GRAY_BG, 10)
             ui.drawRectFilled(vec2(exampleRPpedalsSettingsX - 5, exampleRPpedalsSettingsY - 35), vec2(exampleRPpedalsSettingsX - 5 + (98 * 0.45), exampleRPpedalsSettingsY - 25), COLOR.GREEN, 10)
@@ -215,9 +208,7 @@ function pedalsSettings.pedalsSettings()
             ui.drawRectFilled(vec2(exampleRPpedalsSettingsX - 5, exampleRPpedalsSettingsY - 5), vec2(exampleRPpedalsSettingsX + 93, exampleRPpedalsSettingsY + 5), COLOR.GRAY_BG, 10)
             ui.drawRectFilled(vec2(exampleRPpedalsSettingsX - 5, exampleRPpedalsSettingsY - 5), vec2(exampleRPpedalsSettingsX - 5 + (98), exampleRPpedalsSettingsY + 5), COLOR.RED, 10)
             
-            ui.setCursor(vec2(posXRPMpedalsSettings + 70, posRPMpedalsSettings - 5))
-            ui.setNextItemWidth(160)
-            pedalsSettings.store.barLength = ui.slider("##barLength", pedalsSettings.store.barLength, 0.25, 0.95, string.format("%.0f%%", (pedalsSettings.store.barLength+ 0.05) * 100) .. "%")
+            pedalsSettings.store.barLength = slider.main(language.get("PERCENTAGE"), string.format("%.0f", (pedalsSettings.store.barLength+ 0.05) * 100) .. "%", vec2(posXRPMpedalsSettings, posRPMpedalsSettings - 5), 130, pedalsSettings.store.barLength, 0.25, 0.95, slider.PosText.Start)
         end
         --
     end
@@ -235,7 +226,7 @@ function pedalsSettings.pedalsSettings()
 
     ui.setCursor(vec2(posXStyle - 5, initPos - 25))
     ui.header(language.get("PEDAL_STYLE"))
-    if textBarsButton:main(vec2(posXStyle,initPos), pedalsSettings.store.textBarsActive, language.get("PERCENTAGE")) then
+    if textBarsButton:main(vec2(posXStyle,initPos), pedalsSettings.store.textBarsActive, language.get("PERCENTAGE_PEDALS")) then
         pedalsSettings.store.textBarsActive = not pedalsSettings.store.textBarsActive
     end
 

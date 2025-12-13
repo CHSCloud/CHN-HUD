@@ -45,7 +45,7 @@ function mapSettings.mapSettings()
     mapSettings.store.angle = slider.main("Angle", string.format("%.0f", mapSettings.store.angle), vec2(20, initPos), 250, mapSettings.store.angle, 0, 360)
     
     initPos = initPos + 50
-    mapSettings.store.trackLenght = slider.main("Track Lenght", string.format("%.0f", mapSettings.store.trackLenght), vec2(20, initPos), 250, mapSettings.store.trackLenght, 4, 15)
+    mapSettings.store.trackLenght = math.floor(slider.main("Track Lenght", string.format("%.0f", mapSettings.store.trackLenght), vec2(20, initPos), 250, mapSettings.store.trackLenght, 4, 15))
     initPos = initPos + 30
 
     if borderButton:main(vec2(20, initPos), mapSettings.store.borderActive, "Border") then
@@ -55,7 +55,7 @@ function mapSettings.mapSettings()
         if mapSettings.store.borderLenght == -2 then
             mapSettings.store.borderLenght = 4
         end
-        mapSettings.store.borderLenght = slider.main("", string.format("%.0f", mapSettings.store.borderLenght), vec2(120, initPos + 3), 200, mapSettings.store.borderLenght, 1, 10)
+        mapSettings.store.borderLenght = math.floor(slider.main("", string.format("%.0f", mapSettings.store.borderLenght), vec2(120, initPos + 3), 200, mapSettings.store.borderLenght, 1, 10))
     else
         mapSettings.store.borderLenght = -2 
     end
