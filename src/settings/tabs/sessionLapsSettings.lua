@@ -1,5 +1,6 @@
 local language = require("lang.language")
-local SimpleButton = require("src.ui.simpleButton")
+local slider = require("src.ui.slider")
+local Button = require("src.ui.button")
 local sessionLapsSettings = {}
 
 local defaultValues = {
@@ -9,9 +10,9 @@ local defaultValues = {
     bestLapActive = true,
 }
 
-local currentLapButton = SimpleButton.new()
-local lastLapButton = SimpleButton.new()
-local bestLapButton = SimpleButton.new()
+local currentLapButton = Button.new()
+local lastLapButton = Button.new()
+local bestLapButton = Button.new()
 
 sessionLapsSettings.store = ac.storage(defaultValues)
 
@@ -22,29 +23,28 @@ local function resetToDefault()
 end
 
 function sessionLapsSettings.sessionLapsSettings()
-    local initPos = 55
-    ui.setCursor(vec2(15, initPos))
-    ui.header(language.get("SIZE"))
-
-    initPos = initPos + 20
-    ui.setCursor(vec2(20, initPos))
-    
+    local initPos = 75
     -- Uso direto do store com a chave padronizada 'scale'
-    sessionLapsSettings.store.sessionLapsScale = ui.slider("##Size", sessionLapsSettings.store.sessionLapsScale, 0.7, 3, string.format("%.2f", sessionLapsSettings.store.sessionLapsScale))
+    sessionLapsSettings.store.sessionLapsScale = slider.main(language.get("SIZE"), string.format("%.2f", sessionLapsSettings.store.sessionLapsScale), vec2(20, initPos), 250, sessionLapsSettings.store.sessionLapsScale, 0.7, 3)
 
     
     initPos = initPos + 40
     ui.setCursor(vec2(15, initPos))
     ui.header(language.get("LAPS"))
     initPos = initPos + 20
-    sessionLapsSettings.store.currentLapActive = currentLapButton:main(vec2(20, initPos), sessionLapsSettings.store.currentLapActive, language.get("CURRENT"))
+    if currentLapButton:main(vec2(20, initPos), sessionLapsSettings.store.currentLapActive, language.get("CURRENT")) then
+        sessionLapsSettings.store.currentLapActive = not sessionLapsSettings.store.currentLapActive
+    end
 
     initPos = initPos + 25
-    sessionLapsSettings.store.lastLapActive = lastLapButton:main(vec2(20, initPos), sessionLapsSettings.store.lastLapActive, language.get("LAST"))
+    if lastLapButton:main(vec2(20, initPos), sessionLapsSettings.store.lastLapActive, language.get("LAST")) then
+        sessionLapsSettings.store.lastLapActive = not sessionLapsSettings.store.lastLapActive
+    end
 
     initPos = initPos + 25
-    sessionLapsSettings.store.bestLapActive = bestLapButton:main(vec2(20, initPos), sessionLapsSettings.store.bestLapActive, language.get("BEST"))
-
+    if bestLapButton:main(vec2(20, initPos), sessionLapsSettings.store.bestLapActive, language.get("BEST")) then
+        sessionLapsSettings.store.bestLapActive = not sessionLapsSettings.store.bestLapActive
+    end
 
     initPos = initPos + 40
     ui.setCursor(vec2(20, initPos))

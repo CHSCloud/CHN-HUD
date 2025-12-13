@@ -1,6 +1,7 @@
 local mapSettings = {}
 local colorSelector = require("src.ui.colorSelector")
-local SimpleButton = require("src.ui.simpleButton")
+local slider = require("src.ui.slider")
+local Button = require("src.ui.button")
 local language = require("lang.language")
 
 local defaultValues = {
@@ -17,7 +18,7 @@ local defaultValues = {
     trackLenght = 8
 }
 
-local borderButton = SimpleButton.new()
+local borderButton = Button.new()
 
 mapSettings.store = ac.storage(defaultValues)
 
@@ -34,40 +35,27 @@ local function resetToDefault()
 end
 
 function mapSettings.mapSettings()
-    local initPos = 55
+    local initPos = 75
 
     -- Escala:
-    ui.setCursor(vec2(15, initPos))
-    ui.header(language.get("SIZE"))
-    initPos = initPos + 20
-    ui.setCursor(vec2(20, initPos))
-    mapSettings.store.mapScale = ui.slider("##Size", mapSettings.store.mapScale, 0.5, 2, string.format("%.2f", mapSettings.store.mapScale))
+    mapSettings.store.mapScale = slider.main(language.get("SIZE"), string.format("%.2f", mapSettings.store.mapScale), vec2(20, initPos), 250, mapSettings.store.mapScale, 0.5, 2)
     
 
-    initPos = initPos + 25
-    ui.setCursor(vec2(15, initPos))
-    ui.header("Angle")
-    initPos = initPos + 20
-    ui.setCursor(vec2(20, initPos))
-    mapSettings.store.angle = ui.slider("##Angle", mapSettings.store.angle, 0, 360, string.format("%.0f", mapSettings.store.angle))
+    initPos = initPos + 50
+    mapSettings.store.angle = slider.main("Angle", string.format("%.0f", mapSettings.store.angle), vec2(20, initPos), 250, mapSettings.store.angle, 0, 360)
     
-    initPos = initPos + 25
-    ui.setCursor(vec2(15, initPos))
-    ui.header("Track Lenght")
-    initPos = initPos + 20
-    ui.setCursor(vec2(20, initPos))
-    ui.setNextItemWidth(200)
-    mapSettings.store.trackLenght = ui.slider("##TrackLenght", mapSettings.store.trackLenght, 4, 15, string.format("%.0f", mapSettings.store.trackLenght))
+    initPos = initPos + 50
+    mapSettings.store.trackLenght = slider.main("Track Lenght", string.format("%.0f", mapSettings.store.trackLenght), vec2(20, initPos), 250, mapSettings.store.trackLenght, 4, 15)
     initPos = initPos + 30
 
-    mapSettings.store.borderActive = borderButton:main(vec2(20, initPos), mapSettings.store.borderActive, "Border")
+    if borderButton:main(vec2(20, initPos), mapSettings.store.borderActive, "Border") then
+        mapSettings.store.borderActive = not mapSettings.store.borderActive
+    end
     if mapSettings.store.borderActive then
         if mapSettings.store.borderLenght == -2 then
             mapSettings.store.borderLenght = 4
         end
-        ui.setCursor(vec2(120, initPos))
-        ui.setNextItemWidth(200)
-        mapSettings.store.borderLenght = ui.slider("##BorderLenght", mapSettings.store.borderLenght, 1, 10, string.format("%.0f", mapSettings.store.borderLenght))
+        mapSettings.store.borderLenght = slider.main("", string.format("%.0f", mapSettings.store.borderLenght), vec2(120, initPos + 3), 200, mapSettings.store.borderLenght, 1, 10)
     else
         mapSettings.store.borderLenght = -2 
     end

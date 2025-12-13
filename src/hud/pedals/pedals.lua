@@ -467,7 +467,7 @@ function pedals.windowMain()
   contentTop = 0
   contentBottom = 0
 
-  if pedalsSettings.store.textBarsActive and contentMidle > 0 and (pedalsSettings.store.clutchActive or pedalsSettings.store.brakeActive or pedalsSettings.store.acceleratorActive or pedalsSettings.store.handbrakeActive) then contentTop = 10 end
+  if pedalsSettings.store.textBarsActive and contentMidle > 0 and (pedalsSettings.store.clutchActive or pedalsSettings.store.brakeActive or pedalsSettings.store.throttleActive or pedalsSettings.store.handbrakeActive) then contentTop = 10 end
   if pedalsSettings.store.rpmActive then contentTop = contentTop + 22 end
   if pedalsSettings.store.brakeBiasActive or pedalsSettings.store.fuelActive then contentBottom = 17 * pedalsSettings.store.pedalsScale end
 
@@ -500,7 +500,7 @@ function pedals.windowMain()
     drawBrake()
   end
   
-  if pedalsSettings.store.acceleratorActive then
+  if pedalsSettings.store.throttleActive then
     drawAccelerator()
   end
   

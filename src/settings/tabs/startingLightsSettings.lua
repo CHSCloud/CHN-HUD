@@ -1,5 +1,6 @@
 
 local language = require("lang.language")
+local slider = require("src.ui.slider")
 local startingLightsSettings = {}
 
 local defaultValues = {
@@ -16,22 +17,14 @@ local function resetToDefault()
 end
 
 function startingLightsSettings.startingLightsSettings()
-    local initPos = 55
+    local initPos = 75
 
     -- Escala:
-    ui.setCursor(vec2(15, initPos))
-    ui.header(language.get("SIZE"))
-    initPos = initPos + 20
-    ui.setCursor(vec2(20, initPos))
-    startingLightsSettings.store.startingLightsScale = ui.slider("##Size", startingLightsSettings.store.startingLightsScale, 0.7, 3, string.format("%.2f", startingLightsSettings.store.startingLightsScale))
+    startingLightsSettings.store.startingLightsScale = slider.main(language.get("SIZE"), string.format("%.2f", startingLightsSettings.store.startingLightsScale), vec2(20, initPos), 250, startingLightsSettings.store.startingLightsScale, 0.7, 3)
     
     -- Número de Luzes:
-    initPos = initPos + 30
-    ui.setCursor(vec2(15, initPos))
-    ui.header(language.get("NUM_LIGHTS"))
-    initPos = initPos + 20
-    ui.setCursor(vec2(20, initPos))
-    startingLightsSettings.store.numStartingLights = math.floor(ui.slider("##NumLightsStart", startingLightsSettings.store.numStartingLights, 4, 10, string.format("%i", startingLightsSettings.store.numStartingLights)))
+    initPos = initPos + 50
+    startingLightsSettings.store.numStartingLights = math.floor(slider.main(language.get("NUM_LIGHTS"), string.format("%i", startingLightsSettings.store.numStartingLights), vec2(20, initPos), 250, startingLightsSettings.store.numStartingLights, 4, 10))
 
     initPos = initPos + 40
     ui.setCursor(vec2(20, initPos))

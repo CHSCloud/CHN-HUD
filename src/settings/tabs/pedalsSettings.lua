@@ -1,6 +1,6 @@
 local language = require("lang.language")
-local simpleCheckbox = require("src.ui.simpleCheckBox")
-local SimpleButton = require("src.ui.simpleButton")
+local slider = require("src.ui.slider")
+local Button = require("src.ui.button")
 local pedalsSettings = {} 
 
 local defaultValues = {
@@ -9,7 +9,7 @@ local defaultValues = {
     speedActive = true,
     wheelActive = true,
     absActive = true,
-    acceleratorActive = true,
+    throttleActive = true,
     brakeActive = true,
     brakeBiasActive = true,
     clutchActive = true,
@@ -25,19 +25,19 @@ local defaultValues = {
     barLength = 0.55
 }
 
-local gearButton = SimpleButton.new()
-local speedButton = SimpleButton.new()
-local wheelButton = SimpleButton.new()
-local absButton = SimpleButton.new()
-local acceleratorButton = SimpleButton.new()
-local brakeButton = SimpleButton.new()
-local brakeBiasButton = SimpleButton.new()
-local clutchButton = SimpleButton.new()
-local handbrakeButton = SimpleButton.new()
-local textBarsButton = SimpleButton.new()
-local fuelButton = SimpleButton.new()
-local pedalLimitsLinesButton = SimpleButton.new()
-local rpmButton = SimpleButton.new()
+local gearButton = Button.new()
+local speedButton = Button.new()
+local wheelButton = Button.new()
+local absButton = Button.new()
+local throttleButton = Button.new()
+local brakeButton = Button.new()
+local brakeBiasButton = Button.new()
+local clutchButton = Button.new()
+local handbrakeButton = Button.new()
+local textBarsButton = Button.new()
+local fuelButton = Button.new()
+local pedalLimitsLinesButton = Button.new()
+local rpmButton = Button.new()
 
 pedalsSettings.store = ac.storage(defaultValues)
 
@@ -66,14 +66,10 @@ function pedalsSettings.pedalsSettings()
     local posXOthers = 250
     local posXStyle = 150
     local posXRPMpedalsSettings = 460
-    
-    ui.setCursor(vec2(15, initPos))
-    ui.header(language.get("SIZE"))
+
     
     initPos = initPos + 20
-    ui.setCursor(vec2(20, initPos))
-    
-    pedalsSettings.store.pedalsScale = math.floor(ui.slider("##Size", pedalsSettings.store.pedalsScale, 0.7, 3, string.format("%.2f", pedalsSettings.store.pedalsScale)) * 100 + 0.5) / 100
+    pedalsSettings.store.pedalsScale = slider.main(language.get("SIZE"), string.format("%.2f", pedalsSettings.store.pedalsScale), vec2(20, initPos), 250, pedalsSettings.store.pedalsScale, 0.7, 3)
 
 
     initPos = initPos + 35
@@ -87,13 +83,19 @@ function pedalsSettings.pedalsSettings()
     ui.header(language.get("STEERING"))
     
     initPos = initPos + 25; 
-    pedalsSettings.store.gearActive = gearButton:main(vec2(20,initPos), pedalsSettings.store.gearActive, language.get("GEAR"))
+    if gearButton:main(vec2(20,initPos), pedalsSettings.store.gearActive, language.get("GEAR")) then
+        pedalsSettings.store.gearActive = not pedalsSettings.store.gearActive
+    end
     
     initPos = initPos + 25; 
-    pedalsSettings.store.speedActive = speedButton:main(vec2(20,initPos), pedalsSettings.store.speedActive, language.get("SPEED"))
+    if speedButton:main(vec2(20,initPos), pedalsSettings.store.speedActive, language.get("SPEED")) then
+        pedalsSettings.store.speedActive = not pedalsSettings.store.speedActive
+    end
     
     initPos = initPos + 25;
-    pedalsSettings.store.wheelActive = wheelButton:main(vec2(20,initPos), pedalsSettings.store.wheelActive, language.get("WHEEL"))
+    if wheelButton:main(vec2(20,initPos), pedalsSettings.store.wheelActive, language.get("WHEEL")) then
+        pedalsSettings.store.wheelActive = not pedalsSettings.store.wheelActive
+    end
     if pedalsSettings.store.wheelActive then
         -- Combo Wheel Type
         ui.setCursor(vec2(120, initPos + 5))
@@ -107,7 +109,9 @@ function pedalsSettings.pedalsSettings()
     end
     
     initPos = initPos + 25; 
-    pedalsSettings.store.absActive = absButton:main(vec2(20,initPos), pedalsSettings.store.absActive, language.get("ABS"))
+    if absButton:main(vec2(20,initPos), pedalsSettings.store.absActive, language.get("ABS")) then
+        pedalsSettings.store.absActive = not pedalsSettings.store.absActive
+    end
 
     -- Alerta do ABS
     if CAR.absModes == 0 then
@@ -124,10 +128,14 @@ function pedalsSettings.pedalsSettings()
     ui.header(language.get("OTHERS"))
   
     initPos2 = initPos2 + 25; 
-    pedalsSettings.store.fuelActive = fuelButton:main(vec2(posXOthers,initPos2), pedalsSettings.store.fuelActive, language.get("FUEL"))
+    if fuelButton:main(vec2(posXOthers,initPos2), pedalsSettings.store.fuelActive, language.get("FUEL")) then
+        pedalsSettings.store.fuelActive = not pedalsSettings.store.fuelActive
+    end
     
     initPos2 = initPos2 + 25; 
-    pedalsSettings.store.brakeBiasActive = brakeBiasButton:main(vec2(posXOthers,initPos2), pedalsSettings.store.brakeBiasActive, language.get("BRAKE_BIAS"))
+    if brakeBiasButton:main(vec2(posXOthers,initPos2), pedalsSettings.store.brakeBiasActive, language.get("BRAKE_BIAS")) then
+        pedalsSettings.store.brakeBiasActive = not pedalsSettings.store.brakeBiasActive
+    end
     -- 
 
     -- RPM
@@ -135,7 +143,9 @@ function pedalsSettings.pedalsSettings()
     ui.header("RPM")
     
     posRPMpedalsSettings = posRPMpedalsSettings + 25
-    pedalsSettings.store.rpmActive = rpmButton:main(vec2(posXRPMpedalsSettings,posRPMpedalsSettings), pedalsSettings.store.rpmActive, language.get("RPM"))
+    if rpmButton:main(vec2(posXRPMpedalsSettings,posRPMpedalsSettings), pedalsSettings.store.rpmActive, language.get("RPM")) then
+        pedalsSettings.store.rpmActive = not pedalsSettings.store.rpmActive
+    end
 
     if pedalsSettings.store.rpmActive then
         local exampleRPpedalsSettingsX = 515        
@@ -219,24 +229,35 @@ function pedalsSettings.pedalsSettings()
     ui.header(language.get("PEDALS"))
 
     initPos = initPos + 25; 
-    pedalsSettings.store.acceleratorActive = acceleratorButton:main(vec2(20,initPos), pedalsSettings.store.acceleratorActive, language.get("ACCELERATOR"))
+    if throttleButton:main(vec2(20,initPos), pedalsSettings.store.throttleActive, language.get("THROTTLE")) then
+        pedalsSettings.store.throttleActive = not pedalsSettings.store.throttleActive
+    end
 
     ui.setCursor(vec2(posXStyle - 5, initPos - 25))
     ui.header(language.get("PEDAL_STYLE"))
-    
-    pedalsSettings.store.textBarsActive = textBarsButton:main(vec2(posXStyle,initPos), pedalsSettings.store.textBarsActive, language.get("PERCENTAGE"))
+    if textBarsButton:main(vec2(posXStyle,initPos), pedalsSettings.store.textBarsActive, language.get("PERCENTAGE")) then
+        pedalsSettings.store.textBarsActive = not pedalsSettings.store.textBarsActive
+    end
 
     initPos = initPos + 25
-    pedalsSettings.store.pedalLimitsLines = pedalLimitsLinesButton:main(vec2(posXStyle,initPos), pedalsSettings.store.pedalLimitsLines, language.get("LIMIT_LINES"))
+    if pedalLimitsLinesButton:main(vec2(posXStyle,initPos), pedalsSettings.store.pedalLimitsLines, language.get("LIMIT_LINES")) then
+        pedalsSettings.store.pedalLimitsLines = not pedalsSettings.store.pedalLimitsLines
+    end
 
     ui.setCursor(vec2(20, initPos))
-    pedalsSettings.store.brakeActive = brakeButton:main(vec2(20,initPos), pedalsSettings.store.brakeActive, language.get("BRAKE"))
+    if brakeButton:main(vec2(20,initPos), pedalsSettings.store.brakeActive, language.get("BRAKE")) then
+        pedalsSettings.store.brakeActive = not pedalsSettings.store.brakeActive
+    end
     
     initPos = initPos + 25; 
-    pedalsSettings.store.clutchActive = clutchButton:main(vec2(20,initPos), pedalsSettings.store.clutchActive, language.get("CLUTCH"))
+    if clutchButton:main(vec2(20,initPos), pedalsSettings.store.clutchActive, language.get("CLUTCH")) then
+        pedalsSettings.store.clutchActive = not pedalsSettings.store.clutchActive
+    end
     
     initPos = initPos + 25; 
-    pedalsSettings.store.handbrakeActive = handbrakeButton:main(vec2(20,initPos), pedalsSettings.store.handbrakeActive, language.get("HANDBRAKE"))
+    if handbrakeButton:main(vec2(20,initPos), pedalsSettings.store.handbrakeActive, language.get("HANDBRAKE")) then
+        pedalsSettings.store.handbrakeActive = not pedalsSettings.store.handbrakeActive
+    end
     --
     -- Botão Reset
     initPos = initPos + 40

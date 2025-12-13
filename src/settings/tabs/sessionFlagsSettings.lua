@@ -1,5 +1,6 @@
 
 local language = require("lang.language")
+local slider = require("src.ui.slider")
 local sessionFlagsSettings = {}
 
 local defaultValues = {
@@ -15,14 +16,10 @@ local function resetToDefault()
 end
 
 function sessionFlagsSettings.sessionFlagsSettings()
-    local initPos = 55
+    local initPos = 75
 
     -- Escala:
-    ui.setCursor(vec2(15, initPos))
-    ui.header(language.get("SIZE"))
-    initPos = initPos + 20
-    ui.setCursor(vec2(20, initPos))
-    sessionFlagsSettings.store.sessionFlagsScale = ui.slider("##Size", sessionFlagsSettings.store.sessionFlagsScale, 0.7, 3, string.format("%.2f", sessionFlagsSettings.store.sessionFlagsScale))
+    sessionFlagsSettings.store.sessionFlagsScale = slider.main(language.get("SIZE"), string.format("%.2f", sessionFlagsSettings.store.sessionFlagsScale), vec2(20, initPos), 250, sessionFlagsSettings.store.sessionFlagsScale, 0.7, 3)
 
     initPos = initPos + 40
     ui.setCursor(vec2(20, initPos))

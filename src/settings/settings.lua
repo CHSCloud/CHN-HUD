@@ -4,7 +4,8 @@ local sessionLapsSettings = require("src.settings.tabs.sessionLapsSettings")
 local startingLightsSettings = require("src.settings.tabs.startingLightsSettings")
 local sessionFlagsSettings = require("src.settings.tabs.sessionFlagsSettings")
 local mapSettings = require("src.settings.tabs.mapSettings")
-local SimpleButton = require("src.ui.simpleButton")
+local Button = require("src.ui.button")
+local slider = require("src.ui.slider")
 
 local language = require("lang.language")
 local config = require("common.config")
@@ -23,8 +24,7 @@ local defaultValues = {
     windowsColor = rgbm.from0255(18, 21, 29, 0.85)
 }
 
-local pinButton = SimpleButton.new()
-
+local pinButton = Button.new()
 settings.store = ac.storage(defaultValues)
 
 COLOR = {
@@ -110,8 +110,10 @@ local function geral()
   ui.setCursor(vec2(300, initPos + 20))
   
   -- Checkbox Pin All Apps
-  config.store.pinAllApps = pinButton:main(vec2(300, initPos), config.store.pinAllApps, language.get("PIN_ALL_APPS"))
-  config.pinAllApps(config.store.pinAllApps)
+  if pinButton:main(vec2(300, initPos), config.store.pinAllApps, language.get("PIN_ALL_APPS")) then
+    config.store.pinAllApps = not config.store.pinAllApps
+    config.pinAllApps(config.store.pinAllApps)
+  end
   
   -- Seção de Cores
   ui.setCursor(vec2(15, initPos))
@@ -124,21 +126,15 @@ local function geral()
   
   ui.colorPicker(language.get('COLOR'), settings.store.windowsColor, ui.ColorPickerFlags.PickerHueBar + ui.ColorPickerFlags.NoInputs)
 
-  initPos = initPos + 130
-  ui.setCursor(vec2(20, initPos))
+  initPos = initPos + 150
   
   -- Slider de Transparência
-  local newAlpha = ui.slider(language.get('TRANSPARENCY'), settings.store.transparancy, 0, 1, string.format("%.0f", settings.store.transparancy * 100));
-  if ui.itemEdited() then
-      settings.store.transparancy = newAlpha
-  end
+  settings.store.transparancy = slider.main(language.get("TRANSPARENCY"), string.format("%.0f", settings.store.transparancy * 100) .. "%",vec2(20, initPos + 10), 200, settings.store.transparancy, 0, 1)
 
   -- Atualiza a cor final combinando RGB do picker + Alpha do slider
   settings.store.windowsColor = rgbm(settings.store.windowsColor.r, settings.store.windowsColor.g, settings.store.windowsColor.b, settings.store.transparancy)
-  
-  ui.popItemWidth()
 
-  initPos = initPos + 30
+  initPos = initPos + 40
   ui.setCursor(vec2(20, initPos))
   
   -- Reset Color
@@ -157,6 +153,7 @@ function settings.windowCloseSettings()
 end
 
 function settings.windowMain()
+  ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
   ui.drawRectFilled(vec2(0, 0), WindowSettingsSize, rgbm.from0255(18, 21, 29, 0.85), 0)
   ui.tabBar('##ID',function ()
     ui.tabItem(language.get("GENERAL"), tabPin and ui.TabItemFlags.SetSelected, geral)

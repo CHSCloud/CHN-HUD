@@ -1,4 +1,5 @@
 local language = require("lang.language")
+local slider = require("src.ui.slider")
 local pitLaneSettings = {}
 
 local defaultValues = {
@@ -20,15 +21,9 @@ function pitLaneSettings.pitLaneSettings()
         ["alert"] = language.get("ALERT_PIT")
     }
     
-    local initPos = 55
-    ui.setCursor(vec2(15, initPos))
-    ui.header(language.get("SIZE"))
-
-    initPos = initPos + 20
-    ui.setCursor(vec2(20, initPos))
+    local initPos = 75
     
-    -- Uso direto do store com a chave padronizada 'scale'
-    pitLaneSettings.store.pitLaneScale = ui.slider("##Size", pitLaneSettings.store.pitLaneScale, 0.7, 3, string.format("%.2f", pitLaneSettings.store.pitLaneScale))
+    pitLaneSettings.store.pitLaneScale = slider.main(language.get("SIZE"), string.format("%.2f", pitLaneSettings.store.pitLaneScale), vec2(20, initPos), 250, pitLaneSettings.store.pitLaneScale, 0.7, 3)
 
     initPos = initPos + 35
     ui.setCursor(vec2(15, initPos))
