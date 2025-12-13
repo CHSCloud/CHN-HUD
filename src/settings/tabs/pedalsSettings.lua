@@ -1,5 +1,6 @@
 local language = require("lang.language")
 local slider = require("src.ui.slider")
+local button = require("src.ui.button")
 local ToggleButton = require("src.ui.toggleButton")
 local pedalsSettings = {} 
 
@@ -252,8 +253,7 @@ function pedalsSettings.pedalsSettings()
     --
     -- Botão Reset
     initPos = initPos + 40
-    ui.setCursor(vec2(20, initPos))
-    if ui.button(language.get("RESET_DEFAULT")) then
+    if button.main(vec2(20, initPos), language.get("RESET_DEFAULT")) then
         resetToDefault()
     end
 end

@@ -1,5 +1,6 @@
 
 local language = require("lang.language")
+local button = require("src.ui.button")
 local slider = require("src.ui.slider")
 local startingLightsSettings = {}
 
@@ -27,8 +28,8 @@ function startingLightsSettings.startingLightsSettings()
     startingLightsSettings.store.numStartingLights = math.floor(slider.main(language.get("NUM_LIGHTS"), string.format("%i", startingLightsSettings.store.numStartingLights), vec2(20, initPos), 250, startingLightsSettings.store.numStartingLights, 4, 10))
 
     initPos = initPos + 40
-    ui.setCursor(vec2(20, initPos))
-    if ui.button(language.get("RESET_DEFAULT")) then
+
+    if button.main(vec2(20, initPos), language.get("RESET_DEFAULT")) then
         resetToDefault()
     end
 end

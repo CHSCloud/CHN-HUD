@@ -4,7 +4,9 @@ local sessionLapsSettings = require("src.settings.tabs.sessionLapsSettings")
 local startingLightsSettings = require("src.settings.tabs.startingLightsSettings")
 local sessionFlagsSettings = require("src.settings.tabs.sessionFlagsSettings")
 local mapSettings = require("src.settings.tabs.mapSettings")
+
 local ToggleButton = require("src.ui.toggleButton")
+local button = require("src.ui.button")
 local slider = require("src.ui.slider")
 
 local language = require("lang.language")
@@ -135,10 +137,8 @@ local function geral()
   settings.store.windowsColor = rgbm(settings.store.windowsColor.r, settings.store.windowsColor.g, settings.store.windowsColor.b, settings.store.transparancy)
 
   initPos = initPos + 40
-  ui.setCursor(vec2(20, initPos))
-  
-  -- Reset Color
-  if ui.button(language.get("RESET_COLOR")) then
+
+  if button.main(vec2(20, initPos), language.get("RESET_COLOR")) then
     settings.store.windowsColor = rgbm.from0255(18, 21, 29, 0.85)
     settings.store.transparancy = 0.85
   end

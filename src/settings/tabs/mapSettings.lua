@@ -1,6 +1,7 @@
 local mapSettings = {}
 local colorSelector = require("src.ui.colorSelector")
 local slider = require("src.ui.slider")
+local button = require("src.ui.button")
 local ToggleButton = require("src.ui.toggleButton")
 local language = require("lang.language")
 
@@ -77,8 +78,7 @@ function mapSettings.mapSettings()
     initPos = initPos + 30
     mapSettings.store.colorDRS = colorSelector.main("DRS", mapSettings.store.colorDRS, vec2(20, initPos))
 
-    ui.setCursor(vec2(20, initPos + 30))
-    if ui.button(language.get("RESET_DEFAULT")) then
+    if button.main(vec2(20, initPos + 40), language.get("RESET_DEFAULT")) then
         resetToDefault()
     end
 end

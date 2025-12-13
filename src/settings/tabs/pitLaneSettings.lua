@@ -1,4 +1,5 @@
 local language = require("lang.language")
+local button = require("src.ui.button")
 local slider = require("src.ui.slider")
 local pitLaneSettings = {}
 
@@ -43,8 +44,8 @@ function pitLaneSettings.pitLaneSettings()
     end)
 
     initPos = initPos + 40
-    ui.setCursor(vec2(20, initPos))
-    if ui.button(language.get("RESET_DEFAULT")) then
+
+    if button.main(vec2(20, initPos), language.get("RESET_DEFAULT")) then
         resetToDefault()
     end
 end

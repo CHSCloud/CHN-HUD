@@ -1,5 +1,6 @@
 
 local language = require("lang.language")
+local button = require("src.ui.button")
 local slider = require("src.ui.slider")
 local sessionFlagsSettings = {}
 
@@ -22,8 +23,8 @@ function sessionFlagsSettings.sessionFlagsSettings()
     sessionFlagsSettings.store.sessionFlagsScale = slider.main(language.get("SIZE"), string.format("%.2f", sessionFlagsSettings.store.sessionFlagsScale), vec2(20, initPos), 250, sessionFlagsSettings.store.sessionFlagsScale, 0.7, 3)
 
     initPos = initPos + 40
-    ui.setCursor(vec2(20, initPos))
-    if ui.button(language.get("RESET_DEFAULT")) then
+
+    if button.main(vec2(20, initPos), language.get("RESET_DEFAULT")) then
         resetToDefault()
     end
 end
