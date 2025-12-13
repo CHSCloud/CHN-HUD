@@ -115,8 +115,8 @@ function pedalsSettings.pedalsSettings()
 
     -- Alerta do ABS
     if CAR.absModes == 0 then
-        ui.setCursor(vec2(70, initPos))
-        ui.dwriteTextAligned(language.get("ALERT_ABS"), 10, ui.Alignment.Center, ui.Alignment.Center, vec2(150, 25), false, COLOR.RED)  
+        ui.setCursor(vec2(100, initPos))
+        ui.dwriteTextAligned(language.get("ALERT_ABS"), 12, ui.Alignment.Center, ui.Alignment.Center, vec2(180, 20), false, COLOR.RED)  
     end
 
     initPos = initPos + 50
