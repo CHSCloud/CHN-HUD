@@ -1,5 +1,6 @@
 local language = require("lang.language")
 local button = require("src.ui.button")
+local droplist = require("src.ui.droplist")
 local slider = require("src.ui.slider")
 local pitLaneSettings = {}
 
@@ -30,6 +31,12 @@ function pitLaneSettings.pitLaneSettings()
     ui.setCursor(vec2(15, initPos))
     ui.header(language.get("STYLE"))
     initPos = initPos + 20
+
+
+    droplist.main(vec2(20, initPos), 100, "Teste", {"Teste1", "Teste2", "Teste3"})
+
+
+    initPos = initPos + 40
     ui.setCursor(vec2(20, initPos))
     
     -- Combo box atualizando direto o store
