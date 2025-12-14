@@ -75,15 +75,6 @@ function config.remapInterval(value, inMin, inMax, outMin, outMax)
     return (outMin + (value - inMin) * (outMax - outMin) / (inMax - inMin))
 end
 
---- @param p1 vec2
---- @param p2 vec2
---- @return number
-function config.calculateDistance(p1, p2)
-    local dx = p2.x - p1.x
-    local dy = p2.y - p1.y
-    return math.sqrt(dx*dx + dy*dy)
-end
-
 --- @param vec vec2 -- Vetor a ser rotacionado
 --- @param angleDeg number -- Ângulo em graus
 --- @return vec2

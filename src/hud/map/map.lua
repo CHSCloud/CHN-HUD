@@ -11,31 +11,28 @@ local mapPoints = {} -- Pontos do mapa
 local sectors = {} -- Setores da pista
 local drs = {} -- DRS da pista
 
--- Centros da tela
-local screenCenterX
-local screenCenterY
-local centerScreen
+local canvas = nil
+local canvasSize = vec2(512, 512)-- Tamanho do Canvas
+local canvasCenter = vec2(canvasSize.x / 2, canvasSize.y / 2) -- Centro do Canvas
+local canvasScale -- Escala final do mapa
 
--- Dimensões da pista
+local padding = 10 -- Limite do mapa
+local thickness -- Espessura do traço
+
+-- Tamnho da janela
+local currentWindowSize
+
+-- Tamanho da pista
 local trackLength
-
 -- Centros da pista
 local trackCenterX
 local trackCenterY
-
--- Área de desenho do mapa
-local drawAreaLenght
-
--- Escala final do mapa
-local finalScale
-
-local padding -- Limite do mapa
+local isTrackConnected = true
 
 local transparancy = 0
 
 local function initMap()
     totalPoints = config.remapInterval(SIM.trackLengthM, 0, 4000, 0, 450)
-
     -- Armazenando pontos do mapa
     for i = 0, 1, 1 / totalPoints do
         local posWorld = ac.trackCoordinateToWorld(vec3(0, 0, i))
@@ -83,39 +80,52 @@ local function initMap()
     end
 
     -- Comprimento da pista
-    trackLength = config.calculateDistance(minPos, maxPos)
+    trackLength = math.distance(minPos, maxPos)
+    
+    -- Verificando se a pista é conectada:
+    local start = ac.trackCoordinateToWorld(vec3(0, 0, 0))
+    local final = ac.trackCoordinateToWorld(vec3(0, 0, 0.99))
+    local distance = math.distance(start, final)
+    if distance > 60 then 
+        isTrackConnected = false
+    end
 
+    canvasScale = (canvasSize.y - (padding * 2)) / trackLength
+    
     -- Centros da pista
     trackCenterX = (minPos.x + maxPos.x) / 2
     trackCenterY = (minPos.y + maxPos.y) / 2
+    
+    canvas = ui.ExtraCanvas(canvasSize, 1, render.AntialiasingMode.None)
+    canvas:setName("CANVAS")
 end
 
 --- @param thickness number -- Espessura do traço
 --- @param color rgbm -- Cor do traço
 local function drawMap(thickness, color)
     for i, point in ipairs(mapPoints) do
-        local offsetX = (point.x - trackCenterX) * finalScale
-        local offsetY = (point.y - trackCenterY) * finalScale
+        local offsetX = (point.x - trackCenterX) * canvasScale
+        local offsetY = (point.y - trackCenterY) * canvasScale
 
         local rotatePos = config.rotateVec(vec2(offsetX, offsetY), mapSettings.store.angle)
 
-        local finalX = screenCenterX + rotatePos.x
-        local finalY = screenCenterY + rotatePos.y
+        local finalX = canvasCenter.x + rotatePos.x
+        local finalY = canvasCenter.y + rotatePos.y
         
         ui.pathLineTo(vec2(finalX, finalY))
     end
-    ui.pathStroke(color, true, thickness)
+    ui.pathStroke(color, isTrackConnected, thickness)
 end
 
 --- @param thickness number -- Espessura do setor
 --- @param color rgbm -- Cor do setor
 local function drawSectors(thickness, color)
     for i, sector in ipairs(sectors) do
-        local rotatePosInit = config.rotateVec(vec2((sector.start.x - trackCenterX) * finalScale, (sector.start.y - trackCenterY) * finalScale), mapSettings.store.angle)
-        local init = vec2(math.floor(screenCenterX + rotatePosInit.x), math.floor(screenCenterY + rotatePosInit.y))
+        local rotatePosInit = config.rotateVec(vec2((sector.start.x - trackCenterX) * canvasScale, (sector.start.y - trackCenterY) * canvasScale), mapSettings.store.angle)
+        local init = vec2(math.floor((canvasCenter.x + rotatePosInit.x) * 100) / 100, math.floor((canvasCenter.y + rotatePosInit.y) * 100) / 100)
 
-        local rotatePosFinal = config.rotateVec(vec2((sector.final.x - trackCenterX) * finalScale, (sector.final.y - trackCenterY) * finalScale), mapSettings.store.angle)
-        local final = vec2(math.floor(screenCenterX + rotatePosFinal.x), math.floor(screenCenterY + rotatePosFinal.y))
+        local rotatePosFinal = config.rotateVec(vec2((sector.final.x - trackCenterX) * canvasScale, (sector.final.y - trackCenterY) * canvasScale), mapSettings.store.angle)
+        local final = vec2(math.floor((canvasCenter.x + rotatePosFinal.x) * 100) / 100, math.floor((canvasCenter.y + rotatePosFinal.y) * 100) / 100)
         if i == 1 then
             ui.drawLine(init, final, COLOR.RED, thickness)
         else 
@@ -128,14 +138,14 @@ end
 --- @param lenght number -- Tamanho do círculo
 --- @param color rgbm -- Cor do círculo
 local function drawPLayer(car, lenght, color)
-    local posX = (car.position.x - trackCenterX) * finalScale
-    local posY = (car.position.z - trackCenterY) * finalScale
+    local posX = (car.position.x - trackCenterX) * canvasScale
+    local posY = (car.position.z - trackCenterY) * canvasScale
     local rotatedPos = config.rotateVec(vec2(posX, posY), mapSettings.store.angle)
-    rotatedPos = centerScreen + rotatedPos
-    ui.drawCircleFilled(rotatedPos, lenght / 1.5, color, 20)
-    ui.drawCircle(rotatedPos, lenght / 1.5, COLOR.BLACK, 20, 3 * mapSettings.store.mapScale)
+    rotatedPos = canvasCenter + rotatedPos
+    ui.drawCircleFilled(rotatedPos, lenght / 2, color, 20)
+    ui.drawCircle(rotatedPos, lenght / 2, COLOR.BLACK, 20, 5)
     ui.setCursor(rotatedPos - vec2(lenght,lenght)/2)
-    ui.dwriteTextAligned(tostring(car.racePosition), 15 * mapSettings.store.mapScale, ui.Alignment.Center, ui.Alignment.Center, vec2(lenght, lenght), false, COLOR.BLACK)
+    ui.dwriteTextAligned(tostring(car.racePosition), 0.6 * lenght, ui.Alignment.Center, ui.Alignment.Center, vec2(lenght, lenght), false, COLOR.BLACK)
 end
 
 --- @param lenght number -- Tamanho dos círculos
@@ -153,28 +163,26 @@ end
 --- @param thickness number -- Espessura do DRS
 local function drawDRS(thickness)
     for i, data in pairs(drs) do
-        local rotatePosInit = config.rotateVec(vec2((data.start1.x - trackCenterX) * finalScale, (data.start1.y - trackCenterY) * finalScale), mapSettings.store.angle)
-        local init = vec2(math.floor(screenCenterX + rotatePosInit.x), math.floor(screenCenterY + rotatePosInit.y))
+        local rotatePosInit = config.rotateVec(vec2((data.start1.x - trackCenterX) * canvasScale, (data.start1.y - trackCenterY) * canvasScale), mapSettings.store.angle)
+        local init = vec2(math.floor((canvasCenter.x + rotatePosInit.x) * 100) / 100, math.floor((canvasCenter.y + rotatePosInit.y) * 100) / 100)
 
-        local rotatePosFinal = config.rotateVec(vec2((data.final1.x - trackCenterX) * finalScale, (data.final1.y - trackCenterY) * finalScale), mapSettings.store.angle)
-        local final = vec2(math.floor(screenCenterX + rotatePosFinal.x), math.floor(screenCenterY + rotatePosFinal.y))
+        local rotatePosFinal = config.rotateVec(vec2((data.final1.x - trackCenterX) * canvasScale, (data.final1.y - trackCenterY) * canvasScale), mapSettings.store.angle)
+        local final = vec2(math.floor((canvasCenter.x + rotatePosFinal.x) * 100) / 100, math.floor((canvasCenter.y + rotatePosFinal.y) * 100) / 100)
         ui.drawLine(init, final, mapSettings.store.colorDRS, thickness)
 
-        rotatePosInit = config.rotateVec(vec2((data.start2.x - trackCenterX) * finalScale, (data.start2.y - trackCenterY) * finalScale), mapSettings.store.angle)
-        init = vec2(math.floor(screenCenterX + rotatePosInit.x), math.floor(screenCenterY + rotatePosInit.y))
+        rotatePosInit = config.rotateVec(vec2((data.start2.x - trackCenterX) * canvasScale, (data.start2.y - trackCenterY) * canvasScale), mapSettings.store.angle)
+        init = vec2(math.floor((canvasCenter.x + rotatePosInit.x) * 100) / 100, math.floor((canvasCenter.y + rotatePosInit.y) * 100) / 100)
 
-        rotatePosFinal = config.rotateVec(vec2((data.final2.x - trackCenterX) * finalScale, (data.final2.y - trackCenterY) * finalScale), mapSettings.store.angle)
-        final = vec2(math.floor(screenCenterX + rotatePosFinal.x), math.floor(screenCenterY + rotatePosFinal.y))
+        rotatePosFinal = config.rotateVec(vec2((data.final2.x - trackCenterX) * canvasScale, (data.final2.y - trackCenterY) * canvasScale), mapSettings.store.angle)
+        final = vec2(math.floor((canvasCenter.x + rotatePosFinal.x) * 100) / 100, math.floor((canvasCenter.y + rotatePosFinal.y) * 100) / 100)
         ui.drawLine(init, final, mapSettings.store.colorDRS, thickness)
     end
 end
 
 function map.windowMain()
     ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
-    local currenWindowSize = vec2(500, 500):scale(mapSettings.store.mapScale)
-    padding = 10 * mapSettings.store.mapScale
-    local thickness = 8 * mapSettings.store.mapScale
-
+    currentWindowSize = vec2(300, 300):scale(mapSettings.store.mapScale)
+    thickness = 50
     -- Animação do Background
     if config.isMouseInWindow(ui.mouseLocalPos(), 0, ui.windowSize().x, 0, ui.windowSize().y) then
         if transparancy < 0.85 then
@@ -182,38 +190,36 @@ function map.windowMain()
                 transparancy = transparancy + 0.1
             end
         end
-        ui.drawRectFilled(vec2(0, 0), currenWindowSize, rgbm(WindowsColor.r,WindowsColor.g,WindowsColor.b, transparancy), 20 * mapSettings.store.mapScale)
+        ui.drawRectFilled(vec2(0, 0), currentWindowSize, rgbm(WindowsColor.r,WindowsColor.g,WindowsColor.b, transparancy), 20 * mapSettings.store.mapScale)
     else
         if transparancy > 0 then
             if 20 * Timer % 6 >= 1 then
                 transparancy = transparancy - 0.1
             end
-             ui.drawRectFilled(vec2(0, 0), currenWindowSize, rgbm(WindowsColor.r,WindowsColor.g,WindowsColor.b, transparancy), 20 * mapSettings.store.mapScale)
+             ui.drawRectFilled(vec2(0, 0), currentWindowSize, rgbm(WindowsColor.r,WindowsColor.g,WindowsColor.b, transparancy), 20 * mapSettings.store.mapScale)
         else
             transparancy = 0
         end
     end
 
-    screenCenterX = currenWindowSize.x / 2
-    screenCenterY = currenWindowSize.y / 2
-    centerScreen = vec2(screenCenterX, screenCenterY)
-
-    drawAreaLenght = currenWindowSize.y - (padding * 2)
-    finalScale = drawAreaLenght / trackLength
-
     -- Desenha borda
-    drawMap((mapSettings.store.trackLenght + mapSettings.store.borderLenght * 2) * mapSettings.store.mapScale, mapSettings.store.colorBorder)
-    -- Desenha pista
-    drawMap(mapSettings.store.trackLenght * mapSettings.store.mapScale, mapSettings.store.colorTrack)
-    -- Desenha DRS
-    drawDRS(mapSettings.store.trackLenght * mapSettings.store.mapScale)
-    -- Desenha setores
-    drawSectors(mapSettings.store.trackLenght * mapSettings.store.mapScale, mapSettings.store.colorSectors)
-    -- Desenha jogadores
-    drawPLayers(thickness * 3)
+    if canvas == nil then return end
+    canvas:clear()
+    canvas:update(function ()
+        drawMap((mapSettings.store.trackLenght + mapSettings.store.borderLenght * 2), mapSettings.store.colorBorder)
+        -- Desenha pista
+        drawMap(mapSettings.store.trackLenght, mapSettings.store.colorTrack)
+        -- Desenha DRS
+        drawDRS(mapSettings.store.trackLenght)
+        -- Desenha setores
+        drawSectors(mapSettings.store.trackLenght, mapSettings.store.colorSectors)
+        -- Desenha jogadores
+        drawPLayers(thickness)
+    end)
     
-    config.resize(currenWindowSize, "Map")
-    pinCheckBox.main(mapSettings.store.mapScale * 1.5, "Map", config.getWindow("Map"):pinned(), currenWindowSize)
+    ui.drawImage(canvas, 0, currentWindowSize.x)
+    config.resize(currentWindowSize, "Map")
+    pinCheckBox.main(mapSettings.store.mapScale * 1.5, "Map", config.getWindow("Map"):pinned(), currentWindowSize)
 end
 
 initMap()

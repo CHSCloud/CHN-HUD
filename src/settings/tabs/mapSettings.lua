@@ -6,7 +6,7 @@ local ToggleButton = require("src.ui.toggleButton")
 local language = require("lang.language")
 
 local defaultValues = {
-    mapScale = 0.7,
+    mapScale = 1,
     angle = 0,
     colorTrack = rgbm.from0255(0, 0, 0, 1),
     colorBorder = rgbm.from0255(255, 255, 255, 1),
@@ -39,14 +39,14 @@ function mapSettings.mapSettings()
     local initPos = 75
 
     -- Escala:
-    mapSettings.store.mapScale = slider.main(language.get("SIZE"), string.format("%.2f", mapSettings.store.mapScale), vec2(20, initPos), 250, mapSettings.store.mapScale, 0.5, 2)
+    mapSettings.store.mapScale = slider.main(language.get("SIZE"), string.format("%.2f", mapSettings.store.mapScale), vec2(20, initPos), 250, mapSettings.store.mapScale, 1, 4)
     
 
     initPos = initPos + 50
     mapSettings.store.angle = slider.main("Angle", string.format("%.0f", mapSettings.store.angle), vec2(20, initPos), 250, mapSettings.store.angle, 0, 360)
     
     initPos = initPos + 50
-    mapSettings.store.trackLenght = math.floor(slider.main("Track Lenght", string.format("%.0f", mapSettings.store.trackLenght), vec2(20, initPos), 250, mapSettings.store.trackLenght, 4, 15))
+    mapSettings.store.trackLenght = math.floor(slider.main("Track Lenght", string.format("%.0f", mapSettings.store.trackLenght), vec2(20, initPos), 250, mapSettings.store.trackLenght, 12, 25))
     initPos = initPos + 30
 
     if borderButton:main(vec2(20, initPos), mapSettings.store.borderActive, "Border") then
@@ -56,7 +56,7 @@ function mapSettings.mapSettings()
         if mapSettings.store.borderLenght == -2 then
             mapSettings.store.borderLenght = 4
         end
-        mapSettings.store.borderLenght = math.floor(slider.main("", string.format("%.0f", mapSettings.store.borderLenght), vec2(120, initPos + 3), 200, mapSettings.store.borderLenght, 1, 10))
+        mapSettings.store.borderLenght = math.floor(slider.main("", string.format("%.0f", mapSettings.store.borderLenght), vec2(120, initPos + 3), 200, mapSettings.store.borderLenght, 4, 10))
     else
         mapSettings.store.borderLenght = -2 
     end
