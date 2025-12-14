@@ -84,6 +84,16 @@ function config.calculateDistance(p1, p2)
     return math.sqrt(dx*dx + dy*dy)
 end
 
+--- @param vec vec2 -- Vetor a ser rotacionado
+--- @param angleDeg number -- Ângulo em graus
+--- @return vec2
+function config.rotateVec(vec, angleDeg)
+    local rad = math.rad(angleDeg)
+    local sin = math.sin(rad)
+    local cos = math.cos(rad)
+    return vec2(vec.x * cos - vec.y * sin, vec.x * sin + vec.y * cos)
+end
+
 --- @param name string
 function config.getWindow(name)
     local data = windows[name]

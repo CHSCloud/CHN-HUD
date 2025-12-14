@@ -33,16 +33,6 @@ local padding -- Limite do mapa
 
 local transparancy = 0
 
---- @param vec vec2
---- @param angleDeg number
---- @return vec2
-local function rotateVec(vec, angleDeg)
-    local rad = math.rad(angleDeg)
-    local sin = math.sin(rad)
-    local cos = math.cos(rad)
-    return vec2(vec.x * cos - vec.y * sin, vec.x * sin + vec.y * cos)
-end
-
 local function initMap()
     totalPoints = config.remapInterval(SIM.trackLengthM, 0, 4000, 0, 450)
 
@@ -100,14 +90,14 @@ local function initMap()
     trackCenterY = (minPos.y + maxPos.y) / 2
 end
 
---- @param thickness number
---- @param color rgbm
+--- @param thickness number -- Espessura do traço
+--- @param color rgbm -- Cor do traço
 local function drawMap(thickness, color)
     for i, point in ipairs(mapPoints) do
         local offsetX = (point.x - trackCenterX) * finalScale
         local offsetY = (point.y - trackCenterY) * finalScale
 
-        local rotatePos = rotateVec(vec2(offsetX, offsetY), mapSettings.store.angle)
+        local rotatePos = config.rotateVec(vec2(offsetX, offsetY), mapSettings.store.angle)
 
         local finalX = screenCenterX + rotatePos.x
         local finalY = screenCenterY + rotatePos.y
@@ -117,14 +107,14 @@ local function drawMap(thickness, color)
     ui.pathStroke(color, true, thickness)
 end
 
---- @param thickness number
---- @param color rgbm
+--- @param thickness number -- Espessura do setor
+--- @param color rgbm -- Cor do setor
 local function drawSectors(thickness, color)
     for i, sector in ipairs(sectors) do
-        local rotatePosInit = rotateVec(vec2((sector.start.x - trackCenterX) * finalScale, (sector.start.y - trackCenterY) * finalScale), mapSettings.store.angle)
+        local rotatePosInit = config.rotateVec(vec2((sector.start.x - trackCenterX) * finalScale, (sector.start.y - trackCenterY) * finalScale), mapSettings.store.angle)
         local init = vec2(math.floor(screenCenterX + rotatePosInit.x), math.floor(screenCenterY + rotatePosInit.y))
 
-        local rotatePosFinal = rotateVec(vec2((sector.final.x - trackCenterX) * finalScale, (sector.final.y - trackCenterY) * finalScale), mapSettings.store.angle)
+        local rotatePosFinal = config.rotateVec(vec2((sector.final.x - trackCenterX) * finalScale, (sector.final.y - trackCenterY) * finalScale), mapSettings.store.angle)
         local final = vec2(math.floor(screenCenterX + rotatePosFinal.x), math.floor(screenCenterY + rotatePosFinal.y))
         if i == 1 then
             ui.drawLine(init, final, COLOR.RED, thickness)
@@ -134,13 +124,13 @@ local function drawSectors(thickness, color)
     end
 end
 
----@param car ac.StateCar
----@param lenght number
----@param color rgbm
+--- @param car ac.StateCar -- Cara a ser desenhado
+--- @param lenght number -- Tamanho do círculo
+--- @param color rgbm -- Cor do círculo
 local function drawPLayer(car, lenght, color)
     local posX = (car.position.x - trackCenterX) * finalScale
     local posY = (car.position.z - trackCenterY) * finalScale
-    local rotatedPos = rotateVec(vec2(posX, posY), mapSettings.store.angle)
+    local rotatedPos = config.rotateVec(vec2(posX, posY), mapSettings.store.angle)
     rotatedPos = centerScreen + rotatedPos
     ui.drawCircleFilled(rotatedPos, lenght / 1.5, color, 20)
     ui.drawCircle(rotatedPos, lenght / 1.5, COLOR.BLACK, 20, 3 * mapSettings.store.mapScale)
@@ -148,7 +138,7 @@ local function drawPLayer(car, lenght, color)
     ui.dwriteTextAligned(tostring(car.racePosition), 15 * mapSettings.store.mapScale, ui.Alignment.Center, ui.Alignment.Center, vec2(lenght, lenght), false, COLOR.BLACK)
 end
 
---- @param lenght number
+--- @param lenght number -- Tamanho dos círculos
 local function drawPLayers(lenght)
     for i, car in ac.iterateCars.leaderboard() do
         if car.index ~= SIM.focusedCar then
@@ -160,20 +150,20 @@ local function drawPLayers(lenght)
     drawPLayer(car, lenght, mapSettings.store.colorPlayer)
 end
 
---- @param thickness number
+--- @param thickness number -- Espessura do DRS
 local function drawDRS(thickness)
     for i, data in pairs(drs) do
-        local rotatePosInit = rotateVec(vec2((data.start1.x - trackCenterX) * finalScale, (data.start1.y - trackCenterY) * finalScale), mapSettings.store.angle)
+        local rotatePosInit = config.rotateVec(vec2((data.start1.x - trackCenterX) * finalScale, (data.start1.y - trackCenterY) * finalScale), mapSettings.store.angle)
         local init = vec2(math.floor(screenCenterX + rotatePosInit.x), math.floor(screenCenterY + rotatePosInit.y))
 
-        local rotatePosFinal = rotateVec(vec2((data.final1.x - trackCenterX) * finalScale, (data.final1.y - trackCenterY) * finalScale), mapSettings.store.angle)
+        local rotatePosFinal = config.rotateVec(vec2((data.final1.x - trackCenterX) * finalScale, (data.final1.y - trackCenterY) * finalScale), mapSettings.store.angle)
         local final = vec2(math.floor(screenCenterX + rotatePosFinal.x), math.floor(screenCenterY + rotatePosFinal.y))
         ui.drawLine(init, final, mapSettings.store.colorDRS, thickness)
 
-        rotatePosInit = rotateVec(vec2((data.start2.x - trackCenterX) * finalScale, (data.start2.y - trackCenterY) * finalScale), mapSettings.store.angle)
+        rotatePosInit = config.rotateVec(vec2((data.start2.x - trackCenterX) * finalScale, (data.start2.y - trackCenterY) * finalScale), mapSettings.store.angle)
         init = vec2(math.floor(screenCenterX + rotatePosInit.x), math.floor(screenCenterY + rotatePosInit.y))
 
-        rotatePosFinal = rotateVec(vec2((data.final2.x - trackCenterX) * finalScale, (data.final2.y - trackCenterY) * finalScale), mapSettings.store.angle)
+        rotatePosFinal = config.rotateVec(vec2((data.final2.x - trackCenterX) * finalScale, (data.final2.y - trackCenterY) * finalScale), mapSettings.store.angle)
         final = vec2(math.floor(screenCenterX + rotatePosFinal.x), math.floor(screenCenterY + rotatePosFinal.y))
         ui.drawLine(init, final, mapSettings.store.colorDRS, thickness)
     end
