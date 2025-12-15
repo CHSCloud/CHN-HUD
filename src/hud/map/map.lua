@@ -48,11 +48,13 @@ local function initMap()
 
     -- Armazenando sectores
     for i, sector in ipairs(SIM.lapSplits) do
-        local start = ac.trackCoordinateToWorld(vec3(0, 0, sector - 0.002))
-        local final = ac.trackCoordinateToWorld(vec3(0, 0, sector + 0.002))
+        local left = ac.trackCoordinateToWorld(vec3(-1, 0, sector))
+        local center = ac.trackCoordinateToWorld(vec3(0, 0, sector))
+        local right = ac.trackCoordinateToWorld(vec3(1, 0, sector))
         table.insert(sectors, {
-            start = vec2(start.x, start.z),
-            final = vec2(final.x, final.z)
+            left = vec2(left.x, left.z),
+            center = vec2(center.x, center.z),
+            right = vec2(right.x, right.z)
         })
     end
 
@@ -64,16 +66,22 @@ local function initMap()
             local dataStart = data['START']
             local dataFinal = data['END']
             
-            local start1 = ac.trackCoordinateToWorld(vec3(0, 0, tonumber(dataStart[1]) - 0.002))
-            local final1 = ac.trackCoordinateToWorld(vec3(0, 0, tonumber(dataStart[1]) + 0.002))
-            local start2 = ac.trackCoordinateToWorld(vec3(0, 0, tonumber(dataFinal[1]) - 0.002))
-            local final2 = ac.trackCoordinateToWorld(vec3(0, 0, tonumber(dataFinal[1]) + 0.002))
+            local startLeft = ac.trackCoordinateToWorld(vec3(-1, 0, tonumber(dataStart[1])))
+            local startCenter = ac.trackCoordinateToWorld(vec3(0, 0, tonumber(dataStart[1])))
+            local startRight = ac.trackCoordinateToWorld(vec3(1, 0, tonumber(dataStart[1])))
+
+            local finalLeft = ac.trackCoordinateToWorld(vec3(-1, 0, tonumber(dataFinal[1])))
+            local finalCenter = ac.trackCoordinateToWorld(vec3(0, 0, tonumber(dataFinal[1])))
+            local finalRight = ac.trackCoordinateToWorld(vec3(1, 0, tonumber(dataFinal[1])))
             if dataStart[1] ~= nil and dataFinal[1] ~= nil then
                 table.insert(drs, {
-                    start1 = vec2(start1.x, start1.z),
-                    final1 = vec2(final1.x, final1.z),
-                    start2 = vec2(start2.x, start2.z),
-                    final2 = vec2(final2.x, final2.z)
+                    startLeft = vec2(startLeft.x, startLeft.z),
+                    startCenter = vec2(startCenter.x, startCenter.z),
+                    startRight = vec2(startRight.x, startRight.z),
+
+                    finalLeft = vec2(finalLeft.x, finalLeft.z),
+                    finalCenter = vec2(finalCenter.x, finalCenter.z),
+                    finalRight = vec2(finalRight.x, finalRight.z)
                 })
             end
         end
@@ -121,15 +129,18 @@ end
 --- @param color rgbm -- Cor do setor
 local function drawSectors(thickness, color)
     for i, sector in ipairs(sectors) do
-        local rotatePosInit = config.rotateVec(vec2((sector.start.x - trackCenterX) * canvasScale, (sector.start.y - trackCenterY) * canvasScale), mapSettings.store.angle)
-        local init = vec2(math.floor((canvasCenter.x + rotatePosInit.x) * 100) / 100, math.floor((canvasCenter.y + rotatePosInit.y) * 100) / 100)
+        local dir = (sector.right - sector.left):normalize()
+        local init = sector.center + dir * thickness * 2.2
+        init =  config.rotateVec(vec2((init.x - trackCenterX) * canvasScale, (init.y - trackCenterY) * canvasScale), mapSettings.store.angle)
+        init = config.floorVec(init + canvasCenter)
 
-        local rotatePosFinal = config.rotateVec(vec2((sector.final.x - trackCenterX) * canvasScale, (sector.final.y - trackCenterY) * canvasScale), mapSettings.store.angle)
-        local final = vec2(math.floor((canvasCenter.x + rotatePosFinal.x) * 100) / 100, math.floor((canvasCenter.y + rotatePosFinal.y) * 100) / 100)
+        local final = sector.center - dir * thickness * 2.2
+        final = config.rotateVec(vec2((final.x - trackCenterX) * canvasScale, (final.y - trackCenterY) * canvasScale), mapSettings.store.angle)
+        final = config.floorVec(final + canvasCenter)
         if i == 1 then
-            ui.drawLine(init, final, COLOR.RED, thickness)
+            ui.drawLine(init, final, COLOR.RED, 6)
         else 
-            ui.drawLine(init, final, color, thickness)
+            ui.drawLine(init, final, color, 6)
         end
     end
 end
@@ -160,22 +171,29 @@ local function drawPLayers(lenght)
     drawPLayer(car, lenght, mapSettings.store.colorPlayer)
 end
 
+
 --- @param thickness number -- Espessura do DRS
 local function drawDRS(thickness)
     for i, data in pairs(drs) do
-        local rotatePosInit = config.rotateVec(vec2((data.start1.x - trackCenterX) * canvasScale, (data.start1.y - trackCenterY) * canvasScale), mapSettings.store.angle)
-        local init = vec2(math.floor((canvasCenter.x + rotatePosInit.x) * 100) / 100, math.floor((canvasCenter.y + rotatePosInit.y) * 100) / 100)
+        -- Inicio
+        local dir = (data.startRight - data.startLeft):normalize()
+        local init = data.startCenter + dir * thickness * 2.2
+        init =  config.rotateVec(vec2((init.x - trackCenterX) * canvasScale, (init.y - trackCenterY) * canvasScale), mapSettings.store.angle)
+        init = config.floorVec(init + canvasCenter)
+        local final = data.startCenter - dir * thickness * 2.2
+        final =  config.rotateVec(vec2((final.x - trackCenterX) * canvasScale, (final.y - trackCenterY) * canvasScale), mapSettings.store.angle)
+        final = config.floorVec(final + canvasCenter)
+        ui.drawLine(init, final, mapSettings.store.colorDRS, 6)
 
-        local rotatePosFinal = config.rotateVec(vec2((data.final1.x - trackCenterX) * canvasScale, (data.final1.y - trackCenterY) * canvasScale), mapSettings.store.angle)
-        local final = vec2(math.floor((canvasCenter.x + rotatePosFinal.x) * 100) / 100, math.floor((canvasCenter.y + rotatePosFinal.y) * 100) / 100)
-        ui.drawLine(init, final, mapSettings.store.colorDRS, thickness)
-
-        rotatePosInit = config.rotateVec(vec2((data.start2.x - trackCenterX) * canvasScale, (data.start2.y - trackCenterY) * canvasScale), mapSettings.store.angle)
-        init = vec2(math.floor((canvasCenter.x + rotatePosInit.x) * 100) / 100, math.floor((canvasCenter.y + rotatePosInit.y) * 100) / 100)
-
-        rotatePosFinal = config.rotateVec(vec2((data.final2.x - trackCenterX) * canvasScale, (data.final2.y - trackCenterY) * canvasScale), mapSettings.store.angle)
-        final = vec2(math.floor((canvasCenter.x + rotatePosFinal.x) * 100) / 100, math.floor((canvasCenter.y + rotatePosFinal.y) * 100) / 100)
-        ui.drawLine(init, final, mapSettings.store.colorDRS, thickness)
+        -- Final
+        dir = (data.finalRight - data.finalLeft):normalize()
+        init = data.finalCenter + dir * thickness * 2.2
+        init =  config.rotateVec(vec2((init.x - trackCenterX) * canvasScale, (init.y - trackCenterY) * canvasScale), mapSettings.store.angle)
+        init = config.floorVec(init + canvasCenter)
+        final = data.finalCenter - dir * thickness * 2.2
+        final =  config.rotateVec(vec2((final.x - trackCenterX) * canvasScale, (final.y - trackCenterY) * canvasScale), mapSettings.store.angle)
+        final = config.floorVec(final + canvasCenter)
+        ui.drawLine(init, final, mapSettings.store.colorDRS, 6)
     end
 end
 

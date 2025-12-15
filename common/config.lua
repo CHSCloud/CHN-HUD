@@ -85,6 +85,12 @@ function config.rotateVec(vec, angleDeg)
     return vec2(vec.x * cos - vec.y * sin, vec.x * sin + vec.y * cos)
 end
 
+--- @param vec vec2
+--- @return vec2
+function config.floorVec(vec)
+    return vec2(math.floor(vec.x), math.floor(vec.y))
+end
+
 --- @param name string
 function config.getWindow(name)
     local data = windows[name]
