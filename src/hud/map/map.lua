@@ -13,8 +13,9 @@ local drs = {} -- DRS da pista
 
 local canvas = nil
 local canvasSize = vec2(600, 600)-- Tamanho do Canvas
-local canvasCenter = vec2(canvasSize.x / 2, canvasSize.y / 2) -- Centro do Canvas
+local canvasCenter = vec2(canvasSize.x / 2, canvasSize.y / 2)
 local canvasScale -- Escala final do mapa
+local angle
 
 local padding = 10 -- Limite do mapa
 local thickness -- Espessura do traço
@@ -28,6 +29,10 @@ local trackLength
 local trackCenterX
 local trackCenterY
 local isTrackConnected = true
+
+local startTrack -- Inicio da pista
+local endTrack -- Fim da pista
+local dirTrack -- Direção da pista
 
 local transparancy = 0
 
@@ -91,18 +96,20 @@ local function initMap()
     trackLength = math.distance(minPos, maxPos)
     
     -- Verificando se a pista é conectada:
-    local start = ac.trackCoordinateToWorld(vec3(0, 0, 0))
-    local final = ac.trackCoordinateToWorld(vec3(0, 0, 0.99))
-    local distance = math.distance(start, final)
+    startTrack = ac.trackCoordinateToWorld(vec3(0, 0, 0))
+    endTrack = ac.trackCoordinateToWorld(vec3(0, 0, 0.99))
+    local distance = math.distance(startTrack, endTrack)
     if distance > 60 then 
         isTrackConnected = false
     end
-
-    canvasScale = (canvasSize.y - (padding * 2)) / trackLength
-    
     -- Centros da pista
     trackCenterX = (minPos.x + maxPos.x) / 2
     trackCenterY = (minPos.y + maxPos.y) / 2
+
+    -- Direção da pista
+    local dirTrack3d = (endTrack - startTrack):normalize()
+    dirTrack = vec2(dirTrack3d.x, dirTrack3d.z)
+
     
     canvas = ui.ExtraCanvas(canvasSize, 1, render.AntialiasingMode.None)
     canvas:setName("CANVAS")
@@ -115,7 +122,7 @@ local function drawMap(thickness, color)
         local offsetX = (point.x - trackCenterX) * canvasScale
         local offsetY = (point.y - trackCenterY) * canvasScale
 
-        local rotatePos = config.rotateVec(vec2(offsetX, offsetY), mapSettings.store.angle)
+        local rotatePos = config.rotateVec(vec2(offsetX, offsetY), angle)
 
         local finalX = canvasCenter.x + rotatePos.x
         local finalY = canvasCenter.y + rotatePos.y
@@ -129,9 +136,9 @@ end
 --- @param color rgbm -- Cor do setor
 local function drawSectors(thickness, color)
     for i, sector in ipairs(sectors) do
-        local left = config.rotateVec(vec2((sector.left.x - trackCenterX) * canvasScale, (sector.left.y - trackCenterY) * canvasScale), mapSettings.store.angle)
-        local center = config.rotateVec(vec2((sector.center.x - trackCenterX) * canvasScale, (sector.center.y - trackCenterY) * canvasScale), mapSettings.store.angle)
-        local right = config.rotateVec(vec2((sector.right.x - trackCenterX) * canvasScale, (sector.right.y - trackCenterY) * canvasScale), mapSettings.store.angle)
+        local left = config.rotateVec(vec2((sector.left.x - trackCenterX) * canvasScale, (sector.left.y - trackCenterY) * canvasScale), angle)
+        local center = config.rotateVec(vec2((sector.center.x - trackCenterX) * canvasScale, (sector.center.y - trackCenterY) * canvasScale), angle)
+        local right = config.rotateVec(vec2((sector.right.x - trackCenterX) * canvasScale, (sector.right.y - trackCenterY) * canvasScale), angle)
         
         local dir = (right - left):normalize()
         local init = center + dir * thickness
@@ -153,7 +160,7 @@ end
 local function drawPLayer(car, lenght, color)
     local posX = (car.position.x - trackCenterX) * canvasScale
     local posY = (car.position.z - trackCenterY) * canvasScale
-    local rotatedPos = config.rotateVec(vec2(posX, posY), mapSettings.store.angle)
+    local rotatedPos = config.rotateVec(vec2(posX, posY), angle)
     rotatedPos = canvasCenter + rotatedPos
     ui.drawCircleFilled(rotatedPos, lenght / 2, color, 20)
     ui.drawCircle(rotatedPos, lenght / 2, COLOR.BLACK, 20, 5)
@@ -178,9 +185,9 @@ end
 local function drawDRS(thickness)
     for i, data in pairs(drs) do
         -- Início
-        local left = config.rotateVec(vec2((data.startLeft.x - trackCenterX) * canvasScale, (data.startLeft.y - trackCenterY) * canvasScale), mapSettings.store.angle)
-        local center = config.rotateVec(vec2((data.startCenter.x - trackCenterX) * canvasScale, (data.startCenter.y - trackCenterY) * canvasScale), mapSettings.store.angle)
-        local right = config.rotateVec(vec2((data.startRight.x - trackCenterX) * canvasScale, (data.startRight.y - trackCenterY) * canvasScale), mapSettings.store.angle)
+        local left = config.rotateVec(vec2((data.startLeft.x - trackCenterX) * canvasScale, (data.startLeft.y - trackCenterY) * canvasScale), angle)
+        local center = config.rotateVec(vec2((data.startCenter.x - trackCenterX) * canvasScale, (data.startCenter.y - trackCenterY) * canvasScale), angle)
+        local right = config.rotateVec(vec2((data.startRight.x - trackCenterX) * canvasScale, (data.startRight.y - trackCenterY) * canvasScale), angle)
         
         local dir = (right - left):normalize()
         local init = center + dir * thickness
@@ -190,9 +197,9 @@ local function drawDRS(thickness)
         ui.drawLine(init, final, mapSettings.store.colorDRS, 6)
 
         -- Final
-        left = config.rotateVec(vec2((data.finalLeft.x - trackCenterX) * canvasScale, (data.finalLeft.y - trackCenterY) * canvasScale), mapSettings.store.angle)
-        center = config.rotateVec(vec2((data.finalCenter.x - trackCenterX) * canvasScale, (data.finalCenter.y - trackCenterY) * canvasScale), mapSettings.store.angle)
-        right = config.rotateVec(vec2((data.finalRight.x - trackCenterX) * canvasScale, (data.finalRight.y - trackCenterY) * canvasScale), mapSettings.store.angle)
+        left = config.rotateVec(vec2((data.finalLeft.x - trackCenterX) * canvasScale, (data.finalLeft.y - trackCenterY) * canvasScale), angle)
+        center = config.rotateVec(vec2((data.finalCenter.x - trackCenterX) * canvasScale, (data.finalCenter.y - trackCenterY) * canvasScale), angle)
+        right = config.rotateVec(vec2((data.finalRight.x - trackCenterX) * canvasScale, (data.finalRight.y - trackCenterY) * canvasScale), angle)
         
         dir = (right - left):normalize()
         init = center + dir * thickness
@@ -225,6 +232,22 @@ function map.windowMain()
             transparancy = 0
         end
     end
+    local zoom
+    if mapSettings.store.focus then
+        trackCenterX = CAR.position.x
+        trackCenterY = CAR.position.z
+        angle = math.deg(math.atan2(CAR.look.z, -CAR.look.x) + math.pi / 2)
+        canvasScale = (canvasSize.y - (padding * 2)) / trackLength
+        zoom = 100 * mapSettings.store.mapScale
+    else
+        trackCenterX = (minPos.x + maxPos.x) / 2
+        trackCenterY = (minPos.y + maxPos.y) / 2
+        local dirTrackRotated = config.rotateVec(vec2(dirTrack.x, dirTrack.y), mapSettings.store.angle)
+        angle = math.deg(math.atan2(dirTrackRotated.x, dirTrackRotated.y) + math.pi / 2)
+
+        canvasScale = (canvasSize.y - (padding * 2)) / trackLength
+        zoom = 0
+    end
 
     -- Desenha borda
     if canvas == nil then return end
@@ -241,7 +264,7 @@ function map.windowMain()
         drawPLayers(thickness)
     end)
     
-    ui.drawImage(canvas, 0, currentWindowSize.x)
+    ui.drawImage(canvas, -zoom, currentWindowSize.x + zoom)
     config.resize(currentWindowSize, "Map")
     pinCheckBox.main(mapSettings.store.mapScale * 1.5, "Map", config.getWindow("Map"):pinned(), currentWindowSize)
 end

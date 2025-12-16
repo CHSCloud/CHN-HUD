@@ -8,6 +8,7 @@ local language = require("lang.language")
 local defaultValues = {
     mapScale = 1,
     angle = 0,
+    focus = false,
     colorTrack = rgbm.from0255(0, 0, 0, 1),
     colorBorder = rgbm.from0255(255, 255, 255, 1),
     colorSectors = rgbm.from0255(255, 255, 255, 1),
@@ -20,6 +21,7 @@ local defaultValues = {
 }
 
 local borderButton = ToggleButton.new()
+local focusButton = ToggleButton.new()
 
 mapSettings.store = ac.storage(defaultValues)
 
@@ -59,6 +61,11 @@ function mapSettings.mapSettings()
         mapSettings.store.borderLenght = math.floor(slider.main("", string.format("%.0f", mapSettings.store.borderLenght), vec2(120, initPos + 3), 200, mapSettings.store.borderLenght, 4, 10))
     else
         mapSettings.store.borderLenght = -2 
+    end
+
+    initPos = initPos + 40
+    if focusButton:main(vec2(20, initPos), mapSettings.store.focus, "Focus") then
+        mapSettings.store.focus = not mapSettings.store.focus
     end
 
     initPos = initPos + 40
