@@ -16,7 +16,7 @@ local defaultValues = {
     colorPlayer = rgbm.from0255(255, 255, 0, 1),
     borderActive = true,
     borderLenght = 4,
-    trackLenght = 8
+    trackLenght = 12
 }
 
 local borderButton = ToggleButton.new()
@@ -39,7 +39,7 @@ function mapSettings.mapSettings()
     local initPos = 75
 
     -- Escala:
-    mapSettings.store.mapScale = slider.main(language.get("SIZE"), string.format("%.2f", mapSettings.store.mapScale), vec2(20, initPos), 250, mapSettings.store.mapScale, 1, 4)
+    mapSettings.store.mapScale = slider.main(language.get("SIZE"), string.format("%.2f", mapSettings.store.mapScale), vec2(20, initPos), 250, mapSettings.store.mapScale, 1, 2)
     
 
     initPos = initPos + 50
