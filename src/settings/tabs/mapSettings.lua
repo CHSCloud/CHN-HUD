@@ -9,6 +9,7 @@ local defaultValues = {
     mapScale = 1,
     angle = 0,
     focus = false,
+    zoom = 100,
     colorTrack = rgbm.from0255(0, 0, 0, 1),
     colorBorder = rgbm.from0255(255, 255, 255, 1),
     colorSectors = rgbm.from0255(255, 255, 255, 1),
@@ -58,7 +59,7 @@ function mapSettings.mapSettings()
         if mapSettings.store.borderLenght == -2 then
             mapSettings.store.borderLenght = 4
         end
-        mapSettings.store.borderLenght = math.floor(slider.main("", string.format("%.0f", mapSettings.store.borderLenght), vec2(120, initPos + 3), 200, mapSettings.store.borderLenght, 4, 10))
+        mapSettings.store.borderLenght = math.floor(slider.main("", string.format("%.0f", mapSettings.store.borderLenght), vec2(130, initPos + 2), 200, mapSettings.store.borderLenght, 4, 10))
     else
         mapSettings.store.borderLenght = -2 
     end
@@ -67,6 +68,10 @@ function mapSettings.mapSettings()
     if focusButton:main(vec2(20, initPos), mapSettings.store.focus, "Focus") then
         mapSettings.store.focus = not mapSettings.store.focus
     end
+    if mapSettings.store.focus then
+        mapSettings.store.zoom = math.floor(slider.main("Zoom", string.format("%.0f", mapSettings.store.zoom), vec2(120, initPos + 2), 200, mapSettings.store.zoom, 0, 200, slider.PosText.Start))
+    end
+    
 
     initPos = initPos + 40
     ui.setCursor(vec2(15, initPos))

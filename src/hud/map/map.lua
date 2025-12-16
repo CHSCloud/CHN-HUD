@@ -238,7 +238,6 @@ function map.windowMain()
         trackCenterY = CAR.position.z
         angle = math.deg(math.atan2(CAR.look.z, -CAR.look.x) + math.pi / 2)
         canvasScale = (canvasSize.y - (padding * 2)) / trackLength
-        zoom = 100 * mapSettings.store.mapScale
     else
         trackCenterX = (minPos.x + maxPos.x) / 2
         trackCenterY = (minPos.y + maxPos.y) / 2
@@ -246,7 +245,6 @@ function map.windowMain()
         angle = math.deg(math.atan2(dirTrackRotated.x, dirTrackRotated.y) + math.pi / 2)
 
         canvasScale = (canvasSize.y - (padding * 2)) / trackLength
-        zoom = 0
     end
 
     -- Desenha borda
@@ -264,7 +262,11 @@ function map.windowMain()
         drawPLayers(thickness)
     end)
     
-    ui.drawImage(canvas, -zoom, currentWindowSize.x + zoom)
+    if mapSettings.store.focus then
+        ui.drawImage(canvas, -mapSettings.store.zoom * mapSettings.store.mapScale, currentWindowSize.x + mapSettings.store.zoom * mapSettings.store.mapScale)
+    else 
+        ui.drawImage(canvas, 0, currentWindowSize.x)
+    end
     config.resize(currentWindowSize, "Map")
     pinCheckBox.main(mapSettings.store.mapScale * 1.5, "Map", config.getWindow("Map"):pinned(), currentWindowSize)
 end
