@@ -75,13 +75,29 @@ function config.remapInterval(value, inMin, inMax, outMin, outMax)
     return (outMin + (value - inMin) * (outMax - outMin) / (inMax - inMin))
 end
 
---- @param p1 vec2
---- @param p2 vec2
---- @return number
-function config.calculateDistance(p1, p2)
-    local dx = p2.x - p1.x
-    local dy = p2.y - p1.y
-    return math.sqrt(dx*dx + dy*dy)
+--- @param vec vec2 -- Vetor a ser rotacionado
+--- @param angleDeg number -- Ângulo em graus
+--- @return vec2
+function config.rotateVec(vec, angleDeg)
+    local rad = math.rad(angleDeg)
+    local sin = math.sin(rad)
+    local cos = math.cos(rad)
+    return vec2(vec.x * cos - vec.y * sin, vec.x * sin + vec.y * cos)
+end
+
+--- @param vec vec2
+--- @return vec2
+function config.floorVec(vec)
+    return vec2(math.floor(vec.x), math.floor(vec.y))
+end
+
+
+--- @param from table
+--- @param to table
+function config.copyTable(from, to)
+    for k, v in pairs(from) do
+        to[k] = v
+    end
 end
 
 --- @param name string

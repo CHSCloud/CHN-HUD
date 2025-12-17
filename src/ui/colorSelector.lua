@@ -1,12 +1,18 @@
 local config = require("common.config")
 local colorSelector = {}
 
+
 --- @param text string
 --- @param color rgbm
 --- @param pos vec2
-function colorSelector.main(text, color, pos) 
+--- @param id? string
+function colorSelector.main(text, color, pos, id) 
     ui.setCursor(pos)    
-    ui.colorButton('##'..text, color, ui.ColorPickerFlags.AlphaBar + ui.ColorPickerFlags.AlphaPreview + ui.ColorPickerFlags.PickerHueBar)
+    if id ~= nil then
+        ui.colorButton(id, color, ui.ColorPickerFlags.AlphaBar + ui.ColorPickerFlags.AlphaPreview + ui.ColorPickerFlags.PickerHueBar)
+    else 
+        ui.colorButton('##'..text, color, ui.ColorPickerFlags.AlphaBar + ui.ColorPickerFlags.AlphaPreview + ui.ColorPickerFlags.PickerHueBar)
+    end
     ui.setCursor(vec2(pos.x + 27, pos.y + 5))
     ui.dwriteText(text, 10, COLOR.WHITE)
     return color
