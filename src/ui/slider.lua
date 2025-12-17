@@ -18,8 +18,9 @@ slider.PosText = {
 --- @param init number -- Valor mínimo
 --- @param final number -- Valor máximo
 --- @param posText? slider.PosText @Default value: 0.
+--- @param id? string
 --- @return number
-function slider.main(text, outputText, pos, lenght, value, init, final, posText)
+function slider.main(text, outputText, pos, lenght, value, init, final, posText, id)
     local width = 6
     if posText == slider.PosText.Default or posText == nil then
         ui.dwriteDrawText(text, 12, pos - vec2(5, 25), COLOR.WHITE)
@@ -30,7 +31,11 @@ function slider.main(text, outputText, pos, lenght, value, init, final, posText)
     end
 
     ui.setCursor(pos)
-    ui.invisibleButton("##" .. text, vec2(lenght, 15), ui.ButtonFlags.PressedOnClick)
+    if id ~= nil then
+        ui.invisibleButton(id, vec2(lenght, 15), ui.ButtonFlags.PressedOnClick)
+    else 
+        ui.invisibleButton("##" .. text, vec2(lenght, 15), ui.ButtonFlags.PressedOnClick)
+    end
     if ui.itemActive() then
         value = config.remapIntervalWithLimits(ui.mouseLocalPos().x, pos.x, pos.x + lenght, init, final)
     end

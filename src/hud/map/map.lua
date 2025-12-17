@@ -141,13 +141,15 @@ local function drawSectors(thickness, color)
         local right = config.rotateVec(vec2((sector.right.x - trackCenterX) * canvasScale, (sector.right.y - trackCenterY) * canvasScale), angle)
         
         local dir = (right - left):normalize()
-        local init = center + dir * thickness
+        local init = center + dir * thickness * 2
         init = init + canvasCenter
 
-        local final = center - dir * thickness
+        local final = center - dir * thickness * 2
         final = final + canvasCenter
         if i == 1 then
-            ui.drawLine(init, final, COLOR.RED, 6)
+            local vecAux = config.rotateVec(vec2(thickness), angle)
+            ui.drawImageQuad("assets/checkered.png", init + vecAux, final + vecAux, final - vecAux, init - vecAux)
+            --ui.drawLine(init, final, COLOR.RED, 6)
         else 
             ui.drawLine(init, final, color, 6)
         end

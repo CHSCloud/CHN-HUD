@@ -108,8 +108,6 @@ local function trackSetitngs()
     mapSettings.store.colorBorder = colorSelector.main("Border", mapSettings.store.colorBorder, vec2(20, initPos))
     mapSettings.store.colorDRS = colorSelector.main("DRS", mapSettings.store.colorDRS, vec2(100, initPos))
     initPos = initPos + 30
-    mapSettings.store.colorSectors = colorSelector.main("Sectors", mapSettings.store.colorSectors, vec2(20, initPos))
-    initPos = initPos + 40
 
     if button.main(vec2(20, initPos), language.get("RESET_DEFAULT")) then
         resetToDefaultTrack()
@@ -123,17 +121,19 @@ local function playersSetitngs()
     initPos = initPos + 50
     mapSettings.store.enemiesLenght = math.floor(slider.main("Enemies Lenght", string.format("%.0f", mapSettings.store.enemiesLenght), vec2(20, initPos), 200, mapSettings.store.enemiesLenght, 10, 30))
 
-    initPos = initPos + 40
-    
+    initPos = initPos + 30
     ui.setCursor(vec2(20, initPos))
-    ui.header("Colors")
+    ui.header("Focused Car Color")
     initPos = initPos + 20
-    mapSettings.store.colorFocusedCar = colorSelector.main("Focused Car", mapSettings.store.colorFocusedCar, vec2(20, initPos))
-    mapSettings.store.colorExternalFocusedCar = colorSelector.main("Focused Car Border", mapSettings.store.colorExternalFocusedCar, vec2(120, initPos))
+    mapSettings.store.colorFocusedCar = colorSelector.main("Internal", mapSettings.store.colorFocusedCar, vec2(20, initPos), "##InternalFocused")
+    mapSettings.store.colorExternalFocusedCar = colorSelector.main("Border", mapSettings.store.colorExternalFocusedCar, vec2(100, initPos), "##BorderFocused")
 
     initPos = initPos + 30
-    mapSettings.store.colorEnemies = colorSelector.main("Enemies", mapSettings.store.colorEnemies, vec2(20, initPos))
-    mapSettings.store.colorExternalEnemies = colorSelector.main("Enemies Border", mapSettings.store.colorExternalEnemies, vec2(120, initPos))
+    ui.setCursor(vec2(20, initPos))
+    ui.header("Enemies Color")
+    initPos = initPos + 20
+    mapSettings.store.colorEnemies = colorSelector.main("Internal", mapSettings.store.colorEnemies, vec2(20, initPos), "##InternalEnemies")
+    mapSettings.store.colorExternalEnemies = colorSelector.main("Border", mapSettings.store.colorExternalEnemies, vec2(100, initPos), "##BorderEnemies")
     initPos = initPos + 30
 
     if button.main(vec2(20, initPos), language.get("RESET_DEFAULT")) then
