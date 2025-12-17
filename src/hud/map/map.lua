@@ -174,12 +174,21 @@ end
 local function drawPLayers()
     for i, car in ac.iterateCars.leaderboard() do
         if car.index ~= SIM.focusedCar then
-            drawPLayer(car, mapSettings.store.enemiesLenght, mapSettings.store.colorEnemies, mapSettings.store.colorExternalEnemies)
+            if car.isInPitlane then
+                drawPLayer(car, mapSettings.store.enemiesLenght,mapSettings.store.colorInPitLane, mapSettings.store.colorExternalInPitLane)
+                
+            else 
+                drawPLayer(car, mapSettings.store.enemiesLenght, mapSettings.store.colorEnemies, mapSettings.store.colorExternalEnemies)
+            end
         end
     end
     local car = ac.getCar(SIM.focusedCar)
     if car == nil then return end
-    drawPLayer(car, mapSettings.store.focusedCarLenght, mapSettings.store.colorFocusedCar, mapSettings.store.colorExternalFocusedCar)
+    if car.isInPitlane then
+        drawPLayer(car, mapSettings.store.focusedCarLenght, mapSettings.store.colorInPitLane, mapSettings.store.colorExternalInPitLane)
+    else 
+        drawPLayer(car, mapSettings.store.focusedCarLenght, mapSettings.store.colorFocusedCar, mapSettings.store.colorExternalFocusedCar)
+    end
 end
 
 
