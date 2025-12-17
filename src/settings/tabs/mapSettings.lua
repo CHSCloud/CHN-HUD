@@ -3,10 +3,15 @@ local colorSelector = require("src.ui.colorSelector")
 local slider = require("src.ui.slider")
 local button = require("src.ui.button")
 local ToggleButton = require("src.ui.toggleButton")
+
+local config = require("common.config")
 local language = require("lang.language")
 
-local defaultValues = {
-    mapScale = 1,
+
+local defaultValues = {}
+
+local defaultValuesTrack = {
+    mapScale = 1.3,
     angle = 0,
     focus = false,
     zoom = 100,
@@ -14,32 +19,51 @@ local defaultValues = {
     colorBorder = rgbm.from0255(255, 255, 255, 1),
     colorSectors = rgbm.from0255(255, 255, 255, 1),
     colorDRS = rgbm.from0255(0, 255, 0, 1),
-    colorEnemies = rgbm.from0255(255, 255, 255, 1),
-    colorPlayer = rgbm.from0255(255, 255, 0, 1),
     borderActive = true,
     borderLenght = 4,
     trackLenght = 12
 }
 
+local defaultValuesPlayers = {
+    colorEnemies = rgbm.from0255(255, 255, 255, 1),
+    colorFocusedCar = rgbm.from0255(255, 255, 0, 1),
+    colorExternalEnemies = rgbm.from0255(0, 0, 0, 1),
+    colorExternalFocusedCar = rgbm.from0255(0, 0, 0, 1),
+    focusedCarLenght = 20,
+    enemiesLenght = 20
+}  
+
+config.copyTable(defaultValuesTrack, defaultValues)
+config.copyTable(defaultValuesPlayers, defaultValues)
+mapSettings.store = ac.storage(defaultValues)
+
+
 local borderButton = ToggleButton.new()
 local focusButton = ToggleButton.new()
 
-mapSettings.store = ac.storage(defaultValues)
-
-local function resetToDefault()
-    for key, value in pairs(defaultValues) do
+local function resetToDefaultTrack()
+    for key, value in pairs(defaultValuesTrack) do
         mapSettings.store[key] = value
     end
     mapSettings.store.colorTrack = rgbm.from0255(0, 0, 0, 1)
     mapSettings.store.colorBorder = rgbm.from0255(255, 255, 255, 1)
     mapSettings.store.colorSectors = rgbm.from0255(255, 255, 255, 1)
     mapSettings.store.colorDRS = rgbm.from0255(0, 255, 0, 1)
-    mapSettings.store.colorEnemies = rgbm.from0255(255, 255, 255, 1)
-    mapSettings.store.colorPlayer = rgbm.from0255(255, 255, 0, 1)
 end
 
-function mapSettings.mapSettings()
-    local initPos = 75
+local function resetToDefaultPlayers()
+    for key, value in pairs(defaultValuesPlayers) do
+        mapSettings.store[key] = value
+    end
+    mapSettings.store.colorEnemies = rgbm.from0255(255, 255, 255, 1)
+    mapSettings.store.colorFocusedCar = rgbm.from0255(255, 255, 0, 1)
+    mapSettings.store.colorExternalFocusedCar = rgbm.from0255(0, 0, 0, 1)
+    mapSettings.store.colorExternalEnemies = rgbm.from0255(0, 0, 0, 1)
+end
+
+
+local function trackSetitngs()
+    local initPos = 100
 
     -- Escala:
     mapSettings.store.mapScale = slider.main(language.get("SIZE"), string.format("%.2f", mapSettings.store.mapScale), vec2(20, initPos), 250, mapSettings.store.mapScale, 1, 2)
@@ -75,24 +99,54 @@ function mapSettings.mapSettings()
 
     initPos = initPos + 40
     ui.setCursor(vec2(15, initPos))
-    ui.header("Map")
-    ui.setCursor(vec2(95, initPos))
-    ui.header("Players")
-    mapSettings.store.colorPlayer = colorSelector.main("Player", mapSettings.store.colorPlayer, vec2(100, initPos + 20))
-    mapSettings.store.colorEnemies = colorSelector.main("Enemies", mapSettings.store.colorEnemies, vec2(100, initPos + 50))
+    ui.header("Colors")
 
     initPos = initPos + 20
     mapSettings.store.colorTrack = colorSelector.main("Track", mapSettings.store.colorTrack, vec2(20, initPos))
+    mapSettings.store.colorSectors = colorSelector.main("Sectors", mapSettings.store.colorSectors, vec2(100, initPos))
     initPos = initPos + 30
     mapSettings.store.colorBorder = colorSelector.main("Border", mapSettings.store.colorBorder, vec2(20, initPos))
+    mapSettings.store.colorDRS = colorSelector.main("DRS", mapSettings.store.colorDRS, vec2(100, initPos))
     initPos = initPos + 30
     mapSettings.store.colorSectors = colorSelector.main("Sectors", mapSettings.store.colorSectors, vec2(20, initPos))
-    initPos = initPos + 30
-    mapSettings.store.colorDRS = colorSelector.main("DRS", mapSettings.store.colorDRS, vec2(20, initPos))
+    initPos = initPos + 40
 
-    if button.main(vec2(20, initPos + 40), language.get("RESET_DEFAULT")) then
-        resetToDefault()
+    if button.main(vec2(20, initPos), language.get("RESET_DEFAULT")) then
+        resetToDefaultTrack()
+    end 
+end
+
+local function playersSetitngs()
+    local initPos = 100
+
+    mapSettings.store.focusedCarLenght = math.floor(slider.main("Focused Car Lenght", string.format("%.0f", mapSettings.store.focusedCarLenght), vec2(20, initPos), 200, mapSettings.store.focusedCarLenght, 10, 30))
+    initPos = initPos + 50
+    mapSettings.store.enemiesLenght = math.floor(slider.main("Enemies Lenght", string.format("%.0f", mapSettings.store.enemiesLenght), vec2(20, initPos), 200, mapSettings.store.enemiesLenght, 10, 30))
+
+    initPos = initPos + 40
+    
+    ui.setCursor(vec2(20, initPos))
+    ui.header("Colors")
+    initPos = initPos + 20
+    mapSettings.store.colorFocusedCar = colorSelector.main("Focused Car", mapSettings.store.colorFocusedCar, vec2(20, initPos))
+    mapSettings.store.colorExternalFocusedCar = colorSelector.main("Focused Car Border", mapSettings.store.colorExternalFocusedCar, vec2(120, initPos))
+
+    initPos = initPos + 30
+    mapSettings.store.colorEnemies = colorSelector.main("Enemies", mapSettings.store.colorEnemies, vec2(20, initPos))
+    mapSettings.store.colorExternalEnemies = colorSelector.main("Enemies Border", mapSettings.store.colorExternalEnemies, vec2(120, initPos))
+    initPos = initPos + 30
+
+    if button.main(vec2(20, initPos), language.get("RESET_DEFAULT")) then
+        resetToDefaultPlayers()
     end
+end
+
+
+function mapSettings.mapSettings()
+    ui.tabBar('##ID',function ()
+        ui.tabItem("Track", trackSetitngs)
+        ui.tabItem("Players", playersSetitngs)
+    end)
 end
 
 return mapSettings

@@ -156,28 +156,28 @@ end
 
 --- @param car ac.StateCar -- Cara a ser desenhado
 --- @param lenght number -- Tamanho do círculo
---- @param color rgbm -- Cor do círculo
-local function drawPLayer(car, lenght, color)
+--- @param colorInternal rgbm -- Cor do círculo interno
+--- @param colorExternal rgbm -- Cor do círculo extero
+local function drawPLayer(car, lenght, colorInternal, colorExternal)
     local posX = (car.position.x - trackCenterX) * canvasScale
     local posY = (car.position.z - trackCenterY) * canvasScale
     local rotatedPos = config.rotateVec(vec2(posX, posY), angle)
     rotatedPos = canvasCenter + rotatedPos
-    ui.drawCircleFilled(rotatedPos, lenght / 2, color, 20)
-    ui.drawCircle(rotatedPos, lenght / 2, COLOR.BLACK, 20, 5)
+    ui.drawCircleFilled(rotatedPos, lenght, colorInternal, 20)
+    ui.drawCircle(rotatedPos, lenght, colorExternal, 20, lenght / 5)
     ui.setCursor(rotatedPos - vec2(lenght,lenght)/2)
-    ui.dwriteTextAligned(tostring(car.racePosition), 0.6 * lenght, ui.Alignment.Center, ui.Alignment.Center, vec2(lenght, lenght), false, COLOR.BLACK)
+    ui.dwriteTextAligned(tostring(car.racePosition), lenght, ui.Alignment.Center, ui.Alignment.Center, vec2(lenght, lenght), false, colorExternal)
 end
 
---- @param lenght number -- Tamanho dos círculos
-local function drawPLayers(lenght)
+local function drawPLayers()
     for i, car in ac.iterateCars.leaderboard() do
         if car.index ~= SIM.focusedCar then
-            drawPLayer(car, lenght, mapSettings.store.colorEnemies)
+            drawPLayer(car, mapSettings.store.enemiesLenght, mapSettings.store.colorEnemies, mapSettings.store.colorExternalEnemies)
         end
     end
     local car = ac.getCar(SIM.focusedCar)
     if car == nil then return end
-    drawPLayer(car, lenght, mapSettings.store.colorPlayer)
+    drawPLayer(car, mapSettings.store.focusedCarLenght, mapSettings.store.colorFocusedCar, mapSettings.store.colorExternalFocusedCar)
 end
 
 
@@ -213,7 +213,6 @@ end
 function map.windowMain()
     ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
     currentWindowSize = vec2(300, 300):scale(mapSettings.store.mapScale)
-    thickness = 50
     -- Animação do Background
     if config.isMouseInWindow(ui.mouseLocalPos(), 0, ui.windowSize().x, 0, ui.windowSize().y) then
         if transparancy < 0.85 then
@@ -259,7 +258,7 @@ function map.windowMain()
         -- Desenha setores
         drawSectors(mapSettings.store.trackLenght / 1.8, mapSettings.store.colorSectors)
         -- Desenha jogadores
-        drawPLayers(thickness)
+        drawPLayers()
     end)
     
     if mapSettings.store.focus then

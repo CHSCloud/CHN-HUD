@@ -91,6 +91,15 @@ function config.floorVec(vec)
     return vec2(math.floor(vec.x), math.floor(vec.y))
 end
 
+
+--- @param from table
+--- @param to table
+function config.copyTable(from, to)
+    for k, v in pairs(from) do
+        to[k] = v
+    end
+end
+
 --- @param name string
 function config.getWindow(name)
     local data = windows[name]
