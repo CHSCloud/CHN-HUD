@@ -2,7 +2,7 @@ local language = require("lang.language")
 local slider = require("src.ui.slider")
 local button = require("src.ui.button")
 local droplist = require("src.ui.droplist")
-local ToggleButton = require("src.ui.toggleButton")
+local toggleButton = require("src.ui.toggleButton")
 local pedalsSettings = {} 
 
 local defaultValues = {
@@ -27,19 +27,6 @@ local defaultValues = {
     barLength = 0.55
 }
 
-local gearButton = ToggleButton.new()
-local speedButton = ToggleButton.new()
-local wheelButton = ToggleButton.new()
-local absButton = ToggleButton.new()
-local throttleButton = ToggleButton.new()
-local brakeButton = ToggleButton.new()
-local brakeBiasButton = ToggleButton.new()
-local clutchButton = ToggleButton.new()
-local handbrakeButton = ToggleButton.new()
-local textBarsButton = ToggleButton.new()
-local fuelButton = ToggleButton.new()
-local pedalLimitsLinesButton = ToggleButton.new()
-local rpmButton = ToggleButton.new()
 
 pedalsSettings.store = ac.storage(defaultValues)
 
@@ -84,17 +71,17 @@ function pedalsSettings.pedalsSettings()
     ui.header(language.get("STEERING"))
     
     initPos = initPos + 25; 
-    if gearButton:main(vec2(20,initPos), pedalsSettings.store.gearActive, language.get("GEAR")) then
+    if toggleButton.main("gear", vec2(20,initPos), pedalsSettings.store.gearActive, language.get("GEAR")) then
         pedalsSettings.store.gearActive = not pedalsSettings.store.gearActive
     end
     
     initPos = initPos + 25; 
-    if speedButton:main(vec2(20,initPos), pedalsSettings.store.speedActive, language.get("SPEED")) then
+    if toggleButton.main("speed",vec2(20,initPos), pedalsSettings.store.speedActive, language.get("SPEED")) then
         pedalsSettings.store.speedActive = not pedalsSettings.store.speedActive
     end
     
     initPos = initPos + 25;
-    if wheelButton:main(vec2(20,initPos), pedalsSettings.store.wheelActive, language.get("WHEEL")) then
+    if toggleButton.main("wheel", vec2(20,initPos), pedalsSettings.store.wheelActive, language.get("WHEEL")) then
         pedalsSettings.store.wheelActive = not pedalsSettings.store.wheelActive
     end
     if pedalsSettings.store.wheelActive then
@@ -102,7 +89,7 @@ function pedalsSettings.pedalsSettings()
     end
     
     initPos = initPos + 25; 
-    if absButton:main(vec2(20,initPos), pedalsSettings.store.absActive, language.get("ABS")) then
+    if toggleButton.main("abs", vec2(20,initPos), pedalsSettings.store.absActive, language.get("ABS")) then
         pedalsSettings.store.absActive = not pedalsSettings.store.absActive
     end
 
@@ -121,12 +108,12 @@ function pedalsSettings.pedalsSettings()
     ui.header(language.get("OTHERS"))
   
     initPos2 = initPos2 + 25; 
-    if fuelButton:main(vec2(posXOthers,initPos2), pedalsSettings.store.fuelActive, language.get("FUEL")) then
+    if toggleButton.main("fuel", vec2(posXOthers,initPos2), pedalsSettings.store.fuelActive, language.get("FUEL")) then
         pedalsSettings.store.fuelActive = not pedalsSettings.store.fuelActive
     end
     
     initPos2 = initPos2 + 25; 
-    if brakeBiasButton:main(vec2(posXOthers,initPos2), pedalsSettings.store.brakeBiasActive, language.get("BRAKE_BIAS")) then
+    if toggleButton.main("brakeBias", vec2(posXOthers,initPos2), pedalsSettings.store.brakeBiasActive, language.get("BRAKE_BIAS")) then
         pedalsSettings.store.brakeBiasActive = not pedalsSettings.store.brakeBiasActive
     end
     -- 
@@ -136,7 +123,7 @@ function pedalsSettings.pedalsSettings()
     ui.header("RPM")
     
     posRPMpedalsSettings = posRPMpedalsSettings + 25
-    if rpmButton:main(vec2(posXRPMpedalsSettings,posRPMpedalsSettings), pedalsSettings.store.rpmActive, language.get("RPM")) then
+    if toggleButton.main("rpm",vec2(posXRPMpedalsSettings,posRPMpedalsSettings), pedalsSettings.store.rpmActive, "") then
         pedalsSettings.store.rpmActive = not pedalsSettings.store.rpmActive
     end
 
@@ -197,33 +184,33 @@ function pedalsSettings.pedalsSettings()
     ui.header(language.get("PEDALS"))
 
     initPos = initPos + 25; 
-    if throttleButton:main(vec2(20,initPos), pedalsSettings.store.throttleActive, language.get("THROTTLE")) then
+    if toggleButton.main("throttle", vec2(20,initPos), pedalsSettings.store.throttleActive, language.get("THROTTLE")) then
         pedalsSettings.store.throttleActive = not pedalsSettings.store.throttleActive
     end
 
     ui.setCursor(vec2(posXStyle - 5, initPos - 25))
     ui.header(language.get("PEDAL_STYLE"))
-    if textBarsButton:main(vec2(posXStyle,initPos), pedalsSettings.store.textBarsActive, language.get("PERCENTAGE_PEDALS")) then
+    if toggleButton.main("percentagePedals", vec2(posXStyle,initPos), pedalsSettings.store.textBarsActive, language.get("PERCENTAGE_PEDALS")) then
         pedalsSettings.store.textBarsActive = not pedalsSettings.store.textBarsActive
     end
 
     initPos = initPos + 25
-    if pedalLimitsLinesButton:main(vec2(posXStyle,initPos), pedalsSettings.store.pedalLimitsLines, language.get("LIMIT_LINES")) then
+    if toggleButton.main("limitLines", vec2(posXStyle,initPos), pedalsSettings.store.pedalLimitsLines, language.get("LIMIT_LINES")) then
         pedalsSettings.store.pedalLimitsLines = not pedalsSettings.store.pedalLimitsLines
     end
 
     ui.setCursor(vec2(20, initPos))
-    if brakeButton:main(vec2(20,initPos), pedalsSettings.store.brakeActive, language.get("BRAKE")) then
+    if toggleButton.main("brake", vec2(20,initPos), pedalsSettings.store.brakeActive, language.get("BRAKE")) then
         pedalsSettings.store.brakeActive = not pedalsSettings.store.brakeActive
     end
     
     initPos = initPos + 25; 
-    if clutchButton:main(vec2(20,initPos), pedalsSettings.store.clutchActive, language.get("CLUTCH")) then
+    if toggleButton.main("clutch", vec2(20,initPos), pedalsSettings.store.clutchActive, language.get("CLUTCH")) then
         pedalsSettings.store.clutchActive = not pedalsSettings.store.clutchActive
     end
     
     initPos = initPos + 25; 
-    if handbrakeButton:main(vec2(20,initPos), pedalsSettings.store.handbrakeActive, language.get("HANDBRAKE")) then
+    if toggleButton.main("handbrake", vec2(20,initPos), pedalsSettings.store.handbrakeActive, language.get("HANDBRAKE")) then
         pedalsSettings.store.handbrakeActive = not pedalsSettings.store.handbrakeActive
     end
     --

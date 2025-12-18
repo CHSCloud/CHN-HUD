@@ -1,37 +1,36 @@
 local config = require("common.config")
-local ToggleButton = {}
-ToggleButton.__index = ToggleButton
+local toggleButton = {}
 
-function ToggleButton.new()
-    local self = setmetatable({}, ToggleButton)
-    self.pos = vec2(12, 10)
-    return self
-end
+local positions = {}
 
+--- @param id string
 --- @param pos vec2
 --- @param key boolean
 --- @param text string
 --- @return boolean -- Se foi clicado
-function ToggleButton:main(pos, key, text)
+function toggleButton.main(id, pos, key, text)
     local size = vec2(40, 20)
     local init = vec2(12, 10)
     local final = vec2(28, 10)
+    if positions[id] == nil then
+        positions[id] = init
+    end
     if key then
-        if self.pos.x < final.x then
-            self.pos = self.pos + vec2(3, 0)
+        if positions[id].x < final.x then
+            positions[id] = positions[id] + vec2(3, 0)
         else 
-            self.pos = final
+            positions[id] = final
         end
         ui.drawRectFilled(pos, pos + size, UserUI.accentColor, 20)
-        ui.drawCircleFilled(pos + self.pos, size.y / 2.2, COLOR.WHITE, 20)
+        ui.drawCircleFilled(pos + positions[id], size.y / 2.2, COLOR.WHITE, 20)
     else 
-        if self.pos.x > init.x then
-            self.pos = self.pos - vec2(3, 0)
+        if positions[id].x > init.x then
+            positions[id] = positions[id] - vec2(3, 0)
         else 
-            self.pos = init
+            positions[id] = init
         end
         ui.drawRectFilled(pos, pos + size, COLOR.GRAY_BG, 20)
-        ui.drawCircleFilled(pos + self.pos, size.y / 2.2, COLOR.WHITE, 20)
+        ui.drawCircleFilled(pos + positions[id], size.y / 2.2, COLOR.WHITE, 20)
     end
 
     ui.dwriteDrawText(text, 12, pos + vec2(50, 2), COLOR.WHITE)
@@ -41,4 +40,4 @@ function ToggleButton:main(pos, key, text)
     return false
 end
 
-return ToggleButton
+return toggleButton

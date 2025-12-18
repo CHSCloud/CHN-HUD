@@ -5,7 +5,7 @@ local startingLightsSettings = require("src.settings.tabs.startingLightsSettings
 local sessionFlagsSettings = require("src.settings.tabs.sessionFlagsSettings")
 local mapSettings = require("src.settings.tabs.mapSettings")
 
-local ToggleButton = require("src.ui.toggleButton")
+local toggleButton = require("src.ui.toggleButton")
 local button = require("src.ui.button")
 local slider = require("src.ui.slider")
 
@@ -21,8 +21,6 @@ local defaultValues = {
     transparancy = 0.85,
     windowsColor = rgbm.from0255(18, 21, 29, 0.85)
 }
-
-local pinButton = ToggleButton.new()
 settings.store = ac.storage(defaultValues)
 
 COLOR = {
@@ -75,7 +73,7 @@ local function geral()
   ui.setCursor(vec2(300, initPos + 20))
   
   -- Checkbox Pin All Apps
-  if pinButton:main(vec2(300, initPos), config.store.pinAllApps, language.get("PIN_ALL_APPS")) then
+  if toggleButton.main("pin", vec2(300, initPos), config.store.pinAllApps, language.get("PIN_ALL_APPS")) then
     config.store.pinAllApps = not config.store.pinAllApps
     config.pinAllApps(config.store.pinAllApps)
   end

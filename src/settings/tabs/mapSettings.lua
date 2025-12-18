@@ -2,7 +2,7 @@ local mapSettings = {}
 local colorSelector = require("src.ui.colorSelector")
 local slider = require("src.ui.slider")
 local button = require("src.ui.button")
-local ToggleButton = require("src.ui.toggleButton")
+local toggleButton = require("src.ui.toggleButton")
 
 local config = require("common.config")
 local language = require("lang.language")
@@ -40,9 +40,6 @@ config.copyTable(defaultValuesTrack, defaultValues)
 config.copyTable(defaultValuesPlayers, defaultValues)
 mapSettings.store = ac.storage(defaultValues)
 
-
-local borderButton = ToggleButton.new()
-local focusButton = ToggleButton.new()
 
 local function resetToDefaultTrack()
     for key, value in pairs(defaultValuesTrack) do
@@ -82,7 +79,7 @@ local function trackSetitngs()
     mapSettings.store.trackLenght = math.floor(slider.main("Track Lenght", string.format("%.0f", mapSettings.store.trackLenght), vec2(20, initPos), 250, mapSettings.store.trackLenght, 12, 25))
     initPos = initPos + 30
 
-    if borderButton:main(vec2(20, initPos), mapSettings.store.borderActive, "Border") then
+    if toggleButton.main("borderMap", vec2(20, initPos), mapSettings.store.borderActive, "Border") then
         mapSettings.store.borderActive = not mapSettings.store.borderActive
     end
     if mapSettings.store.borderActive then
@@ -95,7 +92,7 @@ local function trackSetitngs()
     end
 
     initPos = initPos + 40
-    if focusButton:main(vec2(20, initPos), mapSettings.store.focus, "Focus") then
+    if toggleButton.main("focus",vec2(20, initPos), mapSettings.store.focus, "Focus") then
         mapSettings.store.focus = not mapSettings.store.focus
     end
     if mapSettings.store.focus then

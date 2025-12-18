@@ -1,7 +1,7 @@
 local language = require("lang.language")
 local slider = require("src.ui.slider")
 local button = require("src.ui.button")
-local ToggleButton = require("src.ui.toggleButton")
+local toggleButton = require("src.ui.toggleButton")
 local sessionLapsSettings = {}
 
 local defaultValues = {
@@ -11,9 +11,6 @@ local defaultValues = {
     bestLapActive = true,
 }
 
-local currentLapButton = ToggleButton.new()
-local lastLapButton = ToggleButton.new()
-local bestLapButton = ToggleButton.new()
 
 sessionLapsSettings.store = ac.storage(defaultValues)
 
@@ -33,17 +30,17 @@ function sessionLapsSettings.sessionLapsSettings()
     ui.setCursor(vec2(15, initPos))
     ui.header(language.get("LAPS"))
     initPos = initPos + 20
-    if currentLapButton:main(vec2(20, initPos), sessionLapsSettings.store.currentLapActive, language.get("CURRENT")) then
+    if toggleButton.main("current", vec2(20, initPos), sessionLapsSettings.store.currentLapActive, language.get("CURRENT")) then
         sessionLapsSettings.store.currentLapActive = not sessionLapsSettings.store.currentLapActive
     end
 
     initPos = initPos + 25
-    if lastLapButton:main(vec2(20, initPos), sessionLapsSettings.store.lastLapActive, language.get("LAST")) then
+    if toggleButton.main("last", vec2(20, initPos), sessionLapsSettings.store.lastLapActive, language.get("LAST")) then
         sessionLapsSettings.store.lastLapActive = not sessionLapsSettings.store.lastLapActive
     end
 
     initPos = initPos + 25
-    if bestLapButton:main(vec2(20, initPos), sessionLapsSettings.store.bestLapActive, language.get("BEST")) then
+    if toggleButton.main("best", vec2(20, initPos), sessionLapsSettings.store.bestLapActive, language.get("BEST")) then
         sessionLapsSettings.store.bestLapActive = not sessionLapsSettings.store.bestLapActive
     end
 
