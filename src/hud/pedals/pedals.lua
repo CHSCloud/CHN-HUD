@@ -1,4 +1,5 @@
 local pedalsSettings = require("src.settings.tabs.pedalsSettings")
+local language = require("lang.language")
 local config = require("common.config")
 local pinCheckBox = require("src.ui.pinCheckBox")
 local pedals = {}
@@ -176,14 +177,14 @@ end
 
 -- Desenha rpm
 local function drawRpm()
-    if (currentWindowWidth < 68 * pedalsSettings.store.pedalsScale) then
+  if (currentWindowWidth < 68 * pedalsSettings.store.pedalsScale) then
     currentWindowWidth = currentWindowWidth + (68 * pedalsSettings.store.pedalsScale - currentWindowWidth)
   end
   local rpmStart = CAR.rpmLimiter * 0.80
   local rpmFinal = CAR.rpmLimiter * 0.98
   local rpmRange =  rpmFinal - rpmStart
 
-  if pedalsSettings.store.rpmType == "default" then
+  if pedalsSettings.store.rpmType == language.get("SHIFT_LIGHTS") then
     local spaceCircles = (currentWindowWidth * 0.95) / (pedalsSettings.store.numLights * pedalsSettings.store.pedalsScale)
     if spaceCircles > 18 then spaceCircles = 18 end
     local initPos = (currentWindowWidth / 2) - (((pedalsSettings.store.numLights - 1) * spaceCircles) / 2) * pedalsSettings.store.pedalsScale
@@ -192,7 +193,7 @@ local function drawRpm()
       level = ((pedalsSettings.store.numLights * (CAR.rpm - rpmStart)) / rpmRange) + 1
     end
     local color = COLOR.GREEN
-    if pedalsSettings.store.rpmProcessType == "default" then
+    if pedalsSettings.store.rpmProcessType == language.get("DEFAULT") then
       for i = 1, pedalsSettings.store.numLights, 1 do
         if (CAR.rpm >= rpmFinal * 0.98) then
           level = pedalsSettings.store.numLights 
@@ -211,7 +212,7 @@ local function drawRpm()
         ui.drawCircleFilled(vec2(initPos, 11 * pedalsSettings.store.pedalsScale), (spaceCircles * 0.45) * pedalsSettings.store.pedalsScale, color, 20 * pedalsSettings.store.pedalsScale)
         initPos = initPos + spaceCircles * pedalsSettings.store.pedalsScale
       end
-    elseif pedalsSettings.store.rpmProcessType == "total" then
+    elseif pedalsSettings.store.rpmProcessType == "Total" then
       if (CAR.rpm >= CAR.rpmLimiter * 0.96) then
         level = pedalsSettings.store.numLights 
         if (8 * Timer) % 2 >= 1 then 
@@ -235,7 +236,7 @@ local function drawRpm()
         initPos = initPos + spaceCircles * pedalsSettings.store.pedalsScale
       end
     end
-  elseif pedalsSettings.store.rpmType == "bar" then
+  elseif pedalsSettings.store.rpmType == language.get("BAR") then
     local width = currentWindowWidth * pedalsSettings.store.barLength
     local initPos = (currentWindowWidth / 2) - (width / 2)
     local barHeight = 18 * pedalsSettings.store.pedalsScale
@@ -357,12 +358,12 @@ local function drawWheel()
   local p2 = (1 + contentTop) * pedalsSettings.store.pedalsScale 
   local width = 65 * pedalsSettings.store.pedalsScale
   local height = 72 * pedalsSettings.store.pedalsScale
-  if pedalsSettings.store.wheelType == "default" then
+  if pedalsSettings.store.wheelType == "Iracing" then
     ui.setCursor(vec2(p1, p2))
     ui.beginRotation()
     ui.image("assets/Wheel.png", vec2(width, height), ui.ImageFit.Fit)
     ui.endRotation(90 - CAR.steer)
-  elseif pedalsSettings.store.wheelType == "simple" then
+  elseif pedalsSettings.store.wheelType == language.get("SIMPLE") then
     local thickness = 7 * pedalsSettings.store.pedalsScale
     local lenght = 5 * pedalsSettings.store.pedalsScale
     ui.beginRotation()

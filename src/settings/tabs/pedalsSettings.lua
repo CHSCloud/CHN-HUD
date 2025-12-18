@@ -1,6 +1,7 @@
 local language = require("lang.language")
 local slider = require("src.ui.slider")
 local button = require("src.ui.button")
+local droplist = require("src.ui.droplist")
 local ToggleButton = require("src.ui.toggleButton")
 local pedalsSettings = {} 
 
@@ -19,9 +20,9 @@ local defaultValues = {
     fuelActive = true,
     pedalLimitsLines = true,
     rpmActive = true,
-    wheelType = "default",
-    rpmType = "default",
-    rpmProcessType = "default",
+    wheelType = "Iracing",
+    rpmType = language.get("SHIFT_LIGHTS"),
+    rpmProcessType = language.get("DEFAULT"),
     numLights = 9,
     barLength = 0.55
 }
@@ -50,23 +51,22 @@ end
 
 function pedalsSettings.pedalsSettings()
     local wheelLabels = {
-        ["default"] = "Iracing",
-        ["simple"] = language.get("SIMPLE")
+        "Iracing",
+        language.get("SIMPLE")
     }
     local rpmLabels = {
-        ["default"] = language.get("SHIFT_LIGHTS"),
-        ["bar"] = language.get("BAR")
+        language.get("SHIFT_LIGHTS"),
+        language.get("BAR")
     }
     local processCircleType = {
-        ["default"] = language.get("DEFAULT"),
-        ["total"] = "Total"
+        language.get("DEFAULT"),
+        "Total"
     }
-    
     -- Layout
     local initPos = 55
-    local posXOthers = 250
+    local posXOthers = 270
     local posXStyle = 150
-    local posXRPMpedalsSettings = 460
+    local posXRPMpedalsSettings = 490
 
     
     initPos = initPos + 20
@@ -98,15 +98,7 @@ function pedalsSettings.pedalsSettings()
         pedalsSettings.store.wheelActive = not pedalsSettings.store.wheelActive
     end
     if pedalsSettings.store.wheelActive then
-        -- Combo Wheel Type
-        ui.setCursor(vec2(120, initPos + 5))
-        ui.header("|  ".. language.get("TYPE"))
-        ui.setCursor(vec2(160, initPos))
-        ui.setNextItemWidth(100)
-        ui.combo('##wheelType', wheelLabels[pedalsSettings.store.wheelType], function ()
-            if ui.selectable(wheelLabels["default"]) then pedalsSettings.store.wheelType = "default" end
-            if ui.selectable(wheelLabels["simple"]) then pedalsSettings.store.wheelType = "simple" end
-        end)
+        pedalsSettings.store.wheelType = droplist.main("##wheelType", "", vec2(110, initPos - 2), 100, pedalsSettings.store.wheelType, wheelLabels, droplist.PosText.Start)
     end
     
     initPos = initPos + 25; 
@@ -120,7 +112,7 @@ function pedalsSettings.pedalsSettings()
         ui.dwriteTextAligned(language.get("ALERT_ABS"), 12, ui.Alignment.Center, ui.Alignment.Center, vec2(180, 20), false, COLOR.RED)  
     end
 
-    initPos = initPos + 50
+    initPos = initPos + 65
     ui.drawRectFilled(vec2(5, initPos), vec2(WindowSettingsSize.x - 5, initPos), COLOR.GRAY, 1)
 
     -- OUTROS
@@ -149,39 +141,23 @@ function pedalsSettings.pedalsSettings()
     end
 
     if pedalsSettings.store.rpmActive then
-        local exampleRPpedalsSettingsX = 515        
+
+        local exampleRPpedalsSettingsX = posXRPMpedalsSettings + 70   
         local exampleRPpedalsSettingsY = 158
         
         posRPMpedalsSettings = posRPMpedalsSettings + 30
-        ui.setCursor(vec2(posXRPMpedalsSettings, posRPMpedalsSettings + 5))
-        ui.header(language.get("TYPE"))
-        
-        ui.setCursor(vec2(posXRPMpedalsSettings + 30, posRPMpedalsSettings))
-        ui.setNextItemWidth(140)
-        
-        -- Combo RPM Type
-        ui.combo('##rpmType', rpmLabels[pedalsSettings.store.rpmType], function ()
-            if ui.selectable(rpmLabels["default"]) then pedalsSettings.store.rpmType = "default" end
-            if ui.selectable(rpmLabels["bar"]) then pedalsSettings.store.rpmType = "bar" end
-        end)
 
-        if pedalsSettings.store.rpmType == "default" then
-            posRPMpedalsSettings = posRPMpedalsSettings + 35
-            ui.setCursor(vec2(posXRPMpedalsSettings, posRPMpedalsSettings))
-            ui.header(language.get("PROGRESS"))
-            
-            ui.setCursor(vec2(posXRPMpedalsSettings + 50, posRPMpedalsSettings - 5))
-            ui.setNextItemWidth(100)
-            
-            ui.combo('##progress', processCircleType[pedalsSettings.store.rpmProcessType], function ()
-                if ui.selectable(processCircleType["default"]) then pedalsSettings.store.rpmProcessType = "default" end
-                if ui.selectable(processCircleType["total"]) then pedalsSettings.store.rpmProcessType = "total" end
-            end)
+        pedalsSettings.store.rpmType = droplist.main("##rpmType", language.get("TYPE"), vec2(posXRPMpedalsSettings, posRPMpedalsSettings + 5), 160, pedalsSettings.store.rpmType, rpmLabels, droplist.PosText.Start)
+
+        if pedalsSettings.store.rpmType == language.get("SHIFT_LIGHTS") then
+
+            posRPMpedalsSettings = posRPMpedalsSettings + 40
+            pedalsSettings.store.rpmProcessType = droplist.main("##progress", language.get("PROGRESS"), vec2(posXRPMpedalsSettings, posRPMpedalsSettings), 100, pedalsSettings.store.rpmProcessType, processCircleType, droplist.PosText.Start)
 
             for i = 1, 9 do
                 local c1, c2, c3 = COLOR.GREEN, COLOR.GREEN, COLOR.GREEN
                 
-                if pedalsSettings.store.rpmProcessType == "default" then
+                if pedalsSettings.store.rpmProcessType == language.get("DEFAULT") then
                     if i > 7 then c1, c2, c3 = COLOR.GRAY_BG, COLOR.GRAY_BG, COLOR.RED_DARK
                     elseif i > 4 then c1, c2, c3 = COLOR.GRAY_BG, COLOR.YELLOW, COLOR.YELLOW end
                 else 
@@ -197,9 +173,9 @@ function pedalsSettings.pedalsSettings()
             end
 
             posRPMpedalsSettings = posRPMpedalsSettings + 30
-            pedalsSettings.store.numLights = math.floor(slider.main(language.get("NUM_LIGHTS"), string.format("%i", pedalsSettings.store.numLights), vec2(posXRPMpedalsSettings, posRPMpedalsSettings), 135, pedalsSettings.store.numLights, 6, 25, slider.PosText.Start))
+            pedalsSettings.store.numLights = math.floor(slider.main(language.get("NUM_LIGHTS"), string.format("%i", pedalsSettings.store.numLights), vec2(posXRPMpedalsSettings, posRPMpedalsSettings + 10), 135, pedalsSettings.store.numLights, 6, 25, slider.PosText.Start))
 
-        elseif pedalsSettings.store.rpmType == "bar" then
+        elseif pedalsSettings.store.rpmType == language.get("BAR") then
             posRPMpedalsSettings = posRPMpedalsSettings + 35
         
             ui.drawRectFilled(vec2(exampleRPpedalsSettingsX - 5, exampleRPpedalsSettingsY - 35), vec2(exampleRPpedalsSettingsX + 93, exampleRPpedalsSettingsY - 25), COLOR.GRAY_BG, 10)
@@ -209,11 +185,11 @@ function pedalsSettings.pedalsSettings()
             ui.drawRectFilled(vec2(exampleRPpedalsSettingsX - 5, exampleRPpedalsSettingsY - 5), vec2(exampleRPpedalsSettingsX + 93, exampleRPpedalsSettingsY + 5), COLOR.GRAY_BG, 10)
             ui.drawRectFilled(vec2(exampleRPpedalsSettingsX - 5, exampleRPpedalsSettingsY - 5), vec2(exampleRPpedalsSettingsX - 5 + (98), exampleRPpedalsSettingsY + 5), COLOR.RED, 10)
             
-            pedalsSettings.store.barLength = slider.main(language.get("PERCENTAGE"), string.format("%.0f", (pedalsSettings.store.barLength+ 0.05) * 100) .. "%", vec2(posXRPMpedalsSettings, posRPMpedalsSettings - 5), 130, pedalsSettings.store.barLength, 0.25, 0.95, slider.PosText.Start)
+            pedalsSettings.store.barLength = slider.main(language.get("PERCENTAGE"), string.format("%.0f", (pedalsSettings.store.barLength+ 0.05) * 100) .. "%", vec2(posXRPMpedalsSettings, posRPMpedalsSettings + 10), 130, pedalsSettings.store.barLength, 0.25, 0.95, slider.PosText.Start)
         end
         --
     end
-    --
+    --  
 
     -- PEDAIS
     initPos = initPos + 10

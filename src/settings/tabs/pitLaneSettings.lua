@@ -6,7 +6,7 @@ local pitLaneSettings = {}
 
 local defaultValues = {
     pitLaneScale = 1,
-    optionPlate = "default"
+    optionPlate = language.get("DEFAULT")
 }
 
 pitLaneSettings.store = ac.storage(defaultValues)
@@ -19,36 +19,16 @@ end
 
 function pitLaneSettings.pitLaneSettings()
     local plates = {
-        ["default"] = language.get("DEFAULT"),
-        ["alert"] = language.get("ALERT_PIT")
+        language.get("DEFAULT"),
+        language.get("ALERT_PIT")
     }
     
     local initPos = 75
     
     pitLaneSettings.store.pitLaneScale = slider.main(language.get("SIZE"), string.format("%.2f", pitLaneSettings.store.pitLaneScale), vec2(20, initPos), 250, pitLaneSettings.store.pitLaneScale, 0.7, 3)
 
-    initPos = initPos + 35
-    ui.setCursor(vec2(15, initPos))
-    ui.header(language.get("STYLE"))
-    initPos = initPos + 20
-
-
-    droplist.main(vec2(20, initPos), 100, "Teste", {"Teste1", "Teste2", "Teste3"})
-
-
-    initPos = initPos + 40
-    ui.setCursor(vec2(20, initPos))
-    
-    -- Combo box atualizando direto o store
-    ui.combo('##resolution', plates[pitLaneSettings.store.optionPlate], function ()
-        if ui.selectable(plates["default"]) then
-            pitLaneSettings.store.optionPlate = "default"
-        end
-
-        if ui.selectable(plates["alert"]) then
-            pitLaneSettings.store.optionPlate = "alert"
-        end
-    end)
+    initPos = initPos + 60
+    pitLaneSettings.store.optionPlate = droplist.main("##stylePitlane", language.get("STYLE"), vec2(20, initPos + 5), 100, pitLaneSettings.store.optionPlate, plates, droplist.PosText.Default)
 
     initPos = initPos + 40
 

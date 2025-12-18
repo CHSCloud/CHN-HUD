@@ -11,6 +11,7 @@ local slider = require("src.ui.slider")
 
 local language = require("lang.language")
 local config = require("common.config")
+local droplist = require("src.ui.droplist")
 
 local settings = {}
 
@@ -47,7 +48,7 @@ local tabPin = false
 SettingsActive = false
 WindowsColor = settings.store.windowsColor
 SelectedSpeed = settings.store.selectedSpeed
-WindowSettingsSize = vec2(740, 480)
+WindowSettingsSize = vec2(780, 480)
 
 if settings.store.optionLanguage ~= language.getCurrentLanguage() then
   language.setlanguage(settings.store.optionLanguage)
