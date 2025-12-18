@@ -2,7 +2,7 @@ Timer = 0
 SIM = ac.getSim()
 CAR = ac.getCar(SIM.focusedCar)
 UserUI = ac.getUI()
-
+  
 local settings = require("src.settings.settings")
 local pitLane = require("src.hud.pitLane.pitLane")
 local pedals = require("src.hud.pedals.pedals")

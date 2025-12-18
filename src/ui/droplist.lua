@@ -18,10 +18,10 @@ local rounding = 5
 --- @param text string
 --- @param pos vec2
 --- @param size number
---- @param selected string
+--- @param selected number
 --- @param items string[]
 --- @param posText? droplist.PosText @Default value: 0.
---- @return string
+--- @return number
 function droplist.main(id, text, pos, size, selected, items, posText)
     local color = COLOR.GRAY_BG
 
@@ -60,7 +60,7 @@ function droplist.main(id, text, pos, size, selected, items, posText)
                     ui.drawRectFilled(vec2(padding, padding) + vec2(0, i * height), vec2(0,0) + vec2(0, i * height) + vec2(size - padding, height - padding), UserUI.accentColor, rounding)
                     if ui.mouseClicked(ui.MouseButton.Left) then
                         active[id] = false
-                        return items[i]
+                        return i
                     end
                 end
                 ui.setCursor(vec2(0,0) + vec2(10, i * height))
@@ -70,7 +70,7 @@ function droplist.main(id, text, pos, size, selected, items, posText)
         end)
         ui.drawRectFilled(pos, pos + vec2(size, height), color, rounding, ui.CornerFlags.Top)
         ui.setCursor(pos + vec2(10))
-        ui.dwriteTextAligned(selected, 12, ui.Alignment.Start, ui.Alignment.Center, vec2(size, height), false, COLOR.WHITE)
+        ui.dwriteTextAligned(items[selected], 12, ui.Alignment.Start, ui.Alignment.Center, vec2(size, height), false, COLOR.WHITE)
         ui.beginRotation()
         ui.drawImage("assets/arrow.png", vec2(pos.x + size - 28, pos.y + 4), vec2(pos.x + size - 8, pos.y + height - 4))
         ui.endRotation(180)
@@ -82,7 +82,7 @@ function droplist.main(id, text, pos, size, selected, items, posText)
     else
         ui.drawRectFilled(pos, pos + vec2(size, height), color, rounding)
         ui.setCursor(pos + vec2(10))
-        ui.dwriteTextAligned(selected, 12, ui.Alignment.Start, ui.Alignment.Center, vec2(size, height), false, COLOR.WHITE)
+        ui.dwriteTextAligned(items[selected], 12, ui.Alignment.Start, ui.Alignment.Center, vec2(size, height), false, COLOR.WHITE)
         ui.beginRotation()
         ui.drawImage("assets/arrow.png", vec2(pos.x + size - 28, pos.y + 4), vec2(pos.x + size - 8, pos.y + height - 4))
         ui.endRotation(0)

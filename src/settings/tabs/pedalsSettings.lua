@@ -20,9 +20,9 @@ local defaultValues = {
     fuelActive = true,
     pedalLimitsLines = true,
     rpmActive = true,
-    wheelType = "Iracing",
-    rpmType = language.get("SHIFT_LIGHTS"),
-    rpmProcessType = language.get("DEFAULT"),
+    wheelType = 1,
+    rpmType = 1,
+    rpmProcessType = 1,
     numLights = 9,
     barLength = 0.55
 }
@@ -149,7 +149,7 @@ function pedalsSettings.pedalsSettings()
 
         pedalsSettings.store.rpmType = droplist.main("##rpmType", language.get("TYPE"), vec2(posXRPMpedalsSettings, posRPMpedalsSettings + 5), 160, pedalsSettings.store.rpmType, rpmLabels, droplist.PosText.Start)
 
-        if pedalsSettings.store.rpmType == language.get("SHIFT_LIGHTS") then
+        if pedalsSettings.store.rpmType == 1 then
 
             posRPMpedalsSettings = posRPMpedalsSettings + 40
             pedalsSettings.store.rpmProcessType = droplist.main("##progress", language.get("PROGRESS"), vec2(posXRPMpedalsSettings, posRPMpedalsSettings), 100, pedalsSettings.store.rpmProcessType, processCircleType, droplist.PosText.Start)
@@ -157,7 +157,7 @@ function pedalsSettings.pedalsSettings()
             for i = 1, 9 do
                 local c1, c2, c3 = COLOR.GREEN, COLOR.GREEN, COLOR.GREEN
                 
-                if pedalsSettings.store.rpmProcessType == language.get("DEFAULT") then
+                if pedalsSettings.store.rpmProcessType == 1 then
                     if i > 7 then c1, c2, c3 = COLOR.GRAY_BG, COLOR.GRAY_BG, COLOR.RED_DARK
                     elseif i > 4 then c1, c2, c3 = COLOR.GRAY_BG, COLOR.YELLOW, COLOR.YELLOW end
                 else 
@@ -175,7 +175,7 @@ function pedalsSettings.pedalsSettings()
             posRPMpedalsSettings = posRPMpedalsSettings + 30
             pedalsSettings.store.numLights = math.floor(slider.main(language.get("NUM_LIGHTS"), string.format("%i", pedalsSettings.store.numLights), vec2(posXRPMpedalsSettings, posRPMpedalsSettings + 10), 135, pedalsSettings.store.numLights, 6, 25, slider.PosText.Start))
 
-        elseif pedalsSettings.store.rpmType == language.get("BAR") then
+        elseif pedalsSettings.store.rpmType == 2 then
             posRPMpedalsSettings = posRPMpedalsSettings + 35
         
             ui.drawRectFilled(vec2(exampleRPpedalsSettingsX - 5, exampleRPpedalsSettingsY - 35), vec2(exampleRPpedalsSettingsX + 93, exampleRPpedalsSettingsY - 25), COLOR.GRAY_BG, 10)

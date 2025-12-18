@@ -15,14 +15,9 @@ local droplist = require("src.ui.droplist")
 
 local settings = {}
 
-local languages = {
-  ["en"] = "English",
-  ["pt-br"] = "Português - Brasil"
-}
-
 local defaultValues = {
-    optionLanguage = "en",
-    selectedSpeed = "Km/h",
+    optionLanguage = 1,
+    selectedSpeed = 1,
     transparancy = 0.85,
     windowsColor = rgbm.from0255(18, 21, 29, 0.85)
 }
@@ -59,52 +54,19 @@ local function geral()
     tabPin = false
   end
   
-  local initPos = 50
-  ui.setCursor(vec2(15, initPos))
-  ui.header(language.get("LANGUAGE"))
-  
-  initPos = initPos + 20
-  ui.setCursor(vec2(20, initPos))
-  
-  -- Lógica de linguagem usando store direto
-  ui.setNextItemWidth(150)
-  ui.combo('##resolution', languages[settings.store.optionLanguage], function ()
-    if ui.selectable(languages["en"]) then
-      tabPin = true
-      settings.store.optionLanguage = "en"
-      language.setlanguage(settings.store.optionLanguage)
-    end
-
-    if ui.selectable(languages["pt-br"]) then
-      tabPin = true
-      settings.store.optionLanguage = "pt-br"
-      language.setlanguage(settings.store.optionLanguage)
-    end
-  end)
+  local initPos = 80
+  settings.store.optionLanguage = droplist.main("##Language", language.get("LANGUAGE"), vec2(15, initPos), 160, settings.store.optionLanguage, language.languages)
+  if settings.store.optionLanguage ~= language.getCurrentLanguage() then
+    tabPin = true
+    language.setlanguage(settings.store.optionLanguage)
+  end
 
   initPos = initPos + 35
   ui.drawRectFilled(vec2(5, initPos), vec2(WindowSettingsSize.x - 5, initPos), COLOR.GRAY, 1)
   
-  initPos = initPos + 10
-  ui.setCursor(vec2(15, initPos))
-  ui.header(language.get("SPEED"))
-  
-  initPos = initPos + 20
-  ui.setCursor(vec2(20, initPos))
-  
-  -- Lógica de velocidade usando store direto
-  ui.setNextItemWidth(150)
-  ui.combo("##Speed", settings.store.selectedSpeed ,
-    function ()
-      if ui.selectable("Km/h") then
-        settings.store.selectedSpeed = "Km/h"
-      end
-
-      if ui.selectable("Mph") then
-        settings.store.selectedSpeed = "Mph"
-    end
-    SelectedSpeed = settings.store.selectedSpeed
-  end)
+  initPos = initPos + 30
+  settings.store.selectedSpeed = droplist.main("##Speed", language.get("SPEED"), vec2(20, initPos), 150, settings.store.selectedSpeed, {"Km/h", "Mph"})
+  SelectedSpeed = settings.store.selectedSpeed
   
   initPos = initPos + 35
   ui.drawRectFilled(vec2(5, initPos), vec2(WindowSettingsSize.x - 5, initPos), COLOR.GRAY, 1)

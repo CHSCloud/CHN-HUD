@@ -6,7 +6,7 @@ local pitLaneSettings = {}
 
 local defaultValues = {
     pitLaneScale = 1,
-    optionPlate = language.get("DEFAULT")
+    optionPlate = 1
 }
 
 pitLaneSettings.store = ac.storage(defaultValues)

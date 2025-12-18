@@ -31,11 +31,11 @@ function pitLane.windowMain()
           currentWindowHeight = 100 * pitLaneSettings.store.pitLaneScale
         end
         --Background:
-        if pitLaneSettings.store.optionPlate == language.get("DEFAULT") then
+        if pitLaneSettings.store.optionPlate == 1 then
           ui.drawRectFilled(vec2(0, 0), vec2(currentWindowWidth, 70 * pitLaneSettings.store.pitLaneScale), WindowsColor, 10 * pitLaneSettings.store.pitLaneScale)
           ui.drawRectFilled(vec2(5, 5):scale(pitLaneSettings.store.pitLaneScale), vec2(75, 65):scale(pitLaneSettings.store.pitLaneScale), COLOR.WHITE, 5 * pitLaneSettings.store.pitLaneScale)
           ui.drawRect(vec2(7, 7):scale(pitLaneSettings.store.pitLaneScale), vec2(73, 63):scale(pitLaneSettings.store.pitLaneScale), COLOR.BLACK, 4 * pitLaneSettings.store.pitLaneScale, ui.CornerFlags.All, 1.5 * pitLaneSettings.store.pitLaneScale)
-        elseif pitLaneSettings.store.optionPlate == language.get("ALERT_PIT") then
+        elseif pitLaneSettings.store.optionPlate == 2 then
 
           currentWindowWidth = 135 * pitLaneSettings.store.pitLaneScale
           ui.drawRectFilled(vec2(0, 0):scale(pitLaneSettings.store.pitLaneScale), vec2(135, 70):scale(pitLaneSettings.store.pitLaneScale), WindowsColor, 35 * pitLaneSettings.store.pitLaneScale, ui.CornerFlags.All)
@@ -66,7 +66,7 @@ function pitLane.windowMain()
           currentWindowHeight = 70 * pitLaneSettings.store.pitLaneScale
         else 
           -- SPEED
-          if(SelectedSpeed == "Km/h") then
+          if(SelectedSpeed == 1) then
             kmh_string = string.format("%.0f", CAR.speedKmh)
             limitPit_string = string.format("%.0f", CAR.speedLimiter)
           else
