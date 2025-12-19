@@ -37,7 +37,7 @@ local dirTrack -- Direção da pista
 local transparancy = 0
 
 local function initMap()
-    totalPoints = config.remapInterval(SIM.trackLengthM, 0, 4000, 0, 450)
+    totalPoints = config.remapInterval(SIM.trackLengthM, 0, 4000, 0, 500)
     -- Armazenando pontos do mapa
     for i = 0, 1, 1 / totalPoints do
         local posWorld = ac.trackCoordinateToWorld(vec3(0, 0, i))
@@ -136,28 +136,21 @@ end
 --- @param color rgbm -- Cor do setor
 local function drawSectors(thickness, color)
     for i, sector in ipairs(sectors) do
+        -- Posição do setor
         local left = config.rotateVec(vec2((sector.left.x - trackCenterX) * canvasScale, (sector.left.y - trackCenterY) * canvasScale), angle)
         local center = config.rotateVec(vec2((sector.center.x - trackCenterX) * canvasScale, (sector.center.y - trackCenterY) * canvasScale), angle)
         local right = config.rotateVec(vec2((sector.right.x - trackCenterX) * canvasScale, (sector.right.y - trackCenterY) * canvasScale), angle)
         
+        -- Direção do setor
         local dir = (right - left):normalize()
         
         if i == 1 then
-            local init = center + dir * thickness * 2
-            init = init + canvasCenter
-
-            local final = center - dir * thickness * 2
-            final = final + canvasCenter
-            local vecAux = config.rotateVec(vec2(thickness), angle)
-            ui.drawImageQuad("assets/checkered.png", init + vecAux, final + vecAux, final - vecAux, init - vecAux)
-            --ui.drawLine(init, final, COLOR.RED, 6)
+            local init = center + dir * thickness * 2 + canvasCenter
+            local final = center - dir * thickness * 2 + canvasCenter
+            local flagLenght = config.rotateVec(dirTrack * thickness, angle)
+            ui.drawImageQuad("assets/checkered.png", init + flagLenght, final + flagLenght, final - flagLenght, init - flagLenght)
         else 
-            local init = center + dir * thickness
-            init = init + canvasCenter
-
-            local final = center - dir * thickness
-            final = final + canvasCenter
-            ui.drawLine(init, final, color, 6)
+            ui.drawLine(center + dir * thickness + canvasCenter, center - dir * thickness + canvasCenter, color, 6)
         end
     end
 end
@@ -248,7 +241,7 @@ function map.windowMain()
             transparancy = 0
         end
     end
-    local zoom
+
     if mapSettings.store.focus then
         trackCenterX = CAR.position.x
         trackCenterY = CAR.position.z
@@ -262,7 +255,6 @@ function map.windowMain()
 
         canvasScale = (canvasSize.y - (padding * 2)) / trackLength
     end
-
     -- Desenha borda
     if canvas == nil then return end
     canvas:clear()
