@@ -10,6 +10,7 @@ local sessionLaps = require("src.hud.sessionLaps.sessionLaps")
 local sessionFlags = require("src.hud.sessionFlags.sessionFlags")
 local startingLights = require("src.hud.startingLights.startingLights")
 local map = require("src.hud.map.map")
+local deltaBar = require("src.hud.deltaBar.deltaBar")
 
 -- TELA DE CONFIGURAÇÕES
 function WindowSettings()
@@ -50,6 +51,11 @@ end
 -- TELA DO MAPA
 function WindowMap()
   map.windowMain()
+end
+
+-- DELTA BAR
+function WindowdeltaBar()
+  deltaBar.windowMain()
 end
 
 -- FUNÇÃO DE ATUALIZAÇÃO
