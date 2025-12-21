@@ -291,8 +291,8 @@ function map.windowMain()
 
                 float4 main(PS_IN pin) {
                     float4 mapCanvas = canvas.Sample(MeshTextureSampler, pin.Tex);
-                    float distanceDromCenter = clamp(distance(float2(0.5f, 0.5f), pin.Tex), zoom - 0.03f, zoom);
-                    return lerp(mapCanvas, float4(1,1,1,0), remap(distanceDromCenter, zoom - 0.03f, zoom, 0, 1));
+                    float distanceDromCenter = clamp(distance(float2(0.5f, 0.5f), pin.Tex), zoom - 0.05f, zoom);
+                    return lerp(mapCanvas, float4(0,0,0,0), remap(distanceDromCenter, zoom - 0.05f, zoom, 0, 1));
                 }
             ]]
         })
