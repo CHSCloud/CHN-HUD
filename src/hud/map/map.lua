@@ -222,7 +222,8 @@ end
 
 function map.windowMain()
     ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
-    currentWindowSize = vec2(300, 300):scale(mapSettings.store.mapScale)
+    local windowSize = vec2(300, 300)
+    currentWindowSize = windowSize:scale(mapSettings.store.mapScale)
     -- Animação do Background
     if config.isMouseInWindow(ui.mouseLocalPos(), 0, ui.windowSize().x, 0, ui.windowSize().y) then
         if transparancy < 0.85 then
@@ -271,7 +272,32 @@ function map.windowMain()
     end)
     
     if mapSettings.store.focus then
-        ui.drawImage(canvas, -mapSettings.store.zoom * mapSettings.store.mapScale, currentWindowSize.x + mapSettings.store.zoom * mapSettings.store.mapScale)
+        local canvas2 = ui.ExtraCanvas(canvasSize, 1, render.AntialiasingMode.None)
+        local zoom = mapSettings.store.zoom * mapSettings.store.mapScale
+        local zoom2 = currentWindowSize.x / (2 * (2 * zoom + currentWindowSize.x))
+        canvas2:updateWithShader({
+            textures = {canvas = canvas},
+            values = {zoom = zoom2},
+            shader = [[
+                SamplerState MeshTextureSampler {
+                    Filter = MIN_MAG_MIP_LINEAR;
+                    AddressU = Wrap;
+                    AddressV = Wrap;
+                };
+
+                float remap(float v, float inMin, float inMax, float outMin, float outMax) {
+                    return outMin + (v - inMin) * (outMax - outMin) / (inMax - inMin);
+                }
+
+                float4 main(PS_IN pin) {
+                    float4 mapCanvas = canvas.Sample(MeshTextureSampler, pin.Tex);
+                    float distanceDromCenter = clamp(distance(float2(0.5f, 0.5f), pin.Tex), zoom - 0.03f, zoom);
+                    return lerp(mapCanvas, float4(1,1,1,0), remap(distanceDromCenter, zoom - 0.03f, zoom, 0, 1));
+                }
+            ]]
+        })
+    
+        ui.drawImage(canvas2, -mapSettings.store.zoom * mapSettings.store.mapScale, currentWindowSize.x + mapSettings.store.zoom * mapSettings.store.mapScale)
     else 
         ui.drawImage(canvas, 0, currentWindowSize.x)
     end
