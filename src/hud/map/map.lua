@@ -12,6 +12,7 @@ local sectors = {} -- Setores da pista
 local drs = {} -- DRS da pista
 
 local canvas = nil
+local canvasZoom = nil
 local canvasSize = vec2(600, 600)-- Tamanho do Canvas
 local canvasCenter = vec2(canvasSize.x / 2, canvasSize.y / 2)
 local canvasScale -- Escala final do mapa
@@ -113,6 +114,9 @@ local function initMap()
     
     canvas = ui.ExtraCanvas(canvasSize, 1, render.AntialiasingMode.None)
     canvas:setName("CANVAS")
+
+    canvasZoom = ui.ExtraCanvas(canvasSize, 1, render.AntialiasingMode.None)
+    canvasZoom:setName("CANVAS_ZOOM")
 end
 
 --- @param thickness number -- Espessura do traço
@@ -136,23 +140,33 @@ end
 --- @param color rgbm -- Cor do setor
 local function drawSectors(thickness, color)
     for i, sector in ipairs(sectors) do
-        -- Posição do setor
-        local left = config.rotateVec(vec2((sector.left.x - trackCenterX) * canvasScale, (sector.left.y - trackCenterY) * canvasScale), angle)
-        local center = config.rotateVec(vec2((sector.center.x - trackCenterX) * canvasScale, (sector.center.y - trackCenterY) * canvasScale), angle)
-        local right = config.rotateVec(vec2((sector.right.x - trackCenterX) * canvasScale, (sector.right.y - trackCenterY) * canvasScale), angle)
-        
-        -- Direção do setor
-        local dir = (right - left):normalize()
-        
-        if i == 1 then
-            local init = center + dir * thickness * 2 + canvasCenter
-            local final = center - dir * thickness * 2 + canvasCenter
-            local flagLenght = config.rotateVec(dirTrack * thickness, angle)
-            ui.drawImageQuad("assets/checkered.png", init + flagLenght, final + flagLenght, final - flagLenght, init - flagLenght)
-        else 
+        if i > 1 then
+            -- Posição do setor
+            local left = config.rotateVec(vec2((sector.left.x - trackCenterX) * canvasScale, (sector.left.y - trackCenterY) * canvasScale), angle)
+            local center = config.rotateVec(vec2((sector.center.x - trackCenterX) * canvasScale, (sector.center.y - trackCenterY) * canvasScale), angle)
+            local right = config.rotateVec(vec2((sector.right.x - trackCenterX) * canvasScale, (sector.right.y - trackCenterY) * canvasScale), angle)
+            
+            -- Direção do setor
+            local dir = (right - left):normalize()
             ui.drawLine(center + dir * thickness + canvasCenter, center - dir * thickness + canvasCenter, color, 6)
         end
     end
+end
+
+--- @param thickness number -- Espessura da bandeira
+local function drawStartFlag(thickness) 
+    -- Posição do setor
+    local left = config.rotateVec(vec2((sectors[1].left.x - trackCenterX) * canvasScale, (sectors[1].left.y - trackCenterY) * canvasScale), angle)
+    local center = config.rotateVec(vec2((sectors[1].center.x - trackCenterX) * canvasScale, (sectors[1].center.y - trackCenterY) * canvasScale), angle)
+    local right = config.rotateVec(vec2((sectors[1].right.x - trackCenterX) * canvasScale, (sectors[1].right.y - trackCenterY) * canvasScale), angle)
+    
+    -- Direção do setor
+    local dir = (right - left):normalize()
+    local init = center + dir * thickness * 2 + canvasCenter
+    local final = center - dir * thickness * 2 + canvasCenter
+    local flagLenght = config.rotateVec(dirTrack * thickness, angle)
+    ui.drawImageQuad("assets/checkered.png", init + flagLenght, final + flagLenght, final - flagLenght, init - flagLenght)
+
 end
 
 --- @param car ac.StateCar -- Cara a ser desenhado
@@ -264,22 +278,29 @@ function map.windowMain()
         -- Desenha pista
         drawMap(mapSettings.store.trackLenght, mapSettings.store.colorTrack)
         -- Desenha DRS
-        drawDRS(mapSettings.store.trackLenght / 1.8)
+        if mapSettings.store.drsActive then
+            drawDRS(mapSettings.store.trackLenght / 1.8)
+        end
         -- Desenha setores
-        drawSectors(mapSettings.store.trackLenght / 1.8, mapSettings.store.colorSectors)
+        if mapSettings.store.sectorsActive then
+            drawSectors(mapSettings.store.trackLenght / 1.8, mapSettings.store.colorSectors)
+        end
+
+        -- Desenha bandeira de largada
+        drawStartFlag(mapSettings.store.trackLenght / 1.8)
+
         -- Desenha jogadores
         drawPLayers()
     end)
     
     if mapSettings.store.focus then
-        local canvas2 = ui.ExtraCanvas(canvasSize, 1, render.AntialiasingMode.None)
-        local zoom = mapSettings.store.zoom * mapSettings.store.mapScale
-        local zoom2 = currentWindowSize.x / (2 * (2 * zoom + currentWindowSize.x))
-        canvas2:updateWithShader({
+        if canvasZoom == nil then return end
+        local zoomScaled = mapSettings.store.zoom * mapSettings.store.mapScale
+        canvasZoom:updateWithShader({
             textures = {canvas = canvas},
-            values = {zoom = zoom2},
+            values = {zoom = currentWindowSize.x / (2 * (2 * zoomScaled + currentWindowSize.x))},
             shader = [[
-                SamplerState MeshTextureSampler {
+                SamplerState mapSample {
                     Filter = MIN_MAG_MIP_LINEAR;
                     AddressU = Wrap;
                     AddressV = Wrap;
@@ -290,14 +311,14 @@ function map.windowMain()
                 }
 
                 float4 main(PS_IN pin) {
-                    float4 mapCanvas = canvas.Sample(MeshTextureSampler, pin.Tex);
+                    float4 mapCanvas = canvas.Sample(mapSample, pin.Tex);
                     float distanceDromCenter = clamp(distance(float2(0.5f, 0.5f), pin.Tex), zoom - 0.05f, zoom);
                     return lerp(mapCanvas, float4(0,0,0,0), remap(distanceDromCenter, zoom - 0.05f, zoom, 0, 1));
                 }
             ]]
         })
     
-        ui.drawImage(canvas2, -mapSettings.store.zoom * mapSettings.store.mapScale, currentWindowSize.x + mapSettings.store.zoom * mapSettings.store.mapScale)
+        ui.drawImage(canvasZoom, -zoomScaled, currentWindowSize.x + zoomScaled)
     else 
         ui.drawImage(canvas, 0, currentWindowSize.x)
     end

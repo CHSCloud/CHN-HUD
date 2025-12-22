@@ -17,13 +17,17 @@ local defaultValuesTrack = {
     zoom = 100,
     colorTrack = rgbm.from0255(0, 0, 0, 1),
     colorBorder = rgbm.from0255(255, 255, 255, 1),
-    colorSectors = rgbm.from0255(255, 255, 255, 1),
-    colorDRS = rgbm.from0255(0, 255, 0, 1),
     borderActive = true,
     borderLenght = 4,
     trackLenght = 12
 }
 
+local defaultValuesFeatures = {
+    sectorsActive = true,
+    colorSectors = rgbm.from0255(255, 255, 255, 1),
+    drsActive = true,
+    colorDRS = rgbm.from0255(0, 255, 0, 1),
+}
 local defaultValuesPlayers = {
     colorEnemies = rgbm.from0255(255, 255, 255, 1),
     colorFocusedCar = rgbm.from0255(255, 255, 0, 1),
@@ -35,6 +39,7 @@ local defaultValuesPlayers = {
 }  
 
 config.copyTable(defaultValuesTrack, defaultValues)
+config.copyTable(defaultValuesFeatures, defaultValues)
 config.copyTable(defaultValuesPlayers, defaultValues)
 mapSettings.store = ac.storage(defaultValues)
 
@@ -45,6 +50,12 @@ local function resetToDefaultTrack()
     end
     mapSettings.store.colorTrack = rgbm.from0255(0, 0, 0, 1)
     mapSettings.store.colorBorder = rgbm.from0255(255, 255, 255, 1)
+end
+
+local function resetToDefaultFeatures()
+    for key, value in pairs(defaultValuesFeatures) do
+        mapSettings.store[key] = value
+    end
     mapSettings.store.colorSectors = rgbm.from0255(255, 255, 255, 1)
     mapSettings.store.colorDRS = rgbm.from0255(0, 255, 0, 1)
 end
@@ -87,29 +98,48 @@ local function trackSetitngs()
     end
 
     initPos = initPos + 40
-    if toggleButton.main("focus",vec2(20, initPos), mapSettings.store.focus, "Focus") then
+    if toggleButton.main("focus",vec2(20, initPos), mapSettings.store.focus, "Focus on the car") then
         mapSettings.store.focus = not mapSettings.store.focus
     end
     if mapSettings.store.focus then
-        mapSettings.store.zoom = math.floor(slider.main("Zoom", string.format("%.0f", mapSettings.store.zoom), vec2(120, initPos + 2), 200, mapSettings.store.zoom, 0, 200, slider.PosText.Start))
+        initPos = initPos + 50
+        mapSettings.store.zoom = math.floor(slider.main("Zoom", string.format("%.0f", mapSettings.store.zoom), vec2(20, initPos), 200, mapSettings.store.zoom, 0, 200))
     end
     
 
-    initPos = initPos + 40
+    initPos = initPos + 30
     ui.setCursor(vec2(15, initPos))
     ui.header("Colors")
 
     initPos = initPos + 20
     mapSettings.store.colorTrack = colorSelector.main("Track", mapSettings.store.colorTrack, vec2(20, initPos))
-    mapSettings.store.colorSectors = colorSelector.main("Sectors", mapSettings.store.colorSectors, vec2(100, initPos))
-    initPos = initPos + 30
-    mapSettings.store.colorBorder = colorSelector.main("Border", mapSettings.store.colorBorder, vec2(20, initPos))
-    mapSettings.store.colorDRS = colorSelector.main("DRS", mapSettings.store.colorDRS, vec2(100, initPos))
-    initPos = initPos + 30
+    mapSettings.store.colorBorder = colorSelector.main("Border", mapSettings.store.colorBorder, vec2(100, initPos))
+    initPos = initPos + 40
 
     if button.main(vec2(20, initPos), language.get("RESET_DEFAULT")) then
         resetToDefaultTrack()
     end 
+end
+
+local function featuresSettings()
+    local initPos = 80
+    if toggleButton.main("sectors", vec2(20, initPos), mapSettings.store.sectorsActive, "Sectors") then
+        mapSettings.store.sectorsActive = not mapSettings.store.sectorsActive
+    end
+    initPos = initPos + 30
+
+    if toggleButton.main("drs", vec2(20, initPos), mapSettings.store.drsActive, "DRS") then
+        mapSettings.store.drsActive = not mapSettings.store.drsActive
+    end
+    initPos = initPos + 30
+    
+    mapSettings.store.colorSectors = colorSelector.main("Sectors", mapSettings.store.colorSectors, vec2(20, initPos))
+    mapSettings.store.colorDRS = colorSelector.main("DRS", mapSettings.store.colorDRS, vec2(100, initPos))
+    initPos = initPos + 40
+
+    if button.main(vec2(20, initPos), language.get("RESET_DEFAULT")) then
+        resetToDefaultFeatures()
+    end
 end
 
 local function playersSetitngs()
@@ -143,6 +173,7 @@ end
 function mapSettings.mapSettings()
     ui.tabBar('##ID',function ()
         ui.tabItem("Track", trackSetitngs)
+        ui.tabItem("Track Features", featuresSettings)
         ui.tabItem("Players", playersSetitngs)
     end)
 end
