@@ -12,12 +12,14 @@ if ac.onSessionStart then
     end)
 end
 
+
 local currentWindowSize
 function sessionLaps.windowMain()
     ui.pushDWriteFont("fonts/Montserrat-Bold.ttf") -- FONT TEXT
 
     local currentWindowWidth = 240 * sessionLapsSettings.store.sessionLapsScale
     local currentWindowHeight = 0
+
     
     local lastLap
     local minutes

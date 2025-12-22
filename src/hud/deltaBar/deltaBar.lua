@@ -5,8 +5,8 @@ local deltaBar = {}
 
 function deltaBar.windowMain()
     --Limites e Tamanhos
-    local limitBarDeltaBackground = {x = 500, y = 25}
-    local limitBackgroundText = {x = 45, y = 40}
+    local limitBarDeltaBackground = vec2(500, 25)
+    local limitBackgroundText = vec2(90, 40)
 
     local limitColorOnBackground = 5
     local limitBarDeltaBackground_limitBackgroundText = 2
@@ -30,9 +30,9 @@ function deltaBar.windowMain()
     local deltaMeter = CAR.performanceMeterSpeedDifferenceMs
     
     --Background Barra Delta
-    ui.drawRectFilled(vec2(0, 0), vec2(limitBarDeltaBackground.x, limitBarDeltaBackground.y), WindowsColor, cornerBarDeltaBackground)
+    ui.drawRectFilled(vec2(0, 0), limitBarDeltaBackground, WindowsColor, cornerBarDeltaBackground)
     --Background Texto Delta
-    ui.drawRectFilled(vec2(barEnd - limitBackgroundText.x, limitBarDeltaBackground_limitBackgroundText + limitBarDeltaBackground.y), vec2(barEnd + limitBackgroundText.x, limitBarDeltaBackground_limitBackgroundText +limitBackgroundText.y + limitBarDeltaBackground.y), WindowsColor, cornerBackgroundText)
+    ui.drawRectFilled(vec2(barEnd - limitBackgroundText.x / 2, limitBarDeltaBackground_limitBackgroundText + limitBarDeltaBackground.y), vec2(barEnd + limitBackgroundText.x / 2, limitBarDeltaBackground_limitBackgroundText + limitBackgroundText.y + limitBarDeltaBackground.y), WindowsColor, cornerBackgroundText)
 
     
     --Degradê Color da Barra
@@ -56,11 +56,11 @@ function deltaBar.windowMain()
 
     -- Delta Texto
     local deltaText = string.format("%.2f", delta)
-    if math.abs(delta) > 1000 then
+    if delta > 1000 then
         deltaText = "inf"
-    elseif math.abs(delta) > 100 then
+    elseif delta > 100 then
         deltaText = string.format("%.0f", delta)
-    elseif math.abs(delta) > 10 then
+    elseif delta > 10 then
         deltaText = string.format("%.1f", delta)
     end
 
@@ -78,8 +78,8 @@ function deltaBar.windowMain()
 
     --Chamando Texto Delta
     ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
-    ui.setCursor(vec2(barEnd - limitBackgroundText.x, (limitBackgroundText.y / 2 + limitBarDeltaBackground_limitBackgroundText) - limitBackgroundText.y + limitBarDeltaBackground.y))
-    ui.dwriteTextAligned(deltaText, fontTextDelta, ui.Alignment.Center, ui.Alignment.Center, vec2(limitBackgroundText.x + limitBackgroundText.x, limitBackgroundText.y + limitBackgroundText.y), false, textColor)
+    ui.setCursor(vec2(barEnd - limitBackgroundText.x / 2, limitBarDeltaBackground_limitBackgroundText + limitBarDeltaBackground.y))
+    ui.dwriteTextAligned(deltaText, fontTextDelta, ui.Alignment.Center, ui.Alignment.Center, limitBackgroundText, false, textColor)
     ui.popDWriteFont()
 end
 
