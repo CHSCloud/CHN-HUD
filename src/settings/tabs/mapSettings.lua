@@ -57,9 +57,6 @@ local function resetToDefaultPlayers()
     mapSettings.store.colorFocusedCar = rgbm.from0255(255, 255, 0, 1)
     mapSettings.store.colorExternalFocusedCar = rgbm.from0255(0, 0, 0, 1)
     mapSettings.store.colorExternalEnemies = rgbm.from0255(0, 0, 0, 1)
-
-    mapSettings.store.colorInPitLane = rgbm.from0255(124, 124, 124, 1)
-    mapSettings.store.colorExternalInPitLane = rgbm.from0255(0, 0, 0, 1)
 end
 
 
