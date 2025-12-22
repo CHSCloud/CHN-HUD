@@ -30,8 +30,6 @@ local defaultValuesPlayers = {
     colorExternalEnemies = rgbm.from0255(0, 0, 0, 1),
     colorExternalFocusedCar = rgbm.from0255(0, 0, 0, 1),
 
-    colorInPitLane = rgbm.from0255(124, 124, 124, 1),
-    colorExternalInPitLane = rgbm.from0255(0, 0, 0, 1),
     focusedCarLenght = 20,
     enemiesLenght = 20
 }  
@@ -137,14 +135,7 @@ local function playersSetitngs()
     initPos = initPos + 20
     mapSettings.store.colorEnemies = colorSelector.main("Internal", mapSettings.store.colorEnemies, vec2(20, initPos), "##InternalEnemies")
     mapSettings.store.colorExternalEnemies = colorSelector.main("Border", mapSettings.store.colorExternalEnemies, vec2(100, initPos), "##BorderEnemies")
-
-    initPos = initPos + 30
-    ui.setCursor(vec2(20, initPos))
-    ui.header("In Pit Lane")
-    initPos = initPos + 20
-    mapSettings.store.colorInPitLane = colorSelector.main("Internal", mapSettings.store.colorInPitLane, vec2(20, initPos), "##InternaInPitLane")
-    mapSettings.store.colorExternalInPitLane = colorSelector.main("Border", mapSettings.store.colorExternalInPitLane, vec2(100, initPos), "##BorderInPitLane")
-    initPos = initPos + 30
+    initPos = initPos + 40
 
     if button.main(vec2(20, initPos), language.get("RESET_DEFAULT")) then
         resetToDefaultPlayers()
