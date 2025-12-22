@@ -162,9 +162,9 @@ local function drawStartFlag(thickness)
     
     -- Direção do setor
     local dir = (right - left):normalize()
-    local init = center + dir * thickness * 2 + canvasCenter
-    local final = center - dir * thickness * 2 + canvasCenter
-    local flagLenght = config.rotateVec(dirTrack * thickness, angle)
+    local init = center + dir * thickness + canvasCenter
+    local final = center - dir * thickness + canvasCenter
+    local flagLenght = config.rotateVec(dirTrack * thickness / 2, angle)
     ui.drawImageQuad("assets/checkered.png", init + flagLenght, final + flagLenght, final - flagLenght, init - flagLenght)
 
 end
@@ -274,7 +274,7 @@ function map.windowMain()
     if canvas == nil then return end
     canvas:clear()
     canvas:update(function ()
-        drawMap((mapSettings.store.trackLenght + mapSettings.store.borderLenght * 2), mapSettings.store.colorBorder)
+        drawMap(mapSettings.store.trackLenght + mapSettings.store.borderLenght * 2, mapSettings.store.colorBorder)
         -- Desenha pista
         drawMap(mapSettings.store.trackLenght, mapSettings.store.colorTrack)
         -- Desenha DRS
@@ -287,7 +287,7 @@ function map.windowMain()
         end
 
         -- Desenha bandeira de largada
-        drawStartFlag(mapSettings.store.trackLenght / 1.8)
+        drawStartFlag((mapSettings.store.trackLenght + mapSettings.store.borderLenght * 2) / 1.3)
 
         -- Desenha jogadores
         drawPLayers()
