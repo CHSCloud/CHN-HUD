@@ -62,5 +62,20 @@
   "STARTING_LIGHTS": "Starting Lights",
   "SIMPLE": "Simple",
   "GO_GO_GO": "GO GO GO!!!",
-  "GREEN_FLAG": "Green Flag"
+  "GREEN_FLAG": "Green Flag",
+  "SESSION_FLAGS": "Session Flags",
+  "MAP": "Map",
+  "TRACK_LENGHT": "Track Lenght",
+  "ANGLE": "Angle",
+  "BORDER": "Border",
+  "FOCUS": "Focus",
+  "ZOOM": "Zoom",
+  "TRACK": "Track",
+  "SECTORS": "Sectors",
+  "DRS": "DRS",
+  "FOCUSED_CAR_LENGHT": "Focused Car Lenght",
+  "ENEMIES_LENGHT": "Enemies Lenght",
+  "FOCUSED_CAR_COLOR": "Focused Car Color",
+  "INTERNAL": "Internal",
+  "PLAYERS": "Players"
 }

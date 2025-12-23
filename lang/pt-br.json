@@ -62,5 +62,20 @@
   "STARTING_LIGHTS": "Luzes de largada",
   "SIMPLE": "Simples",
   "GO_GO_GO": "VAI VAI VAI!!!",
-  "GREEN_FLAG": "Bandeira Verde"
+  "GREEN_FLAG": "Bandeira Verde",
+  "SESSION_FLAGS": "Bandeiras da Sessão",
+  "MAP": "Mapa",
+  "TRACK_LENGHT": "Comprimento da Pista",
+  "ANGLE": "Ângulo",
+  "BORDER": "Borda",
+  "FOCUS": "Foco",
+  "ZOOM": "Zoom",
+  "TRACK": "Pista",
+  "SECTORS": "Setores",
+  "DRS": "DRS",
+  "FOCUSED_CAR_LENGHT": "Comprimento do Carro Focado",
+  "ENEMIES_LENGHT": "Comprimento dos Inimigos",
+  "FOCUSED_CAR_COLOR": "Cor do Carro Focado",
+  "INTERNAL": "Interno",
+  "PLAYERS": "Jogadores"
 }

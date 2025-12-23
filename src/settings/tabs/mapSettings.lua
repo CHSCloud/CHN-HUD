@@ -73,13 +73,13 @@ local function trackSetitngs()
     
 
     initPos = initPos + 50
-    mapSettings.store.angle = slider.main("Angle", string.format("%.0f", mapSettings.store.angle), vec2(20, initPos), 250, mapSettings.store.angle, 0, 360)
+    mapSettings.store.angle = slider.main(language.get("ANGLE"), string.format("%.0f", mapSettings.store.angle), vec2(20, initPos), 250, mapSettings.store.angle, 0, 360)
     
     initPos = initPos + 50
-    mapSettings.store.trackLenght = math.floor(slider.main("Track Lenght", string.format("%.0f", mapSettings.store.trackLenght), vec2(20, initPos), 250, mapSettings.store.trackLenght, 12, 25))
+    mapSettings.store.trackLenght = math.floor(slider.main(language.get("TRACK_LENGHT"), string.format("%.0f", mapSettings.store.trackLenght), vec2(20, initPos), 250, mapSettings.store.trackLenght, 12, 25))
     initPos = initPos + 30
 
-    if toggleButton.main("borderMap", vec2(20, initPos), mapSettings.store.borderActive, "Border") then
+    if toggleButton.main("borderMap", vec2(20, initPos), mapSettings.store.borderActive, language.get("BORDER")) then
         mapSettings.store.borderActive = not mapSettings.store.borderActive
     end
     if mapSettings.store.borderActive then
@@ -92,11 +92,11 @@ local function trackSetitngs()
     end
 
     initPos = initPos + 40
-    if toggleButton.main("focus",vec2(20, initPos), mapSettings.store.focus, "Focus") then
+    if toggleButton.main("focus",vec2(20, initPos), mapSettings.store.focus, language.get("FOCUS")) then
         mapSettings.store.focus = not mapSettings.store.focus
     end
     if mapSettings.store.focus then
-        mapSettings.store.zoom = math.floor(slider.main("Zoom", string.format("%.0f", mapSettings.store.zoom), vec2(120, initPos + 2), 200, mapSettings.store.zoom, 0, 200, slider.PosText.Start))
+        mapSettings.store.zoom = math.floor(slider.main(language.get("ZOOM"), string.format("%.0f", mapSettings.store.zoom), vec2(120, initPos + 2), 200, mapSettings.store.zoom, 0, 200, slider.PosText.Start))
     end
     
 
@@ -105,11 +105,11 @@ local function trackSetitngs()
     ui.header("Colors")
 
     initPos = initPos + 20
-    mapSettings.store.colorTrack = colorSelector.main("Track", mapSettings.store.colorTrack, vec2(20, initPos))
-    mapSettings.store.colorSectors = colorSelector.main("Sectors", mapSettings.store.colorSectors, vec2(100, initPos))
+    mapSettings.store.colorTrack = colorSelector.main(language.get("TRACK"), mapSettings.store.colorTrack, vec2(20, initPos))
+    mapSettings.store.colorSectors = colorSelector.main(language.get("SECTORS"), mapSettings.store.colorSectors, vec2(100, initPos))
     initPos = initPos + 30
-    mapSettings.store.colorBorder = colorSelector.main("Border", mapSettings.store.colorBorder, vec2(20, initPos))
-    mapSettings.store.colorDRS = colorSelector.main("DRS", mapSettings.store.colorDRS, vec2(100, initPos))
+    mapSettings.store.colorBorder = colorSelector.main(language.get("BORDER"), mapSettings.store.colorBorder, vec2(20, initPos))
+    mapSettings.store.colorDRS = colorSelector.main(language.get("DRS"), mapSettings.store.colorDRS, vec2(100, initPos))
     initPos = initPos + 30
 
     if button.main(vec2(20, initPos), language.get("RESET_DEFAULT")) then
@@ -120,30 +120,30 @@ end
 local function playersSetitngs()
     local initPos = 100
 
-    mapSettings.store.focusedCarLenght = math.floor(slider.main("Focused Car Lenght", string.format("%.0f", mapSettings.store.focusedCarLenght), vec2(20, initPos), 200, mapSettings.store.focusedCarLenght, 10, 30))
+    mapSettings.store.focusedCarLenght = math.floor(slider.main(language.get("FOCUSED_CAR_LENGHT"), string.format("%.0f", mapSettings.store.focusedCarLenght), vec2(20, initPos), 200, mapSettings.store.focusedCarLenght, 10, 30))
     initPos = initPos + 50
-    mapSettings.store.enemiesLenght = math.floor(slider.main("Enemies Lenght", string.format("%.0f", mapSettings.store.enemiesLenght), vec2(20, initPos), 200, mapSettings.store.enemiesLenght, 10, 30))
+    mapSettings.store.enemiesLenght = math.floor(slider.main(language.get("ENEMIES_LENGHT"), string.format("%.0f", mapSettings.store.enemiesLenght), vec2(20, initPos), 200, mapSettings.store.enemiesLenght, 10, 30))
 
     initPos = initPos + 30
     ui.setCursor(vec2(20, initPos))
-    ui.header("Focused Car Color")
+    ui.header(language.get("FOCUSED_CAR_COLOR"))
     initPos = initPos + 20
-    mapSettings.store.colorFocusedCar = colorSelector.main("Internal", mapSettings.store.colorFocusedCar, vec2(20, initPos), "##InternalFocused")
-    mapSettings.store.colorExternalFocusedCar = colorSelector.main("Border", mapSettings.store.colorExternalFocusedCar, vec2(100, initPos), "##BorderFocused")
+    mapSettings.store.colorFocusedCar = colorSelector.main(language.get("INTERNAL"), mapSettings.store.colorFocusedCar, vec2(20, initPos), "##InternalFocused")
+    mapSettings.store.colorExternalFocusedCar = colorSelector.main(language.get("BORDER"), mapSettings.store.colorExternalFocusedCar, vec2(100, initPos), "##BorderFocused")
 
     initPos = initPos + 30
     ui.setCursor(vec2(20, initPos))
     ui.header("Enemies Color")
     initPos = initPos + 20
-    mapSettings.store.colorEnemies = colorSelector.main("Internal", mapSettings.store.colorEnemies, vec2(20, initPos), "##InternalEnemies")
-    mapSettings.store.colorExternalEnemies = colorSelector.main("Border", mapSettings.store.colorExternalEnemies, vec2(100, initPos), "##BorderEnemies")
+    mapSettings.store.colorEnemies = colorSelector.main(language.get("INTERNAL"), mapSettings.store.colorEnemies, vec2(20, initPos), "##InternalEnemies")
+    mapSettings.store.colorExternalEnemies = colorSelector.main(language.get("BORDER"), mapSettings.store.colorExternalEnemies, vec2(100, initPos), "##BorderEnemies")
 
     initPos = initPos + 30
     ui.setCursor(vec2(20, initPos))
     ui.header("In Pit Lane")
     initPos = initPos + 20
-    mapSettings.store.colorInPitLane = colorSelector.main("Internal", mapSettings.store.colorInPitLane, vec2(20, initPos), "##InternaInPitLane")
-    mapSettings.store.colorExternalInPitLane = colorSelector.main("Border", mapSettings.store.colorExternalInPitLane, vec2(100, initPos), "##BorderInPitLane")
+    mapSettings.store.colorInPitLane = colorSelector.main(language.get("INTERNAL"), mapSettings.store.colorInPitLane, vec2(20, initPos), "##InternaInPitLane")
+    mapSettings.store.colorExternalInPitLane = colorSelector.main(language.get("BORDER"), mapSettings.store.colorExternalInPitLane, vec2(100, initPos), "##BorderInPitLane")
     initPos = initPos + 30
 
     if button.main(vec2(20, initPos), language.get("RESET_DEFAULT")) then
@@ -154,8 +154,8 @@ end
 
 function mapSettings.mapSettings()
     ui.tabBar('##ID',function ()
-        ui.tabItem("Track", trackSetitngs)
-        ui.tabItem("Players", playersSetitngs)
+        ui.tabItem(language.get("TRACK"), trackSetitngs)
+        ui.tabItem(language.get("PLAYERS"), playersSetitngs)
     end)
 end
 

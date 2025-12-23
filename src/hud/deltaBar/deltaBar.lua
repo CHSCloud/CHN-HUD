@@ -56,11 +56,11 @@ function deltaBar.windowMain()
 
     -- Delta Texto
     local deltaText = string.format("%.2f", delta)
-    if delta > 1000 then
+    if math.abs(delta) > 1000 then
         deltaText = "inf"
-    elseif delta > 100 then
+    elseif math.abs(delta) > 100 then
         deltaText = string.format("%.0f", delta)
-    elseif delta > 10 then
+    elseif math.abs(delta) > 10 then
         deltaText = string.format("%.1f", delta)
     end
 
