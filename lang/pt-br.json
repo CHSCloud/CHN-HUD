@@ -77,5 +77,7 @@
   "ENEMIES_LENGHT": "Comprimento dos Inimigos",
   "FOCUSED_CAR_COLOR": "Cor do Carro Focado",
   "INTERNAL": "Interno",
-  "PLAYERS": "Jogadores"
+  "PLAYERS": "Jogadores",
+  "FEATURES_OF_TRACK": "Características da Pista",
+  "SECTIONS": "Mostrar seções"
 }

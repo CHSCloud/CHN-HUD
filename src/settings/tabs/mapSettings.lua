@@ -3,6 +3,7 @@ local colorSelector = require("src.ui.colorSelector")
 local slider = require("src.ui.slider")
 local button = require("src.ui.button")
 local toggleButton = require("src.ui.toggleButton")
+local droplist = require("src.ui.droplist")
 
 local config = require("common.config")
 local language = require("lang.language")
@@ -27,6 +28,8 @@ local defaultValuesFeatures = {
     colorSectors = rgbm.from0255(255, 255, 255, 1),
     drsActive = true,
     colorDRS = rgbm.from0255(0, 255, 0, 1),
+    sectionsTrackActive = true,
+    sectionsType = 1
 }
 local defaultValuesPlayers = {
     colorEnemies = rgbm.from0255(255, 255, 255, 1),
@@ -112,10 +115,8 @@ local function trackSetitngs()
 
     initPos = initPos + 20
     mapSettings.store.colorTrack = colorSelector.main(language.get("TRACK"), mapSettings.store.colorTrack, vec2(20, initPos))
-    mapSettings.store.colorSectors = colorSelector.main(language.get("SECTORS"), mapSettings.store.colorSectors, vec2(100, initPos))
     initPos = initPos + 30
     mapSettings.store.colorBorder = colorSelector.main(language.get("BORDER"), mapSettings.store.colorBorder, vec2(20, initPos))
-    mapSettings.store.colorDRS = colorSelector.main(language.get("DRS"), mapSettings.store.colorDRS, vec2(100, initPos))
     initPos = initPos + 30
 
     if button.main(vec2(20, initPos), language.get("RESET_DEFAULT")) then
@@ -125,18 +126,24 @@ end
 
 local function featuresSettings()
     local initPos = 80
-    if toggleButton.main("sectors", vec2(20, initPos), mapSettings.store.sectorsActive, "Sectors") then
+    if toggleButton.main("sectors", vec2(20, initPos), mapSettings.store.sectorsActive, language.get("SECTORS")) then
         mapSettings.store.sectorsActive = not mapSettings.store.sectorsActive
     end
     initPos = initPos + 30
 
-    if toggleButton.main("drs", vec2(20, initPos), mapSettings.store.drsActive, "DRS") then
+    if toggleButton.main("drs", vec2(20, initPos), mapSettings.store.drsActive, language.get("DRS")) then
         mapSettings.store.drsActive = not mapSettings.store.drsActive
     end
     initPos = initPos + 30
-    
-    mapSettings.store.colorSectors = colorSelector.main("Sectors", mapSettings.store.colorSectors, vec2(20, initPos))
-    mapSettings.store.colorDRS = colorSelector.main("DRS", mapSettings.store.colorDRS, vec2(100, initPos))
+    mapSettings.store.colorSectors = colorSelector.main(language.get("SECTORS"), mapSettings.store.colorSectors, vec2(20, initPos))
+    mapSettings.store.colorDRS = colorSelector.main(language.get("DRS"), mapSettings.store.colorDRS, vec2(100, initPos))
+    initPos = initPos + 40
+
+    if toggleButton.main("sectionsTrackActive", vec2(20, initPos), mapSettings.store.sectionsTrackActive, language.get("SECTIONS")) then
+        mapSettings.store.sectionsTrackActive = not mapSettings.store.sectionsTrackActive
+    end
+    initPos = initPos + 50
+    mapSettings.store.sectionsType = droplist.main("sectionsType", "Type", vec2(20, initPos), 100,  mapSettings.store.sectionsType, {"Numbers", "Names"})
     initPos = initPos + 40
 
     if button.main(vec2(20, initPos), language.get("RESET_DEFAULT")) then
@@ -166,12 +173,6 @@ local function playersSetitngs()
     mapSettings.store.colorExternalEnemies = colorSelector.main(language.get("BORDER"), mapSettings.store.colorExternalEnemies, vec2(100, initPos), "##BorderEnemies")
 
     initPos = initPos + 30
-    ui.setCursor(vec2(20, initPos))
-    ui.header("In Pit Lane")
-    initPos = initPos + 20
-    mapSettings.store.colorInPitLane = colorSelector.main(language.get("INTERNAL"), mapSettings.store.colorInPitLane, vec2(20, initPos), "##InternaInPitLane")
-    mapSettings.store.colorExternalInPitLane = colorSelector.main(language.get("BORDER"), mapSettings.store.colorExternalInPitLane, vec2(100, initPos), "##BorderInPitLane")
-    initPos = initPos + 30
 
     if button.main(vec2(20, initPos), language.get("RESET_DEFAULT")) then
         resetToDefaultPlayers()
@@ -182,6 +183,7 @@ end
 function mapSettings.mapSettings()
     ui.tabBar('##ID',function ()
         ui.tabItem(language.get("TRACK"), trackSetitngs)
+        ui.tabItem(language.get("FEATURES_OF_TRACK"), featuresSettings)
         ui.tabItem(language.get("PLAYERS"), playersSetitngs)
     end)
 end

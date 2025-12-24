@@ -77,5 +77,7 @@
   "ENEMIES_LENGHT": "Enemies Lenght",
   "FOCUSED_CAR_COLOR": "Focused Car Color",
   "INTERNAL": "Internal",
-  "PLAYERS": "Players"
+  "PLAYERS": "Players",
+  "FEATURES_OF_TRACK": "Features of track",
+  "SECTIONS": "Show sections"
 }
