@@ -270,20 +270,13 @@ local function resizeWindow()
         if mapSettings.store.sectionsType == 1 then
             for i = 1, #trackSections, 1 do
                 local posRotated = config.rotateVec(vec2((trackSections[i].center.x - trackCenterX) * scale, (trackSections[i].center.y - trackCenterY) * scale), angle)
-                posRotated = windowCenter + posRotated
-                trackSections[i].namePosition = posRotated
+                trackSections[i].namePosition = windowCenter + posRotated
             end
         else
             for i = 1, #trackSections, 1 do
-                local textLenght = ui.measureDWriteText(trackSections[i].name, 7 * mapSettings.store.mapScale) + vec2(5, 0)
+                local textLenght = (ui.measureDWriteText(trackSections[i].name, 7) + vec2(10, 0))  * mapSettings.store.mapScale 
                 local posRotated = config.rotateVec(vec2((trackSections[i].left.x - trackCenterX) * scale, (trackSections[i].left.y - trackCenterY) * scale), angle)
-                posRotated = windowCenter + posRotated
-                textPosition = posRotated
-                if config.rotateVec(trackSections[i].direction, angle).x > 0 then
-                    textPosition = textPosition - vec2(textLenght.x + (mapSettings.store.trackLenght + mapSettings.store.borderLenght * 2) / 1.5) 
-                else 
-                    textPosition = textPosition + vec2((mapSettings.store.trackLenght + mapSettings.store.borderLenght * 2) / 1.2) 
-                end
+                textPosition = windowCenter + posRotated - textLenght/2
                 local initRect = textPosition
                 local finalRect = textPosition + textLenght
                 if initRect.x < 0 and math.abs(initRect.x) > offset.x then
@@ -334,7 +327,7 @@ local function drawTrackSections()
     if mapSettings.store.sectionsType == 1 then
         for i = 1, #trackSections, 1 do
             local textLenght = (ui.measureDWriteText(trackSections[i].number, 8) + vec2(10, 0)) * mapSettings.store.mapScale
-            local position = trackSections[i].namePosition + offset
+            local position = trackSections[i].namePosition
             ui.drawCircleFilled(position, textLenght.x / 2, COLOR.RED, 20)
             --ui.drawRectFilled(position, position + textLenght, COLOR.RED, 5)
             ui.setCursor(position - textLenght / 2)
@@ -343,7 +336,7 @@ local function drawTrackSections()
 
     else
         for i = 1, #trackSections, 1 do
-            local textLenght = (ui.measureDWriteText(trackSections[i].name, 7) + vec2(10, 0)) * mapSettings.store.mapScale
+            local textLenght = (ui.measureDWriteText(trackSections[i].name, 7) + vec2(10, 0)) * mapSettings.store.mapScale 
             local position = trackSections[i].namePosition + offset
             ui.drawRectFilled(position, position + textLenght, COLOR.RED, 5)
             ui.setCursor(position)
