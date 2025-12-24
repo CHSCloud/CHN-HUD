@@ -79,7 +79,7 @@ local function trackSetitngs()
     
 
     initPos = initPos + 50
-    mapSettings.store.angle = slider.main(language.get("ANGLE"), string.format("%.0f", mapSettings.store.angle), vec2(20, initPos), 250, mapSettings.store.angle, 0, 360)
+    mapSettings.store.angle = math.floor(slider.main(language.get("ANGLE"), string.format("%.0f", mapSettings.store.angle), vec2(20, initPos), 250, mapSettings.store.angle, 0, 360))
     
     initPos = initPos + 50
     mapSettings.store.trackLenght = math.floor(slider.main(language.get("TRACK_LENGHT"), string.format("%.0f", mapSettings.store.trackLenght), vec2(20, initPos), 250, mapSettings.store.trackLenght, 12, 25))
