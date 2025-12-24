@@ -18,12 +18,14 @@ local canvasSize = vec2(600, 600)-- Tamanho do Canvas
 local canvasCenter = vec2(canvasSize.x / 2, canvasSize.y / 2) -- Centro do canvas
 local canvasScale -- Escala final do mapa
 local angle -- Ângulo do mapa
+local offset = vec2(0,0) -- Offset do mapa
 
 local padding = 10 -- Limite do mapa
 
 -- Tamnho da janela
 local baseWindowSize = vec2(300, 300)
 local currentWindowSize = baseWindowSize
+local windowCenter = currentWindowSize / 2
 
 -- Tamanho da pista
 local trackLength
@@ -110,9 +112,9 @@ local function initMap()
                     number = i,
                     name = text,
                     position = worldLeft2d,
+                    namePosition = nil,
                     direction = dir
                 })
-                ac.log(tostring(i) .. " - " .. text .. " - " .. tostring(start) .. " - " .. tostring(final) .. " PROGRESSO: " .. tostring(worldLeft2d) .. "DIRECTION " .. tostring(dir))
             end
         end
     end
@@ -228,7 +230,7 @@ local function drawPLayers()
     end
 end
 
-
+-- Desenha DRS
 --- @param thickness number -- Espessura do DRS
 local function drawDRS(thickness)
     for i, data in pairs(drs) do
@@ -258,29 +260,72 @@ local function drawDRS(thickness)
     end
 end
 
-local function drawTrackNames()
-    for i, data in pairs(trackNames) do
-        local posRotated = config.rotateVec(vec2((data.position.x - trackCenterX) * canvasScale, (data.position.y - trackCenterY) * canvasScale), angle)
-        posRotated = canvasCenter + posRotated
-
-        local textLenght = ui.measureDWriteText(data.name, 15) + vec2(10, 0)
-        local textPosition = posRotated
-        if config.rotateVec(data.direction, angle).x > 0 then
-            textPosition = textPosition - vec2(textLenght.x + (mapSettings.store.trackLenght + mapSettings.store.borderLenght * 2) / 1.5) 
-        else 
-            textPosition = textPosition + vec2((mapSettings.store.trackLenght + mapSettings.store.borderLenght * 2)) 
+local function resizeWindow()
+    local scale = (currentWindowSize.y - (padding * 2)) / trackLength
+    local textPosition
+    if not mapSettings.store.focus then
+        for i = 1, #trackNames, 1 do
+            local textLenght = ui.measureDWriteText(trackNames[i].name, 15) + vec2(10, 0)
+            local posRotated = config.rotateVec(vec2((trackNames[i].position.x - trackCenterX) * scale, (trackNames[i].position.y - trackCenterY) * scale), angle)
+            posRotated = windowCenter + posRotated
+            textPosition = posRotated
+            if config.rotateVec(trackNames[i].direction, angle).x > 0 then
+                textPosition = textPosition - vec2(textLenght.x + (mapSettings.store.trackLenght + mapSettings.store.borderLenght * 2) / 1.5) 
+            else 
+                textPosition = textPosition + vec2((mapSettings.store.trackLenght + mapSettings.store.borderLenght * 2) / 1.2) 
+            end
+            local initRect = textPosition
+            local finalRect = textPosition + textLenght
+            if initRect.x < 0 and math.abs(initRect.x) > offset.x then
+                currentWindowSize.x = currentWindowSize.x - offset.x +  math.abs(initRect.x)
+                offset.x = math.abs(initRect.x)
+            end
+            if finalRect.x > currentWindowSize.x - offset.x then
+                currentWindowSize.x = finalRect.x + offset.x
+            end
+            if initRect.y < 0 and math.abs(initRect.y) > offset.y then
+                currentWindowSize.y = currentWindowSize.y - offset.y + math.abs(initRect.y)
+                offset.y = math.abs(initRect.y)
+            end
+            if finalRect.y > currentWindowSize.y then
+                currentWindowSize.y = finalRect.y
+            end
+            trackNames[i].namePosition = textPosition
         end
+    else 
+        for i = 1, #trackNames, 1 do
+            local textLenght = ui.measureDWriteText(trackNames[i].name, 15) + vec2(10, 0)
+            local posRotated = config.rotateVec(vec2((trackNames[i].position.x - trackCenterX) * canvasScale, (trackNames[i].position.y - trackCenterY) * canvasScale), angle)
+            posRotated = canvasCenter + posRotated
+            textPosition = posRotated
+            if config.rotateVec(trackNames[i].direction, angle).x > 0 then
+                textPosition = textPosition - vec2(textLenght.x + (mapSettings.store.trackLenght + mapSettings.store.borderLenght * 2) / 1.5) 
+            else 
+                textPosition = textPosition + vec2((mapSettings.store.trackLenght + mapSettings.store.borderLenght * 2) / 1.2) 
+            end
 
-        ui.drawRectFilled(textPosition, textPosition + textLenght, COLOR.BLACK, 5)
-        ui.setCursor(textPosition)
-        ui.dwriteTextAligned(data.name, 15, ui.Alignment.Center, ui.Alignment.Center, textLenght, false, COLOR.WHITE)
+            trackNames[i].namePosition = textPosition
+        end
+    end
+end
+
+-- Desenha nomes da pista
+local function drawTrackNames()
+    for i = 1, #trackNames, 1 do
+        local textLenght = ui.measureDWriteText(trackNames[i].name, 15) + vec2(10, 0)
+        local position = trackNames[i].namePosition + offset
+        ui.drawRectFilled(position, position + textLenght, COLOR.BLACK, 5)
+        ui.setCursor(position)
+        ui.dwriteTextAligned(trackNames[i].name, 15, ui.Alignment.Center, ui.Alignment.Center, textLenght, false, COLOR.WHITE)
     end
 end
 
 function map.windowMain()
     ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
+    offset = vec2(0,0)
     currentWindowSize = vec2(300, 300)
     currentWindowSize = currentWindowSize:scale(mapSettings.store.mapScale)
+    windowCenter = currentWindowSize / 2
     if mapSettings.store.focus then
         trackCenterX = CAR.position.x
         trackCenterY = CAR.position.z
@@ -294,6 +339,7 @@ function map.windowMain()
 
         canvasScale = (canvasSize.y - (padding * 2)) / trackLength
     end
+    resizeWindow()
     -- Desenha borda
     if canvas == nil then return end
     canvas:clear()
@@ -315,8 +361,6 @@ function map.windowMain()
 
         -- Desenha jogadores
         drawPLayers()
-        -- Desenha nomes da pista
-        drawTrackNames()
     end)
 
 
@@ -343,6 +387,10 @@ function map.windowMain()
     if mapSettings.store.focus then
         if canvasZoom == nil then return end
         local zoomScaled = mapSettings.store.zoom * mapSettings.store.mapScale
+        canvas:update(function ()
+            -- Desenha nomes da pista
+            drawTrackNames()
+        end)
         canvasZoom:updateWithShader({
             textures = {canvas = canvas},
             values = {zoom = currentWindowSize.x / (2 * (2 * zoomScaled + currentWindowSize.x))},
@@ -366,9 +414,10 @@ function map.windowMain()
         })
     
         ui.drawImage(canvasZoom, -zoomScaled, currentWindowSize.x + zoomScaled)
-    else 
-        local offset = vec2((currentWindowSize.x - baseWindowSize.x * mapSettings.store.mapScale) / 2, (currentWindowSize.y - baseWindowSize.y * mapSettings.store.mapScale) / 2)
-        ui.drawImage(canvas, offset, currentWindowSize - offset)
+    else
+        offset = config.floorVec(offset)
+        ui.drawImage(canvas, offset, baseWindowSize * mapSettings.store.mapScale + offset)
+        drawTrackNames()
     end
     config.resize(currentWindowSize, "Map")
     pinCheckBox.main(mapSettings.store.mapScale * 1.5, "Map", config.getWindow("Map"):pinned(), currentWindowSize)
