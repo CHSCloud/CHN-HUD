@@ -10,19 +10,20 @@ local totalPoints -- Total de pontos do mapa
 local mapPoints = {} -- Pontos do mapa
 local sectors = {} -- Setores da pista
 local drs = {} -- DRS da pista
+local trackNames = {} -- Nomes da pista
 
 local canvas = nil
 local canvasZoom = nil
 local canvasSize = vec2(600, 600)-- Tamanho do Canvas
-local canvasCenter = vec2(canvasSize.x / 2, canvasSize.y / 2)
+local canvasCenter = vec2(canvasSize.x / 2, canvasSize.y / 2) -- Centro do canvas
 local canvasScale -- Escala final do mapa
-local angle
+local angle -- Ângulo do mapa
 
 local padding = 10 -- Limite do mapa
-local thickness -- Espessura do traço
 
 -- Tamnho da janela
-local currentWindowSize
+local baseWindowSize = vec2(300, 300)
+local currentWindowSize = baseWindowSize
 
 -- Tamanho da pista
 local trackLength
@@ -65,10 +66,9 @@ local function initMap()
     end
 
     -- Armazenando DRS
-    local ini = ac.INIConfig.trackData("drs_zones.ini")
-    if ini ~= nil then
-        local sections = ini['sections']
-        for name, data in pairs(sections) do
+    local drsINI = ac.INIConfig.trackData("drs_zones.ini")
+    if drsINI ~= nil then
+        for name, data in pairs(drsINI['sections']) do
             local dataStart = data['START']
             local dataFinal = data['END']
             
@@ -89,6 +89,30 @@ local function initMap()
                     finalCenter = vec2(finalCenter.x, finalCenter.z),
                     finalRight = vec2(finalRight.x, finalRight.z)
                 })
+            end
+        end
+    end
+    
+    -- Armazenando nomes da pista
+    local sectionsINI = ac.INIConfig.trackData("sections.ini")
+    if sectionsINI ~= nil then
+        for i, section in sectionsINI:iterate('SECTION', false) do
+            local start = sectionsINI:get(section, 'IN', 0)
+            local final = sectionsINI:get(section, 'OUT', 0)
+            local text = sectionsINI:get(section, 'TEXT', "")
+            if start ~= nil and final ~= nil and text ~= nil then
+                local worldLeft = ac.trackCoordinateToWorld(vec3(1, 0, tonumber(((final - start) / 2) + start)))
+                local worldLeft2d = vec2(worldLeft.x, worldLeft.z)
+                local worldRight = ac.trackCoordinateToWorld(vec3(-1, 0, tonumber(((final - start) / 2) + start)))
+                local worldRight2d = vec2(worldRight.x, worldRight.z)
+                local dir = (worldRight2d - worldLeft2d):normalize()
+                table.insert(trackNames, {
+                    number = i,
+                    name = text,
+                    position = worldLeft2d,
+                    direction = dir
+                })
+                ac.log(tostring(i) .. " - " .. text .. " - " .. tostring(start) .. " - " .. tostring(final) .. " PROGRESSO: " .. tostring(worldLeft2d) .. "DIRECTION " .. tostring(dir))
             end
         end
     end
@@ -234,29 +258,29 @@ local function drawDRS(thickness)
     end
 end
 
+local function drawTrackNames()
+    for i, data in pairs(trackNames) do
+        local posRotated = config.rotateVec(vec2((data.position.x - trackCenterX) * canvasScale, (data.position.y - trackCenterY) * canvasScale), angle)
+        posRotated = canvasCenter + posRotated
+
+        local textLenght = ui.measureDWriteText(data.name, 15) + vec2(10, 0)
+        local textPosition = posRotated
+        if config.rotateVec(data.direction, angle).x > 0 then
+            textPosition = textPosition - vec2(textLenght.x + (mapSettings.store.trackLenght + mapSettings.store.borderLenght * 2) / 1.5) 
+        else 
+            textPosition = textPosition + vec2((mapSettings.store.trackLenght + mapSettings.store.borderLenght * 2)) 
+        end
+
+        ui.drawRectFilled(textPosition, textPosition + textLenght, COLOR.BLACK, 5)
+        ui.setCursor(textPosition)
+        ui.dwriteTextAligned(data.name, 15, ui.Alignment.Center, ui.Alignment.Center, textLenght, false, COLOR.WHITE)
+    end
+end
+
 function map.windowMain()
     ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
-    local windowSize = vec2(300, 300)
-    currentWindowSize = windowSize:scale(mapSettings.store.mapScale)
-    -- Animação do Background
-    if config.isMouseInWindow(ui.mouseLocalPos(), 0, ui.windowSize().x, 0, ui.windowSize().y) then
-        if transparancy < 0.85 then
-            if 20 * Timer % 6 >= 1 then
-                transparancy = transparancy + 0.1
-            end
-        end
-        ui.drawRectFilled(vec2(0, 0), currentWindowSize, rgbm(WindowsColor.r,WindowsColor.g,WindowsColor.b, transparancy), 20 * mapSettings.store.mapScale)
-    else
-        if transparancy > 0 then
-            if 20 * Timer % 6 >= 1 then
-                transparancy = transparancy - 0.1
-            end
-             ui.drawRectFilled(vec2(0, 0), currentWindowSize, rgbm(WindowsColor.r,WindowsColor.g,WindowsColor.b, transparancy), 20 * mapSettings.store.mapScale)
-        else
-            transparancy = 0
-        end
-    end
-
+    currentWindowSize = vec2(300, 300)
+    currentWindowSize = currentWindowSize:scale(mapSettings.store.mapScale)
     if mapSettings.store.focus then
         trackCenterX = CAR.position.x
         trackCenterY = CAR.position.z
@@ -291,7 +315,30 @@ function map.windowMain()
 
         -- Desenha jogadores
         drawPLayers()
+        -- Desenha nomes da pista
+        drawTrackNames()
     end)
+
+
+    -- Animação do Background
+    if config.isMouseInWindow(ui.mouseLocalPos(), 0, ui.windowSize().x, 0, ui.windowSize().y) then
+        if transparancy < 0.85 then
+            if 20 * Timer % 6 >= 1 then
+                transparancy = transparancy + 0.1
+            end
+        end
+        ui.drawRectFilled(vec2(0, 0), currentWindowSize, rgbm(WindowsColor.r,WindowsColor.g,WindowsColor.b, transparancy), 20 * mapSettings.store.mapScale)
+    else
+        if transparancy > 0 then
+            if 20 * Timer % 6 >= 1 then
+                transparancy = transparancy - 0.1
+            end
+             ui.drawRectFilled(vec2(0, 0), currentWindowSize, rgbm(WindowsColor.r,WindowsColor.g,WindowsColor.b, transparancy), 20 * mapSettings.store.mapScale)
+        else
+            transparancy = 0
+        end
+    end
+
     
     if mapSettings.store.focus then
         if canvasZoom == nil then return end
@@ -320,7 +367,8 @@ function map.windowMain()
     
         ui.drawImage(canvasZoom, -zoomScaled, currentWindowSize.x + zoomScaled)
     else 
-        ui.drawImage(canvas, 0, currentWindowSize.x)
+        local offset = vec2((currentWindowSize.x - baseWindowSize.x * mapSettings.store.mapScale) / 2, (currentWindowSize.y - baseWindowSize.y * mapSettings.store.mapScale) / 2)
+        ui.drawImage(canvas, offset, currentWindowSize - offset)
     end
     config.resize(currentWindowSize, "Map")
     pinCheckBox.main(mapSettings.store.mapScale * 1.5, "Map", config.getWindow("Map"):pinned(), currentWindowSize)
