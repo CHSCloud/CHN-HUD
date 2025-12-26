@@ -41,7 +41,7 @@ local tabPin = false
 SettingsActive = false
 WindowsColor = settings.store.windowsColor
 SelectedSpeed = settings.store.selectedSpeed
-WindowSettingsSize = vec2(780, 480)
+WindowSettingsSize = vec2(780, 500)
 
 if settings.store.optionLanguage ~= language.getCurrentLanguage() then
   language.setlanguage(settings.store.optionLanguage)

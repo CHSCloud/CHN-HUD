@@ -4,7 +4,7 @@ local slider = require("src.ui.slider")
 local button = require("src.ui.button")
 local toggleButton = require("src.ui.toggleButton")
 local droplist = require("src.ui.droplist")
-
+local sectionPanel = require("src.ui.sectionPanel")
 local config = require("common.config")
 local language = require("lang.language")
 
@@ -28,9 +28,15 @@ local defaultValuesFeatures = {
     colorSectors = rgbm.from0255(255, 255, 255, 1),
     drsActive = true,
     colorDRS = rgbm.from0255(0, 255, 0, 1),
+}
+
+local defaultValuesSections = {
     sectionsTrackActive = true,
+    resetSectionsINI = false,
+    trackSectionsEdited = false,
     sectionsType = 1
 }
+
 local defaultValuesPlayers = {
     colorEnemies = rgbm.from0255(255, 255, 255, 1),
     colorFocusedCar = rgbm.from0255(255, 255, 0, 1),
@@ -44,8 +50,8 @@ local defaultValuesPlayers = {
 config.copyTable(defaultValuesTrack, defaultValues)
 config.copyTable(defaultValuesFeatures, defaultValues)
 config.copyTable(defaultValuesPlayers, defaultValues)
+config.copyTable(defaultValuesSections, defaultValues)
 mapSettings.store = ac.storage(defaultValues)
-
 
 local function resetToDefaultTrack()
     for key, value in pairs(defaultValuesTrack) do
@@ -53,6 +59,12 @@ local function resetToDefaultTrack()
     end
     mapSettings.store.colorTrack = rgbm.from0255(0, 0, 0, 1)
     mapSettings.store.colorBorder = rgbm.from0255(255, 255, 255, 1)
+end
+
+local function resetToDefaultSections()
+    for key, value in pairs(defaultValuesSections) do
+        mapSettings.store[key] = value
+    end
 end
 
 local function resetToDefaultFeatures()
@@ -73,6 +85,115 @@ local function resetToDefaultPlayers()
     mapSettings.store.colorExternalEnemies = rgbm.from0255(0, 0, 0, 1)
 end
 
+--- @return table
+function mapSettings.resetSectionsINI()
+    local trackSections = {}
+    local filePath = ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\CHN-HUD\\user\\trackSections\\" .. ac.getTrackName() .. ".ini"
+    if not io.fileExists(filePath) then
+        io.save(filePath, "")
+    end
+    local sectionsINI = ac.INIConfig.trackData("sections.ini")
+    local userSectionsINI = ac.INIConfig.load(filePath)
+    if sectionsINI ~= nil then
+        for i, section in sectionsINI:iterate('SECTION', false) do
+            local start = sectionsINI:get(section, 'IN', 0)
+            local final = sectionsINI:get(section, 'OUT', 0)
+            local text = sectionsINI:get(section, 'TEXT', "")
+            if start ~= nil and final ~= nil and text ~= nil then
+                local center = tonumber(((final - start) / 2) + start)
+                userSectionsINI:set(section, "TEXT", text)
+                userSectionsINI:set(section, "PROGRESS", center)
+                userSectionsINI:set(section, "POSITION", "CENTER")
+
+                local worldLeft = ac.trackCoordinateToWorld(vec3(1, 0, center))
+                local worldLeft2d = vec2(worldLeft.x, worldLeft.z)
+                local worldCenter = ac.trackCoordinateToWorld(vec3(0, 0, center))
+                local worldCenter2d = vec2(worldCenter.x, worldCenter.z)
+                local worldRight = ac.trackCoordinateToWorld(vec3(-1, 0, center))
+                local worldRight2d = vec2(worldRight.x, worldRight.z)
+                local dir = (worldRight2d - worldLeft2d):normalize()
+                table.insert(trackSections, {
+                    number = tostring(i),
+                    name = text,
+                    left = worldLeft2d,
+                    center = worldCenter2d,
+                    namePosition = nil,
+                    direction = dir
+                })
+            end
+        end
+    end
+    userSectionsINI:save()
+    return trackSections
+end
+
+--- @return table
+function mapSettings.loadSectionsINI()
+    local trackSections = {}
+    local filePath = ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\CHN-HUD\\user\\trackSections\\" .. ac.getTrackName() .. ".ini"
+    if not io.fileExists(filePath) then
+        io.save(filePath, "")
+        local sectionsINI = ac.INIConfig.trackData("sections.ini")
+        local userSectionsINI = ac.INIConfig.load(filePath)
+        if sectionsINI ~= nil then
+            for i, section in sectionsINI:iterate('SECTION', false) do
+                local start = sectionsINI:get(section, 'IN', 0)
+                local final = sectionsINI:get(section, 'OUT', 0)
+                local text = sectionsINI:get(section, 'TEXT', "")
+                if start ~= nil and final ~= nil and text ~= nil then
+                    local center = tonumber(((final - start) / 2) + start)
+                    userSectionsINI:set(section, "TEXT", text)
+                    userSectionsINI:set(section, "PROGRESS", center)
+                    userSectionsINI:set(section, "POSITION", "CENTER")
+
+                    local worldLeft = ac.trackCoordinateToWorld(vec3(1, 0, center))
+                    local worldLeft2d = vec2(worldLeft.x, worldLeft.z)
+                    local worldCenter = ac.trackCoordinateToWorld(vec3(0, 0, center))
+                    local worldCenter2d = vec2(worldCenter.x, worldCenter.z)
+                    local worldRight = ac.trackCoordinateToWorld(vec3(-1, 0, center))
+                    local worldRight2d = vec2(worldRight.x, worldRight.z)
+                    local dir = (worldRight2d - worldLeft2d):normalize()
+                    table.insert(trackSections, {
+                        number = tostring(i),
+                        name = text,
+                        left = worldLeft2d,
+                        center = worldCenter2d,
+                        namePosition = nil,
+                        direction = dir
+                    })
+                end
+            end
+        end
+        userSectionsINI:save()
+    else 
+        local userSectionsINI = ac.INIConfig.load(filePath)
+        if userSectionsINI ~= nil then
+            for i, section in userSectionsINI:iterate('SECTION', false) do
+                local progress = userSectionsINI:get(section, 'PROGRESS', 0)
+                local text = userSectionsINI:get(section, 'TEXT', "")
+                if progress ~= nil and text ~= nil then
+                    local worldLeft = ac.trackCoordinateToWorld(vec3(1, 0, tonumber(progress)))
+                    local worldLeft2d = vec2(worldLeft.x, worldLeft.z)
+                    local worldCenter = ac.trackCoordinateToWorld(vec3(0, 0, tonumber(progress)))
+                    local worldCenter2d = vec2(worldCenter.x, worldCenter.z)
+                    local worldRight = ac.trackCoordinateToWorld(vec3(-1, 0, tonumber(progress)))
+                    local worldRight2d = vec2(worldRight.x, worldRight.z)
+                    local dir = (worldRight2d - worldLeft2d):normalize()
+                    table.insert(trackSections, {
+                        number = tostring(i),
+                        name = text,
+                        left = worldLeft2d,
+                        center = worldCenter2d,
+                        namePosition = nil,
+                        direction = dir
+                    })
+                end
+            end
+        end
+    end
+
+    return trackSections
+end
 
 local function trackSetitngs()
     local initPos = 100
@@ -139,15 +260,30 @@ local function featuresSettings()
     mapSettings.store.colorDRS = colorSelector.main(language.get("DRS"), mapSettings.store.colorDRS, vec2(100, initPos))
     initPos = initPos + 40
 
+    if button.main(vec2(20, initPos), language.get("RESET_DEFAULT")) then
+        resetToDefaultFeatures()
+    end
+end
+
+local function sectionsSettings()
+    local initPos = 80
     if toggleButton.main("sectionsTrackActive", vec2(20, initPos), mapSettings.store.sectionsTrackActive, language.get("SECTIONS")) then
         mapSettings.store.sectionsTrackActive = not mapSettings.store.sectionsTrackActive
     end
-    initPos = initPos + 50
-    mapSettings.store.sectionsType = droplist.main("sectionsType", "Type", vec2(20, initPos), 100,  mapSettings.store.sectionsType, {"Numbers", "Names"})
+    --initPos = initPos + 30
+    mapSettings.store.sectionsType = droplist.main("sectionsType", "Type", vec2(200, initPos), 100,  mapSettings.store.sectionsType, {"Numbers", "Names"}, droplist.PosText.Start)
     initPos = initPos + 40
+    if mapSettings.store.sectionsTrackActive then
+        local filePath = ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\CHN-HUD\\user\\trackSections\\" .. ac.getTrackName() .. ".ini"
+        mapSettings.store.trackSectionsEdited, mapSettings.store.resetSectionsINI = sectionPanel.main("sectionsPanel", ac.INIConfig.load(filePath), vec2(20, initPos), vec2(WindowSettingsSize.x - 200, 300))
+        if mapSettings.store.trackSectionsEdited then
+            ac.log("Edited")
+        end
+        initPos = initPos + 310
+    end
 
     if button.main(vec2(20, initPos), language.get("RESET_DEFAULT")) then
-        resetToDefaultFeatures()
+        resetToDefaultSections()
     end
 end
 
@@ -184,6 +320,7 @@ function mapSettings.mapSettings()
     ui.tabBar('##ID',function ()
         ui.tabItem(language.get("TRACK"), trackSetitngs)
         ui.tabItem(language.get("FEATURES_OF_TRACK"), featuresSettings)
+        ui.tabItem("Sections", sectionsSettings)
         ui.tabItem(language.get("PLAYERS"), playersSetitngs)
     end)
 end
