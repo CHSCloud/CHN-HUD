@@ -2,6 +2,15 @@ local config = require("common.config")
 local pinCheckBox = require("src.ui.pinCheckBox")
 
 local deltaBar = {}
+-- amostragem por posição da pista (persistente entre frames)
+local currentLapSamples = {}
+local previousLapSamples = {}
+local lastPreviousLapTimeMs = 0
+local sampleResolution = 1000 -- número de buckets por volta (0..1000)
+-- Suavização exponencial do delta
+local smoothingAlpha = 0.1 -- 0 = suave, 1 = sem suavização
+local smoothedDelta = 0
+local smoothedDeltaMeter = 0
 
 function deltaBar.windowMain()
     --Limites e Tamanhos
@@ -26,8 +35,35 @@ function deltaBar.windowMain()
 
     --------------------------------------------------------------------------------------------------------------------------
     local barEnd = limitBarDeltaBackground.x / 2
-    local delta = CAR.performanceMeter
-    local deltaMeter = CAR.performanceMeterSpeedDifferenceMs
+    -- Atualiza previousLapSamples quando uma volta anterior nova existir
+    if CAR.previousLapTimeMs and CAR.previousLapTimeMs > 0 and CAR.previousLapTimeMs ~= lastPreviousLapTimeMs then
+        previousLapSamples = currentLapSamples
+        currentLapSamples = {}
+        lastPreviousLapTimeMs = CAR.previousLapTimeMs
+    end
+
+    -- Amostragem da volta atual por posição (splinePosition de 0..1)
+    local pos = CAR.splinePosition or 0
+    local idx = math.floor(pos * sampleResolution + 0.5)
+    if CAR.lapTimeMs and currentLapSamples[idx] == nil then
+        currentLapSamples[idx] = CAR.lapTimeMs
+    end
+
+    -- Sempre comparar com a volta anterior na mesma posição, se disponível
+    local rawDelta
+    if previousLapSamples[idx] then
+        rawDelta = (CAR.lapTimeMs - previousLapSamples[idx]) / 1000
+    else
+        rawDelta = CAR.performanceMeter or 0
+    end
+    local rawDeltaMeter = CAR.performanceMeterSpeedDifferenceMs or 0
+    
+    -- Aplicar suavização exponencial
+    smoothedDelta = smoothingAlpha * rawDelta + (1 - smoothingAlpha) * smoothedDelta
+    smoothedDeltaMeter = smoothingAlpha * rawDeltaMeter + (1 - smoothingAlpha) * smoothedDeltaMeter
+    
+    local delta = smoothedDelta
+    local deltaMeter = smoothedDeltaMeter
     
     --Background Barra Delta
     ui.drawRectFilled(vec2(0, 0), limitBarDeltaBackground, WindowsColor, cornerBarDeltaBackground)
