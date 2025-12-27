@@ -1,8 +1,11 @@
 local button = require("src.ui.button")
+local droplist = require("src.ui.droplist")
 local formText = require("src.ui.formText")
 
 local config = require("common.config")
 local sectionPanel = {}
+
+local position = {"CENTER", "LEFT", "RIGHT"} 
 
 --- @param pos vec2
 --- @param size vec2
@@ -45,6 +48,7 @@ end
 function sectionPanel.main(id, iniFile, pos, size)
     local isEdited = false
     local resetSectionsINI = false
+    local position = 0
     local numberSections = 0
     
     --ui.drawRectFilled(pos, pos + size, COLOR.GRAY, 10, ui.CornerFlags.All)
@@ -84,7 +88,14 @@ function sectionPanel.main(id, iniFile, pos, size)
             iniFile:set(section, "PROGRESS", progress)
             if isItemEdited and ui.windowFocused(ui.FocusedFlags.ChildWindows) then edited = true end
 
-            if deleteSectionButton(vec2(sizeText.x + sizeProgress.x + 50, 10 + (index - 1) * 30), vec2(20, 20)) and ui.windowFocused(ui.FocusedFlags.ChildWindows) then
+            position = droplist.main(section .. "POSITION", "", vec2(sizeText.x + sizeProgress.x + 40, 8 + (index - 1) * 30), 100, iniFile:get(section, "POSITION", 1), {"CENTER", "LEFT", "RIGHT"}, droplist.PosText.Start)
+            if position ~= iniFile:get(section, "POSITION", 1) then
+                iniFile:set(section, "POSITION", position)
+                edited = true
+            end
+
+
+            if deleteSectionButton(vec2(sizeText.x + sizeProgress.x + 165, 10 + (index - 1) * 30), vec2(20, 20)) and ui.windowFocused(ui.FocusedFlags.ChildWindows) then
                 iniFile:mapConfig(deleteSection(iniFile.sections, section, index))
                 edited = true
             end
@@ -96,7 +107,8 @@ function sectionPanel.main(id, iniFile, pos, size)
 
     if button.main(pos + vec2(5,5), "Add section", ui.windowFocused(ui.FocusedFlags.ChildWindows)) then
         iniFile:set("SECTION_".. tostring(numberSections), "TEXT", tostring(ac.getTrackName()))
-        iniFile:set("SECTION_".. tostring(numberSections), "PROGRESS", "0")
+        iniFile:set("SECTION_".. tostring(numberSections), "PROGRESS", 0)
+        iniFile:set("SECTION_".. tostring(numberSections), "POSITION", 1)
         isEdited = true
     end
 

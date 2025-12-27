@@ -103,7 +103,7 @@ function mapSettings.resetSectionsINI()
                 local center = tonumber(((final - start) / 2) + start)
                 userSectionsINI:set(section, "TEXT", text)
                 userSectionsINI:set(section, "PROGRESS", center)
-                userSectionsINI:set(section, "POSITION", "CENTER")
+                userSectionsINI:set(section, "POSITION", 1)
 
                 local worldLeft = ac.trackCoordinateToWorld(vec3(1, 0, center))
                 local worldLeft2d = vec2(worldLeft.x, worldLeft.z)
@@ -117,6 +117,8 @@ function mapSettings.resetSectionsINI()
                     name = text,
                     left = worldLeft2d,
                     center = worldCenter2d,
+                    right = worldRight2d,
+                    position = 1,
                     namePosition = nil,
                     direction = dir
                 })
@@ -144,7 +146,7 @@ function mapSettings.loadSectionsINI()
                     local center = tonumber(((final - start) / 2) + start)
                     userSectionsINI:set(section, "TEXT", text)
                     userSectionsINI:set(section, "PROGRESS", center)
-                    userSectionsINI:set(section, "POSITION", "CENTER")
+                    userSectionsINI:set(section, "POSITION", 1)
 
                     local worldLeft = ac.trackCoordinateToWorld(vec3(1, 0, center))
                     local worldLeft2d = vec2(worldLeft.x, worldLeft.z)
@@ -158,8 +160,9 @@ function mapSettings.loadSectionsINI()
                         name = text,
                         left = worldLeft2d,
                         center = worldCenter2d,
-                        namePosition = nil,
-                        direction = dir
+                        right = worldRight2d,
+                        position = 1,
+                        namePosition = nil
                     })
                 end
             end
@@ -170,6 +173,7 @@ function mapSettings.loadSectionsINI()
         if userSectionsINI ~= nil then
             for i, section in userSectionsINI:iterate('SECTION', false) do
                 local progress = userSectionsINI:get(section, 'PROGRESS', 0)
+                local position = userSectionsINI:get(section, 'POSITION', 0)
                 local text = userSectionsINI:get(section, 'TEXT', "")
                 if progress ~= nil and text ~= nil then
                     local worldLeft = ac.trackCoordinateToWorld(vec3(1, 0, tonumber(progress)))
@@ -184,8 +188,9 @@ function mapSettings.loadSectionsINI()
                         name = text,
                         left = worldLeft2d,
                         center = worldCenter2d,
-                        namePosition = nil,
-                        direction = dir
+                        right = worldRight2d,
+                        position = position,
+                        namePosition = nil
                     })
                 end
             end

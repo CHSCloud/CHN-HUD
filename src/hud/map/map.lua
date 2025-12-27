@@ -238,6 +238,23 @@ local function drawDRS(thickness)
     end
 end
 
+local function resizeWithText(initRect, finalRect) 
+    if initRect.x < 0 and math.abs(initRect.x) > offset.x then
+        currentWindowSize.x = currentWindowSize.x - offset.x +  math.abs(initRect.x)
+        offset.x = math.abs(initRect.x)
+    end
+    if finalRect.x > currentWindowSize.x - offset.x then
+        currentWindowSize.x = finalRect.x + offset.x
+    end
+    if initRect.y < 0 and math.abs(initRect.y) > offset.y then
+        currentWindowSize.y = currentWindowSize.y - offset.y + math.abs(initRect.y)
+        offset.y = math.abs(initRect.y)
+    end
+    if finalRect.y > currentWindowSize.y then
+        currentWindowSize.y = finalRect.y
+    end
+end
+
 --- @param sections table
 local function resizeWindow(sections)
     local scale = (currentWindowSize.y - (padding * 2)) / trackLength
@@ -245,30 +262,53 @@ local function resizeWindow(sections)
     if not mapSettings.store.focus then
         if mapSettings.store.sectionsType == 1 then
             for i = 1, #sections, 1 do
-                local posRotated = config.rotateVec(vec2((sections[i].center.x - trackCenterX) * scale, (sections[i].center.y - trackCenterY) * scale), angle)
-                sections[i].namePosition = windowCenter + posRotated
+                local posRotated
+                local textLenght = (ui.measureDWriteText(sections[i].number, 8) + vec2(10, 0)) * mapSettings.store.mapScale
+                if sections[i].position == 1 then
+                    posRotated = config.rotateVec(vec2((sections[i].center.x - trackCenterX) * scale, (sections[i].center.y - trackCenterY) * scale), angle)
+                elseif sections[i].position == 2 then
+                    posRotated = config.rotateVec(vec2((sections[i].left.x - trackCenterX) * scale, (sections[i].left.y - trackCenterY) * scale), angle)
+                    local dir = (sections[i].right - sections[i].left):normalize()
+                    dir = config.rotateVec(dir, angle)
+                    posRotated = posRotated + dir * (mapSettings.store.trackLenght + mapSettings.store.borderLenght * 2)
+                else
+                    posRotated = config.rotateVec(vec2((sections[i].right.x - trackCenterX) * scale, (sections[i].right.y - trackCenterY) * scale), angle)
+                    local dir = (sections[i].left - sections[i].right):normalize()
+                    dir = config.rotateVec(dir, angle)
+                    posRotated = posRotated + dir * (mapSettings.store.trackLenght + mapSettings.store.borderLenght * 2)
+                end
+                textPosition = windowCenter + posRotated
+                resizeWithText(textPosition, textPosition + textLenght)
+
+                sections[i].namePosition = textPosition
             end
         else
             for i = 1, #sections, 1 do
-                local textLenght = (ui.measureDWriteText(sections[i].name, 7) + vec2(10, 0))  * mapSettings.store.mapScale 
-                local posRotated = config.rotateVec(vec2((sections[i].left.x - trackCenterX) * scale, (sections[i].left.y - trackCenterY) * scale), angle)
-                textPosition = windowCenter + posRotated - textLenght/2
-                local initRect = textPosition
-                local finalRect = textPosition + textLenght
-                if initRect.x < 0 and math.abs(initRect.x) > offset.x then
-                    currentWindowSize.x = currentWindowSize.x - offset.x +  math.abs(initRect.x)
-                    offset.x = math.abs(initRect.x)
+                local textLenght = (ui.measureDWriteText(sections[i].name, 7) * 1.1)  * mapSettings.store.mapScale
+                local posRotated
+                local dir = vec2(0,0)
+                if sections[i].position == 1 then
+                    posRotated = config.rotateVec(vec2((sections[i].center.x - trackCenterX) * scale, (sections[i].center.y - trackCenterY) * scale), angle)
+                elseif sections[i].position == 2 then
+                    posRotated = config.rotateVec(vec2((sections[i].left.x - trackCenterX) * scale, (sections[i].left.y - trackCenterY) * scale), angle)
+                    dir = (sections[i].right - sections[i].left):normalize()
+                    dir = config.rotateVec(dir, angle)
+                else
+                    posRotated = config.rotateVec(vec2((sections[i].right.x - trackCenterX) * scale, (sections[i].right.y - trackCenterY) * scale), angle)
+                    dir = (sections[i].left - sections[i].right):normalize()
+                    dir = config.rotateVec(dir, angle)
                 end
-                if finalRect.x > currentWindowSize.x - offset.x then
-                    currentWindowSize.x = finalRect.x + offset.x
+                local distance
+                if dir.x > 0 then
+                    distance = config.remapInterval(dir.x, 0, 1, textLenght.x / 30, 1)
+                else
+                    distance = config.remapInterval(dir.x, -1, 0, 1, textLenght.x / 30)
                 end
-                if initRect.y < 0 and math.abs(initRect.y) > offset.y then
-                    currentWindowSize.y = currentWindowSize.y - offset.y + math.abs(initRect.y)
-                    offset.y = math.abs(initRect.y)
-                end
-                if finalRect.y > currentWindowSize.y then
-                    currentWindowSize.y = finalRect.y
-                end
+                ui.text("VALOR:" .. tostring(math.min(config.remapInterval(dir.x, -1, 0, 1, textLenght.x / 30), config.remapInterval(dir.x, 0, 1, textLenght.x / 30,1))))
+                local centerText = posRotated + dir * (textLenght.x / (2 * distance) + mapSettings.store.trackLenght / 2)
+                textPosition = windowCenter + centerText - textLenght / 2
+                resizeWithText(textPosition, textPosition + textLenght)
+                
                 sections[i].namePosition = textPosition
             end
         end
@@ -312,7 +352,7 @@ local function drawTrackSections(sections)
 
     else
         for i = 1, #sections, 1 do
-            local textLenght = (ui.measureDWriteText(sections[i].name, 7) + vec2(10, 0)) * mapSettings.store.mapScale 
+            local textLenght = (ui.measureDWriteText(sections[i].name, 7) * 1.1) * mapSettings.store.mapScale 
             local position = sections[i].namePosition + offset
             ui.drawRectFilled(position, position + textLenght, COLOR.RED, 5)
             ui.setCursor(position)
