@@ -1,6 +1,5 @@
 local button = require("src.ui.button")
 local formText = require("src.ui.formText")
-local droplist = require("src.ui.droplist")
 
 local config = require("common.config")
 local sectionPanel = {}
@@ -95,16 +94,23 @@ function sectionPanel.main(id, iniFile, pos, size)
         return edited
     end)
 
-    if button.main(pos + vec2(5,5), "Add Section", ui.windowFocused(ui.FocusedFlags.ChildWindows)) then
+    if button.main(pos + vec2(5,5), "Add section", ui.windowFocused(ui.FocusedFlags.ChildWindows)) then
         iniFile:set("SECTION_".. tostring(numberSections), "TEXT", tostring(ac.getTrackName()))
         iniFile:set("SECTION_".. tostring(numberSections), "PROGRESS", "0")
         isEdited = true
     end
 
-    if button.main(pos + vec2(10,size.y - 30), "Reset Sections to Default", ui.windowFocused(ui.FocusedFlags.ChildWindows)) then
+    if button.main(pos + vec2(10,size.y - 30), "Reset sections to default", ui.windowFocused(ui.FocusedFlags.ChildWindows)) then
         resetSectionsINI = true
     end
+
+    if button.main(pos + vec2(200, size.y - 30), "Clear all sections", ui.windowFocused(ui.FocusedFlags.ChildWindows)) then
+        iniFile.sections = {}
+        isEdited = true
+    end
+
     iniFile:save()
+
     return isEdited, resetSectionsINI
 end
 

@@ -10,7 +10,7 @@ function button.main(pos, text, focused)
     local color = COLOR.GRAY_BG
 
     if focused == nil then
-        focused = not ui.windowFocused(ui.FocusedFlags.ChildWindows)
+        focused = ui.windowFocused(ui.FocusedFlags.RootWindow)
     end
 
     if config.isMouseInWindow(ui.mouseLocalPos(), pos.x, pos.x + lenght, pos.y, pos.y + 25) then
