@@ -391,7 +391,7 @@ local function drawTrackSections(sections)
             --local textLenght = (ui.measureDWriteText(sections[i].number, 8) + vec2(10, 0)) * mapSettings.store.mapScale
             local textLenght = vec2(15, 15):scale(mapSettings.store.mapScale)
             local position = sections[i].namePosition
-            ui.drawCircleFilled(position, textLenght.x / 2, COLOR.RED, 20)
+            ui.drawCircleFilled(position, textLenght.x / 3, COLOR.BLACK, 20)
             ui.setCursor(position - textLenght / 2)
             ui.dwriteTextAligned(sections[i].number, 8 * mapSettings.store.mapScale, ui.Alignment.Center, ui.Alignment.Center, textLenght, false, COLOR.WHITE)
         end
@@ -400,7 +400,7 @@ local function drawTrackSections(sections)
         for i = 1, #sections, 1 do
             local textLenght = (ui.measureDWriteText(sections[i].name, 7) * 1.1) * mapSettings.store.mapScale 
             local position = sections[i].namePosition + offset
-            ui.drawRectFilled(position, position + textLenght, COLOR.RED, 5)
+            ui.drawRectFilled(position, position + textLenght, COLOR.BLACK, 5)
             ui.setCursor(position)
             ui.dwriteTextAligned(sections[i].name, 7 * mapSettings.store.mapScale, ui.Alignment.Center, ui.Alignment.Center, textLenght, false, COLOR.WHITE)
         end
