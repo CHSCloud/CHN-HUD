@@ -55,7 +55,9 @@ function sectionPanel.main(id, iniFile, pos, size)
     ui.drawRect(pos, pos + size, UserUI.accentColor, 10, ui.CornerFlags.All, 3)
     ui.drawRect(pos + vec2(10, 40), pos + size - vec2(20, 40), COLOR.WHITE, 10, ui.CornerFlags.All, 3)
     ui.setCursor(pos + vec2(10, 40))
-    isEdited = ui.childWindow("##"..id, size - vec2(20,80), false, ui.WindowFlags.None + ui.WindowFlags.NoBackground, function()
+    isEdited = ui.childWindow("##"..id, size - vec2(20,80), false, ui.WindowFlags.None + ui.WindowFlags.NoBackground,
+    ---@return boolean
+    function()
         local isItemEdited = false
         local edited = false
         local progress, text
@@ -71,7 +73,8 @@ function sectionPanel.main(id, iniFile, pos, size)
                 iniFile:get(section, "TEXT", ""), 
                 vec2(100, 20), 
                 10,
-                COLOR.WHITE
+                COLOR.WHITE,
+                ui.InputTextFlags.NoHorizontalScroll + ui.InputTextFlags.AutoSelectAll
             )
             iniFile:set(section, "TEXT", text)
             if isItemEdited and ui.windowFocused(ui.FocusedFlags.ChildWindows)then edited = true end

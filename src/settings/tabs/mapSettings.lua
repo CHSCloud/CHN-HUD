@@ -85,6 +85,7 @@ local function resetToDefaultPlayers()
     mapSettings.store.colorExternalEnemies = rgbm.from0255(0, 0, 0, 1)
 end
 
+-- Reseta as seções do arquivo para o padrão do jogo
 --- @return table
 function mapSettings.resetSectionsINI()
     local trackSections = {}
@@ -129,6 +130,7 @@ function mapSettings.resetSectionsINI()
     return trackSections
 end
 
+-- Carrega as seções do arquivo
 --- @return table
 function mapSettings.loadSectionsINI()
     local trackSections = {}
@@ -142,28 +144,30 @@ function mapSettings.loadSectionsINI()
                 local start = sectionsINI:get(section, 'IN', 0)
                 local final = sectionsINI:get(section, 'OUT', 0)
                 local text = sectionsINI:get(section, 'TEXT', "")
-                if start ~= nil and final ~= nil and text ~= nil then
-                    local center = tonumber(((final - start) / 2) + start)
-                    userSectionsINI:set(section, "TEXT", text)
-                    userSectionsINI:set(section, "PROGRESS", center)
-                    userSectionsINI:set(section, "POSITION", 1)
+                if string.len(text) > 0 then
+                    if start ~= nil and final ~= nil then
+                        local center = tonumber(((final - start) / 2) + start)
+                        userSectionsINI:set(section, "TEXT", text)
+                        userSectionsINI:set(section, "PROGRESS", center)
+                        userSectionsINI:set(section, "POSITION", 1)
 
-                    local worldLeft = ac.trackCoordinateToWorld(vec3(1, 0, center))
-                    local worldLeft2d = vec2(worldLeft.x, worldLeft.z)
-                    local worldCenter = ac.trackCoordinateToWorld(vec3(0, 0, center))
-                    local worldCenter2d = vec2(worldCenter.x, worldCenter.z)
-                    local worldRight = ac.trackCoordinateToWorld(vec3(-1, 0, center))
-                    local worldRight2d = vec2(worldRight.x, worldRight.z)
-                    local dir = (worldRight2d - worldLeft2d):normalize()
-                    table.insert(trackSections, {
-                        number = tostring(i),
-                        name = text,
-                        left = worldLeft2d,
-                        center = worldCenter2d,
-                        right = worldRight2d,
-                        position = 1,
-                        namePosition = nil
-                    })
+                        local worldLeft = ac.trackCoordinateToWorld(vec3(1, 0, center))
+                        local worldLeft2d = vec2(worldLeft.x, worldLeft.z)
+                        local worldCenter = ac.trackCoordinateToWorld(vec3(0, 0, center))
+                        local worldCenter2d = vec2(worldCenter.x, worldCenter.z)
+                        local worldRight = ac.trackCoordinateToWorld(vec3(-1, 0, center))
+                        local worldRight2d = vec2(worldRight.x, worldRight.z)
+                        local dir = (worldRight2d - worldLeft2d):normalize()
+                        table.insert(trackSections, {
+                            number = tostring(i),
+                            name = text,
+                            left = worldLeft2d,
+                            center = worldCenter2d,
+                            right = worldRight2d,
+                            position = 1,
+                            namePosition = nil
+                        })
+                    end
                 end
             end
         end
@@ -200,6 +204,7 @@ function mapSettings.loadSectionsINI()
     return trackSections
 end
 
+-- Configurações da pista
 local function trackSetitngs()
     local initPos = 100
 
@@ -250,6 +255,7 @@ local function trackSetitngs()
     end 
 end
 
+-- Configurações das Características da pista
 local function featuresSettings()
     local initPos = 80
     if toggleButton.main("sectors", vec2(20, initPos), mapSettings.store.sectorsActive, language.get("SECTORS")) then
@@ -270,6 +276,7 @@ local function featuresSettings()
     end
 end
 
+-- Configurações das Seções
 local function sectionsSettings()
     local initPos = 80
     if toggleButton.main("sectionsTrackActive", vec2(20, initPos), mapSettings.store.sectionsTrackActive, language.get("SECTIONS")) then
@@ -280,7 +287,7 @@ local function sectionsSettings()
     initPos = initPos + 40
     if mapSettings.store.sectionsTrackActive then
         local filePath = ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\CHN-HUD\\user\\trackSections\\" .. ac.getTrackName() .. ".ini"
-        mapSettings.store.trackSectionsEdited, mapSettings.store.resetSectionsINI = sectionPanel.main("sectionsPanel", ac.INIConfig.load(filePath), vec2(20, initPos), vec2(WindowSettingsSize.x - 200, 300))
+        mapSettings.store.trackSectionsEdited, mapSettings.store.resetSectionsINI = sectionPanel.main("sectionsPanel", ac.INIConfig.load(filePath), vec2(20, initPos), vec2(WindowSettingsSize.x - 40, 300))
         if mapSettings.store.trackSectionsEdited then
             ac.log("Edited")
         end
@@ -292,12 +299,14 @@ local function sectionsSettings()
     end
 end
 
+
+-- Configurações dos Jogadores
 local function playersSetitngs()
     local initPos = 100
 
-    mapSettings.store.focusedCarLenght = math.floor(slider.main(language.get("FOCUSED_CAR_LENGHT"), string.format("%.0f", mapSettings.store.focusedCarLenght), vec2(20, initPos), 200, mapSettings.store.focusedCarLenght, 10, 30))
+    mapSettings.store.focusedCarLenght = math.floor(slider.main(language.get("FOCUSED_CAR_LENGHT"), string.format("%.0f", mapSettings.store.focusedCarLenght), vec2(20, initPos), 200, mapSettings.store.focusedCarLenght, 5, 15))
     initPos = initPos + 50
-    mapSettings.store.enemiesLenght = math.floor(slider.main(language.get("ENEMIES_LENGHT"), string.format("%.0f", mapSettings.store.enemiesLenght), vec2(20, initPos), 200, mapSettings.store.enemiesLenght, 10, 30))
+    mapSettings.store.enemiesLenght = math.floor(slider.main(language.get("ENEMIES_LENGHT"), string.format("%.0f", mapSettings.store.enemiesLenght), vec2(20, initPos), 200, mapSettings.store.enemiesLenght, 5, 15))
 
     initPos = initPos + 30
     ui.setCursor(vec2(20, initPos))

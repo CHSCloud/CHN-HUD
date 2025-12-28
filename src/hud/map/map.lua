@@ -177,11 +177,13 @@ end
 --- @param lenght number -- Tamanho do círculo
 --- @param colorInternal rgbm -- Cor do círculo interno
 --- @param colorExternal rgbm -- Cor do círculo extero
-local function drawPLayer(car, lenght, colorInternal, colorExternal)
-    local posX = (car.position.x - trackCenterX) * canvasScale
-    local posY = (car.position.z - trackCenterY) * canvasScale
+--- @param center vec2 -- Centro do mapa
+--- @param scale number -- Escala do mapa
+local function drawPLayer(car, lenght, colorInternal, colorExternal, center, scale)
+    local posX = (car.position.x - trackCenterX) * scale
+    local posY = (car.position.z - trackCenterY) * scale
     local rotatedPos = config.rotateVec(vec2(posX, posY), angle)
-    rotatedPos = canvasCenter + rotatedPos
+    rotatedPos = center + rotatedPos
     ui.drawCircleFilled(rotatedPos, lenght, colorInternal, 20)
     ui.drawCircle(rotatedPos, lenght, colorExternal, 20, lenght / 5)
     ui.setCursor(rotatedPos - vec2(lenght,lenght)/2)
@@ -189,22 +191,33 @@ local function drawPLayer(car, lenght, colorInternal, colorExternal)
 end
 
 local function drawPLayers()
+    local scale
+    local center
+    local enemiesLenght = mapSettings.store.enemiesLenght * mapSettings.store.mapScale
+    local focusedCarLenght = mapSettings.store.focusedCarLenght * mapSettings.store.mapScale
+    if not mapSettings.store.focus then
+        scale = (currentWindowSize.y - (padding * 2)) / trackLength
+        center = windowCenter
+    else 
+        scale = canvasScale
+        center = canvasCenter
+    end
     for i, car in ac.iterateCars.leaderboard() do
         if car.index ~= SIM.focusedCar then
             if car.isInPitlane then
-                drawPLayer(car, mapSettings.store.enemiesLenght / 1.5, mapSettings.store.colorEnemies - rgbm(0, 0, 0, 0.2),mapSettings.store.colorExternalEnemies - rgbm(0, 0, 0, 0.2))
+                drawPLayer(car, enemiesLenght / 1.5, mapSettings.store.colorEnemies - rgbm(0, 0, 0, 0.2),mapSettings.store.colorExternalEnemies - rgbm(0, 0, 0, 0.2), center, scale)
                 
             else 
-                drawPLayer(car, mapSettings.store.enemiesLenght, mapSettings.store.colorEnemies, mapSettings.store.colorExternalEnemies)
+                drawPLayer(car, enemiesLenght, mapSettings.store.colorEnemies, mapSettings.store.colorExternalEnemies, center, scale)
             end
         end
     end
     local car = ac.getCar(SIM.focusedCar)
     if car == nil then return end
     if car.isInPitlane then
-        drawPLayer(car, mapSettings.store.focusedCarLenght / 1.5, mapSettings.store.colorFocusedCar - rgbm(0, 0, 0, 0.2), mapSettings.store.colorExternalFocusedCar)
+        drawPLayer(car, focusedCarLenght / 1.5, mapSettings.store.colorFocusedCar - rgbm(0, 0, 0, 0.2), mapSettings.store.colorExternalFocusedCar, center, scale)
     else 
-        drawPLayer(car, mapSettings.store.focusedCarLenght, mapSettings.store.colorFocusedCar, mapSettings.store.colorExternalFocusedCar)
+        drawPLayer(car, focusedCarLenght, mapSettings.store.colorFocusedCar, mapSettings.store.colorExternalFocusedCar, center, scale)
     end
 end
 
@@ -263,19 +276,21 @@ local function resizeWindow(sections)
         if mapSettings.store.sectionsType == 1 then
             for i = 1, #sections, 1 do
                 local posRotated
-                local textLenght = (ui.measureDWriteText(sections[i].number, 8) + vec2(10, 0)) * mapSettings.store.mapScale
+                local textLenght = vec2(15,15):scale(mapSettings.store.mapScale)
                 if sections[i].position == 1 then
                     posRotated = config.rotateVec(vec2((sections[i].center.x - trackCenterX) * scale, (sections[i].center.y - trackCenterY) * scale), angle)
+
                 elseif sections[i].position == 2 then
                     posRotated = config.rotateVec(vec2((sections[i].left.x - trackCenterX) * scale, (sections[i].left.y - trackCenterY) * scale), angle)
                     local dir = (sections[i].right - sections[i].left):normalize()
                     dir = config.rotateVec(dir, angle)
-                    posRotated = posRotated + dir * (mapSettings.store.trackLenght + mapSettings.store.borderLenght * 2)
+                    posRotated = posRotated + dir * (mapSettings.store.trackLenght + mapSettings.store.borderLenght) * mapSettings.store.mapScale
+
                 else
                     posRotated = config.rotateVec(vec2((sections[i].right.x - trackCenterX) * scale, (sections[i].right.y - trackCenterY) * scale), angle)
                     local dir = (sections[i].left - sections[i].right):normalize()
                     dir = config.rotateVec(dir, angle)
-                    posRotated = posRotated + dir * (mapSettings.store.trackLenght + mapSettings.store.borderLenght * 2)
+                    posRotated = posRotated + dir * (mapSettings.store.trackLenght + mapSettings.store.borderLenght)* mapSettings.store.mapScale
                 end
                 textPosition = windowCenter + posRotated
                 resizeWithText(textPosition, textPosition + textLenght)
@@ -289,10 +304,12 @@ local function resizeWindow(sections)
                 local dir = vec2(0,0)
                 if sections[i].position == 1 then
                     posRotated = config.rotateVec(vec2((sections[i].center.x - trackCenterX) * scale, (sections[i].center.y - trackCenterY) * scale), angle)
+
                 elseif sections[i].position == 2 then
                     posRotated = config.rotateVec(vec2((sections[i].left.x - trackCenterX) * scale, (sections[i].left.y - trackCenterY) * scale), angle)
                     dir = (sections[i].right - sections[i].left):normalize()
                     dir = config.rotateVec(dir, angle)
+
                 else
                     posRotated = config.rotateVec(vec2((sections[i].right.x - trackCenterX) * scale, (sections[i].right.y - trackCenterY) * scale), angle)
                     dir = (sections[i].left - sections[i].right):normalize()
@@ -304,8 +321,7 @@ local function resizeWindow(sections)
                 else
                     distance = config.remapInterval(dir.x, -1, 0, 1, textLenght.x / 30)
                 end
-                ui.text("VALOR:" .. tostring(math.min(config.remapInterval(dir.x, -1, 0, 1, textLenght.x / 30), config.remapInterval(dir.x, 0, 1, textLenght.x / 30,1))))
-                local centerText = posRotated + dir * (textLenght.x / (2 * distance) + mapSettings.store.trackLenght / 2)
+                local centerText = posRotated + dir * (textLenght.x / (2 * distance) + (mapSettings.store.trackLenght + mapSettings.store.borderLenght))
                 textPosition = windowCenter + centerText - textLenght / 2
                 resizeWithText(textPosition, textPosition + textLenght)
                 
@@ -315,23 +331,53 @@ local function resizeWindow(sections)
     else 
         if mapSettings.store.sectionsType == 1 then
             for i = 1, #sections, 1 do
-                local posRotated = config.rotateVec(vec2((sections[i].center.x - trackCenterX) * canvasScale, (sections[i].center.y - trackCenterY) * canvasScale), angle)
+                local posRotated
+                if sections[i].position == 1 then
+                    posRotated = config.rotateVec(vec2((sections[i].center.x - trackCenterX) * canvasScale, (sections[i].center.y - trackCenterY) * canvasScale), angle)
+
+                elseif sections[i].position == 2 then
+                    posRotated = config.rotateVec(vec2((sections[i].left.x - trackCenterX) * canvasScale, (sections[i].left.y - trackCenterY) * canvasScale), angle)
+                    local dir = (sections[i].right - sections[i].left):normalize()
+                    dir = config.rotateVec(dir, angle)
+                    posRotated = posRotated + dir * (mapSettings.store.trackLenght + mapSettings.store.borderLenght) * mapSettings.store.mapScale
+
+                else
+                    posRotated = config.rotateVec(vec2((sections[i].right.x - trackCenterX) * canvasScale, (sections[i].right.y - trackCenterY) * canvasScale), angle)
+                    local dir = (sections[i].left - sections[i].right):normalize()
+                    dir = config.rotateVec(dir, angle)
+                    posRotated = posRotated + dir * (mapSettings.store.trackLenght + mapSettings.store.borderLenght)* mapSettings.store.mapScale
+                end
                 posRotated = canvasCenter + posRotated
                 textPosition = posRotated
                 sections[i].namePosition = textPosition
             end
         else 
             for i = 1, #sections, 1 do
-                local textLenght = ui.measureDWriteText(sections[i].name, 15) + vec2(5, 0)
-                local posRotated = config.rotateVec(vec2((sections[i].left.x - trackCenterX) * canvasScale, (sections[i].left.y - trackCenterY) * canvasScale), angle)
-                posRotated = canvasCenter + posRotated
-                textPosition = posRotated
-                if config.rotateVec(sections[i].direction, angle).x > 0 then
-                    textPosition = textPosition - vec2(textLenght.x + (mapSettings.store.trackLenght + mapSettings.store.borderLenght * 2) / 1.5) 
-                else 
-                    textPosition = textPosition + vec2((mapSettings.store.trackLenght + mapSettings.store.borderLenght * 2) / 1.5) 
-                end
+                local textLenght = (ui.measureDWriteText(sections[i].name, 7) * 1.1)  * mapSettings.store.mapScale
+                local posRotated
+                local dir = vec2(0,0)
+                if sections[i].position == 1 then
+                    posRotated = config.rotateVec(vec2((sections[i].center.x - trackCenterX) * canvasScale, (sections[i].center.y - trackCenterY) * canvasScale), angle)
 
+                elseif sections[i].position == 2 then
+                    posRotated = config.rotateVec(vec2((sections[i].left.x - trackCenterX) * canvasScale, (sections[i].left.y - trackCenterY) * canvasScale), angle)
+                    dir = (sections[i].right - sections[i].left):normalize()
+                    dir = config.rotateVec(dir, angle)
+
+                else
+                    posRotated = config.rotateVec(vec2((sections[i].right.x - trackCenterX) * canvasScale, (sections[i].right.y - trackCenterY) * canvasScale), angle)
+                    dir = (sections[i].left - sections[i].right):normalize()
+                    dir = config.rotateVec(dir, angle)
+                end
+                local distance
+                if dir.x > 0 then
+                    distance = config.remapInterval(dir.x, 0, 1, textLenght.x / 30, 1)
+                else
+                    distance = config.remapInterval(dir.x, -1, 0, 1, textLenght.x / 30)
+                end
+                local centerText = posRotated + dir * (textLenght.x / (2 * distance) + (mapSettings.store.trackLenght + mapSettings.store.borderLenght))
+                textPosition = canvasCenter + centerText - textLenght / 2
+                
                 sections[i].namePosition = textPosition
             end
         end
@@ -342,10 +388,10 @@ end
 local function drawTrackSections(sections)
     if mapSettings.store.sectionsType == 1 then
         for i = 1, #sections, 1 do
-            local textLenght = (ui.measureDWriteText(sections[i].number, 8) + vec2(10, 0)) * mapSettings.store.mapScale
+            --local textLenght = (ui.measureDWriteText(sections[i].number, 8) + vec2(10, 0)) * mapSettings.store.mapScale
+            local textLenght = vec2(15, 15):scale(mapSettings.store.mapScale)
             local position = sections[i].namePosition
             ui.drawCircleFilled(position, textLenght.x / 2, COLOR.RED, 20)
-            --ui.drawRectFilled(position, position + textLenght, COLOR.RED, 5)
             ui.setCursor(position - textLenght / 2)
             ui.dwriteTextAligned(sections[i].number, 8 * mapSettings.store.mapScale, ui.Alignment.Center, ui.Alignment.Center, textLenght, false, COLOR.WHITE)
         end
@@ -408,9 +454,6 @@ function map.windowMain()
 
         -- Desenha bandeira de largada
         drawStartFlag((mapSettings.store.trackLenght + mapSettings.store.borderLenght * 2) / 1.3)
-
-        -- Desenha jogadores
-        drawPLayers()
     end)
 
 
@@ -443,6 +486,9 @@ function map.windowMain()
                 drawTrackSections(trackSections)
             end)
         end
+        canvas:update(function ()
+            drawPLayers()
+        end)
         canvasZoom:updateWithShader({
             textures = {canvas = canvas},
             values = {zoom = currentWindowSize.x / (2 * (2 * zoomScaled + currentWindowSize.x))},
@@ -472,6 +518,7 @@ function map.windowMain()
         if mapSettings.store.sectionsTrackActive then
             drawTrackSections(trackSections)
         end
+        drawPLayers()
     end
     config.resize(currentWindowSize, "Map")
     pinCheckBox.main(mapSettings.store.mapScale * 1.5, "Map", config.getWindow("Map"):pinned(), currentWindowSize)

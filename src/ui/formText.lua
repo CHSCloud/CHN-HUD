@@ -1,4 +1,3 @@
-
 local formText = {}
 
 --- @param id string
@@ -18,7 +17,9 @@ function formText.main(id, pos, text, size, rounding, color, textFlags)
     ui.pushStyleColor(ui.StyleColor.Text, COLOR.BLACK)
     ui.pushItemWidth(size.x)
     ui.setCursor(pos)
-    local text = ui.inputText("##".. id, text, textFlags)
+    text = ui.inputText("##".. id, text, textFlags)
+    ui.popStyleColor(2)
+    ui.popItemWidth()
     return text, size, ui.itemEdited()
 end
 
