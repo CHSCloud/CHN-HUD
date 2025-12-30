@@ -124,7 +124,9 @@ function sectionPanel.main(id, iniFile, pos, size)
         isEdited = true
     end
 
-    iniFile:save()
+    if isEdited then
+        iniFile:save()
+    end
 
     return isEdited, resetSectionsINI
 end
