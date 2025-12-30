@@ -54,8 +54,8 @@ function sectionPanel.main(id, iniFile, pos, size)
     --ui.drawRectFilled(pos, pos + size, COLOR.GRAY, 10, ui.CornerFlags.All)
     ui.drawRect(pos, pos + size, UserUI.accentColor, 10, ui.CornerFlags.All, 3)
     ui.drawRect(pos + vec2(10, 40), pos + size - vec2(20, 40), COLOR.WHITE, 10, ui.CornerFlags.All, 3)
-    ui.setCursor(pos + vec2(10, 40))
-    isEdited = ui.childWindow("##"..id, size - vec2(20,80), false, ui.WindowFlags.None + ui.WindowFlags.NoBackground,
+    ui.setCursor(pos + vec2(10, 43))
+    isEdited = ui.childWindow("##"..id, size - vec2(20,85), false, ui.WindowFlags.None + ui.WindowFlags.NoBackground,
     ---@return boolean
     function()
         local isItemEdited = false

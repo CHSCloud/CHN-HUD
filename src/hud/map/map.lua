@@ -268,105 +268,104 @@ local function resizeWithText(initRect, finalRect)
     end
 end
 
---- @param sections table
-local function resizeWindow(sections)
+local function resizeWindow()
     local scale = (currentWindowSize.y - (padding * 2)) / trackLength
     local textPosition
     if not mapSettings.store.focus then
         if mapSettings.store.sectionsType == 1 then
-            for i = 1, #sections, 1 do
+            for i = 1, #trackSections, 1 do
                 local posRotated
-                local textLenght = vec2(15,15):scale(mapSettings.store.mapScale)
-                if sections[i].position == 1 then
-                    posRotated = config.rotateVec(vec2((sections[i].center.x - trackCenterX) * scale, (sections[i].center.y - trackCenterY) * scale), angle)
+                local textLenght = (vec2(mapSettings.store.sectionsLenght, mapSettings.store.sectionsLenght) * 2):scale(scale)
+                if trackSections[i].position == 1 then
+                    posRotated = config.rotateVec(vec2((trackSections[i].center.x - trackCenterX) * scale, (trackSections[i].center.y - trackCenterY) * scale), angle)
 
-                elseif sections[i].position == 2 then
-                    posRotated = config.rotateVec(vec2((sections[i].left.x - trackCenterX) * scale, (sections[i].left.y - trackCenterY) * scale), angle)
-                    local dir = (sections[i].right - sections[i].left):normalize()
+                elseif trackSections[i].position == 2 then
+                    posRotated = config.rotateVec(vec2((trackSections[i].left.x - trackCenterX) * scale, (trackSections[i].left.y - trackCenterY) * scale), angle)
+                    local dir = (trackSections[i].right - trackSections[i].left):normalize()
                     dir = config.rotateVec(dir, angle)
                     posRotated = posRotated + dir * (mapSettings.store.trackLenght + mapSettings.store.borderLenght) * mapSettings.store.mapScale
 
                 else
-                    posRotated = config.rotateVec(vec2((sections[i].right.x - trackCenterX) * scale, (sections[i].right.y - trackCenterY) * scale), angle)
-                    local dir = (sections[i].left - sections[i].right):normalize()
+                    posRotated = config.rotateVec(vec2((trackSections[i].right.x - trackCenterX) * scale, (trackSections[i].right.y - trackCenterY) * scale), angle)
+                    local dir = (trackSections[i].left - trackSections[i].right):normalize()
                     dir = config.rotateVec(dir, angle)
-                    posRotated = posRotated + dir * (mapSettings.store.trackLenght + mapSettings.store.borderLenght)* mapSettings.store.mapScale
+                    posRotated = posRotated + dir * (mapSettings.store.trackLenght + mapSettings.store.borderLenght) * mapSettings.store.mapScale
                 end
                 textPosition = windowCenter + posRotated
                 resizeWithText(textPosition, textPosition + textLenght)
 
-                sections[i].namePosition = textPosition
+                trackSections[i].namePosition = textPosition
             end
         else
-            for i = 1, #sections, 1 do
-                local textLenght = (ui.measureDWriteText(sections[i].name, 7) * 1.1)  * mapSettings.store.mapScale
+            for i = 1, #trackSections, 1 do
+                local textLenght = (ui.measureDWriteText(trackSections[i].name, mapSettings.store.sectionsLenght) * 1.2) * scale
                 local posRotated
                 local dir = vec2(0,0)
-                if sections[i].position == 1 then
-                    posRotated = config.rotateVec(vec2((sections[i].center.x - trackCenterX) * scale, (sections[i].center.y - trackCenterY) * scale), angle)
+                if trackSections[i].position == 1 then
+                    posRotated = config.rotateVec(vec2((trackSections[i].center.x - trackCenterX) * scale, (trackSections[i].center.y - trackCenterY) * scale), angle)
 
-                elseif sections[i].position == 2 then
-                    posRotated = config.rotateVec(vec2((sections[i].left.x - trackCenterX) * scale, (sections[i].left.y - trackCenterY) * scale), angle)
-                    dir = (sections[i].right - sections[i].left):normalize()
+                elseif trackSections[i].position == 2 then
+                    posRotated = config.rotateVec(vec2((trackSections[i].left.x - trackCenterX) * scale, (trackSections[i].left.y - trackCenterY) * scale), angle)
+                    dir = (trackSections[i].right - trackSections[i].left):normalize()
                     dir = config.rotateVec(dir, angle)
 
                 else
-                    posRotated = config.rotateVec(vec2((sections[i].right.x - trackCenterX) * scale, (sections[i].right.y - trackCenterY) * scale), angle)
-                    dir = (sections[i].left - sections[i].right):normalize()
+                    posRotated = config.rotateVec(vec2((trackSections[i].right.x - trackCenterX) * scale, (trackSections[i].right.y - trackCenterY) * scale), angle)
+                    dir = (trackSections[i].left - trackSections[i].right):normalize()
                     dir = config.rotateVec(dir, angle)
                 end
                 local distance
                 if dir.x > 0 then
-                    distance = config.remapInterval(dir.x, 0, 1, textLenght.x / 30, 1)
+                    distance = config.remapInterval(dir.x, 0, 1, textLenght.x / 20, 1)
                 else
-                    distance = config.remapInterval(dir.x, -1, 0, 1, textLenght.x / 30)
+                    distance = config.remapInterval(dir.x, -1, 0, 1, textLenght.x / 20)
                 end
-                local centerText = posRotated + dir * (textLenght.x / (2 * distance) + (mapSettings.store.trackLenght + mapSettings.store.borderLenght))
+                local centerText = posRotated + dir * (textLenght.x / (2 * distance) + (mapSettings.store.trackLenght + mapSettings.store.borderLenght) * mapSettings.store.mapScale / 2)
                 textPosition = windowCenter + centerText - textLenght / 2
                 resizeWithText(textPosition, textPosition + textLenght)
                 
-                sections[i].namePosition = textPosition
+                trackSections[i].namePosition = textPosition
             end
         end
     else 
         if mapSettings.store.sectionsType == 1 then
-            for i = 1, #sections, 1 do
+            for i = 1, #trackSections, 1 do
                 local posRotated
-                if sections[i].position == 1 then
-                    posRotated = config.rotateVec(vec2((sections[i].center.x - trackCenterX) * canvasScale, (sections[i].center.y - trackCenterY) * canvasScale), angle)
+                if trackSections[i].position == 1 then
+                    posRotated = config.rotateVec(vec2((trackSections[i].center.x - trackCenterX) * canvasScale, (trackSections[i].center.y - trackCenterY) * canvasScale), angle)
 
-                elseif sections[i].position == 2 then
-                    posRotated = config.rotateVec(vec2((sections[i].left.x - trackCenterX) * canvasScale, (sections[i].left.y - trackCenterY) * canvasScale), angle)
-                    local dir = (sections[i].right - sections[i].left):normalize()
+                elseif trackSections[i].position == 2 then
+                    posRotated = config.rotateVec(vec2((trackSections[i].left.x - trackCenterX) * canvasScale, (trackSections[i].left.y - trackCenterY) * canvasScale), angle)
+                    local dir = (trackSections[i].right - trackSections[i].left):normalize()
                     dir = config.rotateVec(dir, angle)
-                    posRotated = posRotated + dir * (mapSettings.store.trackLenght + mapSettings.store.borderLenght) * mapSettings.store.mapScale
+                    posRotated = posRotated + dir * (mapSettings.store.trackLenght + mapSettings.store.borderLenght)
 
                 else
-                    posRotated = config.rotateVec(vec2((sections[i].right.x - trackCenterX) * canvasScale, (sections[i].right.y - trackCenterY) * canvasScale), angle)
-                    local dir = (sections[i].left - sections[i].right):normalize()
+                    posRotated = config.rotateVec(vec2((trackSections[i].right.x - trackCenterX) * canvasScale, (trackSections[i].right.y - trackCenterY) * canvasScale), angle)
+                    local dir = (trackSections[i].left - trackSections[i].right):normalize()
                     dir = config.rotateVec(dir, angle)
-                    posRotated = posRotated + dir * (mapSettings.store.trackLenght + mapSettings.store.borderLenght)* mapSettings.store.mapScale
+                    posRotated = posRotated + dir * (mapSettings.store.trackLenght + mapSettings.store.borderLenght) * 2
                 end
                 posRotated = canvasCenter + posRotated
                 textPosition = posRotated
-                sections[i].namePosition = textPosition
+                trackSections[i].namePosition = textPosition
             end
         else 
-            for i = 1, #sections, 1 do
-                local textLenght = (ui.measureDWriteText(sections[i].name, 7) * 1.1)  * mapSettings.store.mapScale
+            for i = 1, #trackSections, 1 do
+                local textLenght = (ui.measureDWriteText(trackSections[i].name, mapSettings.store.sectionsLenght) * 1.2) * canvasScale
                 local posRotated
                 local dir = vec2(0,0)
-                if sections[i].position == 1 then
-                    posRotated = config.rotateVec(vec2((sections[i].center.x - trackCenterX) * canvasScale, (sections[i].center.y - trackCenterY) * canvasScale), angle)
+                if trackSections[i].position == 1 then
+                    posRotated = config.rotateVec(vec2((trackSections[i].center.x - trackCenterX) * canvasScale, (trackSections[i].center.y - trackCenterY) * canvasScale), angle)
 
-                elseif sections[i].position == 2 then
-                    posRotated = config.rotateVec(vec2((sections[i].left.x - trackCenterX) * canvasScale, (sections[i].left.y - trackCenterY) * canvasScale), angle)
-                    dir = (sections[i].right - sections[i].left):normalize()
+                elseif trackSections[i].position == 2 then
+                    posRotated = config.rotateVec(vec2((trackSections[i].left.x - trackCenterX) * canvasScale, (trackSections[i].left.y - trackCenterY) * canvasScale), angle)
+                    dir = (trackSections[i].right - trackSections[i].left):normalize()
                     dir = config.rotateVec(dir, angle)
 
                 else
-                    posRotated = config.rotateVec(vec2((sections[i].right.x - trackCenterX) * canvasScale, (sections[i].right.y - trackCenterY) * canvasScale), angle)
-                    dir = (sections[i].left - sections[i].right):normalize()
+                    posRotated = config.rotateVec(vec2((trackSections[i].right.x - trackCenterX) * canvasScale, (trackSections[i].right.y - trackCenterY) * canvasScale), angle)
+                    dir = (trackSections[i].left - trackSections[i].right):normalize()
                     dir = config.rotateVec(dir, angle)
                 end
                 local distance
@@ -378,31 +377,37 @@ local function resizeWindow(sections)
                 local centerText = posRotated + dir * (textLenght.x / (2 * distance) + (mapSettings.store.trackLenght + mapSettings.store.borderLenght))
                 textPosition = canvasCenter + centerText - textLenght / 2
                 
-                sections[i].namePosition = textPosition
+                trackSections[i].namePosition = textPosition
             end
         end
     end
 end
 
 -- Desenha nomes da pista
-local function drawTrackSections(sections)
+local function drawTrackSections()
+    local scale
+    local textLenght
+    if mapSettings.store.focus then
+        scale = canvasScale
+    else 
+        scale = (currentWindowSize.y - (padding * 2)) / trackLength
+    end
     if mapSettings.store.sectionsType == 1 then
-        for i = 1, #sections, 1 do
-            --local textLenght = (ui.measureDWriteText(sections[i].number, 8) + vec2(10, 0)) * mapSettings.store.mapScale
-            local textLenght = vec2(15, 15):scale(mapSettings.store.mapScale)
-            local position = sections[i].namePosition
+        textLenght = (vec2(mapSettings.store.sectionsLenght, mapSettings.store.sectionsLenght) * 2):scale(scale)
+        for i = 1, #trackSections, 1 do
+            local position = trackSections[i].namePosition
             ui.drawCircleFilled(position, textLenght.x / 2, COLOR.RED, 20)
             ui.setCursor(position - textLenght / 2)
-            ui.dwriteTextAligned(sections[i].number, 8 * mapSettings.store.mapScale, ui.Alignment.Center, ui.Alignment.Center, textLenght, false, COLOR.WHITE)
+            ui.dwriteTextAligned(trackSections[i].number, mapSettings.store.sectionsLenght * scale, ui.Alignment.Center, ui.Alignment.Center, textLenght, false, COLOR.WHITE)
         end
 
     else
-        for i = 1, #sections, 1 do
-            local textLenght = (ui.measureDWriteText(sections[i].name, 7) * 1.1) * mapSettings.store.mapScale 
-            local position = sections[i].namePosition + offset
-            ui.drawRectFilled(position, position + textLenght, COLOR.RED, 5)
+        for i = 1, #trackSections, 1 do
+            textLenght = (ui.measureDWriteText(trackSections[i].name, mapSettings.store.sectionsLenght) * 1.2) * scale
+            local position = trackSections[i].namePosition + offset
+            ui.drawRectFilled(position, position + textLenght, COLOR.RED, 20 * scale)
             ui.setCursor(position)
-            ui.dwriteTextAligned(sections[i].name, 7 * mapSettings.store.mapScale, ui.Alignment.Center, ui.Alignment.Center, textLenght, false, COLOR.WHITE)
+            ui.dwriteTextAligned(trackSections[i].name, mapSettings.store.sectionsLenght * scale, ui.Alignment.Center, ui.Alignment.Center, textLenght, false, COLOR.WHITE)
         end
     end
 end
@@ -434,7 +439,7 @@ function map.windowMain()
         canvasScale = (canvasSize.y - (padding * 2)) / trackLength
     end
     if mapSettings.store.sectionsTrackActive then
-        resizeWindow(trackSections)
+        resizeWindow()
     end
     -- Desenha borda
     if canvas == nil then return end
@@ -483,7 +488,7 @@ function map.windowMain()
         if mapSettings.store.sectionsTrackActive then
             canvas:update(function ()
                 -- Desenha nomes da pista
-                drawTrackSections(trackSections)
+                drawTrackSections()
             end)
         end
         canvas:update(function ()
@@ -516,7 +521,7 @@ function map.windowMain()
         offset = config.floorVec(offset)
         ui.drawImage(canvas, offset, baseWindowSize * mapSettings.store.mapScale + offset)
         if mapSettings.store.sectionsTrackActive then
-            drawTrackSections(trackSections)
+            drawTrackSections()
         end
         drawPLayers()
     end

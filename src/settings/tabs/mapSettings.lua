@@ -34,7 +34,8 @@ local defaultValuesSections = {
     sectionsTrackActive = true,
     resetSectionsINI = false,
     trackSectionsEdited = false,
-    sectionsType = 1
+    sectionsType = 1,
+    sectionsLenght = 40
 }
 
 local defaultValuesPlayers = {
@@ -284,6 +285,8 @@ local function sectionsSettings()
     end
     --initPos = initPos + 30
     mapSettings.store.sectionsType = droplist.main("sectionsType", "Type", vec2(200, initPos), 100,  mapSettings.store.sectionsType, {"Numbers", "Names"}, droplist.PosText.Start)
+    mapSettings.store.sectionsLenght = math.floor(slider.main("Lenght", string.format("%.0f", mapSettings.store.sectionsLenght), vec2(370, initPos + 5), 100, mapSettings.store.sectionsLenght, 20, 60, slider.PosText.Start))
+
     initPos = initPos + 40
     if mapSettings.store.sectionsTrackActive then
         local filePath = ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\CHN-HUD\\user\\trackSections\\" .. ac.getTrackName() .. ".ini"
