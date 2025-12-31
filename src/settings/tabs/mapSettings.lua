@@ -145,30 +145,28 @@ function mapSettings.loadSectionsINI()
                 local start = sectionsINI:get(section, 'IN', 0)
                 local final = sectionsINI:get(section, 'OUT', 0)
                 local text = sectionsINI:get(section, 'TEXT', "")
-                if string.len(text) > 0 then
-                    if start ~= nil and final ~= nil then
-                        local center = tonumber(((final - start) / 2) + start)
-                        userSectionsINI:set(section, "TEXT", text)
-                        userSectionsINI:set(section, "PROGRESS", center)
-                        userSectionsINI:set(section, "POSITION", 1)
+                if start ~= nil and final ~= nil and text ~= nil then
+                    local center = tonumber(((final - start) / 2) + start)
+                    userSectionsINI:set(section, "TEXT", text)
+                    userSectionsINI:set(section, "PROGRESS", center)
+                    userSectionsINI:set(section, "POSITION", 1)
 
-                        local worldLeft = ac.trackCoordinateToWorld(vec3(1, 0, center))
-                        local worldLeft2d = vec2(worldLeft.x, worldLeft.z)
-                        local worldCenter = ac.trackCoordinateToWorld(vec3(0, 0, center))
-                        local worldCenter2d = vec2(worldCenter.x, worldCenter.z)
-                        local worldRight = ac.trackCoordinateToWorld(vec3(-1, 0, center))
-                        local worldRight2d = vec2(worldRight.x, worldRight.z)
-                        local dir = (worldRight2d - worldLeft2d):normalize()
-                        table.insert(trackSections, {
-                            number = tostring(i),
-                            name = text,
-                            left = worldLeft2d,
-                            center = worldCenter2d,
-                            right = worldRight2d,
-                            position = 1,
-                            namePosition = nil
-                        })
-                    end
+                    local worldLeft = ac.trackCoordinateToWorld(vec3(1, 0, center))
+                    local worldLeft2d = vec2(worldLeft.x, worldLeft.z)
+                    local worldCenter = ac.trackCoordinateToWorld(vec3(0, 0, center))
+                    local worldCenter2d = vec2(worldCenter.x, worldCenter.z)
+                    local worldRight = ac.trackCoordinateToWorld(vec3(-1, 0, center))
+                    local worldRight2d = vec2(worldRight.x, worldRight.z)
+                    local dir = (worldRight2d - worldLeft2d):normalize()
+                    table.insert(trackSections, {
+                        number = tostring(i),
+                        name = text,
+                        left = worldLeft2d,
+                        center = worldCenter2d,
+                        right = worldRight2d,
+                        position = 1,
+                        namePosition = nil
+                    })
                 end
             end
         end
@@ -180,7 +178,7 @@ function mapSettings.loadSectionsINI()
                 local progress = userSectionsINI:get(section, 'PROGRESS', 0)
                 local position = userSectionsINI:get(section, 'POSITION', 0)
                 local text = userSectionsINI:get(section, 'TEXT', "")
-                if progress ~= nil and text ~= nil then
+                if progress ~= nil and position ~= nil and text ~= nil then
                     local worldLeft = ac.trackCoordinateToWorld(vec3(1, 0, tonumber(progress)))
                     local worldLeft2d = vec2(worldLeft.x, worldLeft.z)
                     local worldCenter = ac.trackCoordinateToWorld(vec3(0, 0, tonumber(progress)))
@@ -291,9 +289,6 @@ local function sectionsSettings()
     if mapSettings.store.sectionsTrackActive then
         local filePath = ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\CHN-HUD\\user\\trackSections\\" .. ac.getTrackName() .. ".ini"
         mapSettings.store.trackSectionsEdited, mapSettings.store.resetSectionsINI = sectionPanel.main("sectionsPanel", ac.INIConfig.load(filePath), vec2(20, initPos), vec2(WindowSettingsSize.x - 40, 300))
-        if mapSettings.store.trackSectionsEdited then
-            ac.log("Edited")
-        end
         initPos = initPos + 310
     end
 
