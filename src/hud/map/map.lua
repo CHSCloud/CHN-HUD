@@ -37,6 +37,7 @@ local isTrackConnected = true
 local startTrack -- Inicio da pista
 local endTrack -- Fim da pista
 local dirTrack -- Direção da pista
+local initialAngleCar = math.atan2(CAR.look.x, CAR.look.z)
 
 local transparancy = 0
 
@@ -434,8 +435,10 @@ function map.windowMain()
         trackCenterX = (minPos.x + maxPos.x) / 2
         trackCenterY = (minPos.y + maxPos.y) / 2
         local dirTrackRotated = config.rotateVec(vec2(dirTrack.x, dirTrack.y), mapSettings.store.angle)
-        angle = math.deg(math.atan2(dirTrackRotated.x, dirTrackRotated.y) + math.pi / 2)
-
+        
+        angle = initialAngleCar - math.atan2(dirTrackRotated.x, dirTrackRotated.y) + math.pi
+        if angle < 0 then angle = angle end
+        angle = math.deg(angle)
         canvasScale = (canvasSize.y - (padding * 2)) / trackLength
     end
     if mapSettings.store.sectionsTrackActive then
