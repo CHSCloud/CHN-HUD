@@ -11,6 +11,7 @@ local defaultValues = {
     speedActive = true,
     wheelActive = true,
     absActive = true,
+    tractionControlActive = true,
     throttleActive = true,
     brakeActive = true,
     brakeBiasActive = true,
@@ -92,14 +93,23 @@ function pedalsSettings.pedalsSettings()
     if toggleButton.main("abs", vec2(20,initPos), pedalsSettings.store.absActive, language.get("ABS")) then
         pedalsSettings.store.absActive = not pedalsSettings.store.absActive
     end
-
     -- Alerta do ABS
     if CAR.absModes == 0 then
         ui.setCursor(vec2(100, initPos))
         ui.dwriteTextAligned(language.get("ALERT_ABS"), 12, ui.Alignment.Center, ui.Alignment.Center, vec2(180, 20), false, COLOR.RED)  
     end
 
-    initPos = initPos + 65
+    initPos = initPos + 25; 
+    if toggleButton.main("tc", vec2(20, initPos), pedalsSettings.store.tractionControlActive, language.get("TC")) then
+        pedalsSettings.store.tractionControlActive = not pedalsSettings.store.tractionControlActive
+    end
+
+    if CAR.tractionControlModes == 0 then
+        ui.setCursor(vec2(200, initPos))
+        ui.dwriteTextAligned(language.get("ALERT_TC"), 12, ui.Alignment.Center, ui.Alignment.Center, vec2(250, 20), false, COLOR.RED)  
+    end
+
+    initPos = initPos + 50
     ui.drawRectFilled(vec2(5, initPos), vec2(WindowSettingsSize.x - 5, initPos), COLOR.GRAY, 1)
 
     -- OUTROS

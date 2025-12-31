@@ -5,6 +5,8 @@
   "SIZE": "Scale",
   "ABS": "ABS",
   "ALERT_ABS": "This car does not have ABS",
+  "TC": "Traction control",
+  "ALERT_TC": "This car does not have tranction control",
   "LANGUAGE": "Language",
   "ELEMENTS": "Content",
   "GENERAL": "General",
