@@ -14,7 +14,7 @@ function formText.main(id, pos, text, size, rounding, color, textFlags)
     local longestWord, _ = config.findLongestWord(textFormated)
     local textLenght = ui.measureText(longestWord)
     if textLenght.x > size.x - 15 then
-        size.x = math.min(textLenght.x + 15, 200)
+        size.x = textLenght.x + 15
     end
     local _, count = string.gsub(textFormated, '\n', '')
     ui.drawRectFilled(pos, pos + vec2(size.x, size.y + textLenght.y * count), color, rounding)

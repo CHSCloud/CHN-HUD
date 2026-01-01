@@ -187,8 +187,8 @@ local function drawPLayer(car, lenght, colorInternal, colorExternal, center, sca
     rotatedPos = center + rotatedPos + offset
     ui.drawCircleFilled(rotatedPos, lenght, colorInternal, 20)
     ui.drawCircle(rotatedPos, lenght, colorExternal, 20, lenght / 5)
-    ui.setCursor(rotatedPos - vec2(lenght,lenght)/2)
-    ui.dwriteTextAligned(tostring(car.racePosition), lenght, ui.Alignment.Center, ui.Alignment.Center, vec2(lenght, lenght), false, colorExternal)
+    ui.setCursor(rotatedPos - vec2(lenght,lenght))
+    ui.dwriteTextAligned(tostring(car.racePosition), lenght, ui.Alignment.Center, ui.Alignment.Center, vec2(lenght, lenght) * 2, false, colorExternal)
 end
 
 local function drawPLayers()
