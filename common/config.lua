@@ -92,6 +92,14 @@ function config.floorVec(vec)
 end
 
 
+---@param value number
+---@param places number
+---@return number
+function config.decimal(value, places)
+    local factor = 10 ^ places
+    return math.floor(value * factor) / factor
+end
+
 --- @param from table
 --- @param to table
 function config.copyTable(from, to)
