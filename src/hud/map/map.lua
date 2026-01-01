@@ -194,16 +194,21 @@ end
 local function drawPLayers()
     local scale
     local center
+    local enemiesLenght 
+    local focusedCarLenght
     if not mapSettings.store.focus then
         local ratio = (baseWindowSize.y * mapSettings.store.mapScale) / canvasSize.y
         scale = canvasScale * ratio
         center = windowCenter
+        enemiesLenght = mapSettings.store.enemiesLenght * mapSettings.store.mapScale
+        focusedCarLenght = mapSettings.store.focusedCarLenght * mapSettings.store.mapScale
     else 
         scale = canvasScale
         center = canvasCenter
+        local ratio = canvasSize.y / (baseWindowSize.y * mapSettings.store.mapScale)
+        enemiesLenght = mapSettings.store.enemiesLenght * ratio * mapSettings.store.mapScale
+        focusedCarLenght = mapSettings.store.focusedCarLenght * ratio * mapSettings.store.mapScale
     end
-    local enemiesLenght = mapSettings.store.enemiesLenght * 8 * scale
-    local focusedCarLenght = mapSettings.store.focusedCarLenght * 8 * scale
     for i, car in ac.iterateCars.leaderboard() do
         if car.index ~= SIM.focusedCar then
             if car.isInPitlane then
@@ -275,13 +280,13 @@ local function resizeWindow()
     local textPosition
     local lenght
     if not mapSettings.store.focus then
-        local ratio = currentWindowSize.y / canvasSize.y
+        local ratio = (baseWindowSize.y * mapSettings.store.mapScale) / canvasSize.y
         scale = canvasScale * ratio
-        lenght = mapSettings.store.sectionsLenght * 2
+        lenght = mapSettings.store.sectionsLenght * 2 
         if mapSettings.store.sectionsType == 1 then
             for i = 1, #trackSections, 1 do
                 local posRotated
-                local textLenght = (vec2(lenght, lenght) / 2):scale(mapSettings.store.mapScale)
+                local textLenght = (vec2(lenght, lenght) / 2) * mapSettings.store.mapScale
                 if trackSections[i].position == 1 then
                     posRotated = config.rotateVec(vec2((trackSections[i].center.x - trackCenterX) * scale, (trackSections[i].center.y - trackCenterY) * scale), angle)
 
@@ -289,13 +294,13 @@ local function resizeWindow()
                     posRotated = config.rotateVec(vec2((trackSections[i].left.x - trackCenterX) * scale, (trackSections[i].left.y - trackCenterY) * scale), angle)
                     local dir = (trackSections[i].right - trackSections[i].left):normalize()
                     dir = config.rotateVec(dir, angle)
-                    posRotated = posRotated + dir * (mapSettings.store.trackLenght/2 + mapSettings.store.borderLenght + lenght/2) * mapSettings.store.mapScale
+                    posRotated = posRotated + dir * (mapSettings.store.trackLenght/2 + mapSettings.store.borderLenght + lenght/4) * mapSettings.store.mapScale
 
                 else
                     posRotated = config.rotateVec(vec2((trackSections[i].right.x - trackCenterX) * scale, (trackSections[i].right.y - trackCenterY) * scale), angle)
                     local dir = (trackSections[i].left - trackSections[i].right):normalize()
                     dir = config.rotateVec(dir, angle)
-                    posRotated = posRotated + dir * (mapSettings.store.trackLenght/2 + mapSettings.store.borderLenght + lenght/2) * mapSettings.store.mapScale
+                    posRotated = posRotated + dir * (mapSettings.store.trackLenght/2 + mapSettings.store.borderLenght + lenght/4) * mapSettings.store.mapScale
                 end
                 textPosition = windowCenter + posRotated
                 resizeWithText(textPosition - textLenght, textPosition + textLenght)
@@ -335,9 +340,10 @@ local function resizeWindow()
         end
     else 
         scale = canvasScale
-        lenght = (mapSettings.store.sectionsLenght * 4) / canvasScale
+        local ratio = canvasSize.y / (baseWindowSize.y * mapSettings.store.mapScale)
+        lenght = (mapSettings.store.sectionsLenght * 2) * ratio * mapSettings.store.mapScale
         if mapSettings.store.sectionsType == 1 then
-            local textLenght = (vec2(lenght, lenght) / 2):scale(scale)
+            local textLenght = (vec2(lenght, lenght) / 2)
             for i = 1, #trackSections, 1 do
                 local posRotated
                 if trackSections[i].position == 1 then
@@ -347,13 +353,13 @@ local function resizeWindow()
                     posRotated = config.rotateVec(vec2((trackSections[i].left.x - trackCenterX) * scale, (trackSections[i].left.y - trackCenterY) * scale), angle)
                     local dir = (trackSections[i].right - trackSections[i].left):normalize()
                     dir = config.rotateVec(dir, angle)
-                    posRotated = posRotated + dir * (mapSettings.store.trackLenght/2 + mapSettings.store.borderLenght + textLenght.x / 1.6)
+                    posRotated = posRotated + dir * (mapSettings.store.trackLenght/2 + mapSettings.store.borderLenght + textLenght.x)
 
                 else
                     posRotated = config.rotateVec(vec2((trackSections[i].right.x - trackCenterX) * scale, (trackSections[i].right.y - trackCenterY) * scale), angle)
                     local dir = (trackSections[i].left - trackSections[i].right):normalize()
                     dir = config.rotateVec(dir, angle)
-                    posRotated = posRotated + dir * (mapSettings.store.trackLenght/2 + mapSettings.store.borderLenght + textLenght.x / 1.6)
+                    posRotated = posRotated + dir * (mapSettings.store.trackLenght/2 + mapSettings.store.borderLenght + textLenght.x)
                 end
                 posRotated = canvasCenter + posRotated
                 textPosition = posRotated
@@ -361,7 +367,7 @@ local function resizeWindow()
             end
         else 
             for i = 1, #trackSections, 1 do
-                local textLenght = (ui.measureDWriteText(trackSections[i].name, lenght / 2) * 1.2) * scale
+                local textLenght = (ui.measureDWriteText(trackSections[i].name, lenght / 2) * 1.2)
                 local posRotated
                 local dir = vec2(0,0)
                 if trackSections[i].position == 1 then
@@ -383,7 +389,7 @@ local function resizeWindow()
                 else
                     distance = config.remapInterval(dir.x, -1, 0, 1, textLenght.x / 30)
                 end
-                local centerText = posRotated + dir * (textLenght.x / (2 * distance) + (mapSettings.store.trackLenght/2 + mapSettings.store.borderLenght))
+                local centerText = posRotated + dir * (textLenght.x / (2 * distance) + (mapSettings.store.trackLenght + mapSettings.store.borderLenght))
                 textPosition = canvasCenter + centerText - textLenght / 2
                 
                 trackSections[i].namePosition = textPosition
@@ -398,19 +404,19 @@ local function drawTrackSections()
     local textLenght
     local lenght
     if mapSettings.store.focus then
-        scale = canvasScale
-        lenght = (mapSettings.store.sectionsLenght * 4) / canvasScale
+        scale = canvasSize.y / (baseWindowSize.y * mapSettings.store.mapScale)
+        lenght = (mapSettings.store.sectionsLenght * 2) * mapSettings.store.mapScale
     else 
         scale =  mapSettings.store.mapScale
         lenght = mapSettings.store.sectionsLenght * 2
     end
     if mapSettings.store.sectionsType == 1 then
-        textLenght = (vec2(lenght, lenght) / 2):scale(scale)
+        textLenght = ((vec2(lenght, lenght) / 2)) * scale
         for i = 1, #trackSections, 1 do
             local position = trackSections[i].namePosition + offset
             ui.drawCircleFilled(position, textLenght.x, COLOR.BLACK, 20)
             ui.setCursor(position - textLenght / 2)
-            ui.dwriteTextAligned(trackSections[i].number, lenght/2 * scale, ui.Alignment.Center, ui.Alignment.Center, textLenght, false, COLOR.WHITE)
+            ui.dwriteTextAligned(trackSections[i].number, (lenght / 2) * scale, ui.Alignment.Center, ui.Alignment.Center, textLenght, false, COLOR.WHITE)
         end
 
     else
@@ -420,7 +426,7 @@ local function drawTrackSections()
                 local position = trackSections[i].namePosition + offset
                 ui.drawRectFilled(position, position + textLenght, COLOR.BLACK, 20 * scale)
                 ui.setCursor(position)
-                ui.dwriteTextAligned(trackSections[i].name, lenght/2 * scale, ui.Alignment.Center, ui.Alignment.Center, textLenght, false, COLOR.WHITE)
+                ui.dwriteTextAligned(trackSections[i].name, (lenght / 2) * scale, ui.Alignment.Center, ui.Alignment.Center, textLenght, false, COLOR.WHITE)
             end
         end
     end
