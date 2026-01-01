@@ -275,6 +275,8 @@ local function resizeWithText(initRect, finalRect)
     end
 end
 
+
+
 local function resizeWindow()
     local scale
     local textPosition
@@ -309,7 +311,9 @@ local function resizeWindow()
             end
         else
             for i = 1, #trackSections, 1 do
-                local textLenght = (ui.measureDWriteText(trackSections[i].name, lenght / 2) * 1.2) * mapSettings.store.mapScale
+                local longestText, count = config.findLongestWord(trackSections[i].name)
+                local textLenght = ui.measureDWriteText(longestText, (lenght / 2)* mapSettings.store.mapScale) + vec2(5) * mapSettings.store.mapScale
+                textLenght = textLenght + vec2(0, textLenght.y * count) + vec2(0,5) * mapSettings.store.mapScale
                 local posRotated
                 local dir = vec2(0,0)
                 if trackSections[i].position == 1 then
@@ -367,7 +371,9 @@ local function resizeWindow()
             end
         else 
             for i = 1, #trackSections, 1 do
-                local textLenght = (ui.measureDWriteText(trackSections[i].name, lenght / 2) * 1.2)
+                local longestText, count = config.findLongestWord(trackSections[i].name)
+                local textLenght = (ui.measureDWriteText(longestText, lenght / 2) + vec2(5))
+                textLenght = textLenght + vec2(0, textLenght.y * count) + vec2(0,5)
                 local posRotated
                 local dir = vec2(0,0)
                 if trackSections[i].position == 1 then
@@ -422,11 +428,13 @@ local function drawTrackSections()
     else
         for i = 1, #trackSections, 1 do
             if trackSections[i].name ~= "" then
-                textLenght = (ui.measureDWriteText(trackSections[i].name, lenght/2) * 1.2) * scale
+                local longestText, count = config.findLongestWord(trackSections[i].name)
+                local textLenght = ui.measureDWriteText(longestText, (lenght / 2) * scale) + vec2(5) * scale
+                textLenght = textLenght + vec2(0, textLenght.y * count) + vec2(0,5) * scale
                 local position = trackSections[i].namePosition + offset
-                ui.drawRectFilled(position, position + textLenght, COLOR.BLACK, 20 * scale)
+                ui.drawRectFilled(position, position + textLenght, COLOR.BLACK, 3 * mapSettings.store.mapScale)
                 ui.setCursor(position)
-                ui.dwriteTextAligned(trackSections[i].name, (lenght / 2) * scale, ui.Alignment.Center, ui.Alignment.Center, textLenght, false, COLOR.WHITE)
+                ui.dwriteTextAligned(trackSections[i].name:gsub("\n$", ""), (lenght / 2) * scale, ui.Alignment.Center, ui.Alignment.Center, textLenght, false, COLOR.WHITE)
             end
         end
     end
@@ -544,7 +552,6 @@ function map.windowMain()
         end
         drawPLayers()
     end
-    ui.text(tostring(currentWindowSize))
     config.resize(currentWindowSize, "Map")
     pinCheckBox.main(mapSettings.store.mapScale * 1.5, "Map", config.getWindow("Map"):pinned(), currentWindowSize)
 end

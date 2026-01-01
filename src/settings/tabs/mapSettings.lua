@@ -116,7 +116,7 @@ function mapSettings.resetSectionsINI()
                 local dir = (worldRight2d - worldLeft2d):normalize()
                 table.insert(trackSections, {
                     number = tostring(i),
-                    name = text,
+                    name = string.replace(text, '\\n', '\n'),
                     left = worldLeft2d,
                     center = worldCenter2d,
                     right = worldRight2d,
@@ -157,10 +157,9 @@ function mapSettings.loadSectionsINI()
                     local worldCenter2d = vec2(worldCenter.x, worldCenter.z)
                     local worldRight = ac.trackCoordinateToWorld(vec3(-1, 0, center))
                     local worldRight2d = vec2(worldRight.x, worldRight.z)
-                    local dir = (worldRight2d - worldLeft2d):normalize()
                     table.insert(trackSections, {
                         number = tostring(i),
-                        name = text,
+                        name = string.replace(text, '\\n', '\n'),
                         left = worldLeft2d,
                         center = worldCenter2d,
                         right = worldRight2d,
@@ -185,10 +184,9 @@ function mapSettings.loadSectionsINI()
                     local worldCenter2d = vec2(worldCenter.x, worldCenter.z)
                     local worldRight = ac.trackCoordinateToWorld(vec3(-1, 0, tonumber(progress)))
                     local worldRight2d = vec2(worldRight.x, worldRight.z)
-                    local dir = (worldRight2d - worldLeft2d):normalize()
                     table.insert(trackSections, {
                         number = tostring(i),
-                        name = text,
+                        name = string.replace(text, '\\n', '\n'),
                         left = worldLeft2d,
                         center = worldCenter2d,
                         right = worldRight2d,

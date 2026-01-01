@@ -100,6 +100,21 @@ function config.decimal(value, places)
     return math.floor(value * factor) / factor
 end
 
+--- @param text string
+--- @return string, number
+function config.findLongestWord(text)
+    local longest = ""
+    local count = -1
+    for word in text:gmatch("[^\n]+") do
+        if #word > #longest then
+            longest = word
+        end
+        count = count + 1
+    end
+    
+    return longest, count
+end
+
 --- @param from table
 --- @param to table
 function config.copyTable(from, to)
