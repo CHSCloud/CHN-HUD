@@ -80,8 +80,8 @@ function sectionPanel.main(id, iniFile, pos, size)
 
             
             ui.drawCircleFilled(vec2(20, 20 + height), 10, COLOR.GRAY_BG)
-            ui.setCursor(vec2(20, 20 + height) - vec2(5,5))
-            ui.dwriteTextAligned(tostring(index), 12, ui.Alignment.Center, ui.Alignment.Center, vec2(10,10), false, COLOR.WHITE)
+            ui.setCursor(vec2(20, 20 + height) - vec2(15,15))
+            ui.dwriteTextAligned(tostring(index), 12, ui.Alignment.Center, ui.Alignment.Center, vec2(30,30), false, COLOR.WHITE)
             
             progress, sizeProgress, isItemEdited = formText.main(
                 section .. "PROGRESS",

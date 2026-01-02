@@ -32,7 +32,7 @@ function pitLaneSettings.pitLaneSettings()
 
     initPos = initPos + 40
 
-    if button.main(vec2(20, initPos), language.get("RESET_DEFAULT")) then
+    if button.main(vec2(20, initPos), language.get("RESET_DEFAULT"), not ui.windowFocused(ui.FocusedFlags.ChildWindows)) then
         resetToDefault()
     end
 end
