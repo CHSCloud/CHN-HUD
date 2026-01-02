@@ -185,17 +185,20 @@ local function drawRpm()
   local rpmRange =  rpmFinal - rpmStart
 
   if pedalsSettings.store.rpmType == 1 then
-    local area = 0.95
-    local offsetRight = 0
-    local spaceCircles = math.min((currentWindowWidth * area) / (pedalsSettings.store.numLights * pedalsSettings.store.pedalsScale), 18)
+    local area = 0
+    local xOffset = 0
+    local distanceBorder = 0
+    local spaceCircles
     if pedalsSettings.store.tractionControlActive then
-      area = 0.70
+      distanceBorder = 36 * pedalsSettings.store.pedalsScale
+      spaceCircles = math.min((currentWindowWidth - distanceBorder) / (pedalsSettings.store.numLights * pedalsSettings.store.pedalsScale), 18)
+      xOffset = 10 * pedalsSettings.store.pedalsScale
+    else
+      area = 0.95
       spaceCircles = math.min((currentWindowWidth * area) / (pedalsSettings.store.numLights * pedalsSettings.store.pedalsScale), 18)
-      if (currentWindowWidth * (1 + area)) / 2 > currentWindowWidth - 25 * pedalsSettings.store.pedalsScale then
-          offsetRight = 10 * pedalsSettings.store.pedalsScale
-      end
     end
-    local initPos = (currentWindowWidth / 2) - (((pedalsSettings.store.numLights - 1) * spaceCircles) / 2) * pedalsSettings.store.pedalsScale - offsetRight
+
+    local initPos = ((currentWindowWidth - distanceBorder) / 2) - (((pedalsSettings.store.numLights - 1) * spaceCircles) / 2) * pedalsSettings.store.pedalsScale + xOffset
     local level = 0
     if CAR.rpm >= rpmStart then
       level = ((pedalsSettings.store.numLights * (CAR.rpm - rpmStart)) / rpmRange) + 1
@@ -245,8 +248,15 @@ local function drawRpm()
       end
     end
   elseif pedalsSettings.store.rpmType == 2 then
-    local width = currentWindowWidth * pedalsSettings.store.barLength
-    local initPos = (currentWindowWidth / 2) - (width / 2)
+    local width
+    local initPos
+    if pedalsSettings.store.tractionControlActive then
+      width = (currentWindowWidth - 20 * pedalsSettings.store.pedalsScale) * pedalsSettings.store.barLength
+      initPos = ((currentWindowWidth - 20 * pedalsSettings.store.pedalsScale) / 2) - (width / 2)
+    else
+      width = currentWindowWidth * pedalsSettings.store.barLength
+      initPos = (currentWindowWidth / 2) - (width / 2)
+    end
     local barHeight = 18 * pedalsSettings.store.pedalsScale
     ui.drawRectFilled(vec2(initPos, 4 * pedalsSettings.store.pedalsScale), vec2(initPos + width, barHeight), COLOR.GRAY_BG, 10 * pedalsSettings.store.pedalsScale)
 

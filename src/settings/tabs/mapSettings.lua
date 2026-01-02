@@ -35,7 +35,7 @@ local defaultValuesSections = {
     resetSectionsINI = false,
     trackSectionsEdited = false,
     sectionsType = 1,
-    sectionsLenght = 40
+    sectionsLenght = 7
 }
 
 local defaultValuesPlayers = {
