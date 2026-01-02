@@ -15,6 +15,7 @@ local defaultValues = {
     throttleActive = true,
     brakeActive = true,
     brakeBiasActive = true,
+    p2pActive = false,
     clutchActive = true,
     handbrakeActive = false,
     textBarsActive = false,
@@ -126,6 +127,12 @@ function pedalsSettings.pedalsSettings()
     if toggleButton.main("brakeBias", vec2(posXOthers,initPos2), pedalsSettings.store.brakeBiasActive, language.get("BRAKE_BIAS")) then
         pedalsSettings.store.brakeBiasActive = not pedalsSettings.store.brakeBiasActive
     end
+
+    initPos2 = initPos2 + 25; 
+    if toggleButton.main("battery", vec2(posXOthers,initPos2), pedalsSettings.store.p2pActive, "P2P") then
+        pedalsSettings.store.p2pActive = not pedalsSettings.store.p2pActive
+    end
+
     -- 
 
     -- RPM

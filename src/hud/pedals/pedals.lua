@@ -425,8 +425,6 @@ end
 
 -- Desenha o brake bias
 local function drawBrakeBias()
-  if contentMidle == 0 then contentMidle = 3 * pedalsSettings.store.pedalsScale end
-
   if (currentWindowWidth < 60 * pedalsSettings.store.pedalsScale) then
     currentWindowWidth = currentWindowWidth + (60 * pedalsSettings.store.pedalsScale - currentWindowWidth)
   end
@@ -438,10 +436,36 @@ local function drawBrakeBias()
   ui.image("assets/BrakeBias.png", vec2(16, 16):scale(pedalsSettings.store.pedalsScale), ui.ImageFit.Fit)
 end
 
+-- Desenha a bateria
+local oldKersCharge = 0
+local function drawBattery()
+  if currentWindowWidth < 200 * pedalsSettings.store.pedalsScale then
+    currentWindowWidth = 200 * pedalsSettings.store.pedalsScale
+  end
+  local size = vec2(currentWindowWidth - 120 * pedalsSettings.store.pedalsScale, 10 * pedalsSettings.store.pedalsScale)
+  local pos = vec2(currentWindowWidth / 2 - size.x / 2, currentWindowHeight - 15 * pedalsSettings.store.pedalsScale)
+
+  ui.drawRectFilled(pos, pos + size, COLOR.GRAY_BG, 10 * pedalsSettings.store.pedalsScale)
+
+  local color 
+  if oldKersCharge < CAR.kersCharge then
+    color = COLOR.GREEN
+  else if oldKersCharge > CAR.kersCharge then
+        color = COLOR.RED
+    else
+      color = COLOR.BLUE_SKY
+    end
+  end
+
+  ui.drawRectFilled(pos, pos + vec2(size.x * CAR.kersCharge, size.y), color, 10 * pedalsSettings.store.pedalsScale)
+  ui.setCursor(vec2(currentWindowWidth / 2 - size.x / 2, currentWindowHeight - 15 * pedalsSettings.store.pedalsScale))
+  ui.dwriteTextAligned(string.format("%.0f%%", CAR.kersCharge * 100), 10 * pedalsSettings.store.pedalsScale, ui.Alignment.Center, ui.Alignment.Center, vec2(size.x, size.y), false, COLOR.WHITE)
+  oldKersCharge = CAR.kersCharge
+end
+
 
 -- Desenha o combustível
 local function drawFuel()
-  if contentMidle == 0 then contentMidle = 3 * pedalsSettings.store.pedalsScale end
 
   if pedalsSettings.store.brakeBiasActive and currentWindowWidth < 120 * pedalsSettings.store.pedalsScale then
     currentWindowWidth = 120 * pedalsSettings.store.pedalsScale
@@ -494,15 +518,14 @@ function pedals.windowMain()
   barPaddingMidle = 2 * pedalsSettings.store.pedalsScale
 
   contentTop = 0
-  contentBottom = 0
 
   if pedalsSettings.store.textBarsActive and contentMidle > 0 and (pedalsSettings.store.clutchActive or pedalsSettings.store.brakeActive or pedalsSettings.store.throttleActive or pedalsSettings.store.handbrakeActive) then contentTop = 10 end
   if pedalsSettings.store.rpmActive or pedalsSettings.store.tractionControlActive then contentTop = contentTop + 22 end
-  if pedalsSettings.store.brakeBiasActive or pedalsSettings.store.fuelActive then contentBottom = 17 * pedalsSettings.store.pedalsScale end
 
   currentWindowWidth = 0
   currentWindowHeight = contentMidle + contentTop * pedalsSettings.store.pedalsScale + contentBottom
 
+  contentBottom = 0
   contentMidle = 0
   
   -- Desenha background principal
@@ -546,24 +569,29 @@ function pedals.windowMain()
   if pedalsSettings.store.absActive and CAR.absModes ~= 0 then
     drawABS()
   end
-
+  if pedalsSettings.store.p2pActive then
+    contentBottom = 20 * pedalsSettings.store.pedalsScale
+    drawBattery()
+  end
   if pedalsSettings.store.brakeBiasActive then
+    contentBottom = 20 * pedalsSettings.store.pedalsScale
     drawBrakeBias()
   end
 
   if pedalsSettings.store.fuelActive then
+    contentBottom = 20 * pedalsSettings.store.pedalsScale
     drawFuel()
   end
 
-  if pedalsSettings.store.rpmActive then
+  if pedalsSettings.store.rpmActive then 
     drawRpm()
   end
 
   if pedalsSettings.store.tractionControlActive and CAR.tractionControlModes ~= 0 then
     drawTC()
   end
-  --
 
+  --
   currentWindowSize = vec2(currentWindowWidth, currentWindowHeight)
 
   config.resize(currentWindowSize, "Pedals")
