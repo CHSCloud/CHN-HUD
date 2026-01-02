@@ -12,20 +12,20 @@ local language = require("lang.language")
 local defaultValues = {}
 
 local defaultValuesTrack = {
-    mapScale = 1.3,
+    mapScale = 1.5,
     angle = 0,
     focus = false,
     zoom = 100,
     colorTrack = rgbm.from0255(0, 0, 0, 1),
     colorBorder = rgbm.from0255(255, 255, 255, 1),
     borderActive = true,
-    borderLenght = 4,
-    trackLenght = 12
+    borderLenght = 2,
+    trackLenght = 10
 }
 
 local defaultValuesFeatures = {
     sectorsActive = true,
-    colorSectors = rgbm.from0255(255, 255, 255, 1),
+    colorSectors = rgbm.from0255(255, 206, 0, 1),
     drsActive = true,
     colorDRS = rgbm.from0255(0, 255, 0, 1),
 }
@@ -40,12 +40,12 @@ local defaultValuesSections = {
 
 local defaultValuesPlayers = {
     colorEnemies = rgbm.from0255(255, 255, 255, 1),
-    colorFocusedCar = rgbm.from0255(255, 255, 0, 1),
+    colorFocusedCar = rgbm.from0255(255, 116, 0, 1),
     colorExternalEnemies = rgbm.from0255(0, 0, 0, 1),
     colorExternalFocusedCar = rgbm.from0255(0, 0, 0, 1),
 
-    focusedCarLenght = 10,
-    enemiesLenght = 10
+    focusedCarLenght = 6,
+    enemiesLenght = 5
 }  
 
 config.copyTable(defaultValuesTrack, defaultValues)
@@ -73,7 +73,7 @@ local function resetToDefaultFeatures()
     for key, value in pairs(defaultValuesFeatures) do
         mapSettings.store[key] = value
     end
-    mapSettings.store.colorSectors = rgbm.from0255(255, 255, 255, 1)
+    mapSettings.store.colorSectors = rgbm.from0255(255, 206, 0, 1)
     mapSettings.store.colorDRS = rgbm.from0255(0, 255, 0, 1)
 end
 
@@ -82,7 +82,7 @@ local function resetToDefaultPlayers()
         mapSettings.store[key] = value
     end
     mapSettings.store.colorEnemies = rgbm.from0255(255, 255, 255, 1)
-    mapSettings.store.colorFocusedCar = rgbm.from0255(255, 255, 0, 1)
+    mapSettings.store.colorFocusedCar = rgbm.from0255(255, 116, 0, 1)
     mapSettings.store.colorExternalFocusedCar = rgbm.from0255(0, 0, 0, 1)
     mapSettings.store.colorExternalEnemies = rgbm.from0255(0, 0, 0, 1)
 end
@@ -278,7 +278,7 @@ local function trackSetitngs()
     mapSettings.store.angle = math.floor(slider.main(language.get("ANGLE"), string.format("%.0f", mapSettings.store.angle), vec2(20, initPos), 250, mapSettings.store.angle, 0, 360))
     
     initPos = initPos + 50
-    mapSettings.store.trackLenght = math.floor(slider.main(language.get("TRACK_LENGHT"), string.format("%.0f", mapSettings.store.trackLenght), vec2(20, initPos), 250, mapSettings.store.trackLenght, 12, 25))
+    mapSettings.store.trackLenght = math.floor(slider.main(language.get("TRACK_LENGHT"), string.format("%.0f", mapSettings.store.trackLenght), vec2(20, initPos), 250, mapSettings.store.trackLenght, 10, 20))
     initPos = initPos + 30
 
     if toggleButton.main("borderMap", vec2(20, initPos), mapSettings.store.borderActive, language.get("BORDER")) then
@@ -288,7 +288,7 @@ local function trackSetitngs()
         if mapSettings.store.borderLenght == -2 then
             mapSettings.store.borderLenght = 4
         end
-        mapSettings.store.borderLenght = math.floor(slider.main("", string.format("%.0f", mapSettings.store.borderLenght), vec2(130, initPos + 2), 200, mapSettings.store.borderLenght, 4, 10))
+        mapSettings.store.borderLenght = math.floor(slider.main("", string.format("%.0f", mapSettings.store.borderLenght), vec2(130, initPos + 2), 200, mapSettings.store.borderLenght, 2, 10))
     else
         mapSettings.store.borderLenght = -2 
     end
