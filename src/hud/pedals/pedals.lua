@@ -177,17 +177,25 @@ end
 
 -- Desenha rpm
 local function drawRpm()
-  if (currentWindowWidth < 68 * pedalsSettings.store.pedalsScale) then
-    currentWindowWidth = currentWindowWidth + (68 * pedalsSettings.store.pedalsScale - currentWindowWidth)
+  if (currentWindowWidth < 75 * pedalsSettings.store.pedalsScale) then
+    currentWindowWidth = 75 * pedalsSettings.store.pedalsScale
   end
   local rpmStart = CAR.rpmLimiter * 0.80
   local rpmFinal = CAR.rpmLimiter * 0.98
   local rpmRange =  rpmFinal - rpmStart
 
   if pedalsSettings.store.rpmType == 1 then
-    local spaceCircles = (currentWindowWidth * 0.95) / (pedalsSettings.store.numLights * pedalsSettings.store.pedalsScale)
-    if spaceCircles > 18 then spaceCircles = 18 end
-    local initPos = (currentWindowWidth / 2) - (((pedalsSettings.store.numLights - 1) * spaceCircles) / 2) * pedalsSettings.store.pedalsScale
+    local area = 0.95
+    local offsetRight = 0
+    local spaceCircles = math.min((currentWindowWidth * area) / (pedalsSettings.store.numLights * pedalsSettings.store.pedalsScale), 18)
+    if pedalsSettings.store.tractionControlActive then
+      area = 0.70
+      spaceCircles = math.min((currentWindowWidth * area) / (pedalsSettings.store.numLights * pedalsSettings.store.pedalsScale), 18)
+      if (currentWindowWidth * (1 + area)) / 2 > currentWindowWidth - 25 * pedalsSettings.store.pedalsScale then
+          offsetRight = 10 * pedalsSettings.store.pedalsScale
+      end
+    end
+    local initPos = (currentWindowWidth / 2) - (((pedalsSettings.store.numLights - 1) * spaceCircles) / 2) * pedalsSettings.store.pedalsScale - offsetRight
     local level = 0
     if CAR.rpm >= rpmStart then
       level = ((pedalsSettings.store.numLights * (CAR.rpm - rpmStart)) / rpmRange) + 1
@@ -395,6 +403,29 @@ local function drawABS()
   currentWindowWidth = currentWindowWidth + absBackgroundSize.x
 end
 
+-- Desenha o controle de tração
+local function drawTC()
+  contentMidle = 73 * pedalsSettings.store.pedalsScale
+  local tractionControlBackGroundSize = vec2(76 * pedalsSettings.store.pedalsScale, currentWindowHeight)
+  ui.setCursor(vec2(currentWindowWidth - 9 * pedalsSettings.store.pedalsScale, (-4 + contentTop) * pedalsSettings.store.pedalsScale ))
+  if CAR.tractionControlInAction then
+    ui.image("assets/TC.png", vec2(80,80):scale(pedalsSettings.store.pedalsScale), COLOR.BLUE, ui.ImageFit.Fit)
+  else
+    ui.image("assets/TC.png", vec2(80,80):scale(pedalsSettings.store.pedalsScale), COLOR.GRAY_BG, ui.ImageFit.Fit)
+  end
+  
+  currentWindowWidth = currentWindowWidth + tractionControlBackGroundSize.x
+end
+
+local function drawTC2()
+  ui.setCursor(vec2(currentWindowWidth - 22 * pedalsSettings.store.pedalsScale, 1 * pedalsSettings.store.pedalsScale ))
+  if CAR.tractionControlInAction then
+    ui.image("assets/TC.png", vec2(20, 20):scale(pedalsSettings.store.pedalsScale), COLOR.YELLOW, ui.ImageFit.Fit)
+  else
+    ui.image("assets/TC.png", vec2(20, 20):scale(pedalsSettings.store.pedalsScale), COLOR.GRAY_BG, ui.ImageFit.Fit)
+  end
+end
+
 -- Desenha o brake bias
 local function drawBrakeBias()
   if contentMidle == 0 then contentMidle = 3 * pedalsSettings.store.pedalsScale end
@@ -469,7 +500,7 @@ function pedals.windowMain()
   contentBottom = 0
 
   if pedalsSettings.store.textBarsActive and contentMidle > 0 and (pedalsSettings.store.clutchActive or pedalsSettings.store.brakeActive or pedalsSettings.store.throttleActive or pedalsSettings.store.handbrakeActive) then contentTop = 10 end
-  if pedalsSettings.store.rpmActive then contentTop = contentTop + 22 end
+  if pedalsSettings.store.rpmActive or pedalsSettings.store.tractionControlActive then contentTop = contentTop + 22 end
   if pedalsSettings.store.brakeBiasActive or pedalsSettings.store.fuelActive then contentBottom = 17 * pedalsSettings.store.pedalsScale end
 
   currentWindowWidth = 0
@@ -518,6 +549,8 @@ function pedals.windowMain()
   if pedalsSettings.store.absActive and CAR.absModes ~= 0 then
     drawABS()
   end
+
+
   
   if pedalsSettings.store.brakeBiasActive then
     drawBrakeBias()
@@ -529,6 +562,10 @@ function pedals.windowMain()
 
   if pedalsSettings.store.rpmActive then
     drawRpm()
+  end
+
+  if pedalsSettings.store.tractionControlActive and CAR.tractionControlModes ~= 0 then
+    drawTC2()
   end
   --
 
