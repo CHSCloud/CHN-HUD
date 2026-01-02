@@ -31,7 +31,7 @@ local defaultValuesFeatures = {
 }
 
 local defaultValuesSections = {
-    sectionsTrackActive = true,
+    sectionsTrackActive = false,
     resetSectionsINI = false,
     trackSectionsEdited = false,
     sectionsType = 1,
@@ -351,11 +351,11 @@ local function sectionsSettings()
     initPos = initPos + 40
     if mapSettings.store.sectionsTrackActive then
         local filePath = ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\CHN-HUD\\user\\trackSections\\" .. ac.getTrackName() .. ".ini"
-        mapSettings.store.trackSectionsEdited, mapSettings.store.resetSectionsINI = sectionPanel.main("sectionsPanel", ac.INIConfig.load(filePath), vec2(20, initPos), vec2(WindowSettingsSize.x - 40, 300))
+        mapSettings.store.trackSectionsEdited, mapSettings.store.resetSectionsINI = sectionPanel.main("sectionsPanel", ac.INIConfig.load(filePath), vec2(20, initPos), vec2(WindowSettingsSize.x - 40, math.max(300, WindowSettingsSize.y - 200)))
         initPos = initPos + 310
     end
 
-    if button.main(vec2(20, initPos), language.get("RESET_DEFAULT")) then
+    if button.main(vec2(20, math.max(initPos, WindowSettingsSize.y - 70)), language.get("RESET_DEFAULT")) then
         resetToDefaultSections()
     end
 end

@@ -63,7 +63,6 @@ function sectionPanel.main(id, iniFile, pos, size)
         local progress, text
         local sizeText, sizeProgress
         local height = 0
-        local index = 1
         for index, section in iniFile:iterate("SECTION") do
             --ui.setCursor(vec2(15, 20 + index * 30))
             text, sizeText, isItemEdited = formText.main(
@@ -113,7 +112,7 @@ function sectionPanel.main(id, iniFile, pos, size)
 
         ui.setCursor(vec2(20, height + 80))
         return edited
-    end)
+    end) or false
 
     if button.main(pos + vec2(5,5), "Add section", ui.windowFocused(ui.FocusedFlags.ChildWindows)) then
         iniFile:set("SECTION_".. tostring(numberSections), "TEXT", tostring(ac.getTrackName()))
