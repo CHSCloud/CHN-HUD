@@ -15,16 +15,15 @@ function button.main(pos, text, focused)
 
     if config.isMouseInWindow(ui.mouseLocalPos(), pos.x, pos.x + lenght, pos.y, pos.y + 25) then
         color = USER_UI.accentColor
+        ui.setMouseCursor(ui.MouseCursor.Hand)
     end
     
     ui.drawRectFilled(pos, pos + vec2(lenght, 25), color, 10)
     ui.drawRect(pos + vec2(2,2), pos + vec2(lenght - 2, 23), COLOR.WHITE, 10,ui.CornerFlags.All, 2)
     ui.setCursor(pos)
     ui.dwriteTextAligned(text, 12, ui.Alignment.Center, ui.Alignment.Center, vec2(lenght, 25), false, COLOR.WHITE)
-
     
     ui.setCursor(pos)
-    
     ui.invisibleButton("##" .. text, vec2(lenght, 25), ui.ButtonFlags.PressedOnClick)
     if ui.itemClicked(ui.MouseButton.Left) and focused then
         output = true

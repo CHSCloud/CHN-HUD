@@ -50,6 +50,7 @@ function droplist.main(id, text, pos, size, selected, items, posText)
     ui.invisibleButton("##"..id, vec2(size, height), ui.ButtonFlags.PressedOnClick)
 
     if ui.itemActive() or active[id] then
+        ui.setMouseCursor(ui.MouseCursor.Hand)
         active[id] = true
         -- Desenha a droplist
         ui.setCursor(pos)
@@ -80,6 +81,9 @@ function droplist.main(id, text, pos, size, selected, items, posText)
         end
         
     else
+        if config.isMouseInWindow(ui.mouseLocalPos(), pos.x, pos.x + size, pos.y,  pos.y + height) then
+            ui.setMouseCursor(ui.MouseCursor.Hand)
+        end
         ui.drawRectFilled(pos, pos + vec2(size, height), color, rounding)
         ui.setCursor(pos + vec2(10))
         ui.dwriteTextAligned(items[selected], 12, ui.Alignment.Start, ui.Alignment.Center, vec2(size, height), false, COLOR.WHITE)

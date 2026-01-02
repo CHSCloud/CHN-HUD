@@ -34,8 +34,11 @@ function toggleButton.main(id, pos, key, text)
     end
 
     ui.dwriteDrawText(text, 12, pos + vec2(50, 2), COLOR.WHITE)
-    if config.isMouseInWindow(ui.mouseLocalPos(), pos.x, pos.x + size.x, pos.y, pos.y + size.y) and ui.mouseClicked(ui.MouseButton.Left) then
-        return true
+    if config.isMouseInWindow(ui.mouseLocalPos(), pos.x, pos.x + size.x, pos.y, pos.y + size.y) then
+        ui.setMouseCursor(ui.MouseCursor.Hand)
+        if ui.mouseClicked(ui.MouseButton.Left) then
+            return true
+        end
     end
     return false
 end

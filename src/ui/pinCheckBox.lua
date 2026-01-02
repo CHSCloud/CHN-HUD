@@ -26,6 +26,7 @@ local function checkBox(pos, scale, nameWindow, isPinned)
     end
     
     if config.isMouseInWindow(ui.mouseLocalPos(),pos.x, pos.x + lenghts[nameWindow] * scale, pos.y, pos.y + lenghts[nameWindow] * scale) then
+        ui.setMouseCursor(ui.MouseCursor.Hand)
         if ui.mouseClicked(ui.MouseButton.Left) then
             config.pinWindow(nameWindow)
         end

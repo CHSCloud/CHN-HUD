@@ -125,6 +125,25 @@ function settings.windowMain()
     ui.tabItem(language.get("SESSION_FLAGS"), sessionFlagsSettings.sessionFlagsSettings)
     ui.tabItem(language.get("MAP"), mapSettings.mapSettings)
   end)
+
+  local posResize = WindowSettingsSize - vec2(45,45)
+  if config.isMouseInWindow(ui.mouseLocalPos(), posResize.x - 5, posResize.x + 25, posResize.y - 5, posResize.y + 25) then
+    ui.setMouseCursor(ui.MouseCursor.Hand)  
+    if ui.mouseClicked(ui.MouseButton.Left) then
+      local settingsINI = ac.INIConfig.load(ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\CHN-HUD\\manifest.ini")
+      if settingsINI ~= nil then
+        local size = settingsINI:get("WINDOW_0", "SIZE", nil)
+        if size ~= nil then
+          local sizeSplit = string.split(size[1], ",")
+          config.resize(vec2(tonumber(sizeSplit[1]), tonumber(sizeSplit[2])), "Settings CHN")
+        end
+      end
+    end
+  end
+  ui.drawLine(posResize + vec2(10), posResize + vec2(20), COLOR.WHITE, 2)
+  ui.drawLine(posResize + vec2(20), posResize + vec2(20,10), COLOR.WHITE, 2)
+  ui.drawLine(posResize + vec2(0,20), posResize + vec2(10,20), COLOR.WHITE, 2)
+  ui.drawLine(posResize + vec2(0,10), posResize + vec2(0,20), COLOR.WHITE, 2)
 end
 
 return settings

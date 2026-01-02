@@ -41,10 +41,11 @@ function slider.main(text, outputText, pos, lenght, value, init, final, posText,
     end
 
     local posValue = config.remapIntervalWithLimits(value, init, final, 0, lenght)
-    ui.setCursor(pos)
     ui.drawRectFilled(pos, pos + vec2(lenght, 15), USER_UI.accentColor, 20)
     ui.drawRectFilled(pos + vec2(posValue - width, - 5), pos + vec2(posValue + width, 20), COLOR.WHITE, 20)
-
+    if config.isMouseInWindow(ui.mouseLocalPos(), pos.x, pos.x + lenght, pos.y, pos.y + 15) then
+        ui.setMouseCursor(ui.MouseCursor.Hand)
+    end
     ui.setCursor(pos + vec2(lenght + 12, 0))
     ui.dwriteTextAligned(outputText, 15, ui.Alignment.Start, ui.Alignment.Center, vec2(60, 15), false, COLOR.WHITE)
     return value
