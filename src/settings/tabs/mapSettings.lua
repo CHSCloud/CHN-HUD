@@ -53,6 +53,7 @@ config.copyTable(defaultValuesFeatures, defaultValues)
 config.copyTable(defaultValuesPlayers, defaultValues)
 config.copyTable(defaultValuesSections, defaultValues)
 mapSettings.store = ac.storage(defaultValues)
+mapSettings.isClockwise = false -- Sentido de orintação da pista
 
 local function resetToDefaultTrack()
     for key, value in pairs(defaultValuesTrack) do
@@ -86,7 +87,7 @@ local function resetToDefaultPlayers()
     mapSettings.store.colorExternalEnemies = rgbm.from0255(0, 0, 0, 1)
 end
 
--- Reseta as seções do arquivo para o padrão do jogo
+-- Reseta as seções do arquivo para o padrão
 --- @return table
 function mapSettings.resetSectionsINI()
     local trackSections = {}
@@ -94,62 +95,48 @@ function mapSettings.resetSectionsINI()
     if not io.fileExists(filePath) then
         io.save(filePath, "")
     end
-    local sectionsINI = ac.INIConfig.trackData("sections.ini")
     local userSectionsINI = ac.INIConfig.load(filePath)
-    if sectionsINI ~= nil then
-        for i, section in sectionsINI:iterate('SECTION', false) do
-            local start = sectionsINI:get(section, 'IN', 0)
-            local final = sectionsINI:get(section, 'OUT', 0)
-            local text = sectionsINI:get(section, 'TEXT', "")
-            if start ~= nil and final ~= nil and text ~= nil then
-                local center = tonumber(((final - start) / 2) + start)
+    local defaultFilePath = ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\CHN-HUD\\user\\defaultTrackSections\\" .. ac.getTrackName() .. ".ini"
+    if io.fileExists(defaultFilePath) then
+        local defaultSectionsINI = ac.INIConfig.load(defaultFilePath)
+        for i, section in defaultSectionsINI:iterate('SECTION', false) do
+            local progress = defaultSectionsINI:get(section, 'PROGRESS', 0)
+            local position = defaultSectionsINI:get(section, 'POSITION', 0)
+            local text = defaultSectionsINI:get(section, 'TEXT', "")
+            if progress ~= nil and position ~= nil and text ~= nil then
                 userSectionsINI:set(section, "TEXT", text)
-                userSectionsINI:set(section, "PROGRESS", center)
-                userSectionsINI:set(section, "POSITION", 1)
-
-                local worldLeft = ac.trackCoordinateToWorld(vec3(1, 0, center))
+                userSectionsINI:set(section, "PROGRESS", progress)
+                userSectionsINI:set(section, "POSITION", position)
+                local worldLeft = ac.trackCoordinateToWorld(vec3(1, 0, tonumber(progress)))
                 local worldLeft2d = vec2(worldLeft.x, worldLeft.z)
-                local worldCenter = ac.trackCoordinateToWorld(vec3(0, 0, center))
+                local worldCenter = ac.trackCoordinateToWorld(vec3(0, 0, tonumber(progress)))
                 local worldCenter2d = vec2(worldCenter.x, worldCenter.z)
-                local worldRight = ac.trackCoordinateToWorld(vec3(-1, 0, center))
+                local worldRight = ac.trackCoordinateToWorld(vec3(-1, 0, tonumber(progress)))
                 local worldRight2d = vec2(worldRight.x, worldRight.z)
-                local dir = (worldRight2d - worldLeft2d):normalize()
                 table.insert(trackSections, {
                     number = tostring(i),
                     name = string.replace(text, '\\n', '\n'),
                     left = worldLeft2d,
                     center = worldCenter2d,
                     right = worldRight2d,
-                    position = 1,
-                    namePosition = nil,
-                    direction = dir
+                    position = position,
+                    namePosition = nil
                 })
             end
         end
-    end
-    userSectionsINI:save()
-    return trackSections
-end
-
--- Carrega as seções do arquivo
---- @return table
-function mapSettings.loadSectionsINI()
-    local trackSections = {}
-    local filePath = ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\CHN-HUD\\user\\trackSections\\" .. ac.getTrackName() .. ".ini"
-    if not io.fileExists(filePath) then
-        io.save(filePath, "")
+    else
         local sectionsINI = ac.INIConfig.trackData("sections.ini")
-        local userSectionsINI = ac.INIConfig.load(filePath)
         if sectionsINI ~= nil then
             for i, section in sectionsINI:iterate('SECTION', false) do
                 local start = sectionsINI:get(section, 'IN', 0)
                 local final = sectionsINI:get(section, 'OUT', 0)
                 local text = sectionsINI:get(section, 'TEXT', "")
                 if start ~= nil and final ~= nil and text ~= nil then
+                    local position = mapSettings.isClockwise and 2 or 3
                     local center = tonumber(((final - start) / 2) + start)
                     userSectionsINI:set(section, "TEXT", text)
                     userSectionsINI:set(section, "PROGRESS", center)
-                    userSectionsINI:set(section, "POSITION", 1)
+                    userSectionsINI:set(section, "POSITION", position)
 
                     local worldLeft = ac.trackCoordinateToWorld(vec3(1, 0, center))
                     local worldLeft2d = vec2(worldLeft.x, worldLeft.z)
@@ -163,14 +150,92 @@ function mapSettings.loadSectionsINI()
                         left = worldLeft2d,
                         center = worldCenter2d,
                         right = worldRight2d,
-                        position = 1,
+                        position = position,
                         namePosition = nil
                     })
                 end
             end
         end
+    end
+    userSectionsINI:save()
+    return trackSections
+end
+
+-- Carrega as seções do arquivo
+--- @return table
+function mapSettings.loadSectionsINI()
+    local trackSections = {}
+    local filePath = ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\CHN-HUD\\user\\trackSections\\" .. ac.getTrackName() .. ".ini"
+    -- Caso o arquivo do usuário não exista, cria um novo
+    if not io.fileExists(filePath) then
+        io.save(filePath, "")
+        local userSectionsINI = ac.INIConfig.load(filePath)
+        local defaultFilePath = ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\CHN-HUD\\user\\defaultTrackSections\\" .. ac.getTrackName() .. ".ini"
+        -- Verifica se existe um arquivo padrão
+        if io.fileExists(defaultFilePath) then
+            local defaultSectionsINI = ac.INIConfig.load(defaultFilePath)
+            for i, section in defaultSectionsINI:iterate('SECTION', false) do
+                local progress = defaultSectionsINI:get(section, 'PROGRESS', 0)
+                local position = defaultSectionsINI:get(section, 'POSITION', 0)
+                local text = defaultSectionsINI:get(section, 'TEXT', "")
+                if progress ~= nil and position ~= nil and text ~= nil then
+                    userSectionsINI:set(section, "TEXT", text)
+                    userSectionsINI:set(section, "PROGRESS", progress)
+                    userSectionsINI:set(section, "POSITION", position)
+                    local worldLeft = ac.trackCoordinateToWorld(vec3(1, 0, tonumber(progress)))
+                    local worldLeft2d = vec2(worldLeft.x, worldLeft.z)
+                    local worldCenter = ac.trackCoordinateToWorld(vec3(0, 0, tonumber(progress)))
+                    local worldCenter2d = vec2(worldCenter.x, worldCenter.z)
+                    local worldRight = ac.trackCoordinateToWorld(vec3(-1, 0, tonumber(progress)))
+                    local worldRight2d = vec2(worldRight.x, worldRight.z)
+                    table.insert(trackSections, {
+                        number = tostring(i),
+                        name = string.replace(text, '\\n', '\n'),
+                        left = worldLeft2d,
+                        center = worldCenter2d,
+                        right = worldRight2d,
+                        position = position,
+                        namePosition = nil
+                    })
+                end
+            end
+        else
+            -- Alimenta o arquivo do usuário com o padrão do jogo
+            local sectionsINI = ac.INIConfig.trackData("sections.ini")
+            if sectionsINI ~= nil then
+                for i, section in sectionsINI:iterate('SECTION', false) do
+                    local start = sectionsINI:get(section, 'IN', 0)
+                    local final = sectionsINI:get(section, 'OUT', 0)
+                    local text = sectionsINI:get(section, 'TEXT', "")
+                    if start ~= nil and final ~= nil and text ~= nil then
+                        local position = mapSettings.isClockwise and 2 or 3 
+                        local center = tonumber(((final - start) / 2) + start)
+                        userSectionsINI:set(section, "TEXT", text)
+                        userSectionsINI:set(section, "PROGRESS", center)
+                        userSectionsINI:set(section, "POSITION", position)
+
+                        local worldLeft = ac.trackCoordinateToWorld(vec3(1, 0, center))
+                        local worldLeft2d = vec2(worldLeft.x, worldLeft.z)
+                        local worldCenter = ac.trackCoordinateToWorld(vec3(0, 0, center))
+                        local worldCenter2d = vec2(worldCenter.x, worldCenter.z)
+                        local worldRight = ac.trackCoordinateToWorld(vec3(-1, 0, center))
+                        local worldRight2d = vec2(worldRight.x, worldRight.z)
+                        table.insert(trackSections, {
+                            number = tostring(i),
+                            name = string.replace(text, '\\n', '\n'),
+                            left = worldLeft2d,
+                            center = worldCenter2d,
+                            right = worldRight2d,
+                            position = position,
+                            namePosition = nil
+                        })
+                    end
+                end
+            end
+        end
         userSectionsINI:save()
     else 
+        -- Carrega o arquivo do usuário
         local userSectionsINI = ac.INIConfig.load(filePath)
         if userSectionsINI ~= nil then
             for i, section in userSectionsINI:iterate('SECTION', false) do

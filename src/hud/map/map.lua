@@ -37,7 +37,6 @@ local isTrackConnected = true
 local startTrack -- Inicio da pista
 local endTrack -- Fim da pista
 local dirTrack -- Direção da pista
-local isClockwise = false -- Sentido de orintação da pista
 
 local transparancy = 0
 
@@ -107,7 +106,7 @@ local function initMap()
         sum = sum + (currentPoint.x * nextPoint.z - nextPoint.x * currentPoint.z)
     end
     if sum > 0 then 
-        isClockwise = true 
+        mapSettings.isClockwise = true
     end
 
     -- Carregando seções do mapa
@@ -485,7 +484,7 @@ function map.windowMain()
     else
         trackCenterX = (minPos.x + maxPos.x) / 2
         trackCenterY = (minPos.y + maxPos.y) / 2
-        if isClockwise then
+        if mapSettings.isClockwise then
             angle = math.deg(-math.atan2(dirTrack.y, dirTrack.x) + math.pi) + mapSettings.store.angle
         else
             angle = math.deg(-math.atan2(dirTrack.y, dirTrack.x)) + mapSettings.store.angle
