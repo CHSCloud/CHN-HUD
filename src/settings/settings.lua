@@ -41,7 +41,6 @@ local tabPin = false
 SettingsActive = false
 WindowsColor = settings.store.windowsColor
 SelectedSpeed = settings.store.selectedSpeed
-WindowSettingsSize = vec2(780, 500)
 
 if settings.store.optionLanguage ~= language.getCurrentLanguage() then
   language.setlanguage(settings.store.optionLanguage)
@@ -114,8 +113,9 @@ function settings.windowCloseSettings()
 end
 
 function settings.windowMain()
+  WindowSettingsSize = ui.windowSize()
   ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
-  ui.drawRectFilled(vec2(0, 0), WindowSettingsSize, rgbm.from0255(18, 21, 29, 0.85), 0)
+  ui.drawRectFilled(vec2(0, 0), WindowSettingsSize + ui.windowContentSize(), rgbm.from0255(18, 21, 29, 0.85), 0)
   ui.tabBar('##ID',function ()
     ui.tabItem(language.get("GENERAL"), tabPin and ui.TabItemFlags.SetSelected, geral)
     ui.tabItem(language.get("PEDALS"), pedalsSettings.pedalsSettings)
@@ -125,8 +125,6 @@ function settings.windowMain()
     ui.tabItem(language.get("SESSION_FLAGS"), sessionFlagsSettings.sessionFlagsSettings)
     ui.tabItem(language.get("MAP"), mapSettings.mapSettings)
   end)
-
-  config.resize(WindowSettingsSize, "Settings CHN")
 end
 
 return settings
