@@ -405,19 +405,6 @@ end
 
 -- Desenha o controle de tração
 local function drawTC()
-  contentMidle = 73 * pedalsSettings.store.pedalsScale
-  local tractionControlBackGroundSize = vec2(76 * pedalsSettings.store.pedalsScale, currentWindowHeight)
-  ui.setCursor(vec2(currentWindowWidth - 9 * pedalsSettings.store.pedalsScale, (-4 + contentTop) * pedalsSettings.store.pedalsScale ))
-  if CAR.tractionControlInAction then
-    ui.image("assets/TC.png", vec2(80,80):scale(pedalsSettings.store.pedalsScale), COLOR.BLUE, ui.ImageFit.Fit)
-  else
-    ui.image("assets/TC.png", vec2(80,80):scale(pedalsSettings.store.pedalsScale), COLOR.GRAY_BG, ui.ImageFit.Fit)
-  end
-  
-  currentWindowWidth = currentWindowWidth + tractionControlBackGroundSize.x
-end
-
-local function drawTC2()
   ui.setCursor(vec2(currentWindowWidth - 22 * pedalsSettings.store.pedalsScale, 1 * pedalsSettings.store.pedalsScale ))
   if CAR.tractionControlInAction then
     ui.image("assets/TC.png", vec2(20, 20):scale(pedalsSettings.store.pedalsScale), COLOR.YELLOW, ui.ImageFit.Fit)
@@ -550,8 +537,6 @@ function pedals.windowMain()
     drawABS()
   end
 
-
-  
   if pedalsSettings.store.brakeBiasActive then
     drawBrakeBias()
   end
@@ -565,7 +550,7 @@ function pedals.windowMain()
   end
 
   if pedalsSettings.store.tractionControlActive and CAR.tractionControlModes ~= 0 then
-    drawTC2()
+    drawTC()
   end
   --
 
