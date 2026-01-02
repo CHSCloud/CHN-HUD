@@ -37,12 +37,15 @@ local isTrackConnected = true
 local startTrack -- Inicio da pista
 local endTrack -- Fim da pista
 local dirTrack -- Direção da pista
-local initialAngleCar = math.atan2(CAR.look.z, CAR.look.x)
+local isClockwise = false -- Sentido de orintação da pista
 
 local transparancy = 0
 
+-- Inicializa todos os parâmetros do mapa
 local function initMap()
+    -- Calculando todos os pontos do mapa
     totalPoints = config.remapInterval(SIM.trackLengthM, 0, 4000, 0, 500)
+
     -- Armazenando pontos do mapa
     for i = 0, 1, 1 / totalPoints do
         local posWorld = ac.trackCoordinateToWorld(vec3(0, 0, i))
@@ -95,7 +98,19 @@ local function initMap()
             end
         end
     end
-    
+
+    -- Verificando sentido da pista
+    local sum = 0
+    for i = 1, totalPoints do
+        local currentPoint = ac.trackCoordinateToWorld(vec3(0, 0, i / totalPoints))
+        local nextPoint = ac.trackCoordinateToWorld(vec3(0, 0, ((i + 1) % totalPoints) / totalPoints))
+        sum = sum + (currentPoint.x * nextPoint.z - nextPoint.x * currentPoint.z)
+    end
+    if sum > 0 then 
+        isClockwise = true 
+    end
+
+    -- Carregando seções do mapa
     trackSections = mapSettings.loadSectionsINI()
 
     -- Comprimento da pista
@@ -108,6 +123,7 @@ local function initMap()
     if distance > 60 then 
         isTrackConnected = false
     end
+    
     -- Centros da pista
     trackCenterX = (minPos.x + maxPos.x) / 2
     trackCenterY = (minPos.y + maxPos.y) / 2
@@ -116,14 +132,16 @@ local function initMap()
     local dirTrack3d = (endTrack - startTrack):normalize()
     dirTrack = vec2(dirTrack3d.x, dirTrack3d.z)
 
-    
+    -- Canvas normal
     canvas = ui.ExtraCanvas(canvasSize, 1, render.AntialiasingMode.None)
     canvas:setName("CANVAS")
 
+    -- Canvas de zoom
     canvasZoom = ui.ExtraCanvas(canvasSize, 1, render.AntialiasingMode.None)
     canvasZoom:setName("CANVAS_ZOOM")
 end
 
+-- Desenha o mapa
 --- @param thickness number -- Espessura do traço
 --- @param color rgbm -- Cor do traço
 local function drawMap(thickness, color)
@@ -141,6 +159,7 @@ local function drawMap(thickness, color)
     ui.pathStroke(color, isTrackConnected, thickness)
 end
 
+-- Desenha setores
 --- @param thickness number -- Espessura do setor
 --- @param color rgbm -- Cor do setor
 local function drawSectors(thickness, color)
@@ -158,6 +177,7 @@ local function drawSectors(thickness, color)
     end
 end
 
+-- Desenha a bandeira de largada
 --- @param thickness number -- Espessura da bandeira
 local function drawStartFlag(thickness) 
     -- Posição do setor
@@ -174,6 +194,7 @@ local function drawStartFlag(thickness)
 
 end
 
+-- Desenha um jogador
 --- @param car ac.StateCar -- Cara a ser desenhado
 --- @param lenght number -- Tamanho do círculo
 --- @param colorInternal rgbm -- Cor do círculo interno
@@ -191,7 +212,8 @@ local function drawPLayer(car, lenght, colorInternal, colorExternal, center, sca
     ui.dwriteTextAligned(tostring(car.racePosition), lenght, ui.Alignment.Center, ui.Alignment.Center, vec2(lenght, lenght) * 2, false, colorExternal)
 end
 
-local function drawPLayers()
+-- Desenha todos os jogadores
+local function drawPlayers()
     local scale
     local center
     local enemiesLenght 
@@ -258,6 +280,9 @@ local function drawDRS(thickness)
     end
 end
 
+-- Aumamenta janela com base no retângulo do texto
+--- @param initRect vec2 -- Coordenadas iniciais
+--- @param finalRect vec2 -- Coordenadas finais
 local function resizeWithText(initRect, finalRect) 
     if initRect.x < 0 and math.abs(initRect.x) > offset.x then
         currentWindowSize.x = currentWindowSize.x - offset.x +  math.abs(initRect.x)
@@ -275,9 +300,8 @@ local function resizeWithText(initRect, finalRect)
     end
 end
 
-
-
-local function resizeWindow()
+-- Altera o tamanho da janela baseado nas seções
+local function resizeWindowMap()
     local scale
     local textPosition
     local lenght
@@ -461,13 +485,17 @@ function map.windowMain()
     else
         trackCenterX = (minPos.x + maxPos.x) / 2
         trackCenterY = (minPos.y + maxPos.y) / 2
-        local dirTrackRotated = config.rotateVec(vec2(dirTrack.x, dirTrack.y), mapSettings.store.angle)
+        if isClockwise then
+            angle = math.deg(-math.atan2(dirTrack.y, dirTrack.x) + math.pi) + mapSettings.store.angle
+        else
+            angle = math.deg(-math.atan2(dirTrack.y, dirTrack.x)) + mapSettings.store.angle
+        end
+    end
 
-        angle = math.floor(math.deg(math.atan2(dirTrack.y, dirTrack.x)) + mapSettings.store.angle)
-    end
     if mapSettings.store.sectionsTrackActive then
-        resizeWindow()
+        resizeWindowMap()
     end
+
     -- Desenha borda
     if canvas == nil then return end
     canvas:clear()
@@ -507,20 +535,20 @@ function map.windowMain()
             transparancy = 0
         end
     end
-
     
     if mapSettings.store.focus then
         if canvasZoom == nil then return end
         local zoomScaled = mapSettings.store.zoom * mapSettings.store.mapScale
         if mapSettings.store.sectionsTrackActive then
             canvas:update(function ()
-                -- Desenha nomes da pista
                 drawTrackSections()
+                drawPlayers()
+            end)
+        else
+            canvas:update(function ()
+                drawPlayers()
             end)
         end
-        canvas:update(function ()
-            drawPLayers()
-        end)
         canvasZoom:updateWithShader({
             textures = {canvas = canvas},
             values = {zoom = currentWindowSize.x / (2 * (2 * zoomScaled + currentWindowSize.x))},
@@ -550,7 +578,7 @@ function map.windowMain()
         if mapSettings.store.sectionsTrackActive then
             drawTrackSections()
         end
-        drawPLayers()
+        drawPlayers()
     end
     config.resize(currentWindowSize, "Map")
     pinCheckBox.main(mapSettings.store.mapScale * 1.5, "Map", config.getWindow("Map"):pinned(), currentWindowSize)
