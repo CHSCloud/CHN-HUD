@@ -36,7 +36,7 @@ function droplist.main(id, text, pos, size, selected, items, posText)
     
     -- Se o mouse estiver na droplist
     if config.isMouseInWindow(ui.mouseLocalPos(), pos.x, pos.x + size, pos.y,  pos.y + height) then
-        color = UserUI.accentColor
+        color = USER_UI.accentColor
         if ui.mouseClicked(ui.MouseButton.Left) then
             active[id] = false
         end
@@ -57,7 +57,7 @@ function droplist.main(id, text, pos, size, selected, items, posText)
             ui.drawRectFilled(vec2(0,height), vec2(0,height) + vec2(size, height * (#items)), COLOR.GRAY_BG, rounding, ui.CornerFlags.Bottom)
             for i = 1, #items do
                 if config.isMouseInWindow(ui.mouseLocalPos(), 0, size, i * height, (i + 1) * height) then
-                    ui.drawRectFilled(vec2(padding, padding) + vec2(0, i * height), vec2(0,0) + vec2(0, i * height) + vec2(size - padding, height - padding), UserUI.accentColor, rounding)
+                    ui.drawRectFilled(vec2(padding, padding) + vec2(0, i * height), vec2(0,0) + vec2(0, i * height) + vec2(size - padding, height - padding), USER_UI.accentColor, rounding)
                     if ui.mouseClicked(ui.MouseButton.Left) then
                         active[id] = false
                         return i

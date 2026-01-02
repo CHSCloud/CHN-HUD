@@ -42,7 +42,7 @@ function slider.main(text, outputText, pos, lenght, value, init, final, posText,
 
     local posValue = config.remapIntervalWithLimits(value, init, final, 0, lenght)
     ui.setCursor(pos)
-    ui.drawRectFilled(pos, pos + vec2(lenght, 15), UserUI.accentColor, 20)
+    ui.drawRectFilled(pos, pos + vec2(lenght, 15), USER_UI.accentColor, 20)
     ui.drawRectFilled(pos + vec2(posValue - width, - 5), pos + vec2(posValue + width, 20), COLOR.WHITE, 20)
 
     ui.setCursor(pos + vec2(lenght + 12, 0))

@@ -21,7 +21,7 @@ function toggleButton.main(id, pos, key, text)
         else 
             positions[id] = final
         end
-        ui.drawRectFilled(pos, pos + size, UserUI.accentColor, 20)
+        ui.drawRectFilled(pos, pos + size, USER_UI.accentColor, 20)
         ui.drawCircleFilled(pos + positions[id], size.y / 2.2, COLOR.WHITE, 20)
     else 
         if positions[id].x > init.x then

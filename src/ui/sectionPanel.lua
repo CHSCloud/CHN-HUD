@@ -12,7 +12,7 @@ local position = {"CENTER", "LEFT", "RIGHT"}
 --- @return boolean
 local function deleteSectionButton(pos, size)
     if config.isMouseInWindow(ui.mouseLocalPos(), pos.x, pos.x + size.x, pos.y, pos.y + size.y) then
-        ui.drawRectFilled(pos, pos + size, UserUI.accentColor, 2)
+        ui.drawRectFilled(pos, pos + size, USER_UI.accentColor, 2)
         if ui.mouseClicked(ui.MouseButton.Left) then    
             return true
         end
@@ -52,7 +52,7 @@ function sectionPanel.main(id, iniFile, pos, size)
     local numberSections = 0
     
     --ui.drawRectFilled(pos, pos + size, COLOR.GRAY, 10, ui.CornerFlags.All)
-    ui.drawRect(pos, pos + size, UserUI.accentColor, 10, ui.CornerFlags.All, 3)
+    ui.drawRect(pos, pos + size, USER_UI.accentColor, 10, ui.CornerFlags.All, 3)
     ui.drawRect(pos + vec2(10, 40), pos + size - vec2(20, 40), COLOR.WHITE, 10, ui.CornerFlags.All, 3)
     ui.setCursor(pos + vec2(10, 43))
     isEdited = ui.childWindow("##"..id, size - vec2(20,85), false, ui.WindowFlags.None + ui.WindowFlags.NoBackground,

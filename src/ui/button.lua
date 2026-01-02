@@ -14,7 +14,7 @@ function button.main(pos, text, focused)
     end
 
     if config.isMouseInWindow(ui.mouseLocalPos(), pos.x, pos.x + lenght, pos.y, pos.y + 25) then
-        color = UserUI.accentColor
+        color = USER_UI.accentColor
     end
     
     ui.drawRectFilled(pos, pos + vec2(lenght, 25), color, 10)

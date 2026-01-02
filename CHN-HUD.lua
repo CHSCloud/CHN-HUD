@@ -1,7 +1,7 @@
 Timer = 0
 SIM = ac.getSim()
 CAR = ac.getCar(SIM.focusedCar)
-UserUI = ac.getUI()
+USER_UI = ac.getUI()
   
 local settings = require("src.settings.settings")
 local pitLane = require("src.hud.pitLane.pitLane")
@@ -63,5 +63,5 @@ function script.update(dt)
   Timer = Timer + dt
   SIM = ac.getSim()
   CAR = ac.getCar(SIM.focusedCar)
-  UserUI = ac.getUI()
+  USER_UI = ac.getUI()
 end
