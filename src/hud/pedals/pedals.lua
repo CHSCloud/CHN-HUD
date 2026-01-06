@@ -37,6 +37,28 @@ local gearBackgroundWidth
 -- Velocidade
 local fontSpeed
 
+
+local content = {
+  { vec2(0, 0), vec2(0, 0) }, -- SUPERIOR ESQUEDO
+  { vec2(100, 0), vec2(0, 0) }, -- SUPERIOR DIREITO
+  { vec2(0, 100), vec2(0, 0) }, -- INFERIOR ESQUERDO
+  { vec2(100, 100), vec2(0, 0) } -- INFERIOR DIREITO
+}
+
+--- @param pos number
+--- @param size vec2
+local function setPositionContent(pos, size)
+  if content[pos][1].x > 0 then
+    content[pos][1].x = content[pos][1].x - size.x
+  end
+
+  if content[pos][1].y > 0 then
+    content[pos][1].y = content[pos][1].y - size.y
+  end
+
+  content[pos][2] = size
+end
+
 --Animação da Marcha
 local function animateGear(maxFontGear) 
   if fontGear < maxFontGear - 3 then
@@ -186,19 +208,18 @@ local function drawRpm()
 
   if pedalsSettings.store.rpmType == 1 then
     local area = 0
-    local xOffset = 0
-    local distanceBorder = 0
     local spaceCircles
-    if pedalsSettings.store.tractionControlActive then
-      distanceBorder = 36 * pedalsSettings.store.pedalsScale
-      spaceCircles = math.min((currentWindowWidth - distanceBorder) / (pedalsSettings.store.numLights * pedalsSettings.store.pedalsScale), 18)
-      xOffset = 10 * pedalsSettings.store.pedalsScale
-    else
-      area = 0.95
-      spaceCircles = math.min((currentWindowWidth * area) / (pedalsSettings.store.numLights * pedalsSettings.store.pedalsScale), 18)
+    local space = currentWindowWidth * 0.95 - content[1][2].x - content[2][2].x
+    area = space / currentWindowWidth
+    ui.text(tostring(area))
+    spaceCircles = math.min((currentWindowWidth * area) / (pedalsSettings.store.numLights * pedalsSettings.store.pedalsScale), 18)
+    local center
+    if space == currentWindowWidth * 0.95 then
+      center = currentWindowWidth / 2
+    else 
+      center = content[1][2].x + (currentWindowWidth - content[1][2].x - content[2][2].x) / 2
     end
-
-    local initPos = ((currentWindowWidth - distanceBorder) / 2) - (((pedalsSettings.store.numLights - 1) * spaceCircles) / 2) * pedalsSettings.store.pedalsScale + xOffset
+    local initPos = center - (((pedalsSettings.store.numLights - 1) * spaceCircles) / 2) * pedalsSettings.store.pedalsScale
     local level = 0
     if CAR.rpm >= rpmStart then
       level = ((pedalsSettings.store.numLights * (CAR.rpm - rpmStart)) / rpmRange) + 1
@@ -429,10 +450,11 @@ local function drawBrakeBias()
     currentWindowWidth = currentWindowWidth + (60 * pedalsSettings.store.pedalsScale - currentWindowWidth)
   end
   
-  ui.setCursor(vec2(22 * pedalsSettings.store.pedalsScale, currentWindowHeight - 19 * pedalsSettings.store.pedalsScale))
-  ui.dwriteTextAligned(string.format("%.1f", CAR.brakeBias * 100), fontContentBottom, ui.Alignment.Center, ui.Alignment.Start, vec2(30, 30):scale(pedalsSettings.store.pedalsScale), false, COLOR.WHITE)
+  setPositionContent(pedalsSettings.store.brakebiasPos, vec2(56, 20):scale(pedalsSettings.store.pedalsScale))
+  ui.setCursor(content[pedalsSettings.store.brakebiasPos][1] + vec2(25) * pedalsSettings.store.pedalsScale)
+  ui.dwriteTextAligned(string.format("%.1f", CAR.brakeBias * 100), fontContentBottom, ui.Alignment.Start, ui.Alignment.Center, vec2(30, 20):scale(pedalsSettings.store.pedalsScale), false, COLOR.WHITE)
   
-  ui.setCursor(vec2(5 * pedalsSettings.store.pedalsScale, currentWindowHeight - 18.5 * pedalsSettings.store.pedalsScale))
+  ui.setCursor(content[pedalsSettings.store.brakebiasPos][1] + vec2(5,2) * pedalsSettings.store.pedalsScale)
   ui.image("assets/BrakeBias.png", vec2(16, 16):scale(pedalsSettings.store.pedalsScale), ui.ImageFit.Fit)
 end
 
@@ -466,7 +488,6 @@ end
 
 -- Desenha o combustível
 local function drawFuel()
-
   if pedalsSettings.store.brakeBiasActive and currentWindowWidth < 120 * pedalsSettings.store.pedalsScale then
     currentWindowWidth = 120 * pedalsSettings.store.pedalsScale
   end
@@ -487,11 +508,13 @@ local function drawFuel()
     xOffset = 51
   end
 
-  ui.setCursor(vec2(currentWindowWidth - xOffset * pedalsSettings.store.pedalsScale, currentWindowHeight - 19 * pedalsSettings.store.pedalsScale))
-  ui.dwriteTextAligned(string.format("%.2f", math.max(0, CAR.fuel)), fontContentBottom, ui.Alignment.Center, ui.Alignment.Start, vec2(50, 30):scale(pedalsSettings.store.pedalsScale), false, fuelColor)
+  setPositionContent(pedalsSettings.store.fuelPos, vec2(65, 20):scale(pedalsSettings.store.pedalsScale))
+
+  ui.setCursor(content[pedalsSettings.store.fuelPos][1] + vec2(22) * pedalsSettings.store.pedalsScale)
+  ui.dwriteTextAligned(string.format("%.2f", math.max(0, CAR.fuel)), fontContentBottom, ui.Alignment.Start, ui.Alignment.Center, vec2(50, 20):scale(pedalsSettings.store.pedalsScale), false, fuelColor)
   
-  local iconXOffset = (CAR.fuel >= 99.995) and 65 or ((CAR.fuel >= 9.995) and 59 or 56)
-  ui.setCursor(vec2(currentWindowWidth - iconXOffset * pedalsSettings.store.pedalsScale, currentWindowHeight - 18.5 * pedalsSettings.store.pedalsScale))
+  --local iconXOffset = (CAR.fuel >= 99.995) and 65 or ((CAR.fuel >= 9.995) and 59 or 56)
+  ui.setCursor(content[pedalsSettings.store.fuelPos][1] + vec2(4, 2.5):scale(pedalsSettings.store.pedalsScale))
   if CAR.fuel < 5.005 then
     if (4 * Timer) % 2 >= 1 then 
       ui.image("assets/Fuel.png", vec2(16, 15):scale(pedalsSettings.store.pedalsScale), fuelColor, ui.ImageFit.Fit)
@@ -518,6 +541,13 @@ function pedals.windowMain()
   barPaddingMidle = 2 * pedalsSettings.store.pedalsScale
 
   contentTop = 0
+  --ui.drawRectFilled(vec2(0,0), vec2(65,20):scale(pedalsSettings.store.pedalsScale), COLOR.GRAY_BG)
+  content = {
+    { vec2(0, 0), vec2(0, 0) }, -- SUPERIOR ESQUEDO
+    { vec2(currentWindowSize.x, 0), vec2(0, 0) }, -- SUPERIOR DIREITO
+    { vec2(0, currentWindowSize.y), vec2(0, 0)}, -- INFERIOR ESQUERDO
+    { vec2(currentWindowSize.x, currentWindowSize.y ), vec2(0, 0) } -- INFERIOR DIREITO
+  }
 
   if pedalsSettings.store.textBarsActive and contentMidle > 0 and (pedalsSettings.store.clutchActive or pedalsSettings.store.brakeActive or pedalsSettings.store.throttleActive or pedalsSettings.store.handbrakeActive) then contentTop = 10 end
   if pedalsSettings.store.rpmActive or pedalsSettings.store.tractionControlActive then contentTop = contentTop + 22 end
@@ -531,6 +561,10 @@ function pedals.windowMain()
   -- Desenha background principal
   ui.drawRectFilled(vec2(0, 0), currentWindowSize, WindowsColor, 10 * pedalsSettings.store.pedalsScale)
   -- Desenha componentes
+  if pedalsSettings.store.fuelActive then
+    contentBottom = 20 * pedalsSettings.store.pedalsScale
+    drawFuel()
+  end
 
   if pedalsSettings.store.gearActive then
     drawGear()
@@ -576,11 +610,6 @@ function pedals.windowMain()
   if pedalsSettings.store.brakeBiasActive then
     contentBottom = 20 * pedalsSettings.store.pedalsScale
     drawBrakeBias()
-  end
-
-  if pedalsSettings.store.fuelActive then
-    contentBottom = 20 * pedalsSettings.store.pedalsScale
-    drawFuel()
   end
 
   if pedalsSettings.store.rpmActive then 

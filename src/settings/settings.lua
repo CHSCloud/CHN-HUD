@@ -126,7 +126,7 @@ function settings.windowMain()
     ui.tabItem(language.get("MAP"), mapSettings.mapSettings)
   end)
 
-  local posResize = WindowSettingsSize - vec2(45,45)
+  local posResize = WindowSettingsSize - vec2(45,45) + vec2(0,ui.getScrollY())
   if config.isMouseInWindow(ui.mouseLocalPos(), posResize.x - 5, posResize.x + 25, posResize.y - 5, posResize.y + 25) then
     ui.setMouseCursor(ui.MouseCursor.Hand)  
     if ui.mouseClicked(ui.MouseButton.Left) then
