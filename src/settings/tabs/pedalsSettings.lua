@@ -29,6 +29,8 @@ local defaultValues = {
     pedalLimitsLines = true,
     rpmActive = true,
     wheelType = 1,
+
+    rpmPos = 5,
     rpmType = 1,
     rpmProcessType = 1,
     numLights = 9,
@@ -37,26 +39,43 @@ local defaultValues = {
 
 pedalsSettings.store = ac.storage(defaultValues)
 
-local positionsKeys = {}
-local positions = {
+local positionsKeysBorders = {}
+local positionsKeysCenter = {}
+
+local positionsBorders = {
     "TOP LEFT",
     "TOP RIGHT",
     "BOTTOM LEFT",
     "BOTTOM RIGHT"
 }
+local positionsCenters = {
+    [5] = "TOP CENTER",
+    [6] = "BOTTOM CENTER"
+}
+
 local function resetToDefault()
     for key, value in pairs(defaultValues) do
         pedalsSettings.store[key] = value
     end
 end
 
-local function invertPositionIfMath(oldPos, newPos, keyPos)
-    for key, value in pairs(positionsKeys) do
+local function invertPositionBorder(oldPos, newPos, keyPos)
+    for key, value in pairs(positionsKeysBorders) do
         if key ~= keyPos then
-            ui.text(key .. " - " .. tostring(value))
             if value == newPos then
                 pedalsSettings.store[key] = oldPos
-                positionsKeys[key] = oldPos
+                positionsKeysBorders[key] = oldPos
+            end
+        end
+    end
+end
+
+local function invertPositionCenter(oldPos, newPos, keyPos)
+    for key, value in pairs(positionsKeysCenter) do
+        if key ~= keyPos then
+            if value == newPos then
+                pedalsSettings.store[key] = oldPos
+                positionsKeysCenter[key] = oldPos
             end
         end
     end
@@ -65,10 +84,6 @@ end
 -- Desenha a seção de outros
 --- @param pos vec2
 local function drawOthers(pos)
-    positionsKeys = {
-        brakebiasPos = pedalsSettings.store.brakebiasPos,
-        fuelPos = pedalsSettings.store.fuelPos,
-    }
     ui.setCursor(vec2(pos.x - 5, pos.y))
     ui.header(language.get("OTHERS"))
   
@@ -78,9 +93,9 @@ local function drawOthers(pos)
     end
     if pedalsSettings.store.fuelActive then
         local old = pedalsSettings.store.fuelPos
-        pedalsSettings.store.fuelPos = droplist.main("##fuelPos", "", vec2(pos.x + 130, pos.y - 5), 150, pedalsSettings.store.fuelPos, positions, droplist.PosText.Start)
+        pedalsSettings.store.fuelPos = droplist.main("##fuelPos", "", vec2(pos.x + 130, pos.y - 5), 150, pedalsSettings.store.fuelPos, positionsBorders, droplist.PosText.Start)
         if pedalsSettings.store.fuelPos ~= old then
-            invertPositionIfMath(old, pedalsSettings.store.fuelPos, "fuelPos")
+            invertPositionBorder(old, pedalsSettings.store.fuelPos, "fuelPos")
         end
     end
     
@@ -90,9 +105,9 @@ local function drawOthers(pos)
     end
     if pedalsSettings.store.brakeBiasActive then
         local old = pedalsSettings.store.brakebiasPos
-        pedalsSettings.store.brakebiasPos = droplist.main("##brakebiasPos", "", vec2(pos.x + 200, pos.y), 150, pedalsSettings.store.brakebiasPos, positions, droplist.PosText.Start)
+        pedalsSettings.store.brakebiasPos = droplist.main("##brakebiasPos", "", vec2(pos.x + 200, pos.y), 150, pedalsSettings.store.brakebiasPos, positionsBorders, droplist.PosText.Start)
         if pedalsSettings.store.brakebiasPos ~= old then
-            invertPositionIfMath(old, pedalsSettings.store.brakebiasPos, "brakebiasPos")
+            invertPositionBorder(old, pedalsSettings.store.brakebiasPos, "brakebiasPos")
         end
     end
     pos.y = pos.y + 25; 
@@ -103,6 +118,7 @@ end
 
 -- Desenha a seção de RPM
 local function drawRPM(pos)
+    --pedalsSettings.store.rpmPos = 5
     local rpmLabels = {
         language.get("SHIFT_LIGHTS"),
         language.get("BAR")
@@ -124,6 +140,13 @@ local function drawRPM(pos)
 
         local exampleRPpedalsSettingsX = pos.x + 70   
         local exampleRPpedalsSettingsY = pos.y + 20
+
+        local old = pedalsSettings.store.rpmPos
+        pedalsSettings.store.rpmPos = droplist.main("##rpmPos", "", vec2(pos.x + 200, pos.y), 150, pedalsSettings.store.rpmPos, positionsCenters, droplist.PosText.Start)
+        --ac.log(tostring(pedalsSettings.store.rpmPos))
+        if pedalsSettings.store.rpmPos ~= old then
+            invertPositionCenter(old, pedalsSettings.store.rpmPos, "rpmPos")
+        end
         
         pos.y = pos.y + 30
 
@@ -133,7 +156,6 @@ local function drawRPM(pos)
 
             pos.y = pos.y + 40
             pedalsSettings.store.rpmProcessType = droplist.main("##progress", language.get("PROGRESS"), vec2(pos.x, pos.y), 100, pedalsSettings.store.rpmProcessType, processCircleType, droplist.PosText.Start)
-
             for i = 1, 9 do
                 local c1, c2, c3 = COLOR.GREEN, COLOR.GREEN, COLOR.GREEN
                 
@@ -172,6 +194,13 @@ local function drawRPM(pos)
 end
 
 function pedalsSettings.pedalsSettings()
+    positionsKeysBorders = {
+        brakebiasPos = pedalsSettings.store.brakebiasPos,
+        fuelPos = pedalsSettings.store.fuelPos
+    }
+    positionsKeysCenter = {
+        rpmPos = pedalsSettings.store.rpmPos
+    }
     local wheelLabels = {
         "Iracing",
         language.get("SIMPLE")
@@ -190,7 +219,6 @@ function pedalsSettings.pedalsSettings()
 
     -- DIREÇÃO
     initPos = initPos + 10
-    local initPos2 = initPos -- Salva posição para coluna da direita
     
     ui.setCursor(vec2(15, initPos))
     ui.header(language.get("STEERING"))

@@ -23,6 +23,7 @@ local rounding = 5
 --- @param posText? droplist.PosText @Default value: 0.
 --- @return number
 function droplist.main(id, text, pos, size, selected, items, posText)
+    local itemsLenght = table.nkeys(items)
     local color = COLOR.GRAY_BG
 
     -- Posição do texto
@@ -41,9 +42,8 @@ function droplist.main(id, text, pos, size, selected, items, posText)
             active[id] = false
         end
     end
-
     -- Se o mouse estiver fora da droplist
-    if not config.isMouseInWindow(ui.mouseLocalPos(), pos.x, pos.x + size, pos.y,  pos.y + (#items + 1) * height) then
+    if not config.isMouseInWindow(ui.mouseLocalPos(), pos.x, pos.x + size, pos.y,  pos.y + (itemsLenght + 1) * height) then
         active[id] = false
     end
     ui.setCursor(pos)
@@ -54,18 +54,20 @@ function droplist.main(id, text, pos, size, selected, items, posText)
         active[id] = true
         -- Desenha a droplist
         ui.setCursor(pos)
-        local item = ui.childWindow("##droplist", vec2(size, height * (#items + 1)), false, ui.WindowFlags.None + ui.WindowFlags.NoBackground, function()
-            ui.drawRectFilled(vec2(0,height), vec2(0,height) + vec2(size, height * (#items)), COLOR.GRAY_BG, rounding, ui.CornerFlags.Bottom)
-            for i = 1, #items do
+        local item = ui.childWindow("##droplist", vec2(size, height * (itemsLenght + 1)), false, ui.WindowFlags.None + ui.WindowFlags.NoBackground, function()
+            ui.drawRectFilled(vec2(0,height), vec2(0,height) + vec2(size, height * (itemsLenght)), COLOR.GRAY_BG, rounding, ui.CornerFlags.Bottom)
+            local i = 1
+            for key, value in pairs(items) do
                 if config.isMouseInWindow(ui.mouseLocalPos(), 0, size, i * height, (i + 1) * height) then
                     ui.drawRectFilled(vec2(padding, padding) + vec2(0, i * height), vec2(0,0) + vec2(0, i * height) + vec2(size - padding, height - padding), USER_UI.accentColor, rounding)
                     if ui.mouseClicked(ui.MouseButton.Left) then
                         active[id] = false
-                        return i
+                        return key
                     end
                 end
                 ui.setCursor(vec2(0,0) + vec2(10, i * height))
-                ui.dwriteTextAligned(items[i], 12, ui.Alignment.Start, ui.Alignment.Center, vec2(size, height), false, COLOR.WHITE) 
+                ui.dwriteTextAligned(value, 12, ui.Alignment.Start, ui.Alignment.Center, vec2(size, height), false, COLOR.WHITE) 
+                i = i + 1
             end
             return nil
         end)

@@ -40,25 +40,37 @@ local fontSpeed
 -- Conteúdo das posições das bordas
 local position = {vec2(), vec2()}
 
-local contentBorders = {
+local contentPositions = {
   position, -- SUPERIOR ESQUEDO
   position, -- SUPERIOR DIREITO
   position, -- INFERIOR ESQUERDO
-  position -- INFERIOR DIREITO
+  position, -- INFERIOR DIREITO
+  
+  position, -- SUPERIOR MEIO
+  position -- INFERIOR MEIO
 }
 
 --- @param pos number
 --- @param size vec2
-local function setPositionContent(pos, size)
-  if contentBorders[pos][1].x > 0 then
-    contentBorders[pos][1].x = contentBorders[pos][1].x - size.x
+local function setPositionContentBorder(pos, size)
+  if contentPositions[pos][1].x > 0 then
+    contentPositions[pos][1].x = contentPositions[pos][1].x - size.x
   end
 
-  if contentBorders[pos][1].y > 0 then
-    contentBorders[pos][1].y = contentBorders[pos][1].y - size.y
+  if contentPositions[pos][1].y > 0 then
+    contentPositions[pos][1].y = contentPositions[pos][1].y - size.y
   end
 
-  contentBorders[pos][2] = size
+  contentPositions[pos][2] = size
+end
+
+--- @param pos number
+--- @param size vec2
+local function setPositionContentCenter(pos, size)
+  if contentPositions[pos][1].y > 0 then
+    contentPositions[pos][1].y = contentPositions[pos][1].y - size.y
+  end
+  contentPositions[pos][2] = size
 end
 
 --Animação da Marcha
@@ -123,12 +135,16 @@ local function drawSpeed()
 end
 
 -- Desenha texto da barra
-local function drawBarText(value, color)
+--- @param value number
+--- @param color rgbm
+--- @param posBar vec2
+local function drawBarText(value, color, posBar)
   contentMidle = 73 * pedalsSettings.store.pedalsScale
   if value < 98.99 then
+    ui.setCursor(vec2(currentWindowWidth, posBar.y - 17 * pedalsSettings.store.pedalsScale))
     ui.dwriteTextAligned(string.format("%.0f", value), fontBar, ui.Alignment.Center, ui.Alignment.Start, vec2(20, 30):scale(pedalsSettings.store.pedalsScale), false, COLOR.WHITE)
   else 
-    ui.setCursor(vec2(currentWindowWidth, posyInfiniteBars))
+    ui.setCursor(vec2(currentWindowWidth, posBar.y - 25 * pedalsSettings.store.pedalsScale))
     ui.dwriteTextAligned("∞", fontBarInfinite, ui.Alignment.Center, ui.Alignment.Start, vec2(20, 30):scale(pedalsSettings.store.pedalsScale), false, color)
   end
 end
@@ -201,9 +217,6 @@ end
 
 -- Desenha rpm
 local function drawRpm()
-  if (currentWindowWidth < 75 * pedalsSettings.store.pedalsScale) then
-    currentWindowWidth = 75 * pedalsSettings.store.pedalsScale
-  end
   local rpmStart = CAR.rpmLimiter * 0.80
   local rpmFinal = CAR.rpmLimiter * 0.98
   local rpmRange =  rpmFinal - rpmStart
@@ -211,16 +224,40 @@ local function drawRpm()
   if pedalsSettings.store.rpmType == 1 then
     local area = 0
     local spaceCircles
-    local space = currentWindowWidth * 0.95 - contentBorders[1][2].x - contentBorders[2][2].x
-    area = space / currentWindowWidth
-    ui.text(tostring(area))
-    spaceCircles = math.min((currentWindowWidth * area) / (pedalsSettings.store.numLights * pedalsSettings.store.pedalsScale), 18)
+    local space
     local center
-    if space == currentWindowWidth * 0.95 then
-      center = currentWindowWidth / 2
-    else 
-      center = contentBorders[1][2].x + (currentWindowWidth - contentBorders[1][2].x - contentBorders[2][2].x) / 2
+    local posY
+    if pedalsSettings.store.rpmPos == 5 then
+      space = currentWindowWidth * 0.95 - contentPositions[1][2].x - contentPositions[2][2].x
+      if space < 75 * pedalsSettings.store.pedalsScale then
+        currentWindowWidth = currentWindowWidth + (75 * pedalsSettings.store.pedalsScale - space)
+        space = currentWindowWidth * 0.95 - contentPositions[1][2].x - contentPositions[2][2].x
+      end
+
+      if space == currentWindowWidth * 0.95 then
+        center = currentWindowWidth / 2
+      else 
+        center = contentPositions[1][2].x + (currentWindowWidth - contentPositions[1][2].x - contentPositions[2][2].x) / 2
+      end
+      posY = contentPositions[pedalsSettings.store.rpmPos][1].y + 10 * pedalsSettings.store.pedalsScale
+    else
+      space = currentWindowWidth * 0.95 - contentPositions[3][2].x - contentPositions[4][2].x
+      if space < 75 * pedalsSettings.store.pedalsScale then
+        currentWindowWidth = currentWindowWidth + (75 * pedalsSettings.store.pedalsScale - space)
+        space = currentWindowWidth * 0.95 - contentPositions[3][2].x - contentPositions[4][2].x
+      end
+      if space == currentWindowWidth * 0.95 then
+        center = currentWindowWidth / 2
+      else 
+        center = contentPositions[3][2].x + (currentWindowWidth - contentPositions[3][2].x - contentPositions[4][2].x) / 2
+      end
+      posY = contentPositions[pedalsSettings.store.rpmPos][1].y - 10 * pedalsSettings.store.pedalsScale
     end
+    
+    area = space / currentWindowWidth
+    spaceCircles = math.min((currentWindowWidth * area) / (pedalsSettings.store.numLights * pedalsSettings.store.pedalsScale), 18)
+    setPositionContentCenter(pedalsSettings.store.rpmPos, vec2(space, 20 * pedalsSettings.store.pedalsScale))
+    
     local initPos = center - (((pedalsSettings.store.numLights - 1) * spaceCircles) / 2) * pedalsSettings.store.pedalsScale
     local level = 0
     if CAR.rpm >= rpmStart then
@@ -243,7 +280,7 @@ local function drawRpm()
         elseif i >= pedalsSettings.store.numLights * 0.45 then
           color = COLOR.YELLOW
         end
-        ui.drawCircleFilled(vec2(initPos, 11 * pedalsSettings.store.pedalsScale), (spaceCircles * 0.45) * pedalsSettings.store.pedalsScale, color, 20 * pedalsSettings.store.pedalsScale)
+        ui.drawCircleFilled(vec2(initPos, posY), (spaceCircles * 0.45) * pedalsSettings.store.pedalsScale, color, 20 * pedalsSettings.store.pedalsScale)
         initPos = initPos + spaceCircles * pedalsSettings.store.pedalsScale
       end
     elseif pedalsSettings.store.rpmProcessType == 2 then
@@ -266,29 +303,44 @@ local function drawRpm()
         if i > level then
           color = COLOR.GRAY_BG
         end
-        ui.drawCircleFilled(vec2(initPos, 11 * pedalsSettings.store.pedalsScale), (spaceCircles * 0.45) * pedalsSettings.store.pedalsScale, color, 20 * pedalsSettings.store.pedalsScale)
+        ui.drawCircleFilled(vec2(initPos, posY), (spaceCircles * 0.45) * pedalsSettings.store.pedalsScale, color, 20 * pedalsSettings.store.pedalsScale)
         initPos = initPos + spaceCircles * pedalsSettings.store.pedalsScale
       end
     end
   elseif pedalsSettings.store.rpmType == 2 then
     local width
-    local initPos
-    if pedalsSettings.store.tractionControlActive then
-      width = (currentWindowWidth - 20 * pedalsSettings.store.pedalsScale) * pedalsSettings.store.barLength
-      initPos = ((currentWindowWidth - 20 * pedalsSettings.store.pedalsScale) / 2) - (width / 2)
+    local initPosX
+    local center
+    local initPosY
+    
+    if pedalsSettings.store.rpmPos == 5 then
+      width = currentWindowWidth * 0.95 - contentPositions[1][2].x - contentPositions[2][2].x
+      if width < 75 * pedalsSettings.store.pedalsScale then
+        currentWindowWidth = currentWindowWidth + (75 * pedalsSettings.store.pedalsScale - width)
+        width = 75 * pedalsSettings.store.pedalsScale
+      end
+      center = contentPositions[1][2].x + (currentWindowWidth - contentPositions[1][2].x - contentPositions[2][2].x) / 2
+      setPositionContentCenter(pedalsSettings.store.rpmPos, vec2(width, 20 * pedalsSettings.store.pedalsScale))
+      initPosY = contentPositions[1][1].y + 4 * pedalsSettings.store.pedalsScale
     else
-      width = currentWindowWidth * pedalsSettings.store.barLength
-      initPos = (currentWindowWidth / 2) - (width / 2)
+      width = currentWindowWidth * 0.95 - contentPositions[3][2].x - contentPositions[4][2].x
+      if width < 75 * pedalsSettings.store.pedalsScale then
+        currentWindowWidth = currentWindowWidth + (75 * pedalsSettings.store.pedalsScale - width)
+        width = 75 * pedalsSettings.store.pedalsScale
+      end
+      center = contentPositions[3][2].x + (currentWindowWidth - contentPositions[3][2].x - contentPositions[4][2].x) / 2
+      setPositionContentCenter(pedalsSettings.store.rpmPos, vec2(width, 20 * pedalsSettings.store.pedalsScale))
+      initPosY = contentPositions[pedalsSettings.store.rpmPos][1].y + 2 * pedalsSettings.store.pedalsScale
     end
-    local barHeight = 18 * pedalsSettings.store.pedalsScale
-    ui.drawRectFilled(vec2(initPos, 4 * pedalsSettings.store.pedalsScale), vec2(initPos + width, barHeight), COLOR.GRAY_BG, 10 * pedalsSettings.store.pedalsScale)
-
+    local barHeight = 14 * pedalsSettings.store.pedalsScale
+    initPosX = center - (width / 2)
+    ui.drawRectFilled(vec2(initPosX, initPosY), vec2(initPosX + width, initPosY +barHeight), COLOR.GRAY_BG, 10 * pedalsSettings.store.pedalsScale)
     if CAR.rpm >= rpmStart then
-      local lenght = initPos + ((width * (CAR.rpm - rpmStart)) / rpmRange)
+      local lenght = initPosX + ((width * (CAR.rpm - rpmStart)) / rpmRange)
       local color = COLOR.GREEN
 
       if (CAR.rpm >= rpmFinal) then
-        lenght = initPos + width
+        lenght = initPosX + width
         if (8 * Timer) % 2 >= 1 then 
             color = COLOR.GRAY_BG
         else 
@@ -302,7 +354,7 @@ local function drawRpm()
         color = COLOR.YELLOW
       end
 
-      ui.drawRectFilled(vec2(initPos, 4 * pedalsSettings.store.pedalsScale), vec2(lenght, barHeight), color, 10 * pedalsSettings.store.pedalsScale)
+      ui.drawRectFilled(vec2(initPosX, initPosY), vec2(lenght, initPosY + barHeight), color, 10 * pedalsSettings.store.pedalsScale)
     end 
   end
 end 
@@ -314,8 +366,7 @@ local function drawClutch()
   local posBar = vec2(currentWindowWidth, 6 * pedalsSettings.store.pedalsScale + contentTop)
   
   if pedalsSettings.store.textBarsActive then
-    ui.setCursor(vec2(currentWindowWidth, posyTextBars))
-    drawBarText(100 - CAR.clutch * 100, COLOR.BLUE)
+    drawBarText(100 - CAR.clutch * 100, COLOR.BLUE, posBar)
   end
   
   if pedalsSettings.store.pedalLimitsLines then
@@ -333,8 +384,7 @@ local function drawBrake()
   local posBar = vec2(currentWindowWidth, 6 * pedalsSettings.store.pedalsScale + contentTop)
   
   if pedalsSettings.store.textBarsActive then
-    ui.setCursor(vec2(currentWindowWidth, posyTextBars))
-    drawBarText(CAR.brake * 100, COLOR.RED_DARK)
+    drawBarText(CAR.brake * 100, COLOR.RED_DARK, posBar)
   end
   
   if pedalsSettings.store.pedalLimitsLines then
@@ -353,8 +403,7 @@ local function drawAccelerator()
   local posBar = vec2(currentWindowWidth, 6 * pedalsSettings.store.pedalsScale + contentTop)
   
   if pedalsSettings.store.textBarsActive then
-    ui.setCursor(vec2(currentWindowWidth, posyTextBars))
-    drawBarText(CAR.gas * 100, COLOR.GREEN)
+    drawBarText(CAR.gas * 100, COLOR.GREEN, posBar)
   end
   
   if pedalsSettings.store.pedalLimitsLines then
@@ -372,13 +421,7 @@ local function drawHandbrake()
   local posBar = vec2(currentWindowWidth, 6 * pedalsSettings.store.pedalsScale + contentTop)
   
   if pedalsSettings.store.textBarsActive then
-    ui.setCursor(vec2(currentWindowWidth, posyTextBars))
-    if CAR.handbrake < 1 then
-      ui.dwriteTextAligned(string.format("%.0f", CAR.handbrake * 100), fontBar, ui.Alignment.Center, ui.Alignment.Start, vec2(20, 30):scale(pedalsSettings.store.pedalsScale), false, COLOR.WHITE)
-    else 
-      ui.setCursor(vec2(currentWindowWidth, posyInfiniteBars))
-      ui.dwriteTextAligned("∞", fontBarInfinite, ui.Alignment.Center, ui.Alignment.Start, vec2(20, 30):scale(pedalsSettings.store.pedalsScale), false, COLOR.YELLOW)
-    end
+    drawBarText(CAR.handbrake * 100, COLOR.YELLOW, posBar)
   end
   
   if pedalsSettings.store.pedalLimitsLines then
@@ -452,14 +495,14 @@ local function drawBrakeBias()
     currentWindowWidth = currentWindowWidth + (60 * pedalsSettings.store.pedalsScale - currentWindowWidth)
   end
   
-  setPositionContent(pedalsSettings.store.brakebiasPos, vec2(56, 20):scale(pedalsSettings.store.pedalsScale))
+  setPositionContentBorder(pedalsSettings.store.brakebiasPos, vec2(56, 20):scale(pedalsSettings.store.pedalsScale))
 
-  ui.drawRectFilled(contentBorders[pedalsSettings.store.brakebiasPos][1], contentBorders[pedalsSettings.store.brakebiasPos][1] + vec2(56, 20):scale(pedalsSettings.store.pedalsScale), COLOR.BLUE)
+  --ui.drawRectFilled(contentPositions[pedalsSettings.store.brakebiasPos][1], contentPositions[pedalsSettings.store.brakebiasPos][1] + vec2(56, 20):scale(pedalsSettings.store.pedalsScale), COLOR.BLUE)
 
-  ui.setCursor(contentBorders[pedalsSettings.store.brakebiasPos][1] + vec2(25) * pedalsSettings.store.pedalsScale)
+  ui.setCursor(contentPositions[pedalsSettings.store.brakebiasPos][1] + vec2(25) * pedalsSettings.store.pedalsScale)
   ui.dwriteTextAligned(string.format("%.1f", CAR.brakeBias * 100), fontContentBottom, ui.Alignment.Start, ui.Alignment.Center, vec2(30, 20):scale(pedalsSettings.store.pedalsScale), false, COLOR.WHITE)
   
-  ui.setCursor(contentBorders[pedalsSettings.store.brakebiasPos][1] + vec2(4,2) * pedalsSettings.store.pedalsScale)
+  ui.setCursor(contentPositions[pedalsSettings.store.brakebiasPos][1] + vec2(4,2) * pedalsSettings.store.pedalsScale)
   ui.image("assets/BrakeBias.png", vec2(16, 16):scale(pedalsSettings.store.pedalsScale), ui.ImageFit.Fit)
 end
 
@@ -513,13 +556,13 @@ local function drawFuel()
     xOffset = 51
   end
 
-  setPositionContent(pedalsSettings.store.fuelPos, vec2(65, 20):scale(pedalsSettings.store.pedalsScale))
-  ui.drawRectFilled(contentBorders[pedalsSettings.store.fuelPos][1], contentBorders[pedalsSettings.store.fuelPos][1] + vec2(65, 20):scale(pedalsSettings.store.pedalsScale), COLOR.BLUE)
-  ui.setCursor(contentBorders[pedalsSettings.store.fuelPos][1] + vec2(22) * pedalsSettings.store.pedalsScale)
+  setPositionContentBorder(pedalsSettings.store.fuelPos, vec2(65, 20):scale(pedalsSettings.store.pedalsScale))
+  --ui.drawRectFilled(contentPositions[pedalsSettings.store.fuelPos][1], contentPositions[pedalsSettings.store.fuelPos][1] + vec2(65, 20):scale(pedalsSettings.store.pedalsScale), COLOR.BLUE)
+  ui.setCursor(contentPositions[pedalsSettings.store.fuelPos][1] + vec2(22) * pedalsSettings.store.pedalsScale)
   ui.dwriteTextAligned(string.format("%.2f", math.max(0, CAR.fuel)), fontContentBottom, ui.Alignment.Start, ui.Alignment.Center, vec2(50, 20):scale(pedalsSettings.store.pedalsScale), false, fuelColor)
   
   --local iconXOffset = (CAR.fuel >= 99.995) and 65 or ((CAR.fuel >= 9.995) and 59 or 56)
-  ui.setCursor(contentBorders[pedalsSettings.store.fuelPos][1] + vec2(4, 2.5):scale(pedalsSettings.store.pedalsScale))
+  ui.setCursor(contentPositions[pedalsSettings.store.fuelPos][1] + vec2(4, 2.5):scale(pedalsSettings.store.pedalsScale))
   if CAR.fuel < 5.005 then
     if (4 * Timer) % 2 >= 1 then 
       ui.image("assets/Fuel.png", vec2(16, 16):scale(pedalsSettings.store.pedalsScale), fuelColor, ui.ImageFit.Fit)
@@ -536,25 +579,25 @@ function pedals.windowMain()
   fontBarInfinite = 25 * pedalsSettings.store.pedalsScale
   fontContentBottom = 13 * pedalsSettings.store.pedalsScale
 
-  posyTextBars = -2 * pedalsSettings.store.pedalsScale
-  posyInfiniteBars = -11 * pedalsSettings.store.pedalsScale
-
   barSize = vec2(20, 60) * pedalsSettings.store.pedalsScale
   barSpace = 4 * pedalsSettings.store.pedalsScale
   barLimitSize = vec2(20, 6) * pedalsSettings.store.pedalsScale
   barMidleSize = vec2(20, 44) * pedalsSettings.store.pedalsScale
   barPaddingMidle = 2 * pedalsSettings.store.pedalsScale
   --ui.drawRectFilled(vec2(0,0), vec2(65,20):scale(pedalsSettings.store.pedalsScale), COLOR.GRAY_BG)
-  contentBorders = {
+  contentPositions = {
     { vec2(0, 0), vec2(0, 0) }, -- SUPERIOR ESQUEDO
     { vec2(currentWindowSize.x, 0), vec2(0, 0) }, -- SUPERIOR DIREITO
     { vec2(0, currentWindowSize.y), vec2(0, 0)}, -- INFERIOR ESQUERDO
-    { vec2(currentWindowSize.x, currentWindowSize.y ), vec2(0, 0) } -- INFERIOR DIREITO
+    { vec2(currentWindowSize.x, currentWindowSize.y ), vec2(0, 0) }, -- INFERIOR DIREITO
+    { vec2(currentWindowSize.x / 2, 0), vec2(0, 0) }, -- SUPERIOR MEIO
+    { vec2(currentWindowSize.x / 2, currentWindowSize.y), vec2(0, 0) }, -- INFERIOR MEIO
   }
 
-  if pedalsSettings.store.textBarsActive and contentMidle > 0 and (pedalsSettings.store.clutchActive or pedalsSettings.store.brakeActive or pedalsSettings.store.throttleActive or pedalsSettings.store.handbrakeActive) then 
-      posyTextBars = 6 * pedalsSettings.store.pedalsScale
-      posyInfiniteBars = -3 * pedalsSettings.store.pedalsScale
+  if pedalsSettings.store.textBarsActive and 
+    contentMidle > 0 and 
+    (pedalsSettings.store.clutchActive or pedalsSettings.store.brakeActive or pedalsSettings.store.throttleActive or pedalsSettings.store.handbrakeActive) then
+      contentTop = contentTop + 8 * pedalsSettings.store.pedalsScale
   end
   --if pedalsSettings.store.rpmActive or pedalsSettings.store.tractionControlActive then contentTop = contentTop + 22 end
 
@@ -564,9 +607,9 @@ function pedals.windowMain()
   
   -- Desenha background principal
   ui.drawRectFilled(vec2(0, 0), currentWindowSize, WindowsColor, 10 * pedalsSettings.store.pedalsScale)
+
   -- Desenha componentes
   if pedalsSettings.store.fuelActive then
-    --contentBottom = 20 * pedalsSettings.store.pedalsScale
     drawFuel()
   end
 
@@ -607,10 +650,12 @@ function pedals.windowMain()
   if pedalsSettings.store.absActive and CAR.absModes ~= 0 then
     drawABS()
   end
+
   if pedalsSettings.store.p2pActive then
     contentBottom = 20 * pedalsSettings.store.pedalsScale
     drawBattery()
   end
+
   if pedalsSettings.store.brakeBiasActive then
     --contentBottom = 20 * pedalsSettings.store.pedalsScale
     drawBrakeBias()
@@ -624,16 +669,16 @@ function pedals.windowMain()
     drawTC()
   end
 
-  if contentBorders[3][2] ~= vec2(0, 0) or contentBorders[4][2] ~= vec2(0, 0) then
-    contentBottom = math.max(contentBorders[3][2].y, contentBorders[4][2].y)
-  else
-    contentBottom = 0 
-  end
-
-  if contentBorders[1][2] ~= vec2(0, 0) or contentBorders[2][2] ~= vec2(0, 0) then
-    contentTop = math.max(contentBorders[1][2].y, contentBorders[2][2].y)
+  if contentPositions[1][2] ~= vec2(0, 0) or contentPositions[2][2] ~= vec2(0, 0) or contentPositions[5][2] ~= vec2(0, 0) then
+    contentTop = math.max(contentPositions[1][2].y, contentPositions[2][2].y, contentPositions[5][2].y)
   else
     contentTop = 0 
+  end
+
+  if contentPositions[3][2] ~= vec2(0, 0) or contentPositions[4][2] ~= vec2(0, 0) or contentPositions[6][2] ~= vec2(0, 0) then
+    contentBottom = math.max(contentPositions[3][2].y, contentPositions[4][2].y, contentPositions[6][2].y)
+  else
+    contentBottom = 0 
   end
   --
   currentWindowSize = vec2(currentWindowWidth, currentWindowHeight)
