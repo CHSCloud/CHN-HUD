@@ -38,7 +38,10 @@ local gearBackgroundWidth
 local fontSpeed
 
 -- Conteúdo das posições das bordas
-local position = {vec2(), vec2()}
+local position = {
+  vec2(), -- Posição
+  vec2() -- Tamanho
+}
 
 local contentPositions = {
   position, -- SUPERIOR ESQUEDO
@@ -508,12 +511,19 @@ end
 
 -- Desenha a bateria
 local oldKersCharge = 0
-local function drawBattery()
+local function drawP2p()
   if currentWindowWidth < 200 * pedalsSettings.store.pedalsScale then
     currentWindowWidth = 200 * pedalsSettings.store.pedalsScale
   end
   local size = vec2(currentWindowWidth - 120 * pedalsSettings.store.pedalsScale, 10 * pedalsSettings.store.pedalsScale)
-  local pos = vec2(currentWindowWidth / 2 - size.x / 2, currentWindowHeight - 15 * pedalsSettings.store.pedalsScale)
+  setPositionContentCenter(pedalsSettings.store.p2pPos, size)
+  local pos = contentPositions[pedalsSettings.store.p2pPos][1] - vec2(size.x / 2, 0)
+
+  if pedalsSettings.store.p2pPos == 5 then
+    pos.y = pos.y + 5 * pedalsSettings.store.pedalsScale
+  else
+    pos.y = pos.y - 5 * pedalsSettings.store.pedalsScale
+  end
 
   ui.drawRectFilled(pos, pos + size, COLOR.GRAY_BG, 10 * pedalsSettings.store.pedalsScale)
 
@@ -528,7 +538,7 @@ local function drawBattery()
   end
 
   ui.drawRectFilled(pos, pos + vec2(size.x * CAR.kersCharge, size.y), color, 10 * pedalsSettings.store.pedalsScale)
-  ui.setCursor(vec2(currentWindowWidth / 2 - size.x / 2, currentWindowHeight - 15 * pedalsSettings.store.pedalsScale))
+  ui.setCursor(pos)
   ui.dwriteTextAligned(string.format("%.0f%%", CAR.kersCharge * 100), 10 * pedalsSettings.store.pedalsScale, ui.Alignment.Center, ui.Alignment.Center, vec2(size.x, size.y), false, COLOR.WHITE)
   oldKersCharge = CAR.kersCharge
 end
@@ -540,7 +550,7 @@ local function drawFuel()
     currentWindowWidth = 120 * pedalsSettings.store.pedalsScale
   end
   if (currentWindowWidth < 68 * pedalsSettings.store.pedalsScale) then
-    currentWindowWidth = currentWindowWidth + (68 * pedalsSettings.store.pedalsScale - currentWindowWidth)
+    currentWindowWidth = 68 * pedalsSettings.store.pedalsScale
   end
   
   local fuelColor = COLOR.WHITE
@@ -609,9 +619,6 @@ function pedals.windowMain()
   ui.drawRectFilled(vec2(0, 0), currentWindowSize, WindowsColor, 10 * pedalsSettings.store.pedalsScale)
 
   -- Desenha componentes
-  if pedalsSettings.store.fuelActive then
-    drawFuel()
-  end
 
   if pedalsSettings.store.gearActive then
     drawGear()
@@ -653,12 +660,16 @@ function pedals.windowMain()
 
   if pedalsSettings.store.p2pActive then
     contentBottom = 20 * pedalsSettings.store.pedalsScale
-    drawBattery()
+    drawP2p()
   end
 
   if pedalsSettings.store.brakeBiasActive then
     --contentBottom = 20 * pedalsSettings.store.pedalsScale
     drawBrakeBias()
+  end
+  
+  if pedalsSettings.store.fuelActive then
+    drawFuel()
   end
 
   if pedalsSettings.store.rpmActive then 

@@ -19,6 +19,8 @@ local defaultValues = {
     brakebiasPos = 3,
 
     p2pActive = false,
+    p2pPos = 6,
+
     clutchActive = true,
     handbrakeActive = false,
     textBarsActive = false,
@@ -93,26 +95,34 @@ local function drawOthers(pos)
     end
     if pedalsSettings.store.fuelActive then
         local old = pedalsSettings.store.fuelPos
-        pedalsSettings.store.fuelPos = droplist.main("##fuelPos", "", vec2(pos.x + 130, pos.y - 5), 150, pedalsSettings.store.fuelPos, positionsBorders, droplist.PosText.Start)
+        pedalsSettings.store.fuelPos = droplist.main("##fuelPos", "", vec2(pos.x + 130, pos.y - 2), 150, pedalsSettings.store.fuelPos, positionsBorders, droplist.PosText.Start)
         if pedalsSettings.store.fuelPos ~= old then
             invertPositionBorder(old, pedalsSettings.store.fuelPos, "fuelPos")
         end
     end
     
-    pos.y = pos.y + 25; 
+    pos.y = pos.y + 30; 
     if toggleButton.main("brakeBias", vec2(pos.x, pos.y), pedalsSettings.store.brakeBiasActive, language.get("BRAKE_BIAS")) then
         pedalsSettings.store.brakeBiasActive = not pedalsSettings.store.brakeBiasActive
     end
     if pedalsSettings.store.brakeBiasActive then
         local old = pedalsSettings.store.brakebiasPos
-        pedalsSettings.store.brakebiasPos = droplist.main("##brakebiasPos", "", vec2(pos.x + 200, pos.y), 150, pedalsSettings.store.brakebiasPos, positionsBorders, droplist.PosText.Start)
+        pedalsSettings.store.brakebiasPos = droplist.main("##brakebiasPos", "", vec2(pos.x + 200, pos.y - 2), 150, pedalsSettings.store.brakebiasPos, positionsBorders, droplist.PosText.Start)
         if pedalsSettings.store.brakebiasPos ~= old then
             invertPositionBorder(old, pedalsSettings.store.brakebiasPos, "brakebiasPos")
         end
     end
-    pos.y = pos.y + 25; 
+    pos.y = pos.y + 30; 
     if toggleButton.main("battery", vec2(pos.x, pos.y), pedalsSettings.store.p2pActive, "P2P") then
         pedalsSettings.store.p2pActive = not pedalsSettings.store.p2pActive
+    end
+    if pedalsSettings.store.p2pActive then
+        local old = pedalsSettings.store.p2pPos
+        pedalsSettings.store.p2pPos = droplist.main("##p2pPos", "", vec2(pos.x + 70, pos.y - 2), 150, pedalsSettings.store.p2pPos, positionsCenters, droplist.PosText.Start)
+        --ac.log(tostring(pedalsSettings.store.p2pPos))
+        if pedalsSettings.store.p2pPos ~= old then
+            invertPositionCenter(old, pedalsSettings.store.p2pPos, "p2pPos")
+        end
     end
 end
 
