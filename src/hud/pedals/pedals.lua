@@ -512,9 +512,6 @@ end
 -- Desenha a bateria
 local oldKersCharge = 0
 local function drawP2p()
-  if currentWindowWidth < 100 * pedalsSettings.store.pedalsScale then
-    currentWindowWidth = 100 * pedalsSettings.store.pedalsScale
-  end
   local size = vec2(80 * pedalsSettings.store.pedalsScale, 10 * pedalsSettings.store.pedalsScale)
   setPositionContentCenter(pedalsSettings.store.p2pPos, size)
   local pos = vec2()
