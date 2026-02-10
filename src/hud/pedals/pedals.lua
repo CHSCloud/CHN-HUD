@@ -512,16 +512,32 @@ end
 -- Desenha a bateria
 local oldKersCharge = 0
 local function drawP2p()
-  if currentWindowWidth < 200 * pedalsSettings.store.pedalsScale then
-    currentWindowWidth = 200 * pedalsSettings.store.pedalsScale
+  if currentWindowWidth < 100 * pedalsSettings.store.pedalsScale then
+    currentWindowWidth = 100 * pedalsSettings.store.pedalsScale
   end
-  local size = vec2(currentWindowWidth - 120 * pedalsSettings.store.pedalsScale, 10 * pedalsSettings.store.pedalsScale)
+  local size = vec2(80 * pedalsSettings.store.pedalsScale, 10 * pedalsSettings.store.pedalsScale)
   setPositionContentCenter(pedalsSettings.store.p2pPos, size)
-  local pos = contentPositions[pedalsSettings.store.p2pPos][1] - vec2(size.x / 2, 0)
-
+  local pos = vec2()
+  pos.y = contentPositions[pedalsSettings.store.p2pPos][1].y
+  local space
+  local center
   if pedalsSettings.store.p2pPos == 5 then
+    space = currentWindowWidth - contentPositions[1][2].x - contentPositions[2][2].x
+    if space < 90 * pedalsSettings.store.pedalsScale then
+      currentWindowWidth = currentWindowWidth + (90 * pedalsSettings.store.pedalsScale - space)
+      space = currentWindowWidth - contentPositions[1][2].x - contentPositions[2][2].x
+    end
+    center = contentPositions[1][2].x + (space) / 2
+    pos.x = center - (size.x / 2)
     pos.y = pos.y + 5 * pedalsSettings.store.pedalsScale
   else
+    space = currentWindowWidth - contentPositions[3][2].x - contentPositions[4][2].x
+        if space < 90 * pedalsSettings.store.pedalsScale then
+      currentWindowWidth = currentWindowWidth + (90 * pedalsSettings.store.pedalsScale - space)
+      space = currentWindowWidth - contentPositions[3][2].x - contentPositions[4][2].x
+    end
+    center = contentPositions[3][2].x + (space) / 2
+    pos.x = center - (size.x / 2)
     pos.y = pos.y - 5 * pedalsSettings.store.pedalsScale
   end
 
@@ -658,11 +674,6 @@ function pedals.windowMain()
     drawABS()
   end
 
-  if pedalsSettings.store.p2pActive then
-    contentBottom = 20 * pedalsSettings.store.pedalsScale
-    drawP2p()
-  end
-
   if pedalsSettings.store.brakeBiasActive then
     --contentBottom = 20 * pedalsSettings.store.pedalsScale
     drawBrakeBias()
@@ -674,6 +685,9 @@ function pedals.windowMain()
 
   if pedalsSettings.store.rpmActive then 
     drawRpm()
+  end
+  if pedalsSettings.store.p2pActive then
+    drawP2p()
   end
 
   if pedalsSettings.store.tractionControlActive and CAR.tractionControlModes ~= 0 then

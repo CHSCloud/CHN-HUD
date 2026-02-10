@@ -44,8 +44,8 @@ local defaultValuesPlayers = {
     colorExternalEnemies = rgbm.from0255(0, 0, 0, 1),
     colorExternalFocusedCar = rgbm.from0255(0, 0, 0, 1),
 
-    focusedCarLenght = 6,
-    enemiesLenght = 5
+    focusedCarLenght = 10,
+    enemiesLenght = 10
 }  
 
 config.copyTable(defaultValuesTrack, defaultValues)

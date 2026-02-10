@@ -282,7 +282,7 @@ end
 -- Aumamenta janela com base no retângulo do texto
 --- @param initRect vec2 -- Coordenadas iniciais
 --- @param finalRect vec2 -- Coordenadas finais
-local function resizeWithText(initRect, finalRect) 
+local function resizeWithText(initRect, finalRect)
     if initRect.x < 0 and math.abs(initRect.x) > offset.x then
         currentWindowSize.x = currentWindowSize.x - offset.x +  math.abs(initRect.x)
         offset.x = math.abs(initRect.x)

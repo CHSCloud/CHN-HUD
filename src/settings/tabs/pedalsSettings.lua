@@ -119,7 +119,7 @@ local function drawOthers(pos)
     if pedalsSettings.store.p2pActive then
         local old = pedalsSettings.store.p2pPos
         pedalsSettings.store.p2pPos = droplist.main("##p2pPos", "", vec2(pos.x + 70, pos.y - 2), 150, pedalsSettings.store.p2pPos, positionsCenters, droplist.PosText.Start)
-        --ac.log(tostring(pedalsSettings.store.p2pPos))
+        ac.log(tostring(pedalsSettings.store.p2pPos))
         if pedalsSettings.store.p2pPos ~= old then
             invertPositionCenter(old, pedalsSettings.store.p2pPos, "p2pPos")
         end
@@ -153,7 +153,7 @@ local function drawRPM(pos)
 
         local old = pedalsSettings.store.rpmPos
         pedalsSettings.store.rpmPos = droplist.main("##rpmPos", "", vec2(pos.x + 200, pos.y), 150, pedalsSettings.store.rpmPos, positionsCenters, droplist.PosText.Start)
-        --ac.log(tostring(pedalsSettings.store.rpmPos))
+        ac.log(tostring(pedalsSettings.store.rpmPos))
         if pedalsSettings.store.rpmPos ~= old then
             invertPositionCenter(old, pedalsSettings.store.rpmPos, "rpmPos")
         end
@@ -209,7 +209,8 @@ function pedalsSettings.pedalsSettings()
         fuelPos = pedalsSettings.store.fuelPos
     }
     positionsKeysCenter = {
-        rpmPos = pedalsSettings.store.rpmPos
+        rpmPos = pedalsSettings.store.rpmPos,
+        p2pPos = pedalsSettings.store.p2pPos
     }
     local wheelLabels = {
         "Iracing",
