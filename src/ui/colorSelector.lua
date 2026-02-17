@@ -14,7 +14,7 @@ function colorSelector.main(text, color, pos, id)
         ui.colorButton('##'..text, color, ui.ColorPickerFlags.AlphaBar + ui.ColorPickerFlags.AlphaPreview + ui.ColorPickerFlags.PickerHueBar)
     end
     ui.setCursor(vec2(pos.x + 27, pos.y + 5))
-    ui.dwriteText(text, 10, COLOR.WHITE)
+    ui.dwriteText(text, 11, COLOR.WHITE)
     return color
 end
 

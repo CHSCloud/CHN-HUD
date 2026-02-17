@@ -35,7 +35,9 @@ local defaultValuesSections = {
     resetSectionsINI = false,
     trackSectionsEdited = false,
     sectionsType = 1,
-    sectionsLenght = 7
+    sectionsLenght = 7,
+    sectionsBgColor = rgbm.from0255(0, 0, 0, 1),
+    sectionsTextColor = rgbm.from0255(255, 255, 255, 1)
 }
 
 local defaultValuesPlayers = {
@@ -65,8 +67,12 @@ end
 
 local function resetToDefaultSections()
     for key, value in pairs(defaultValuesSections) do
-        mapSettings.store[key] = value
+        if key ~= "sectionsTrackActive" then 
+            mapSettings.store[key] = value
+        end
     end
+    mapSettings.store.sectionsBgColor = rgbm.from0255(0, 0, 0, 1)
+    mapSettings.store.sectionsTextColor = rgbm.from0255(255, 255, 255, 1)
 end
 
 local function resetToDefaultFeatures()
@@ -304,7 +310,7 @@ local function trackSetitngs()
 
     initPos = initPos + 30
     ui.setCursor(vec2(15, initPos))
-    ui.header("Colors")
+    ui.dwriteDrawText(language.get("COLOR"), 12, vec2(20, initPos), COLOR.WHITE)
 
     initPos = initPos + 20
     mapSettings.store.colorTrack = colorSelector.main(language.get("TRACK"), mapSettings.store.colorTrack, vec2(20, initPos))
@@ -344,14 +350,22 @@ local function sectionsSettings()
     if toggleButton.main("sectionsTrackActive", vec2(20, initPos), mapSettings.store.sectionsTrackActive, language.get("SECTIONS")) then
         mapSettings.store.sectionsTrackActive = not mapSettings.store.sectionsTrackActive
     end
-    --initPos = initPos + 30
-    mapSettings.store.sectionsType = droplist.main("sectionsType", "Type", vec2(200, initPos), 100,  mapSettings.store.sectionsType, {"Numbers", "Names"}, droplist.PosText.Start)
-    mapSettings.store.sectionsLenght = math.floor(slider.main("Lenght", string.format("%.0f", mapSettings.store.sectionsLenght), vec2(370, initPos + 5), 100, mapSettings.store.sectionsLenght, 5, 10, slider.PosText.Start))
 
-    initPos = initPos + 40
+    initPos = initPos + 30
     if mapSettings.store.sectionsTrackActive then
+        ui.dwriteDrawText(language.get("COLOR"), 12, vec2(250, initPos - 10), COLOR.WHITE)
+        mapSettings.store.sectionsType = droplist.main("sectionsType", "Type", vec2(20, initPos), 100,  mapSettings.store.sectionsType, {"Numbers", "Names"}, droplist.PosText.Start)
+        mapSettings.store.sectionsBgColor = colorSelector.main(language.get("BG_COLOR_SECTIONS"), mapSettings.store.sectionsBgColor, vec2(250, initPos + 10), "bgcolor")
+
+        ui.drawLine(vec2(220, initPos - 8), vec2(220, initPos + 65), COLOR.WHITE_LINE, 2)
+        initPos = initPos + 35
+        mapSettings.store.sectionsLenght = math.floor(slider.main("Lenght", string.format("%.0f", mapSettings.store.sectionsLenght), vec2(20, initPos + 5), 100, mapSettings.store.sectionsLenght, 5, 10, slider.PosText.Start))
+        mapSettings.store.sectionsTextColor = colorSelector.main(language.get("TEXT_COLOR_SECTIONS"), mapSettings.store.sectionsTextColor, vec2(250, initPos + 5), "textcolor")
+
+        
+        initPos = initPos + 40
         local filePath = ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\CHN-HUD\\user\\trackSections\\" .. ac.getTrackName() .. ".ini"
-        mapSettings.store.trackSectionsEdited, mapSettings.store.resetSectionsINI = sectionPanel.main("sectionsPanel", ac.INIConfig.load(filePath), vec2(20, initPos), vec2(WindowSettingsSize.x - 40, math.max(300, WindowSettingsSize.y - 200)))
+        mapSettings.store.trackSectionsEdited, mapSettings.store.resetSectionsINI = sectionPanel.main("sectionsPanel", ac.INIConfig.load(filePath), vec2(20, initPos), vec2(WindowSettingsSize.x - 40, math.max(300, WindowSettingsSize.y - 270)))
         initPos = initPos + 310
     end
 
@@ -371,19 +385,19 @@ local function playersSetitngs()
 
     initPos = initPos + 30
     ui.setCursor(vec2(20, initPos))
-    ui.header(language.get("FOCUSED_CAR_COLOR"))
+    ui.dwriteDrawText(language.get("FOCUSED_CAR_COLOR"), 12, vec2(20, initPos), COLOR.WHITE)
     initPos = initPos + 20
     mapSettings.store.colorFocusedCar = colorSelector.main(language.get("INTERNAL"), mapSettings.store.colorFocusedCar, vec2(20, initPos), "##InternalFocused")
     mapSettings.store.colorExternalFocusedCar = colorSelector.main(language.get("BORDER"), mapSettings.store.colorExternalFocusedCar, vec2(100, initPos), "##BorderFocused")
 
-    initPos = initPos + 30
+    initPos = initPos + 35
     ui.setCursor(vec2(20, initPos))
-    ui.header("Enemies Color")
+    ui.dwriteDrawText(language.get("ENEMIES_COLOR"), 12, vec2(20, initPos), COLOR.WHITE)
     initPos = initPos + 20
     mapSettings.store.colorEnemies = colorSelector.main(language.get("INTERNAL"), mapSettings.store.colorEnemies, vec2(20, initPos), "##InternalEnemies")
     mapSettings.store.colorExternalEnemies = colorSelector.main(language.get("BORDER"), mapSettings.store.colorExternalEnemies, vec2(100, initPos), "##BorderEnemies")
 
-    initPos = initPos + 30
+    initPos = initPos + 35
 
     if button.main(vec2(20, initPos), language.get("RESET_DEFAULT")) then
         resetToDefaultPlayers()

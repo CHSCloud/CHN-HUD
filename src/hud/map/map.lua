@@ -443,9 +443,9 @@ local function drawTrackSections()
         textLenght = ((vec2(lenght, lenght) / 2)) * scale
         for i = 1, #trackSections, 1 do
             local position = trackSections[i].namePosition + offset
-            ui.drawCircleFilled(position, textLenght.x, COLOR.BLACK, 20)
+            ui.drawCircleFilled(position, textLenght.x, mapSettings.store.sectionsBgColor, 20)
             ui.setCursor(position - textLenght / 2)
-            ui.dwriteTextAligned(trackSections[i].number, (lenght / 2) * scale, ui.Alignment.Center, ui.Alignment.Center, textLenght, false, COLOR.WHITE)
+            ui.dwriteTextAligned(trackSections[i].number, (lenght / 2) * scale, ui.Alignment.Center, ui.Alignment.Center, textLenght, false, mapSettings.store.sectionsTextColor)
         end
 
     else
@@ -455,9 +455,9 @@ local function drawTrackSections()
                 local textLenght = ui.measureDWriteText(longestText, (lenght / 2) * scale) + vec2(5) * scale
                 textLenght = textLenght + vec2(0, textLenght.y * count) + vec2(0,5) * scale
                 local position = trackSections[i].namePosition + offset
-                ui.drawRectFilled(position, position + textLenght, COLOR.BLACK, 3 * mapSettings.store.mapScale)
+                ui.drawRectFilled(position, position + textLenght, mapSettings.store.sectionsBgColor, 3 * mapSettings.store.mapScale)
                 ui.setCursor(position)
-                ui.dwriteTextAligned(trackSections[i].name:gsub("\n$", ""), (lenght / 2) * scale, ui.Alignment.Center, ui.Alignment.Center, textLenght, false, COLOR.WHITE)
+                ui.dwriteTextAligned(trackSections[i].name:gsub("\n$", ""), (lenght / 2) * scale, ui.Alignment.Center, ui.Alignment.Center, textLenght, false, mapSettings.store.sectionsTextColor)
             end
         end
     end

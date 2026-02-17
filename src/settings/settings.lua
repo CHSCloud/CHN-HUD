@@ -34,7 +34,8 @@ COLOR = {
   WHITE = rgbm.from0255(255, 255, 255, 1),
   BLACK = rgbm.from0255(0, 0, 0, 1),
   GRAY = rgbm.from0255(119, 118, 124, 0.3),
-  GRAY_BG = rgbm.from0255(55, 55, 63, 0.85)
+  GRAY_BG = rgbm.from0255(55, 55, 63, 0.85),
+  WHITE_LINE = rgbm.from0255(255, 255, 255, 0.8)
 }
 
 local tabPin = false
@@ -58,15 +59,15 @@ local function geral()
     language.setlanguage(settings.store.optionLanguage)
   end
 
-  initPos = initPos + 35
-  ui.drawRectFilled(vec2(5, initPos), vec2(WindowSettingsSize.x - 5, initPos), COLOR.GRAY, 1)
+  initPos = initPos + 38
+  ui.drawLine(vec2(10, initPos), vec2(WindowSettingsSize.x - 18, initPos), COLOR.WHITE_LINE, 2)
   
-  initPos = initPos + 30
+  initPos = initPos + 34
   settings.store.selectedSpeed = droplist.main("##Speed", language.get("SPEED"), vec2(20, initPos), 150, settings.store.selectedSpeed, {"Km/h", "Mph"})
   SelectedSpeed = settings.store.selectedSpeed
   
-  initPos = initPos + 35
-  ui.drawRectFilled(vec2(5, initPos), vec2(WindowSettingsSize.x - 5, initPos), COLOR.GRAY, 1)
+  initPos = initPos + 38
+  ui.drawLine(vec2(10, initPos), vec2(WindowSettingsSize.x - 18, initPos), COLOR.WHITE_LINE, 2)
 
   initPos = initPos + 20
   ui.setCursor(vec2(300, initPos + 20))
@@ -78,8 +79,7 @@ local function geral()
   end
   
   -- Seção de Cores
-  ui.setCursor(vec2(15, initPos))
-  ui.header(language.get("SELECT_COLOR"))
+  ui.dwriteDrawText(language.get("SELECT_COLOR"), 12, vec2(15, initPos), COLOR.WHITE)
   
   ui.pushItemWidth(150)
   

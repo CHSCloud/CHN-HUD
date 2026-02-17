@@ -26,10 +26,10 @@ function sessionLapsSettings.sessionLapsSettings()
     sessionLapsSettings.store.sessionLapsScale = slider.main(language.get("SIZE"), string.format("%.2f", sessionLapsSettings.store.sessionLapsScale), vec2(20, initPos), 250, sessionLapsSettings.store.sessionLapsScale, 0.7, 3)
 
     
-    initPos = initPos + 40
-    ui.setCursor(vec2(15, initPos))
-    ui.header(language.get("LAPS"))
-    initPos = initPos + 20
+    initPos = initPos + 30
+    ui.dwriteDrawText(language.get("LAPS"), 12, vec2(15, initPos), COLOR.WHITE)
+
+    initPos = initPos + 23
     if toggleButton.main("current", vec2(20, initPos), sessionLapsSettings.store.currentLapActive, language.get("CURRENT")) then
         sessionLapsSettings.store.currentLapActive = not sessionLapsSettings.store.currentLapActive
     end

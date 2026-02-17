@@ -77,9 +77,12 @@
   "DRS": "DRS",
   "FOCUSED_CAR_LENGHT": "Comprimento do Carro Focado",
   "ENEMIES_LENGHT": "Comprimento dos Inimigos",
+  "ENEMIES_COLOR": "Cor dos Inimigos",
   "FOCUSED_CAR_COLOR": "Cor do Carro Focado",
   "INTERNAL": "Interno",
   "PLAYERS": "Jogadores",
   "FEATURES_OF_TRACK": "Características da Pista",
-  "SECTIONS": "Mostrar seções"
+  "SECTIONS": "Mostrar seções",
+  "BG_COLOR_SECTIONS": "Cor de fundo",
+  "TEXT_COLOR_SECTIONS": "Cor do texto"
 }

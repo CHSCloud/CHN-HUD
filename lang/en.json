@@ -77,9 +77,12 @@
   "DRS": "DRS",
   "FOCUSED_CAR_LENGHT": "Focused Car Lenght",
   "ENEMIES_LENGHT": "Enemies Lenght",
+  "ENEMIES_COLOR": "Enemies Color",
   "FOCUSED_CAR_COLOR": "Focused Car Color",
   "INTERNAL": "Internal",
   "PLAYERS": "Players",
   "FEATURES_OF_TRACK": "Features of track",
-  "SECTIONS": "Show sections"
+  "SECTIONS": "Show sections",
+  "BG_COLOR_SECTIONS": "Background color",
+  "TEXT_COLOR_SECTIONS": "Text color"
 }

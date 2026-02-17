@@ -86,8 +86,7 @@ end
 -- Desenha a seção de outros
 --- @param pos vec2
 local function drawOthers(pos)
-    ui.setCursor(vec2(pos.x - 5, pos.y))
-    ui.header(language.get("OTHERS"))
+    ui.dwriteDrawText(language.get("OTHERS"), 12, vec2(pos.x - 5, pos.y), COLOR.WHITE)
   
     pos.y = pos.y + 25; 
     if toggleButton.main("fuel", vec2(pos.x, pos.y), pedalsSettings.store.fuelActive, language.get("FUEL")) then
@@ -138,8 +137,7 @@ local function drawRPM(pos)
         "Total"
     }
 
-    ui.setCursor(vec2(pos.x - 5, pos.y))
-    ui.header("RPM")
+    ui.dwriteDrawText("RPM", 12, vec2(pos.x - 5, pos.y), COLOR.WHITE)
     
     pos.y = pos.y + 25
     if toggleButton.main("rpm",vec2(pos.x,pos.y), pedalsSettings.store.rpmActive, "") then
@@ -226,13 +224,12 @@ function pedalsSettings.pedalsSettings()
 
 
     initPos = initPos + 35
-    ui.drawRectFilled(vec2(5, initPos), vec2(WindowSettingsSize.x - 5, initPos), COLOR.GRAY, 1)
+    ui.drawLine(vec2(10, initPos), vec2(WindowSettingsSize.x - 18, initPos), COLOR.WHITE_LINE, 2)
 
     -- DIREÇÃO
     initPos = initPos + 10
     
-    ui.setCursor(vec2(15, initPos))
-    ui.header(language.get("STEERING"))
+    ui.dwriteDrawText(language.get("STEERING"), 12, vec2(15, initPos), COLOR.WHITE)
     
     initPos = initPos + 25; 
     if toggleButton.main("gear", vec2(20,initPos), pedalsSettings.store.gearActive, language.get("GEAR")) then
@@ -272,8 +269,8 @@ function pedalsSettings.pedalsSettings()
         ui.dwriteTextAligned(language.get("ALERT_TC"), 12, ui.Alignment.Center, ui.Alignment.Center, vec2(250, 20), false, COLOR.RED)  
     end
 
-    initPos = initPos + 50
-    ui.drawRectFilled(vec2(5, initPos), vec2(WindowSettingsSize.x - 5, initPos), COLOR.GRAY, 1)
+    initPos = initPos + 40
+    ui.drawLine(vec2(10, initPos), vec2(WindowSettingsSize.x - 18, initPos), COLOR.WHITE, 2)
 
     -- OUTROS
     drawOthers(vec2(270, 120))
@@ -282,9 +279,10 @@ function pedalsSettings.pedalsSettings()
     drawRPM(vec2(20, 300))
 
     -- PEDAIS
-    initPos = 500
-    ui.setCursor(vec2(15, initPos))
-    ui.header(language.get("PEDALS"))
+    initPos = 470
+    ui.drawLine(vec2(10, initPos), vec2(WindowSettingsSize.x - 18, initPos), COLOR.WHITE_LINE, 2)
+    initPos = initPos + 10
+    ui.dwriteDrawText(language.get("PEDALS"), 12, vec2(15, initPos), COLOR.WHITE)
 
     initPos = initPos + 25; 
     if toggleButton.main("throttle", vec2(20,initPos), pedalsSettings.store.throttleActive, language.get("THROTTLE")) then
@@ -292,7 +290,7 @@ function pedalsSettings.pedalsSettings()
     end
 
     ui.setCursor(vec2(posXStyle - 5, initPos - 25))
-    ui.header(language.get("PEDAL_STYLE"))
+    ui.dwriteDrawText(language.get("PEDAL_STYLE"), 12, vec2(posXStyle - 5, initPos - 25), COLOR.WHITE)
     if toggleButton.main("percentagePedals", vec2(posXStyle,initPos), pedalsSettings.store.textBarsActive, language.get("PERCENTAGE_PEDALS")) then
         pedalsSettings.store.textBarsActive = not pedalsSettings.store.textBarsActive
     end
