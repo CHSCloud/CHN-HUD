@@ -270,7 +270,7 @@ function pedalsSettings.pedalsSettings()
     end
 
     initPos = initPos + 40
-    ui.drawLine(vec2(10, initPos), vec2(WindowSettingsSize.x - 18, initPos), COLOR.WHITE, 2)
+    ui.drawLine(vec2(10, initPos), vec2(WindowSettingsSize.x - 18, initPos), COLOR.WHITE_LINE, 2)
 
     -- OUTROS
     drawOthers(vec2(270, 120))
