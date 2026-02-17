@@ -512,7 +512,11 @@ function map.windowMain()
         end
 
         -- Desenha bandeira de largada
-        drawStartFlag((mapSettings.store.trackLenght + mapSettings.store.borderLenght * 2) / 1.3)
+        if mapSettings.store.borderLenght < 0 then
+            drawStartFlag((mapSettings.store.trackLenght + 6) / 1.3)
+        else 
+            drawStartFlag((mapSettings.store.trackLenght + mapSettings.store.borderLenght * 2) / 1.3)
+        end
     end)
 
 

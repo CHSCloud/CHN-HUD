@@ -5,8 +5,6 @@ local formText = require("src.ui.formText")
 local config = require("common.config")
 local sectionPanel = {}
 
-local position = {"CENTER", "LEFT", "RIGHT"} 
-
 --- @param pos vec2
 --- @param size vec2
 --- @return boolean
@@ -51,68 +49,65 @@ function sectionPanel.main(id, iniFile, pos, size)
     local position = 0
     local numberSections = 0
     
-    --ui.drawRectFilled(pos, pos + size, COLOR.GRAY, 10, ui.CornerFlags.All)
     ui.drawRect(pos, pos + size, USER_UI.accentColor, 10, ui.CornerFlags.All, 3)
     ui.drawRect(pos + vec2(10, 40), pos + size - vec2(20, 40), COLOR.WHITE, 10, ui.CornerFlags.All, 3)
     ui.setCursor(pos + vec2(10, 43))
-    isEdited = ui.childWindow("##"..id, size - vec2(20,85), false, ui.WindowFlags.None + ui.WindowFlags.NoBackground,
-    ---@return boolean
-    function()
-        local isItemEdited = false
-        local edited = false
-        local progress, text
-        local sizeText, sizeProgress
-        local height = 0
-        for index, section in iniFile:iterate("SECTION") do
-            --ui.setCursor(vec2(15, 20 + index * 30))
-            text, sizeText, isItemEdited = formText.main(
-                section .. "TEXT",
-                vec2(40, 10 + height),
-                iniFile:get(section, "TEXT", ""), 
-                vec2(100, 20), 
-                10,
-                COLOR.WHITE,
-                ui.InputTextFlags.NoHorizontalScroll + ui.InputTextFlags.NoUndoRedo
-            )
-            iniFile:set(section, "TEXT", text)
-            if isItemEdited and ui.windowFocused(ui.FocusedFlags.ChildWindows)then edited = true end
+    isEdited = ui.childWindow("##"..id, size - vec2(35,85), false, ui.WindowFlags.None + ui.WindowFlags.NoBackground,
+        ---@return boolean
+        function()
+            local isItemEdited = false
+            local edited = false
+            local progress, text
+            local sizeText, sizeProgress
+            local height = 0
+            for index, section in iniFile:iterate("SECTION") do
+                text, sizeText, isItemEdited = formText.main(
+                    section .. "TEXT",
+                    vec2(40, 10 + height),
+                    iniFile:get(section, "TEXT", ""),
+                    vec2(100, 20), 
+                    10,
+                    COLOR.WHITE,
+                    ui.InputTextFlags.NoHorizontalScroll + ui.InputTextFlags.NoUndoRedo + ui.InputTextFlags.AlwaysInsertMode
+                )
+                iniFile:set(section, "TEXT", text)
+                if isItemEdited and ui.windowFocused(ui.FocusedFlags.ChildWindows)then edited = true end
 
-            
-            ui.drawCircleFilled(vec2(20, 20 + height), 10, COLOR.GRAY_BG)
-            ui.setCursor(vec2(20, 20 + height) - vec2(15,15))
-            ui.dwriteTextAligned(tostring(index), 12, ui.Alignment.Center, ui.Alignment.Center, vec2(30,30), false, COLOR.WHITE)
-            
-            progress, sizeProgress, isItemEdited = formText.main(
-                section .. "PROGRESS",
-                vec2(45 + sizeText.x, 10 + height),
-                iniFile:get(section, "PROGRESS", "0"), 
-                vec2(100, 20), 
-                10,
-                COLOR.WHITE,
-                ui.InputTextFlags.CharsDecimal
-            )
-            iniFile:set(section, "PROGRESS", progress)
-            if isItemEdited and ui.windowFocused(ui.FocusedFlags.ChildWindows) then edited = true end
+                ui.drawCircleFilled(vec2(20, 20 + height), 10, COLOR.GRAY_BG)
+                ui.setCursor(vec2(20, 20 + height) - vec2(15,15))
+                ui.dwriteTextAligned(tostring(index), 12, ui.Alignment.Center, ui.Alignment.Center, vec2(30,30), false, COLOR.WHITE)
+                
+                progress, sizeProgress, isItemEdited = formText.main(
+                    section .. "PROGRESS",
+                    vec2(45 + sizeText.x, 10 + height),
+                    iniFile:get(section, "PROGRESS", "0"),
+                    vec2(100, 20),
+                    10,
+                    COLOR.WHITE,
+                    ui.InputTextFlags.CharsDecimal
+                )
+                iniFile:set(section, "PROGRESS", progress)
+                if isItemEdited and ui.windowFocused(ui.FocusedFlags.ChildWindows) then edited = true end
 
-            position = droplist.main(section .. "POSITION", "", vec2(sizeText.x + sizeProgress.x + 40, 8 + height), 100, iniFile:get(section, "POSITION", 1), {"CENTER", "LEFT", "RIGHT"}, droplist.PosText.Start)
-            if position ~= iniFile:get(section, "POSITION", 1) then
-                iniFile:set(section, "POSITION", position)
-                edited = true
+                position = droplist.main(section .. "POSITION", "", vec2(sizeText.x + sizeProgress.x + 40, 8 + height), 100, iniFile:get(section, "POSITION", 1), {"CENTER", "LEFT", "RIGHT"}, droplist.PosText.Start)
+                if position ~= iniFile:get(section, "POSITION", 1) then
+                    iniFile:set(section, "POSITION", position)
+                    edited = true
+                end
+
+                if deleteSectionButton(vec2(sizeText.x + sizeProgress.x + 165, 10 + height), vec2(20, 20)) and ui.windowFocused(ui.FocusedFlags.ChildWindows) then
+                    iniFile:mapConfig(deleteSection(iniFile.sections, section, index))
+                    edited = true
+                end
+
+                numberSections = numberSections + 1
+                height = height + sizeText.y + 10
             end
 
-
-            if deleteSectionButton(vec2(sizeText.x + sizeProgress.x + 165, 10 + height), vec2(20, 20)) and ui.windowFocused(ui.FocusedFlags.ChildWindows) then
-                iniFile:mapConfig(deleteSection(iniFile.sections, section, index))
-                edited = true
-            end
-
-            numberSections = numberSections + 1
-            height = height + sizeText.y + 10
+            ui.setCursor(vec2(20, height + 80))
+            return edited
         end
-
-        ui.setCursor(vec2(20, height + 80))
-        return edited
-    end) or false
+    ) or false
 
     if button.main(pos + vec2(5,5), "Add section", ui.windowFocused(ui.FocusedFlags.ChildWindows)) then
         iniFile:set("SECTION_".. tostring(numberSections), "TEXT", tostring(ac.getTrackName()))
