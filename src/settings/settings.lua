@@ -46,7 +46,42 @@ SelectedSpeed = settings.store.selectedSpeed
 if settings.store.optionLanguage ~= language.getCurrentLanguage() then
   language.setlanguage(settings.store.optionLanguage)
 end
-  
+
+local isLatestVersion = true
+local onlineVersion = ''
+local function verifyVersion()
+    ac.log("oi")
+    local manifest = ac.INIConfig.load(ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\CHN-HUD\\manifest.ini")
+    local currentVersion = ''
+    if manifest ~= nil then
+        currentVersion = manifest:get('ABOUT', 'VERSION', '')
+        if currentVersion == '' then
+            return
+        end
+            
+        web.get("https://www.overtake.gg/downloads/chn-hud.78851/", function(err, response)
+            if err or response.status ~= 200 then return end
+
+            local html = response.body
+
+            onlineVersion = string.match(html, '<h1 class="p%-title%-value">.-<span class="u%-muted">(.-)</span>')
+
+            if onlineVersion then
+                
+                ac.log("Versão encontrada " .. onlineVersion)
+                ac.log("Versão atual " .. currentVersion)
+                if onlineVersion ~= currentVersion then
+                  isLatestVersion = false
+                end
+                
+            else
+                ac.log("Não foi possível localizar a versão.")
+            end
+        end)
+    end
+end
+verifyVersion()
+
 local function geral()
   if(tabPin) then
     tabPin = false
@@ -112,10 +147,13 @@ function settings.windowCloseSettings()
   SettingsActive = false
 end
 
+
 function settings.windowMain()
   WindowSettingsSize = ui.windowSize()
+
   ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
   ui.drawRectFilled(vec2(0, 0), WindowSettingsSize + ui.windowContentSize(), rgbm.from0255(18, 21, 29, 0.85), 0)
+  --ui.drawRectFilled(vec2(0,0), vec2(WindowSettingsSize.x, 40), COLOR.WHITE)
   ui.tabBar('##ID',function ()
     ui.tabItem(language.get("GENERAL"), tabPin and ui.TabItemFlags.SetSelected, geral)
     ui.tabItem(language.get("PEDALS"), pedalsSettings.pedalsSettings)
@@ -126,7 +164,31 @@ function settings.windowMain()
     ui.tabItem(language.get("MAP"), mapSettings.mapSettings)
   end)
 
-  local posResize = WindowSettingsSize - vec2(45,45) + vec2(0,ui.getScrollY())
+
+  local posResize
+  if not isLatestVersion then
+    ui.drawRectFilled(vec2(0, WindowSettingsSize.y - 30), WindowSettingsSize, COLOR.WHITE)
+    ui.setCursor(vec2(20, WindowSettingsSize.y - 30))
+    ui.dwriteTextAligned("NOVA ATUALIZAÇÃO DISPONÍVEL: ", 20, ui.Alignment.Start,ui.Alignment.Center, vec2(WindowSettingsSize.x, 30), false, COLOR.BLACK)
+    local linkPosX = 20 + ui.measureDWriteText("NOVA ATUALIZAÇÃO DISPONÍVEL: ", 20).x
+
+    if config.isMouseInWindow(ui.mouseLocalPos(), linkPosX + 10, linkPosX + ui.measureDWriteText("CHN HUD " .. onlineVersion, 20).x, WindowSettingsSize.y - 30, WindowSettingsSize.y) then
+      ui.setMouseCursor(ui.MouseCursor.Hand)
+      ui.setCursor(vec2(linkPosX + 10, WindowSettingsSize.y - 30))
+      ui.dwriteTextAligned("CHN HUD " .. onlineVersion, 20, ui.Alignment.Start,ui.Alignment.Center, vec2(WindowSettingsSize.x, 30), false, COLOR.RED)
+      if ui.mouseClicked(ui.MouseButton.Left) then
+        os.openURL("https://www.overtake.gg/downloads/chn-hud.78851/")
+      end
+    else
+      ui.setCursor(vec2(linkPosX + 10, WindowSettingsSize.y - 30))
+      ui.dwriteTextAligned("CHN HUD " .. onlineVersion, 20, ui.Alignment.Start,ui.Alignment.Center, vec2(WindowSettingsSize.x, 30), false, COLOR.BLACK)
+    end
+    posResize = WindowSettingsSize - vec2(45,65) + vec2(0,ui.getScrollY())
+
+  else
+    posResize = WindowSettingsSize - vec2(45,45) + vec2(0,ui.getScrollY())
+  end
+
   if config.isMouseInWindow(ui.mouseLocalPos(), posResize.x - 5, posResize.x + 25, posResize.y - 5, posResize.y + 25) then
     ui.setMouseCursor(ui.MouseCursor.Hand)  
     if ui.mouseClicked(ui.MouseButton.Left) then
@@ -144,6 +206,8 @@ function settings.windowMain()
   ui.drawLine(posResize + vec2(20), posResize + vec2(20,10), COLOR.WHITE, 2)
   ui.drawLine(posResize + vec2(0,20), posResize + vec2(10,20), COLOR.WHITE, 2)
   ui.drawLine(posResize + vec2(0,10), posResize + vec2(0,20), COLOR.WHITE, 2)
+  
 end
+
 
 return settings
