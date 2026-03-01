@@ -307,38 +307,37 @@ local function drawRpm()
     end
   elseif pedalsSettings.store.rpmType == 2 then
     local width
+    local space
     local initPosX
     local center
     local initPosY
-    
     if pedalsSettings.store.rpmPos == 5 then
-      width = currentWindowWidth * pedalsSettings.store.barLength - contentPositions[1][2].x - contentPositions[2][2].x
-      --[[
-      if width < 75 * pedalsSettings.store.pedalsScale then
-        currentWindowWidth = currentWindowWidth + (75 * pedalsSettings.store.pedalsScale - width)
-        width = 75 * pedalsSettings.store.pedalsScale
+      space = currentWindowWidth - contentPositions[1][2].x - contentPositions[2][2].x
+      width = space * pedalsSettings.store.barLength
+      if space < 75 * pedalsSettings.store.pedalsScale then
+        currentWindowWidth = currentWindowWidth + (75 * pedalsSettings.store.pedalsScale - space)
+        space = currentWindowWidth - contentPositions[1][2].x - contentPositions[2][2].x
+        width = space * pedalsSettings.store.barLength
       end
-      ]]
+
       center = contentPositions[1][2].x + (currentWindowWidth - contentPositions[1][2].x - contentPositions[2][2].x) / 2
       setPositionContentCenter(pedalsSettings.store.rpmPos, vec2(width, 20 * pedalsSettings.store.pedalsScale))
       initPosY = contentPositions[1][1].y + 4 * pedalsSettings.store.pedalsScale
     else
-      width = currentWindowWidth * pedalsSettings.store.barLength - contentPositions[3][2].x - contentPositions[4][2].x
-      --[[
-      if width < 75 * pedalsSettings.store.pedalsScale then
-        currentWindowWidth = currentWindowWidth + (75 * pedalsSettings.store.pedalsScale - width)
-        width = 75 * pedalsSettings.store.pedalsScale
-      end
-      ]]
+      space = currentWindowWidth - contentPositions[3][2].x - contentPositions[4][2].x
+      width = space * pedalsSettings.store.barLength 
+      if space < 75 * pedalsSettings.store.pedalsScale then
+        currentWindowWidth = currentWindowWidth + (75 * pedalsSettings.store.pedalsScale - space)
+        space = currentWindowWidth - contentPositions[3][2].x - contentPositions[4][2].x
+        width = space * pedalsSettings.store.barLength 
+      end 
+
       center = contentPositions[3][2].x + (currentWindowWidth - contentPositions[3][2].x - contentPositions[4][2].x) / 2
       setPositionContentCenter(pedalsSettings.store.rpmPos, vec2(width, 20 * pedalsSettings.store.pedalsScale))
       initPosY = contentPositions[pedalsSettings.store.rpmPos][1].y + 2 * pedalsSettings.store.pedalsScale
     end
-    if width < 40 * pedalsSettings.store.pedalsScale then
-      width = 40 * pedalsSettings.store.pedalsScale
-    end
     local barHeight = 14 * pedalsSettings.store.pedalsScale
-    initPosX = center - (width / 2)
+    initPosX = center - (width/ 2)
     ui.drawRectFilled(vec2(initPosX, initPosY), vec2(initPosX + width, initPosY +barHeight), COLOR.GRAY_BG, 10 * pedalsSettings.store.pedalsScale)
     if CAR.rpm >= rpmStart then
       local lenght = initPosX + ((width * (CAR.rpm - rpmStart)) / rpmRange)
@@ -498,10 +497,7 @@ end
 
 -- Desenha o brake bias
 local function drawBrakeBias()
-  setPositionContentBorder(pedalsSettings.store.brakebiasPos, vec2(56, 20):scale(pedalsSettings.store.pedalsScale))
-  if (currentWindowWidth < 60 * pedalsSettings.store.pedalsScale) then
-    currentWindowWidth = currentWindowWidth + (60 * pedalsSettings.store.pedalsScale - currentWindowWidth)
-  end
+  setPositionContentBorder(pedalsSettings.store.brakebiasPos, vec2(60, 20):scale(pedalsSettings.store.pedalsScale))
   ui.setCursor(contentPositions[pedalsSettings.store.brakebiasPos][1] + vec2(25) * pedalsSettings.store.pedalsScale)
   ui.dwriteTextAligned(string.format("%.1f", CAR.brakeBias * 100), fontContentBottom, ui.Alignment.Start, ui.Alignment.Center, vec2(30, 20):scale(pedalsSettings.store.pedalsScale), false, COLOR.WHITE)
   
@@ -558,13 +554,6 @@ end
 
 -- Desenha o combustível
 local function drawFuel()
-  if pedalsSettings.store.brakeBiasActive and currentWindowWidth < 120 * pedalsSettings.store.pedalsScale then
-    currentWindowWidth = 120 * pedalsSettings.store.pedalsScale
-  end
-  if (currentWindowWidth < 68 * pedalsSettings.store.pedalsScale) then
-    currentWindowWidth = 68 * pedalsSettings.store.pedalsScale
-  end
-  
   local fuelColor = COLOR.WHITE
   if CAR.fuel < 5.005 then
     fuelColor = COLOR.RED_DARK
@@ -672,10 +661,13 @@ function pedals.windowMain()
   if pedalsSettings.store.tractionControlActive and CAR.tractionControlModes ~= 0 then
     drawTC()
   end
-
+  if currentWindowWidth < (contentPositions[1][2].x + contentPositions[2][2].x + contentPositions[5][2].x) or  currentWindowWidth < (contentPositions[3][2].x + contentPositions[4][2].x + contentPositions[6][2].x) then
+    currentWindowWidth = math.max(contentPositions[1][2].x + contentPositions[2][2].x + contentPositions[5][2].x, contentPositions[3][2].x + contentPositions[4][2].x + contentPositions[6][2].x)
+  end
   if pedalsSettings.store.rpmActive then 
     drawRpm()
   end
+
   if pedalsSettings.store.p2pActive and CAR.kersPresent then
     drawP2p()
   end
@@ -692,6 +684,7 @@ function pedals.windowMain()
   else
     contentBottom = 0 
   end
+
   --
   currentWindowSize = vec2(currentWindowWidth, currentWindowHeight)
 
