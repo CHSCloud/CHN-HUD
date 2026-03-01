@@ -115,6 +115,20 @@ function config.findLongestWord(text)
     return longest, count
 end
 
+--- @param table table
+--- @param fontSize number
+--- @return vec2
+function config.findLenghtLongestString(table, fontSize)
+    local max = vec2(0, 0)
+    for _, value in ipairs(table) do
+        local size = ui.measureDWriteText(value, fontSize)
+        if size.x > max.x then
+            max = size
+        end
+    end
+    return max
+end
+
 --- @param from table
 --- @param to table
 function config.copyTable(from, to)
@@ -172,7 +186,7 @@ end
 --- @param pin boolean
 function config.pinAllApps(pin)
     config.store.pinAllApps = pin
-    for index, name in ipairs(windowNames) do
+    for _, name in ipairs(windowNames) do
         if name ~= "Settings CHN" then
             config.getWindow(name):setPinned(pin)
         end

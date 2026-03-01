@@ -7,6 +7,7 @@
   "ALERT_ABS": "This car does not have ABS",
   "TC": "Traction control",
   "ALERT_TC": "This car does not have tranction control",
+  "ALERT_P2P": "This car does not have P2P",
   "LANGUAGE": "Language",
   "ELEMENTS": "Content",
   "GENERAL": "General",
@@ -84,5 +85,12 @@
   "FEATURES_OF_TRACK": "Features of track",
   "SECTIONS": "Show sections",
   "BG_COLOR_SECTIONS": "Background color",
-  "TEXT_COLOR_SECTIONS": "Text color"
+  "TEXT_COLOR_SECTIONS": "Text color",
+  "POSITION": "Position",
+  "TOP_LEFT": "TOP LEFT",
+  "TOP_RIGHT": "TOP RIGHT",
+  "BOTTOM_LEFT": "BOTTOM LEFT",
+  "BOTTOM_RIGHT": "BOTTOM RIGHT",
+  "TOP_CENTER": "TOP CENTER",
+  "BOTTOM_CENTER": "BOTTOM CENTER"
 }

@@ -304,6 +304,10 @@ local function resizeWindowMap()
     local scale
     local textPosition
     local lenght
+    local borderMap = 2
+    if mapSettings.store.borderLenght > 0 then
+        borderMap = mapSettings.store.borderLenght
+    end
     if not mapSettings.store.focus then
         local ratio = (baseWindowSize.y * mapSettings.store.mapScale) / canvasSize.y
         scale = canvasScale * ratio
@@ -319,13 +323,13 @@ local function resizeWindowMap()
                     posRotated = config.rotateVec(vec2((trackSections[i].left.x - trackCenterX) * scale, (trackSections[i].left.y - trackCenterY) * scale), angle)
                     local dir = (trackSections[i].right - trackSections[i].left):normalize()
                     dir = config.rotateVec(dir, angle)
-                    posRotated = posRotated + dir * (mapSettings.store.trackLenght/2 + mapSettings.store.borderLenght + lenght/4) * mapSettings.store.mapScale
+                    posRotated = posRotated + dir * (mapSettings.store.trackLenght/2 + borderMap + lenght/4) * mapSettings.store.mapScale
 
                 else
                     posRotated = config.rotateVec(vec2((trackSections[i].right.x - trackCenterX) * scale, (trackSections[i].right.y - trackCenterY) * scale), angle)
                     local dir = (trackSections[i].left - trackSections[i].right):normalize()
                     dir = config.rotateVec(dir, angle)
-                    posRotated = posRotated + dir * (mapSettings.store.trackLenght/2 + mapSettings.store.borderLenght + lenght/4) * mapSettings.store.mapScale
+                    posRotated = posRotated + dir * (mapSettings.store.trackLenght/2 + borderMap + lenght/4) * mapSettings.store.mapScale
                 end
                 textPosition = windowCenter + posRotated
                 resizeWithText(textPosition - textLenght, textPosition + textLenght)
@@ -358,7 +362,7 @@ local function resizeWindowMap()
                 else
                     distance = config.remapInterval(dir.x, -1, 0, 1, textLenght.x / 20)
                 end
-                local centerText = posRotated + dir * (textLenght.x / (2 * distance) + ((mapSettings.store.trackLenght + mapSettings.store.borderLenght)/2) * mapSettings.store.mapScale)
+                local centerText = posRotated + dir * (textLenght.x / (2 * distance) + ((mapSettings.store.trackLenght + borderMap)/2) * mapSettings.store.mapScale)
                 textPosition = windowCenter + centerText - textLenght / 2
                 resizeWithText(textPosition, textPosition + textLenght)
                 
@@ -380,13 +384,13 @@ local function resizeWindowMap()
                     posRotated = config.rotateVec(vec2((trackSections[i].left.x - trackCenterX) * scale, (trackSections[i].left.y - trackCenterY) * scale), angle)
                     local dir = (trackSections[i].right - trackSections[i].left):normalize()
                     dir = config.rotateVec(dir, angle)
-                    posRotated = posRotated + dir * (mapSettings.store.trackLenght/2 + mapSettings.store.borderLenght + textLenght.x)
+                    posRotated = posRotated + dir * (mapSettings.store.trackLenght/2 + borderMap + textLenght.x)
 
                 else
                     posRotated = config.rotateVec(vec2((trackSections[i].right.x - trackCenterX) * scale, (trackSections[i].right.y - trackCenterY) * scale), angle)
                     local dir = (trackSections[i].left - trackSections[i].right):normalize()
                     dir = config.rotateVec(dir, angle)
-                    posRotated = posRotated + dir * (mapSettings.store.trackLenght/2 + mapSettings.store.borderLenght + textLenght.x)
+                    posRotated = posRotated + dir * (mapSettings.store.trackLenght/2 + borderMap + textLenght.x)
                 end
                 posRotated = canvasCenter + posRotated
                 textPosition = posRotated
@@ -418,7 +422,7 @@ local function resizeWindowMap()
                 else
                     distance = config.remapInterval(dir.x, -1, 0, 1, textLenght.x / 30)
                 end
-                local centerText = posRotated + dir * (textLenght.x / (2 * distance) + (mapSettings.store.trackLenght + mapSettings.store.borderLenght))
+                local centerText = posRotated + dir * (textLenght.x / (2 * distance) + (mapSettings.store.trackLenght + borderMap))
                 textPosition = canvasCenter + centerText - textLenght / 2
                 
                 trackSections[i].namePosition = textPosition

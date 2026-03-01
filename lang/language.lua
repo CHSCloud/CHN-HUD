@@ -5,8 +5,8 @@ local languageSettings = ac.storage {
 }
 
 language.languages = {
-  "English",
-  "Português - Brasil"
+    "English",
+    "Português - Brasil"
 }
 
 local codes = {

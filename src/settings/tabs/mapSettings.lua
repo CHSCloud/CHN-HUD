@@ -19,7 +19,7 @@ local defaultValuesTrack = {
     colorTrack = rgbm.from0255(0, 0, 0, 1),
     colorBorder = rgbm.from0255(255, 255, 255, 1),
     borderActive = true,
-    borderLenght = 2,
+    borderLenght = 4,
     trackLenght = 10
 }
 
