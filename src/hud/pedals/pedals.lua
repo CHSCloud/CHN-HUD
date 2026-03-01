@@ -489,9 +489,9 @@ local function drawTC()
   setPositionContentBorder(pedalsSettings.store.tractionControlPos, size)
   ui.setCursor(contentPositions[pedalsSettings.store.tractionControlPos][1])
   if CAR.tractionControlInAction then
-    ui.image("assets/TC.png", size, COLOR.YELLOW, ui.ImageFit.Fit)
+    ui.image("assets/TC.png", size, COLOR.RED, ui.ImageFit.Fit)
   else
-    ui.image("assets/TC.png", size, COLOR.GRAY_BG, ui.ImageFit.Fit)
+    ui.image("assets/TC.png", size, COLOR.WHITE, ui.ImageFit.Fit)
   end
 end
 
