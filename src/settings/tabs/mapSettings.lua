@@ -304,7 +304,7 @@ local function trackSetitngs()
         mapSettings.store.focus = not mapSettings.store.focus
     end
     if mapSettings.store.focus then
-        mapSettings.store.zoom = math.floor(slider.main(language.get("ZOOM"), string.format("%.0f", mapSettings.store.zoom), vec2(120, initPos + 2), 200, mapSettings.store.zoom, 0, 200, slider.PosText.Start))
+        mapSettings.store.zoom = math.floor(slider.main(language.get("ZOOM"), string.format("%.0f", mapSettings.store.zoom), vec2(130, initPos + 2), 200, mapSettings.store.zoom, 0, 200, slider.PosText.Start))
     end
     
 
