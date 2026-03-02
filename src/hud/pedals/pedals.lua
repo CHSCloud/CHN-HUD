@@ -508,7 +508,7 @@ end
 -- Desenha a bateria
 local oldKersCharge = 0
 local function drawP2p()
-  local size = vec2(80 * pedalsSettings.store.pedalsScale, 10 * pedalsSettings.store.pedalsScale)
+  local size = vec2(75 * pedalsSettings.store.pedalsScale, 10 * pedalsSettings.store.pedalsScale)
   setPositionContentCenter(pedalsSettings.store.p2pPos, size + vec2(0,5):scale(pedalsSettings.store.pedalsScale))
   local pos = vec2()
   pos.y = contentPositions[pedalsSettings.store.p2pPos][1].y
@@ -516,8 +516,8 @@ local function drawP2p()
   local center
   if pedalsSettings.store.p2pPos == 5 then
     space = currentWindowWidth - contentPositions[1][2].x - contentPositions[2][2].x
-    if space < 90 * pedalsSettings.store.pedalsScale then
-      currentWindowWidth = currentWindowWidth + (90 * pedalsSettings.store.pedalsScale - space)
+    if space < 80 * pedalsSettings.store.pedalsScale then
+      currentWindowWidth = currentWindowWidth + (80 * pedalsSettings.store.pedalsScale - space)
       space = currentWindowWidth - contentPositions[1][2].x - contentPositions[2][2].x
     end
     center = contentPositions[1][2].x + (space) / 2
@@ -525,8 +525,8 @@ local function drawP2p()
     pos.y = pos.y + 5 * pedalsSettings.store.pedalsScale
   else
     space = currentWindowWidth - contentPositions[3][2].x - contentPositions[4][2].x
-        if space < 90 * pedalsSettings.store.pedalsScale then
-      currentWindowWidth = currentWindowWidth + (90 * pedalsSettings.store.pedalsScale - space)
+        if space < 80 * pedalsSettings.store.pedalsScale then
+      currentWindowWidth = currentWindowWidth + (80 * pedalsSettings.store.pedalsScale - space)
       space = currentWindowWidth - contentPositions[3][2].x - contentPositions[4][2].x
     end
     center = contentPositions[3][2].x + (space) / 2
@@ -661,17 +661,19 @@ function pedals.windowMain()
   if pedalsSettings.store.tractionControlActive and CAR.tractionControlModes ~= 0 then
     drawTC()
   end
+
+  -- Ajusta tamanho da janela para conter todos os conteúdos das bordas
   if currentWindowWidth < (contentPositions[1][2].x + contentPositions[2][2].x + contentPositions[5][2].x) or  currentWindowWidth < (contentPositions[3][2].x + contentPositions[4][2].x + contentPositions[6][2].x) then
     currentWindowWidth = math.max(contentPositions[1][2].x + contentPositions[2][2].x + contentPositions[5][2].x, contentPositions[3][2].x + contentPositions[4][2].x + contentPositions[6][2].x)
-  end
-  if pedalsSettings.store.rpmActive then 
-    drawRpm()
   end
 
   if pedalsSettings.store.p2pActive and CAR.kersPresent then
     drawP2p()
   end
 
+  if pedalsSettings.store.rpmActive then 
+    drawRpm()
+  end
 
   if contentPositions[1][2] ~= vec2(0, 0) or contentPositions[2][2] ~= vec2(0, 0) or contentPositions[5][2] ~= vec2(0, 0) then
     contentTop = math.max(contentPositions[1][2].y, contentPositions[2][2].y, contentPositions[5][2].y)
