@@ -1,4 +1,5 @@
 local language = require("lang.language")
+local config = require("common.config")
 local button = require("src.ui.button")
 local droplist = require("src.ui.droplist")
 local slider = require("src.ui.slider")
@@ -28,7 +29,7 @@ function pitLaneSettings.pitLaneSettings()
     pitLaneSettings.store.pitLaneScale = slider.main(language.get("SIZE"), string.format("%.2f", pitLaneSettings.store.pitLaneScale), vec2(20, initPos), 250, pitLaneSettings.store.pitLaneScale, 0.7, 3)
 
     initPos = initPos + 60
-    pitLaneSettings.store.optionPlate = droplist.main("##stylePitlane", language.get("STYLE"), vec2(20, initPos + 5), 100, pitLaneSettings.store.optionPlate, plates, droplist.PosText.Default)
+    pitLaneSettings.store.optionPlate = droplist.main("##stylePitlane", language.get("STYLE"), vec2(20, initPos + 5), config.findLenghtLongestString(plates, 12).x + 40, pitLaneSettings.store.optionPlate, plates, droplist.PosText.Default)
 
     initPos = initPos + 40
 

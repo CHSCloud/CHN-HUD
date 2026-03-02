@@ -82,6 +82,8 @@
   "FOCUSED_CAR_COLOR": "Focused Car Color",
   "INTERNAL": "Internal",
   "PLAYERS": "Players",
+  "NUMBERS": "Numbers",
+  "NAMES": "Names",
   "FEATURES_OF_TRACK": "Features of track",
   "SECTIONS": "Show sections",
   "BG_COLOR_SECTIONS": "Background color",
@@ -93,5 +95,13 @@
   "BOTTOM_RIGHT": "BOTTOM RIGHT",
   "TOP_CENTER": "TOP CENTER",
   "BOTTOM_CENTER": "BOTTOM CENTER",
-  "NEW_UPDATE": "NEW UPDATE AVAILABLE: "
+  "CENTER": "CENTER",
+  "LEFT": "LEFT",
+  "RIGHT": "RIGHT",
+  "NEW_UPDATE": "NEW UPDATE AVAILABLE: ",
+  "LENGHT": "Lenght",
+  "ADD_SECTION": "Add section",
+  "RESET_SECTIONS": "Reset sections to default",
+  "CLEAR_SECTIONS": "Clear all sections",
+  "TOTAL": "Total"
 }

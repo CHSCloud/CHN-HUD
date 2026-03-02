@@ -82,6 +82,8 @@
   "FOCUSED_CAR_COLOR": "Color del coche enfocado",
   "INTERNAL": "Interno",
   "PLAYERS": "Jugadores",
+  "NUMBERS": "Números",
+  "NAMES": "Nombres",
   "FEATURES_OF_TRACK": "Características de la pista",
   "SECTIONS": "Mostrar secciones",
   "BG_COLOR_SECTIONS": "Color de fondo",
@@ -93,5 +95,13 @@
   "BOTTOM_RIGHT": "ABAJO DERECHA",
   "TOP_CENTER": "ARRIBA CENTRO",
   "BOTTOM_CENTER": "ABAJO CENTRO",
-  "NEW_UPDATE": "NUEVA ACTUALIZACIÓN DISPONIBLE: "
+  "CENTER": "CENTRO",
+  "LEFT": "IZQUIERDA",
+  "RIGHT": "DERECHA",
+  "NEW_UPDATE": "NUEVA ACTUALIZACIÓN DISPONIBLE: ",
+  "LENGHT": "Longitud",
+  "ADD_SECTION": "Añadir sección",
+  "RESET_SECTIONS": "Restablecer secciones a valores predeterminados",
+  "CLEAR_SECTIONS": "Borrar todas las secciones",
+  "TOTAL": "Total"
 }

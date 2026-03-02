@@ -346,6 +346,10 @@ end
 
 -- Configurações das Seções
 local function sectionsSettings()
+    local types = {
+        language.get("NUMBERS"), 
+        language.get("NAMES")
+    }
     local initPos = 80
     if toggleButton.main("sectionsTrackActive", vec2(20, initPos), mapSettings.store.sectionsTrackActive, language.get("SECTIONS")) then
         mapSettings.store.sectionsTrackActive = not mapSettings.store.sectionsTrackActive
@@ -354,12 +358,12 @@ local function sectionsSettings()
     initPos = initPos + 30
     if mapSettings.store.sectionsTrackActive then
         ui.dwriteDrawText(language.get("COLOR"), 12, vec2(250, initPos - 10), COLOR.WHITE)
-        mapSettings.store.sectionsType = droplist.main("sectionsType", "Type", vec2(20, initPos), 100,  mapSettings.store.sectionsType, {"Numbers", "Names"}, droplist.PosText.Start)
+        mapSettings.store.sectionsType = droplist.main("sectionsType", language.get("TYPE"), vec2(20, initPos), config.findLenghtLongestString(types, 12).x + 40,  mapSettings.store.sectionsType, types, droplist.PosText.Start)
         mapSettings.store.sectionsBgColor = colorSelector.main(language.get("BG_COLOR_SECTIONS"), mapSettings.store.sectionsBgColor, vec2(250, initPos + 10), "bgcolor")
 
         ui.drawLine(vec2(220, initPos - 8), vec2(220, initPos + 65), COLOR.WHITE_LINE, 2)
         initPos = initPos + 35
-        mapSettings.store.sectionsLenght = math.floor(slider.main("Lenght", string.format("%.0f", mapSettings.store.sectionsLenght), vec2(20, initPos + 5), 100, mapSettings.store.sectionsLenght, 5, 10, slider.PosText.Start))
+        mapSettings.store.sectionsLenght = math.floor(slider.main(language.get("LENGHT"), string.format("%.0f", mapSettings.store.sectionsLenght), vec2(20, initPos + 5), 100, mapSettings.store.sectionsLenght, 5, 10, slider.PosText.Start))
         mapSettings.store.sectionsTextColor = colorSelector.main(language.get("TEXT_COLOR_SECTIONS"), mapSettings.store.sectionsTextColor, vec2(250, initPos + 5), "textcolor")
 
         

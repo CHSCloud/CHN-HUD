@@ -1,4 +1,5 @@
 local button = require("src.ui.button")
+local language = require("lang.language")
 local droplist = require("src.ui.droplist")
 local formText = require("src.ui.formText")
 
@@ -44,6 +45,12 @@ end
 ---@param size vec2
 ---@return boolean, boolean
 function sectionPanel.main(id, iniFile, pos, size)
+    local positions = {
+        language.get("CENTER"),
+        language.get("LEFT"), 
+        language.get("RIGHT")
+    }
+
     local isEdited = false
     local resetSectionsINI = false
     local position = 0
@@ -89,13 +96,13 @@ function sectionPanel.main(id, iniFile, pos, size)
                 iniFile:set(section, "PROGRESS", progress)
                 if isItemEdited and ui.windowFocused(ui.FocusedFlags.ChildWindows) then edited = true end
 
-                position = droplist.main(section .. "POSITION", "", vec2(sizeText.x + sizeProgress.x + 40, 8 + height), 100, iniFile:get(section, "POSITION", 1), {"CENTER", "LEFT", "RIGHT"}, droplist.PosText.Start)
+                position = droplist.main(section .. "POSITION", "", vec2(sizeText.x + sizeProgress.x + 40, 8 + height), config.findLenghtLongestString(positions, 12).x + 40, iniFile:get(section, "POSITION", 1), positions, droplist.PosText.Start)
                 if position ~= iniFile:get(section, "POSITION", 1) then
                     iniFile:set(section, "POSITION", position)
                     edited = true
                 end
 
-                if deleteSectionButton(vec2(sizeText.x + sizeProgress.x + 165, 10 + height), vec2(20, 20)) and ui.windowFocused(ui.FocusedFlags.ChildWindows) then
+                if deleteSectionButton(vec2(sizeText.x + sizeProgress.x + config.findLenghtLongestString(positions, 12).x + 100, 10 + height), vec2(20, 20)) and ui.windowFocused(ui.FocusedFlags.ChildWindows) then
                     iniFile:mapConfig(deleteSection(iniFile.sections, section, index))
                     edited = true
                 end
@@ -109,18 +116,18 @@ function sectionPanel.main(id, iniFile, pos, size)
         end
     ) or false
 
-    if button.main(pos + vec2(5,5), "Add section", ui.windowFocused(ui.FocusedFlags.ChildWindows)) then
+    if button.main(pos + vec2(5,5), language.get("ADD_SECTION"), ui.windowFocused(ui.FocusedFlags.ChildWindows)) then
         iniFile:set("SECTION_".. tostring(numberSections), "TEXT", tostring(ac.getTrackName()))
         iniFile:set("SECTION_".. tostring(numberSections), "PROGRESS", 0)
         iniFile:set("SECTION_".. tostring(numberSections), "POSITION", 1)
         isEdited = true
     end
 
-    if button.main(pos + vec2(10,size.y - 30), "Reset sections to default", ui.windowFocused(ui.FocusedFlags.ChildWindows)) then
+    if button.main(pos + vec2(10,size.y - 30), language.get("RESET_SECTIONS"), ui.windowFocused(ui.FocusedFlags.ChildWindows)) then
         resetSectionsINI = true
     end
 
-    if button.main(pos + vec2(200, size.y - 30), "Clear all sections", ui.windowFocused(ui.FocusedFlags.ChildWindows)) then
+    if button.main(pos + vec2(ui.measureText(language.get("RESET_SECTIONS")).x + 50, size.y - 30), language.get("CLEAR_SECTIONS"), ui.windowFocused(ui.FocusedFlags.ChildWindows)) then
         iniFile.sections = {}
         isEdited = true
     end

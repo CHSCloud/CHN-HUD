@@ -134,7 +134,7 @@ local function drawRPM(pos)
     }
     local processCircleType = {
         language.get("DEFAULT"),
-        "Total"
+        language.get("TOTAL")
     }
 
     ui.dwriteDrawText("RPM", 12, vec2(pos.x - 5, pos.y), COLOR.WHITE)
@@ -163,7 +163,7 @@ local function drawRPM(pos)
         if pedalsSettings.store.rpmType == 1 then
 
             pos.y = pos.y + 40
-            pedalsSettings.store.rpmProcessType = droplist.main("##progress", language.get("PROGRESS"), vec2(pos.x, pos.y), 100, pedalsSettings.store.rpmProcessType, processCircleType, droplist.PosText.Start)
+            pedalsSettings.store.rpmProcessType = droplist.main("##progress", language.get("PROGRESS"), vec2(pos.x, pos.y), config.findLenghtLongestString(processCircleType, 12).x + 40, pedalsSettings.store.rpmProcessType, processCircleType, droplist.PosText.Start)
             for i = 1, 9 do
                 local c1, c2, c3 = COLOR.GREEN, COLOR.GREEN, COLOR.GREEN
                 
