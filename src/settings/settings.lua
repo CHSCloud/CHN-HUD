@@ -49,6 +49,7 @@ end
 
 local isLatestVersion = true
 local onlineVersion = ''
+local isTabUpdateActive = false
 local function verifyVersion()
     ac.log("oi")
     local manifest = ac.INIConfig.load(ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\CHN-HUD\\manifest.ini")
@@ -67,15 +68,10 @@ local function verifyVersion()
             onlineVersion = string.match(html, '<h1 class="p%-title%-value">.-<span class="u%-muted">(.-)</span>')
 
             if onlineVersion then
-                
-                ac.log("Versão encontrada " .. onlineVersion)
-                ac.log("Versão atual " .. currentVersion)
                 if onlineVersion ~= currentVersion then
                   isLatestVersion = false
+                  isTabUpdateActive = true
                 end
-                
-            else
-                ac.log("Não foi possível localizar a versão.")
             end
         end)
     end
@@ -166,11 +162,12 @@ function settings.windowMain()
 
 
   local posResize
-  if not isLatestVersion then
+  if not isLatestVersion and isTabUpdateActive then
     ui.drawRectFilled(vec2(0, WindowSettingsSize.y - 30), WindowSettingsSize, COLOR.WHITE)
+
     ui.setCursor(vec2(20, WindowSettingsSize.y - 30))
-    ui.dwriteTextAligned("NOVA ATUALIZAÇÃO DISPONÍVEL: ", 20, ui.Alignment.Start,ui.Alignment.Center, vec2(WindowSettingsSize.x, 30), false, COLOR.BLACK)
-    local linkPosX = 20 + ui.measureDWriteText("NOVA ATUALIZAÇÃO DISPONÍVEL: ", 20).x
+    ui.dwriteTextAligned(language.get("NEW_UPDATE"), 20, ui.Alignment.Start,ui.Alignment.Center, vec2(WindowSettingsSize.x, 30), false, COLOR.BLACK)
+    local linkPosX = 20 + ui.measureDWriteText(language.get("NEW_UPDATE"), 20).x
 
     if config.isMouseInWindow(ui.mouseLocalPos(), linkPosX + 10, linkPosX + ui.measureDWriteText("CHN HUD " .. onlineVersion, 20).x, WindowSettingsSize.y - 30, WindowSettingsSize.y) then
       ui.setMouseCursor(ui.MouseCursor.Hand)
@@ -182,6 +179,20 @@ function settings.windowMain()
     else
       ui.setCursor(vec2(linkPosX + 10, WindowSettingsSize.y - 30))
       ui.dwriteTextAligned("CHN HUD " .. onlineVersion, 20, ui.Alignment.Start,ui.Alignment.Center, vec2(WindowSettingsSize.x, 30), false, COLOR.BLACK)
+    end
+    
+    if config.isMouseInWindow(ui.mouseLocalPos(),WindowSettingsSize.x - 38, WindowSettingsSize.x - 12, WindowSettingsSize.y - 28, WindowSettingsSize.x - 2) then
+      ui.setMouseCursor(ui.MouseCursor.Hand)
+      ui.drawRectFilled(WindowSettingsSize - vec2(38,28), WindowSettingsSize - vec2(12,2), COLOR.RED_DARK, 5)
+      ui.drawLine(WindowSettingsSize - vec2(34,24), WindowSettingsSize - vec2(16,6), COLOR.WHITE, 2)
+      ui.drawLine(WindowSettingsSize - vec2(34, 6), WindowSettingsSize - vec2(16,24), COLOR.WHITE, 2)
+      if ui.mouseClicked(ui.MouseButton.Left) then
+        isTabUpdateActive = false
+      end
+    else
+      ui.drawRectFilled(WindowSettingsSize - vec2(38,28), WindowSettingsSize - vec2(12,2), COLOR.GRAY_BG, 5)
+      ui.drawLine(WindowSettingsSize - vec2(34,24), WindowSettingsSize - vec2(16,6), COLOR.WHITE, 2)
+      ui.drawLine(WindowSettingsSize - vec2(34, 6), WindowSettingsSize - vec2(16,24), COLOR.WHITE, 2)
     end
     posResize = WindowSettingsSize - vec2(45,65) + vec2(0,ui.getScrollY())
 
@@ -206,7 +217,6 @@ function settings.windowMain()
   ui.drawLine(posResize + vec2(20), posResize + vec2(20,10), COLOR.WHITE, 2)
   ui.drawLine(posResize + vec2(0,20), posResize + vec2(10,20), COLOR.WHITE, 2)
   ui.drawLine(posResize + vec2(0,10), posResize + vec2(0,20), COLOR.WHITE, 2)
-  
 end
 
 
