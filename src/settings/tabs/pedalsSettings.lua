@@ -40,7 +40,10 @@ local defaultValues = {
     rpmType = 1,
     rpmProcessType = 1,
     numLights = 9,
-    barLength = 0.55
+    barLength = 0.55,
+
+    drsActvationActive = false,
+    drsPos = 1
 }
 
 pedalsSettings.store = ac.storage(defaultValues)
@@ -215,9 +218,9 @@ function pedalsSettings.pedalsSettings()
     positionsKeysBorders = {
         brakebiasPos = pedalsSettings.store.brakebiasPos,
         fuelPos = pedalsSettings.store.fuelPos,
-        tractionControlPos = pedalsSettings.store.tractionControlPos
+        tractionControlPos = pedalsSettings.store.tractionControlPos,
+        drsPos = pedalsSettings.store.drsPos
     }
-    
     positionsKeysCenter = {
         rpmPos = pedalsSettings.store.rpmPos,
         p2pPos = pedalsSettings.store.p2pPos
@@ -289,6 +292,23 @@ function pedalsSettings.pedalsSettings()
         end 
     end
 
+    initPos = initPos + 30; 
+    if toggleButton.main("drs", vec2(20, initPos), pedalsSettings.store.drsActvationActive, "DRS") then
+        pedalsSettings.store.drsActvationActive = not pedalsSettings.store.drsActvationActive
+    end
+
+    if not CAR.drsPresent then
+        ui.setCursor(vec2(200, initPos))
+        ui.dwriteTextAligned(language.get("ALERT_TC"), 12, ui.Alignment.Center, ui.Alignment.Center, vec2(250, 20), false, COLOR.RED)  
+    else
+        if pedalsSettings.store.drsActvationActive then
+            local old = pedalsSettings.store.drsPos
+            pedalsSettings.store.drsPos = droplist.main("##drsPos", "|  " .. language.get("POSITION"), vec2(ui.measureText("DRS").x + 85, initPos - 3), config.findLenghtLongestString(positionsBorders, 12).x + 40, pedalsSettings.store.drsPos, positionsBorders, droplist.PosText.Start)
+            if pedalsSettings.store.drsPos ~= old then
+                invertPositionBorder(old, pedalsSettings.store.drsPos, "drsPos")
+            end
+        end 
+    end
     initPos = initPos + 40
     ui.drawLine(vec2(10, initPos), vec2(WindowSettingsSize.x - 18, initPos), COLOR.WHITE_LINE, 2)
 
@@ -296,10 +316,10 @@ function pedalsSettings.pedalsSettings()
     drawOthers(vec2(270, 120))
 
     -- RPM
-    drawRPM(vec2(20, 300))
+    drawRPM(vec2(20, 320))
 
     -- PEDAIS
-    initPos = 500
+    initPos = 520
     ui.drawLine(vec2(10, initPos), vec2(WindowSettingsSize.x - 18, initPos), COLOR.WHITE_LINE, 2)
     initPos = initPos + 10
     ui.dwriteDrawText(language.get("PEDALS"), 12, vec2(15, initPos), COLOR.WHITE)

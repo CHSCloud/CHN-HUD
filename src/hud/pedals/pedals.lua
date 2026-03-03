@@ -495,6 +495,17 @@ local function drawTC()
   end
 end
 
+local function drawDRSActivation()
+  local size = vec2(30,20):scale(pedalsSettings.store.pedalsScale)
+  setPositionContentBorder(pedalsSettings.store.drsPos, size)
+  ui.setCursor(contentPositions[pedalsSettings.store.drsPos][1])
+  if CAR.drsActive then
+    ui.drawCircleFilled(contentPositions[pedalsSettings.store.drsPos][1] + vec2(size.x / 2, size.y / 2), 7.5 * pedalsSettings.store.pedalsScale, COLOR.GRAY_BG, 20 * pedalsSettings.store.pedalsScale)
+  else
+    ui.drawCircleFilled(contentPositions[pedalsSettings.store.drsPos][1] + vec2(size.x / 2, size.y / 2), 7.5 * pedalsSettings.store.pedalsScale, COLOR.GRAY_BG, 20 * pedalsSettings.store.pedalsScale)
+  end
+end
+
 -- Desenha o brake bias
 local function drawBrakeBias()
   setPositionContentBorder(pedalsSettings.store.brakebiasPos, vec2(60, 20):scale(pedalsSettings.store.pedalsScale))
@@ -660,6 +671,10 @@ function pedals.windowMain()
 
   if pedalsSettings.store.tractionControlActive and CAR.tractionControlModes ~= 0 then
     drawTC()
+  end
+
+  if pedalsSettings.store.drsActvationActive and CAR.drsPresent then
+    drawDRSActivation()
   end
 
   -- Ajusta tamanho da janela para conter todos os conteúdos das bordas
