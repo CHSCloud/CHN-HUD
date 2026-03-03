@@ -32,6 +32,9 @@ local gearBackgroundWidth
 -- Velocidade
 local fontSpeed
 
+-- DRS
+local initDRSActivation = 0
+
 -- Conteúdo das posições das bordas
 local position = {
   vec2(), -- Posição
@@ -496,14 +499,31 @@ local function drawTC()
 end
 
 local function drawDRSActivation()
-  local size = vec2(30,20):scale(pedalsSettings.store.pedalsScale)
+  local size = vec2(55,22):scale(pedalsSettings.store.pedalsScale)
   setPositionContentBorder(pedalsSettings.store.drsPos, size)
   ui.setCursor(contentPositions[pedalsSettings.store.drsPos][1])
-  if CAR.drsActive then
-    ui.drawCircleFilled(contentPositions[pedalsSettings.store.drsPos][1] + vec2(size.x / 2, size.y / 2), 7.5 * pedalsSettings.store.pedalsScale, COLOR.GRAY_BG, 20 * pedalsSettings.store.pedalsScale)
+  
+  ui.setCursor(contentPositions[pedalsSettings.store.drsPos][1] + vec2(24,4):scale(pedalsSettings.store.pedalsScale))
+  ui.dwriteTextAligned("DRS", 11 * pedalsSettings.store.pedalsScale,ui.Alignment.Start,ui.Alignment.Center,vec2(30,14):scale(pedalsSettings.store.pedalsScale),false, COLOR.WHITE)
+  local color
+  if CAR.drsAvailable then
+    if initDRSActivation == 0 then
+      initDRSActivation = Timer
+    end
+    if Timer - initDRSActivation < 4 then
+      if (4 * Timer) % 2 >= 1 then
+        color = COLOR.GREEN
+      else
+        color = COLOR.GRAY_BG
+      end
+    else
+      color = COLOR.GREEN
+    end
   else
-    ui.drawCircleFilled(contentPositions[pedalsSettings.store.drsPos][1] + vec2(size.x / 2, size.y / 2), 7.5 * pedalsSettings.store.pedalsScale, COLOR.GRAY_BG, 20 * pedalsSettings.store.pedalsScale)
+    initDRSActivation = 0
+    color = COLOR.GRAY_BG
   end
+  ui.drawCircleFilled(contentPositions[pedalsSettings.store.drsPos][1] + vec2(15,11):scale(pedalsSettings.store.pedalsScale), 7 * pedalsSettings.store.pedalsScale, color, 20 * pedalsSettings.store.pedalsScale)
 end
 
 -- Desenha o brake bias

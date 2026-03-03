@@ -313,7 +313,7 @@ function pedalsSettings.pedalsSettings()
     ui.drawLine(vec2(10, initPos), vec2(WindowSettingsSize.x - 18, initPos), COLOR.WHITE_LINE, 2)
 
     -- OUTROS
-    drawOthers(vec2(270, 120))
+    drawOthers(vec2(290, 120))
 
     -- RPM
     drawRPM(vec2(20, 320))
