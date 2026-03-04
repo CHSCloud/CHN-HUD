@@ -16,6 +16,7 @@ local pinStorage = ac.storage{
     ["Session Laps"] = false,
     ["Starting Lights"] = false,
     ["Session Flags"] = false,
+    ["Delta Bar"] = false,
     ["Map"] = false
 }
 
@@ -26,6 +27,7 @@ local windowNames = {
     "Session Laps",
     "Starting Lights",
     "Session Flags",
+    "Delta Bar",
     "Map"
 }
 

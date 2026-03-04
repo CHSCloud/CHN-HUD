@@ -1,5 +1,6 @@
 local config = require("common.config")
 local pinCheckBox = require("src.ui.pinCheckBox")
+local deltaBarSettings = require("src.settings.tabs.deltaBarSettings")
 
 local deltaBar = {}
 -- amostragem por posição da pista (persistente entre frames)
@@ -14,19 +15,19 @@ local smoothedDeltaMeter = 0
 
 function deltaBar.windowMain()
     --Limites e Tamanhos
-    local limitBarDeltaBackground = vec2(500, 25)
-    local limitBackgroundText = vec2(90, 40)
+    local limitBarDeltaBackground = vec2(500, 25):scale(deltaBarSettings.store.deltaBarScale)
+    local limitBackgroundText = vec2(90, 40):scale(deltaBarSettings.store.deltaBarScale)
 
-    local limitColorOnBackground = 5
-    local limitBarDeltaBackground_limitBackgroundText = 2
+    local limitColorOnBackground = 5 * deltaBarSettings.store.deltaBarScale
+    local limitBarDeltaBackground_limitBackgroundText = 2 * deltaBarSettings.store.deltaBarScale
 
     --Tamanho Fonte Texto Delta
-    local fontTextDelta = 30
+    local fontTextDelta = 30 * deltaBarSettings.store.deltaBarScale
 
     --Bordas Arredondadas
-    local cornerBarDeltaBackground = 8
-    local cornerColorBarDelta = 8
-    local cornerBackgroundText = 8
+    local cornerBarDeltaBackground = 8 * deltaBarSettings.store.deltaBarScale
+    local cornerColorBarDelta = 8 * deltaBarSettings.store.deltaBarScale
+    local cornerBackgroundText = 8 * deltaBarSettings.store.deltaBarScale
 
     --Cores Barra Delta
     local verde = {r= 102, g=213, b=79}
@@ -117,6 +118,9 @@ function deltaBar.windowMain()
     ui.setCursor(vec2(barEnd - limitBackgroundText.x / 2, limitBarDeltaBackground_limitBackgroundText + limitBarDeltaBackground.y))
     ui.dwriteTextAligned(deltaText, fontTextDelta, ui.Alignment.Center, ui.Alignment.Center, limitBackgroundText, false, textColor)
     ui.popDWriteFont()
+
+    config.resize(vec2(500,70):scale(deltaBarSettings.store.deltaBarScale), "Delta Bar")
+    pinCheckBox.main(deltaBarSettings.store.deltaBarScale, "Delta Bar", config.getWindow("Delta Bar"):pinned(), vec2(500,70):scale(deltaBarSettings.store.deltaBarScale))
 end
 
 

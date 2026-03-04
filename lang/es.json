@@ -103,5 +103,6 @@
   "ADD_SECTION": "Añadir sección",
   "RESET_SECTIONS": "Restablecer secciones a valores predeterminados",
   "CLEAR_SECTIONS": "Borrar todas las secciones",
-  "TOTAL": "Total"
+  "TOTAL": "Total",
+  "DELTA_BAR": "Barra delta"
 }
