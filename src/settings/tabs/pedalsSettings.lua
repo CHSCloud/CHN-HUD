@@ -298,8 +298,8 @@ function pedalsSettings.pedalsSettings()
     end
 
     if not CAR.drsPresent then
-        ui.setCursor(vec2(200, initPos))
-        ui.dwriteTextAligned(language.get("ALERT_TC"), 12, ui.Alignment.Center, ui.Alignment.Center, vec2(250, 20), false, COLOR.RED)  
+        ui.setCursor(vec2(70, initPos))
+        ui.dwriteTextAligned(language.get("ALERT_DRS"), 12, ui.Alignment.Center, ui.Alignment.Center, vec2(250, 20), false, COLOR.RED)  
     else
         if pedalsSettings.store.drsActvationActive then
             local old = pedalsSettings.store.drsPos

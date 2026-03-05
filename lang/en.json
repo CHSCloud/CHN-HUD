@@ -8,6 +8,7 @@
   "TC": "Traction control",
   "ALERT_TC": "This car does not have tranction control",
   "ALERT_P2P": "This car does not have P2P",
+  "ALERT_DRS": "This car does not have DRS",
   "LANGUAGE": "Language",
   "ELEMENTS": "Content",
   "GENERAL": "General",

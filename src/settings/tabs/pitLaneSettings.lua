@@ -31,9 +31,9 @@ function pitLaneSettings.pitLaneSettings()
     initPos = initPos + 60
     pitLaneSettings.store.optionPlate = droplist.main("##stylePitlane", language.get("STYLE"), vec2(20, initPos + 5), config.findLenghtLongestString(plates, 12).x + 40, pitLaneSettings.store.optionPlate, plates, droplist.PosText.Default)
 
-    initPos = initPos + 40
+    initPos = initPos + 80
 
-    if button.main(vec2(20, initPos), language.get("RESET_DEFAULT"), not ui.windowFocused(ui.FocusedFlags.ChildWindows)) then
+    if button.main(vec2(20, initPos), language.get("RESET_DEFAULT")) then
         resetToDefault()
     end
 end
