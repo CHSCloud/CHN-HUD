@@ -123,7 +123,7 @@ local function drawOthers(pos)
             end
         end
     else 
-        ui.setCursor(vec2(pos.x + 70, pos.y))
+        ui.setCursor(vec2(pos.x + ui.measureDWriteText("P2P", 12).x + 50, pos.y))
         ui.dwriteTextAligned(language.get("ALERT_P2P"), 12, ui.Alignment.Center, ui.Alignment.Center, vec2(180, 20), false, COLOR.RED)  
     end
 end
@@ -270,7 +270,7 @@ function pedalsSettings.pedalsSettings()
     end
     -- Alerta do ABS
     if CAR.absModes == 0 then
-        ui.setCursor(vec2(100, initPos))
+        ui.setCursor(vec2(20 + ui.measureDWriteText("ABS", 12).x + 53, initPos))
         ui.dwriteTextAligned(language.get("ALERT_ABS"), 12, ui.Alignment.Center, ui.Alignment.Center, vec2(180, 20), false, COLOR.RED)  
     end
 
@@ -280,7 +280,7 @@ function pedalsSettings.pedalsSettings()
     end
 
     if CAR.tractionControlModes == 0 then
-        ui.setCursor(vec2(200, initPos))
+        ui.setCursor(vec2(20 + ui.measureDWriteText(language.get("TC"), 12).x + 55, initPos))
         ui.dwriteTextAligned(language.get("ALERT_TC"), 12, ui.Alignment.Center, ui.Alignment.Center, vec2(250, 20), false, COLOR.RED)  
     else
         if pedalsSettings.store.tractionControlActive then
@@ -298,7 +298,7 @@ function pedalsSettings.pedalsSettings()
     end
 
     if not CAR.drsPresent then
-        ui.setCursor(vec2(70, initPos))
+        ui.setCursor(vec2(20 + ui.measureDWriteText("DRS", 12).x + 18, initPos))
         ui.dwriteTextAligned(language.get("ALERT_DRS"), 12, ui.Alignment.Center, ui.Alignment.Center, vec2(250, 20), false, COLOR.RED)  
     else
         if pedalsSettings.store.drsActvationActive then
