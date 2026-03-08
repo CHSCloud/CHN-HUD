@@ -539,30 +539,33 @@ end
 -- Desenha a bateria
 local oldKersCharge = 0
 local function drawP2p()
-  local size = vec2(75 * pedalsSettings.store.pedalsScale, 10 * pedalsSettings.store.pedalsScale)
-  setPositionContentCenter(pedalsSettings.store.p2pPos, size + vec2(0,5):scale(pedalsSettings.store.pedalsScale))
+  local size = vec2(0, 10 * pedalsSettings.store.pedalsScale)
   local pos = vec2()
   pos.y = contentPositions[pedalsSettings.store.p2pPos][1].y
   local space
   local center
   if pedalsSettings.store.p2pPos == 5 then
     space = currentWindowWidth - contentPositions[1][2].x - contentPositions[2][2].x
-    if space < 80 * pedalsSettings.store.pedalsScale then
+    if space < 75 * pedalsSettings.store.pedalsScale then
       currentWindowWidth = currentWindowWidth + (80 * pedalsSettings.store.pedalsScale - space)
       space = currentWindowWidth - contentPositions[1][2].x - contentPositions[2][2].x
     end
+    size.x = space * pedalsSettings.store.p2pLenght
     center = contentPositions[1][2].x + (space) / 2
     pos.x = center - (size.x / 2)
     pos.y = pos.y + 5 * pedalsSettings.store.pedalsScale
   else
     space = currentWindowWidth - contentPositions[3][2].x - contentPositions[4][2].x
-        if space < 80 * pedalsSettings.store.pedalsScale then
+    if space < 75 * pedalsSettings.store.pedalsScale then
       currentWindowWidth = currentWindowWidth + (80 * pedalsSettings.store.pedalsScale - space)
       space = currentWindowWidth - contentPositions[3][2].x - contentPositions[4][2].x
     end
+    size.x = math.max(space * pedalsSettings.store.p2pLenght, 50 * pedalsSettings.store.pedalsScale)
     center = contentPositions[3][2].x + (space) / 2
     pos.x = center - (size.x / 2)
+    pos.y = pos.y - 15 * pedalsSettings.store.pedalsScale
   end
+  setPositionContentCenter(pedalsSettings.store.p2pPos, size + vec2(0,5):scale(pedalsSettings.store.pedalsScale))
 
   ui.drawRectFilled(pos, pos + size, COLOR.GRAY_BG, 10 * pedalsSettings.store.pedalsScale)
 
@@ -576,7 +579,9 @@ local function drawP2p()
     end
   end
 
-  ui.drawRectFilled(pos, pos + vec2(size.x * CAR.kersCharge, size.y), color, 10 * pedalsSettings.store.pedalsScale)
+  if CAR.kersCharge > 0.01 then
+    ui.drawRectFilled(pos, pos + vec2(size.x * CAR.kersCharge, size.y), color, 10 * pedalsSettings.store.pedalsScale)
+  end
   ui.setCursor(pos)
   ui.dwriteTextAligned(string.format("%.0f%%", CAR.kersCharge * 100), 10 * pedalsSettings.store.pedalsScale, ui.Alignment.Center, ui.Alignment.Center, vec2(size.x, size.y), false, COLOR.WHITE)
   oldKersCharge = CAR.kersCharge

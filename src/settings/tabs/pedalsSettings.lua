@@ -20,6 +20,7 @@ local defaultValues = {
     brakebiasPos = 3,
 
     p2pActive = false,
+    p2pLenght = 0.25,
     p2pPos = 6,
 
     clutchActive = true,
@@ -111,25 +112,11 @@ local function drawOthers(pos)
         end
     end
     pos.y = pos.y + 30; 
-    if toggleButton.main("battery", vec2(pos.x, pos.y), pedalsSettings.store.p2pActive, "P2P") then
-        pedalsSettings.store.p2pActive = not pedalsSettings.store.p2pActive
-    end
-    if CAR.kersPresent then
-        if pedalsSettings.store.p2pActive then
-            local old = pedalsSettings.store.p2pPos
-            pedalsSettings.store.p2pPos = droplist.main("##p2pPos","|  " .. language.get("POSITION"), vec2(pos.x + ui.measureDWriteText("P2P", 12).x + 60, pos.y - 3), config.findLenghtLongestString(positionsCenters, 12).x + 160, pedalsSettings.store.p2pPos, positionsCenters, droplist.PosText.Start)
-            if pedalsSettings.store.p2pPos ~= old then
-                invertPositionCenter(old, pedalsSettings.store.p2pPos, "p2pPos")
-            end
-        end
-    else 
-        ui.setCursor(vec2(pos.x + ui.measureDWriteText("P2P", 12).x + 50, pos.y))
-        ui.dwriteTextAligned(language.get("ALERT_P2P"), 12, ui.Alignment.Center, ui.Alignment.Center, vec2(180, 20), false, COLOR.RED)  
-    end
 end
 
 -- Desenha a seção de RPM
 local function drawRPM(pos)
+    local copyPos = pos + vec2(300,0)
     --pedalsSettings.store.rpmPos = 5
     local rpmLabels = {
         language.get("SHIFT_LIGHTS"),
@@ -201,6 +188,31 @@ local function drawRPM(pos)
             pedalsSettings.store.barLength = slider.main(language.get("PERCENTAGE"), string.format("%.0f", (pedalsSettings.store.barLength+ 0.05) * 100) .. "%", vec2(pos.x, pos.y + 10), 130, pedalsSettings.store.barLength, 0.25, 0.95, slider.PosText.Start)
         end
         --
+    end
+
+    ui.dwriteDrawText("P2P", 12, vec2(copyPos.x - 5, copyPos.y), COLOR.WHITE)
+    copyPos.y = copyPos.y + 25
+    if toggleButton.main("battery", vec2(copyPos.x, copyPos.y), pedalsSettings.store.p2pActive, "") then
+        pedalsSettings.store.p2pActive = not pedalsSettings.store.p2pActive
+    end
+    if CAR.kersPresent then
+        if pedalsSettings.store.p2pActive then
+            local old = pedalsSettings.store.p2pPos
+            copyPos.y = copyPos.y + 30
+            pedalsSettings.store.p2pPos = droplist.main("##p2pPos",language.get("POSITION"), vec2(copyPos.x, copyPos.y - 3), config.findLenghtLongestString(positionsCenters, 12).x + 160, pedalsSettings.store.p2pPos, positionsCenters, droplist.PosText.Start)
+            if pedalsSettings.store.p2pPos ~= old then
+                invertPositionCenter(old, pedalsSettings.store.p2pPos, "p2pPos")
+            end
+
+            copyPos.y = copyPos.y + 30
+            pedalsSettings.store.p2pLenght = slider.main(language.get("LENGHT"), string.format("%.0f", (pedalsSettings.store.p2pLenght+ 0.05) * 100).."%", vec2(copyPos.x, copyPos.y + 10), 130, pedalsSettings.store.p2pLenght, 0.25, 0.95, slider.PosText.Start)
+
+
+
+        end
+    else 
+        ui.setCursor(vec2(copyPos.x + ui.measureDWriteText("P2P", 12).x + 30, copyPos.y))
+        ui.dwriteTextAligned(language.get("ALERT_P2P"), 12, ui.Alignment.Center, ui.Alignment.Center, vec2(180, 20), false, COLOR.RED)  
     end
 end
 
