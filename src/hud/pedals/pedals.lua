@@ -454,6 +454,7 @@ local function drawWheel()
     ui.beginRotation()
     ui.image("assets/Wheel.png", vec2(width, height), ui.ImageFit.Fit)
     ui.endRotation(90 - CAR.steer)
+
   elseif pedalsSettings.store.wheelType == 2 then
     local thickness = 7 * pedalsSettings.store.pedalsScale
     local lenght = 5 * pedalsSettings.store.pedalsScale
@@ -622,7 +623,7 @@ function pedals.windowMain()
   barLimitSize = vec2(20, 6) * pedalsSettings.store.pedalsScale
   barMidleSize = vec2(20, 44) * pedalsSettings.store.pedalsScale
   barPaddingMidle = 2 * pedalsSettings.store.pedalsScale
-  --ui.drawRectFilled(vec2(0,0), vec2(65,20):scale(pedalsSettings.store.pedalsScale), COLOR.GRAY_BG)
+
   contentPositions = {
     { vec2(0, 0), vec2(0, 0) }, -- SUPERIOR ESQUEDO
     { vec2(currentWindowSize.x, 0), vec2(0, 0) }, -- SUPERIOR DIREITO
@@ -646,7 +647,6 @@ function pedals.windowMain()
   ui.drawRectFilled(vec2(0, 0), currentWindowSize, WindowsColor, 10 * pedalsSettings.store.pedalsScale)
 
   -- Desenha componentes
-
   if pedalsSettings.store.gearActive then
     drawGear()
   else 
@@ -686,7 +686,6 @@ function pedals.windowMain()
   end
 
   if pedalsSettings.store.brakeBiasActive then
-    --contentBottom = 20 * pedalsSettings.store.pedalsScale
     drawBrakeBias()
   end
   
@@ -727,7 +726,6 @@ function pedals.windowMain()
     contentBottom = 0 
   end
 
-  --
   currentWindowSize = vec2(currentWindowWidth, currentWindowHeight)
 
   config.resize(currentWindowSize, "Pedals")

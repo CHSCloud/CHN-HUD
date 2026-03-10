@@ -20,7 +20,7 @@ local defaultValues = {
     brakebiasPos = 3,
 
     p2pActive = false,
-    p2pLenght = 0.25,
+    p2pLenght = 0.65,
     p2pPos = 6,
 
     clutchActive = true,
@@ -206,9 +206,6 @@ local function drawRPM(pos)
 
             copyPos.y = copyPos.y + 30
             pedalsSettings.store.p2pLenght = slider.main(language.get("LENGHT"), string.format("%.0f", (pedalsSettings.store.p2pLenght+ 0.05) * 100).."%", vec2(copyPos.x, copyPos.y + 10), 130, pedalsSettings.store.p2pLenght, 0.25, 0.95, slider.PosText.Start)
-
-
-
         end
     else 
         ui.setCursor(vec2(copyPos.x + ui.measureDWriteText("P2P", 12).x + 30, copyPos.y))
