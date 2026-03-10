@@ -52,7 +52,6 @@ local isLatestVersion = true
 local onlineVersion = ''
 local isTabUpdateActive = false
 local function verifyVersion()
-    ac.log("oi")
     local manifest = ac.INIConfig.load(ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\CHN-HUD\\manifest.ini")
     local currentVersion = ''
     if manifest ~= nil then
@@ -150,7 +149,6 @@ function settings.windowMain()
 
   ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
   ui.drawRectFilled(vec2(0, 0), WindowSettingsSize + ui.windowContentSize() , rgbm.from0255(18, 21, 29, 0.85), 0)
-  --ui.drawRectFilled(vec2(0,0), vec2(WindowSettingsSize.x, 40), COLOR.WHITE)
   ui.tabBar('##ID',function ()
     ui.tabItem(language.get("GENERAL"), tabPin and ui.TabItemFlags.SetSelected, geral)
     ui.tabItem(language.get("PEDALS"), pedalsSettings.pedalsSettings)
@@ -186,15 +184,15 @@ function settings.windowMain()
     if config.isMouseInWindow(ui.mouseLocalPos(),WindowSettingsSize.x - 38, WindowSettingsSize.x - 12, WindowSettingsSize.y - 28 + ui.getScrollY(), WindowSettingsSize.x - 2 + ui.getScrollY()) then
       ui.setMouseCursor(ui.MouseCursor.Hand)
       ui.drawRectFilled(WindowSettingsSize - vec2(38,28) + vec2(0,ui.getScrollY()), WindowSettingsSize - vec2(12,2) + vec2(0,ui.getScrollY()), COLOR.RED_DARK, 5)
-      ui.drawLine(WindowSettingsSize - vec2(34,24) + vec2(0,ui.getScrollY()), WindowSettingsSize - vec2(16,6) + vec2(0,ui.getScrollY()), COLOR.WHITE, 2)
-      ui.drawLine(WindowSettingsSize - vec2(34, 6) + vec2(0,ui.getScrollY()), WindowSettingsSize - vec2(16,24) + vec2(0,ui.getScrollY()), COLOR.WHITE, 2)
+      ui.drawLine(WindowSettingsSize - vec2(33,23) + vec2(0,ui.getScrollY()), WindowSettingsSize - vec2(17,7) + vec2(0,ui.getScrollY()), COLOR.WHITE, 2)
+      ui.drawLine(WindowSettingsSize - vec2(33, 7) + vec2(0,ui.getScrollY()), WindowSettingsSize - vec2(17,23) + vec2(0,ui.getScrollY()), COLOR.WHITE, 2)
       if ui.mouseClicked(ui.MouseButton.Left) then
         isTabUpdateActive = false
       end
     else
       ui.drawRectFilled(WindowSettingsSize - vec2(38,28) + vec2(0,ui.getScrollY()), WindowSettingsSize - vec2(12,2) + vec2(0,ui.getScrollY()), COLOR.GRAY_BG, 5)
-      ui.drawLine(WindowSettingsSize - vec2(34,24) + vec2(0,ui.getScrollY()), WindowSettingsSize - vec2(16,6) + vec2(0,ui.getScrollY()), COLOR.WHITE, 2)
-      ui.drawLine(WindowSettingsSize - vec2(34, 6) + vec2(0,ui.getScrollY()), WindowSettingsSize - vec2(16,24) + vec2(0,ui.getScrollY()), COLOR.WHITE, 2)
+      ui.drawLine(WindowSettingsSize - vec2(33,23) + vec2(0,ui.getScrollY()), WindowSettingsSize - vec2(17,7) + vec2(0,ui.getScrollY()), COLOR.WHITE, 2)
+      ui.drawLine(WindowSettingsSize - vec2(33, 7) + vec2(0,ui.getScrollY()), WindowSettingsSize - vec2(17,23) + vec2(0,ui.getScrollY()), COLOR.WHITE, 2)
     end
     posResize = WindowSettingsSize - vec2(45,65) + vec2(0,ui.getScrollY())
 

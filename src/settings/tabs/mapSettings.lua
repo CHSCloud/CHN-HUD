@@ -334,9 +334,12 @@ local function featuresSettings()
     if toggleButton.main("drs", vec2(20, initPos), mapSettings.store.drsActive, language.get("DRS")) then
         mapSettings.store.drsActive = not mapSettings.store.drsActive
     end
-    initPos = initPos + 30
+    initPos = initPos + 40
+    ui.dwriteDrawText(language.get("COLOR"), 12, vec2(20, initPos - 10), COLOR.WHITE)
+    initPos = initPos + 10
     mapSettings.store.colorSectors = colorSelector.main(language.get("SECTORS"), mapSettings.store.colorSectors, vec2(20, initPos))
-    mapSettings.store.colorDRS = colorSelector.main(language.get("DRS"), mapSettings.store.colorDRS, vec2(100, initPos))
+    initPos = initPos + 30
+    mapSettings.store.colorDRS = colorSelector.main(language.get("DRS"), mapSettings.store.colorDRS, vec2(20, initPos))
     initPos = initPos + 40
 
     if button.main(vec2(20, initPos), language.get("RESET_DEFAULT")) then
