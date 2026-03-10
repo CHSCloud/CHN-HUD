@@ -163,36 +163,36 @@ function settings.windowMain()
 
   local posResize
   if not isLatestVersion and isTabUpdateActive then
-    ui.drawRectFilled(vec2(0, WindowSettingsSize.y - 30) + vec2(0,ui.getScrollY()), WindowSettingsSize + vec2(0,ui.getScrollY()), COLOR.WHITE)
+    ui.drawRectFilled(vec2(0, WindowSettingsSize.y - 35) + vec2(0,ui.getScrollY()), WindowSettingsSize + vec2(0,ui.getScrollY()), COLOR.WHITE)
 
-    ui.setCursor(vec2(20, WindowSettingsSize.y - 30) + vec2(0,ui.getScrollY()))
-    ui.dwriteTextAligned(language.get("NEW_UPDATE"), 20, ui.Alignment.Start,ui.Alignment.Center, vec2(WindowSettingsSize.x, 30), false, COLOR.BLACK)
+    ui.setCursor(vec2(20, WindowSettingsSize.y - 35) + vec2(0,ui.getScrollY()))
+    ui.dwriteTextAligned(language.get("NEW_UPDATE"), 20, ui.Alignment.Start,ui.Alignment.Center, vec2(WindowSettingsSize.x, 35), false, COLOR.BLACK)
     local linkPosX = 20 + ui.measureDWriteText(language.get("NEW_UPDATE"), 20).x
-
-    if config.isMouseInWindow(ui.mouseLocalPos(), linkPosX + 10, linkPosX + ui.measureDWriteText("CHN HUD " .. onlineVersion, 20).x, WindowSettingsSize.y - 30 + ui.getScrollY(), WindowSettingsSize.y + ui.getScrollY()) then
+    
+    if config.isMouseInWindow(ui.mouseLocalPos(), linkPosX + 10, linkPosX + ui.measureDWriteText("CHN HUD " .. onlineVersion, 20).x + 10, WindowSettingsSize.y - 30 + ui.getScrollY(), WindowSettingsSize.y + ui.getScrollY()) then
       ui.setMouseCursor(ui.MouseCursor.Hand)
       ui.setCursor(vec2(linkPosX + 10, WindowSettingsSize.y - 30) + vec2(0,ui.getScrollY()))
-      ui.dwriteTextAligned("CHN HUD " .. onlineVersion, 20, ui.Alignment.Start,ui.Alignment.Center, vec2(WindowSettingsSize.x, 30), false, COLOR.RED)
+      ui.dwriteTextHyperlink("CHN HUD " .. onlineVersion, 20, COLOR.RED)
       if ui.mouseClicked(ui.MouseButton.Left) then
         os.openURL("https://www.overtake.gg/downloads/chn-hud.78851/")
       end
     else
       ui.setCursor(vec2(linkPosX + 10, WindowSettingsSize.y - 30) + vec2(0,ui.getScrollY()))
-      ui.dwriteTextAligned("CHN HUD " .. onlineVersion, 20, ui.Alignment.Start,ui.Alignment.Center, vec2(WindowSettingsSize.x, 30), false, COLOR.BLACK)
+      ui.dwriteTextHyperlink("CHN HUD " .. onlineVersion, 20, COLOR.BLACK)
     end
     
     if config.isMouseInWindow(ui.mouseLocalPos(),WindowSettingsSize.x - 38, WindowSettingsSize.x - 12, WindowSettingsSize.y - 28 + ui.getScrollY(), WindowSettingsSize.x - 2 + ui.getScrollY()) then
       ui.setMouseCursor(ui.MouseCursor.Hand)
-      ui.drawRectFilled(WindowSettingsSize - vec2(38,28) + vec2(0,ui.getScrollY()), WindowSettingsSize - vec2(12,2) + vec2(0,ui.getScrollY()), COLOR.RED_DARK, 5)
-      ui.drawLine(WindowSettingsSize - vec2(33,23) + vec2(0,ui.getScrollY()), WindowSettingsSize - vec2(17,7) + vec2(0,ui.getScrollY()), COLOR.WHITE, 2)
-      ui.drawLine(WindowSettingsSize - vec2(33, 7) + vec2(0,ui.getScrollY()), WindowSettingsSize - vec2(17,23) + vec2(0,ui.getScrollY()), COLOR.WHITE, 2)
+      ui.drawRectFilled(WindowSettingsSize - vec2(38,30) + vec2(0,ui.getScrollY()), WindowSettingsSize - vec2(12,4) + vec2(0,ui.getScrollY()), COLOR.RED_DARK, 5)
+      ui.drawLine(WindowSettingsSize - vec2(33,25) + vec2(0,ui.getScrollY()), WindowSettingsSize - vec2(17,9) + vec2(0,ui.getScrollY()), COLOR.WHITE, 2)
+      ui.drawLine(WindowSettingsSize - vec2(33, 9) + vec2(0,ui.getScrollY()), WindowSettingsSize - vec2(17,25) + vec2(0,ui.getScrollY()), COLOR.WHITE, 2)
       if ui.mouseClicked(ui.MouseButton.Left) then
         isTabUpdateActive = false
       end
     else
-      ui.drawRectFilled(WindowSettingsSize - vec2(38,28) + vec2(0,ui.getScrollY()), WindowSettingsSize - vec2(12,2) + vec2(0,ui.getScrollY()), COLOR.GRAY_BG, 5)
-      ui.drawLine(WindowSettingsSize - vec2(33,23) + vec2(0,ui.getScrollY()), WindowSettingsSize - vec2(17,7) + vec2(0,ui.getScrollY()), COLOR.WHITE, 2)
-      ui.drawLine(WindowSettingsSize - vec2(33, 7) + vec2(0,ui.getScrollY()), WindowSettingsSize - vec2(17,23) + vec2(0,ui.getScrollY()), COLOR.WHITE, 2)
+      ui.drawRectFilled(WindowSettingsSize - vec2(38,30) + vec2(0,ui.getScrollY()), WindowSettingsSize - vec2(12,4) + vec2(0,ui.getScrollY()), COLOR.GRAY_BG, 5)
+      ui.drawLine(WindowSettingsSize - vec2(33,25) + vec2(0,ui.getScrollY()), WindowSettingsSize - vec2(17,9) + vec2(0,ui.getScrollY()), COLOR.WHITE, 2)
+      ui.drawLine(WindowSettingsSize - vec2(33, 9) + vec2(0,ui.getScrollY()), WindowSettingsSize - vec2(17,25) + vec2(0,ui.getScrollY()), COLOR.WHITE, 2)
     end
     posResize = WindowSettingsSize - vec2(45,65) + vec2(0,ui.getScrollY())
 
