@@ -7,7 +7,6 @@ local sessionFlags = {}
 local add = -1
 local lenght = 110
 local currentTime = 0
-local isRestart = false
 function sessionFlags.windowMain()
     if currentTime > SIM.currentSessionTime then
         currentTime = 0

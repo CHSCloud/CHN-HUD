@@ -20,7 +20,6 @@ function sessionLaps.windowMain()
     local currentWindowWidth = 240 * sessionLapsSettings.store.sessionLapsScale
     local currentWindowHeight = 0
 
-    
     local lastLap
     local minutes
     local seconds

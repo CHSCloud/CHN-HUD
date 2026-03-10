@@ -11,6 +11,7 @@ local sessionFlags = require("src.hud.sessionFlags.sessionFlags")
 local startingLights = require("src.hud.startingLights.startingLights")
 local map = require("src.hud.map.map")
 local deltaBar = require("src.hud.deltaBar.deltaBar")
+local leaderboard = require("src.hud.leaderboard.leaderboard")
 
 -- TELA DE CONFIGURAÇÕES
 function WindowSettings()
@@ -53,9 +54,14 @@ function WindowMap()
   map.windowMain()
 end
 
--- DELTA BAR
+-- TELA DO DELTA BAR
 function WindowdeltaBar()
   deltaBar.windowMain()
+end
+
+-- TELA DO LEADERBOARD
+function WindowLeaderboard()
+  leaderboard.windowMain()
 end
 
 -- FUNÇÃO DE ATUALIZAÇÃO

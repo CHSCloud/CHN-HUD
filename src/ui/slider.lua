@@ -1,7 +1,6 @@
 local config = require("common.config")
 local slider = {}
 
-
 ---@alias slider.PosText
 ---| `slider.PosText.Default` @Value: 0
 ---| `slider.PosText.Start` @Value: 1

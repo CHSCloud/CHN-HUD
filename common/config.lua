@@ -17,7 +17,8 @@ local pinStorage = ac.storage{
     ["Starting Lights"] = false,
     ["Session Flags"] = false,
     ["Delta Bar"] = false,
-    ["Map"] = false
+    ["Map"] = false,
+    ["Leaderboard"] = false,
 }
 
 local windowNames = {
@@ -28,7 +29,8 @@ local windowNames = {
     "Starting Lights",
     "Session Flags",
     "Delta Bar",
-    "Map"
+    "Map",
+    "Leaderboard"
 }
 
 function config.init()

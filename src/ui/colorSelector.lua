@@ -1,6 +1,4 @@
-local config = require("common.config")
 local colorSelector = {}
-
 
 --- @param text string
 --- @param color rgbm

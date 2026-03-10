@@ -3,7 +3,7 @@ local pinCheckBox = require("src.ui.pinCheckBox")
 local deltaBarSettings = require("src.settings.tabs.deltaBarSettings")
 
 local deltaBar = {}
--- amostragem por posição da pista (persistente entre frames)
+-- Amostragem por posição da pista (persistente entre frames)
 local currentLapSamples = {}
 local previousLapSamples = {}
 local lastPreviousLapTimeMs = 0
