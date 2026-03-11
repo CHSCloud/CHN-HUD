@@ -70,6 +70,29 @@ local function drawLastLap(time, pos, color)
     ui.dwriteTextAligned(lastLapText, 20 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Start, ui.Alignment.Center, vec2(100, 30):scale(leaderboardSettings.store.leaderboardScale), false, color)
 end
 
+local function drawGap(driver, pos, color)
+    ui.setCursor(pos)
+    local gap = ac.getGapBetweenCars(driver.index, drivers[1].index)
+    local gapText
+    local horizontalAligment = ui.Alignment.Start
+
+    local intervalLaps = drivers[1].lapCount - driver.lapCount
+
+    if intervalLaps > 0 then
+        gapText = string.format("%dL", intervalLaps)
+    else 
+        if gap < 200 then
+            gapText = string.format("%.2f", math.max(gap, 0))
+            horizontalAligment = ui.Alignment.Start
+        else
+            gapText = "---.--"
+            horizontalAligment = ui.Alignment.Start
+        end
+    end
+    ui.dwriteTextAligned(gapText, 18 * leaderboardSettings.store.leaderboardScale, horizontalAligment, ui.Alignment.Center, vec2(80, 30):scale(leaderboardSettings.store.leaderboardScale), false, color)  
+    
+end
+
 ---@param statusText string
 ---@param statusColor rgbm
 ---@param pos vec2
@@ -141,7 +164,7 @@ function leaderboard.windowMain()
 
             posX = 0
             drawPosition(driver.logoPath, numPlayers, driver.position, driver.name, vec2(posX, posY):scale(leaderboardSettings.store.leaderboardScale), color)
-            posX = posX + 230
+            posX = posX + 260
             
             if leaderboardSettings.store.tyreActive then
                 drawTyre(driver.tyre, vec2(posX, posY):scale(leaderboardSettings.store.leaderboardScale), color)
@@ -155,7 +178,12 @@ function leaderboard.windowMain()
 
             if leaderboardSettings.store.lastLapActive then
                 drawLastLap(driver.lastLapTime, vec2(posX, posY):scale(leaderboardSettings.store.leaderboardScale),color)
-                posX = posX + 90
+                posX = posX + 110
+            end
+
+            if true then
+                drawGap(driver, vec2(posX, posY):scale(leaderboardSettings.store.leaderboardScale), color)
+                posX = posX + 50
             end
 
             if leaderboardSettings.store.statusActive then
