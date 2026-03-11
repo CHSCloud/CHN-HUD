@@ -13,7 +13,7 @@ local currentWindowSize = vec2()
 ---@param driverName string
 ---@param pos vec2
 ---@param color rgbm
-local function drawPosition(driverDrawNumber, carPosition, driverName, pos, color)
+local function drawPosition(logoPath, driverDrawNumber, carPosition, driverName, pos, color)
     local backgroundColor
     if driverDrawNumber % 2 == 1 then
         backgroundColor = WindowsColor
@@ -27,8 +27,11 @@ local function drawPosition(driverDrawNumber, carPosition, driverName, pos, colo
     ui.setCursor(pos + vec2(5):scale(leaderboardSettings.store.leaderboardScale))
     ui.dwriteTextAligned(tostring(carPosition), 20 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Center, ui.Alignment.Center, vec2(30,30):scale(leaderboardSettings.store.leaderboardScale), false, COLOR.BLACK)
 
+    ui.setCursor(pos + vec2(40,2):scale(leaderboardSettings.store.leaderboardScale))
+    ui.image(logoPath, vec2(28,28):scale(leaderboardSettings.store.leaderboardScale) , ui.ImageFit.Fill)
+
     -- Desenha nome do jogador
-    ui.setCursor(pos + vec2(40):scale(leaderboardSettings.store.leaderboardScale))
+    ui.setCursor(pos + vec2(80):scale(leaderboardSettings.store.leaderboardScale))
     ui.dwriteTextAligned(driverName, 18 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Start, ui.Alignment.Center, vec2(200,30):scale(leaderboardSettings.store.leaderboardScale), false, color)
     
     --ui.drawLine(vec2(10 * leaderboardSettings.store.leaderboardScale, pos.y + 32.5 * leaderboardSettings.store.leaderboardScale), vec2(currentWindowSize.x - 10 * leaderboardSettings.store.leaderboardScale, pos.y + 35 * leaderboardSettings.store.leaderboardScale), COLOR.WHITE, 1 * leaderboardSettings.store.leaderboardScale)
@@ -90,7 +93,8 @@ local function updateDrivers()
             isConnected = car.isConnected,
             isRetired = car.isRetired,
             isRaceFinished = car.isRaceFinished,
-            isInPitlane = car.isInPitlane
+            isInPitlane = car.isInPitlane,
+            logoPath = ac.getFolder(ac.FolderID.ContentCars) .. "\\".. ac.getCarID(car.index) .. "\\ui\\badge.png"
         })
     end
     table.sort(drivers, function(a, b) return a.position < b.position end)
@@ -98,8 +102,6 @@ end
 
 function leaderboard.windowMain()
     updateDrivers()
-    
-    --ui.drawRectFilled(vec2(0,0), currentWindowSize, WindowsColor, 15 * leaderboardSettings.store.leaderboardScale)
 
     local posY = 2.5
     local posX = 0
@@ -138,7 +140,7 @@ function leaderboard.windowMain()
             end
 
             posX = 0
-            drawPosition(numPlayers, driver.position, driver.name, vec2(posX, posY):scale(leaderboardSettings.store.leaderboardScale), color)
+            drawPosition(driver.logoPath, numPlayers, driver.position, driver.name, vec2(posX, posY):scale(leaderboardSettings.store.leaderboardScale), color)
             posX = posX + 230
             
             if leaderboardSettings.store.tyreActive then
