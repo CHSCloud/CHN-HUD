@@ -105,7 +105,7 @@ function leaderboard.windowMain()
     local posX = 0
     local numPlayers = 0
     for i, driver in ipairs(drivers) do
-        if i <= leaderboardSettings.store.numDrivers or driver.index == SIM.focusedCar then
+        if i <= leaderboardSettings.store.numDrivers or (leaderboardSettings.store.focusedCarActive and driver.index == SIM.focusedCar) then
             numPlayers = numPlayers + 1
             local color = COLOR.WHITE
             local statusColor, statusText

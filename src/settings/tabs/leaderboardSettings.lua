@@ -16,7 +16,9 @@ local defaultValues = {
 
     lastLapActive = true,
 
-    statusActive = true
+    statusActive = true,
+
+    focusedCarActive = true
 }
 
 leaderboardSettings.store = ac.storage(defaultValues)
@@ -47,6 +49,11 @@ local function drawContents(pos)
         
     if toggleButton.main("statusToggle", pos, leaderboardSettings.store.statusActive, "Tyres") then
         leaderboardSettings.store.statusActive = not leaderboardSettings.store.statusActive
+    end
+    pos.y = pos.y + 40
+
+    if toggleButton.main("focusedCarToggle", pos, leaderboardSettings.store.focusedCarActive, "Always display Focused Car") then
+        leaderboardSettings.store.focusedCarActive = not leaderboardSettings.store.focusedCarActive
     end
     pos.y = pos.y + 25
 
