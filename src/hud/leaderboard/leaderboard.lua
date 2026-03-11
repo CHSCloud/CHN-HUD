@@ -4,22 +4,18 @@ local leaderboardSettings = require("src.settings.tabs.leaderboardSettings")
 
 local leaderboard = {}
 
-local players = {}
-local currentWindowSize = vec2(500, 500):scale(leaderboardSettings.store.leaderboardScale)
+local drivers = {}
+local currentWindowSize = vec2()
 
 -- Desenha posições
----@param index number
+---@param driverDrawNumber number
 ---@param carPosition number
----@param playerName string
+---@param driverName string
 ---@param pos vec2
-local function drawPosition(index, carPosition, playerName, pos)
-    local color = COLOR.WHITE
-    if index == SIM.focusedCar then
-        color = COLOR.YELLOW
-    end
-
+---@param color rgbm
+local function drawPosition(driverDrawNumber, carPosition, driverName, pos, color)
     local backgroundColor
-    if carPosition % 2 == 1 then
+    if driverDrawNumber % 2 == 1 then
         backgroundColor = WindowsColor
     else
         backgroundColor = COLOR.GRAY_BG
@@ -33,7 +29,7 @@ local function drawPosition(index, carPosition, playerName, pos)
 
     -- Desenha nome do jogador
     ui.setCursor(pos + vec2(40):scale(leaderboardSettings.store.leaderboardScale))
-    ui.dwriteTextAligned(playerName, 18 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Start, ui.Alignment.Center, vec2(200,30):scale(leaderboardSettings.store.leaderboardScale), false, color)
+    ui.dwriteTextAligned(driverName, 18 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Start, ui.Alignment.Center, vec2(200,30):scale(leaderboardSettings.store.leaderboardScale), false, color)
     
     --ui.drawLine(vec2(10 * leaderboardSettings.store.leaderboardScale, pos.y + 32.5 * leaderboardSettings.store.leaderboardScale), vec2(currentWindowSize.x - 10 * leaderboardSettings.store.leaderboardScale, pos.y + 35 * leaderboardSettings.store.leaderboardScale), COLOR.WHITE, 1 * leaderboardSettings.store.leaderboardScale)
 end
@@ -41,23 +37,23 @@ end
 -- Desenha tipo de pneu
 ---@param tyreName string
 ---@param pos vec2
-local function drawTyre(tyreName, pos)
+local function drawTyre(tyreName, pos, color)
     ui.setCursor(pos)
-    ui.dwriteTextAligned(tyreName, 18 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Center, ui.Alignment.Center, vec2(30,30):scale(leaderboardSettings.store.leaderboardScale), false, COLOR.WHITE)
+    ui.dwriteTextAligned(tyreName, 18 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Center, ui.Alignment.Center, vec2(30,30):scale(leaderboardSettings.store.leaderboardScale), false, color)
 end
 
 -- Desenha contagem de voltas
 ---@param lap number
 ---@param pos vec2
-local function drawLapCount(lap, pos)
+local function drawLapCount(lap, pos, color)
     ui.setCursor(pos)
-    ui.dwriteTextAligned(tostring(lap + 1), 18 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Center, ui.Alignment.Center, vec2(30,30):scale(leaderboardSettings.store.leaderboardScale), false, COLOR.WHITE)
+    ui.dwriteTextAligned(tostring(lap + 1), 18 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Center, ui.Alignment.Center, vec2(30,30):scale(leaderboardSettings.store.leaderboardScale), false, color)
 end
 
 -- Desenha tempo da última volta
 ---@param time number
 ---@param pos vec2
-local function drawLastLap(time, pos)
+local function drawLastLap(time, pos, color)
     local lastLapText
     if time == 0 then
         lastLapText = "-:--.---"
@@ -68,55 +64,108 @@ local function drawLastLap(time, pos)
         lastLapText = string.format("%d:%02d.%03d", minutes, seconds, milliseconds)
     end
     ui.setCursor(pos)
-    ui.dwriteTextAligned(lastLapText, 20 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Start, ui.Alignment.Center, vec2(100, 30):scale(leaderboardSettings.store.leaderboardScale), false, COLOR.WHITE)
+    ui.dwriteTextAligned(lastLapText, 20 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Start, ui.Alignment.Center, vec2(100, 30):scale(leaderboardSettings.store.leaderboardScale), false, color)
+end
+
+---@param statusText string
+---@param statusColor rgbm
+---@param pos vec2
+local function drawDriverStatus(statusText, statusColor, statusLenght, pos)
+    ui.setCursor(pos)
+    ui.dwriteTextAligned(statusText, 18 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Center, ui.Alignment.Center, vec2(statusLenght,30):scale(leaderboardSettings.store.leaderboardScale), false, statusColor)
 end
 
 -- Atualiza a lista de jogadores
-local function updatePlayers()
-    table.clear(players)
+local function updateDrivers()
+    table.clear(drivers)
     for _, car in ac.iterateCars() do
-        table.insert(players, {
+        table.insert(drivers, {
             index = car.index,
             name = string.sub(car:driverName(),1, 15),
             position = car.racePosition,
             tyre = car:tyresName(),
             lapCount = car.lapCount,
             lastLapTime = car.previousLapTimeMs,
-            bestLapTime = car.bestLapTimeMs
+            bestLapTime = car.bestLapTimeMs,
+            isConnected = car.isConnected,
+            isRetired = car.isRetired,
+            isRaceFinished = car.isRaceFinished,
+            isInPitlane = car.isInPitlane
         })
     end
-    table.sort(players, function(a, b) return a.position < b.position end)
+    table.sort(drivers, function(a, b) return a.position < b.position end)
 end
 
 function leaderboard.windowMain()
-    updatePlayers()
-    currentWindowSize = vec2(500, 500):scale(leaderboardSettings.store.leaderboardScale)
+    updateDrivers()
     
     --ui.drawRectFilled(vec2(0,0), currentWindowSize, WindowsColor, 15 * leaderboardSettings.store.leaderboardScale)
 
-    local posY = 40
+    local posY = 2.5
     local posX = 0
-    for _, player in ipairs(players) do
-        posX = 0
-        drawPosition(player.index, player.position, player.name, vec2(posX, posY):scale(leaderboardSettings.store.leaderboardScale))
-        posX = posX + 230
-        
-        if true then
-            drawTyre(player.tyre, vec2(posX, posY):scale(leaderboardSettings.store.leaderboardScale))
-            posX = posX + 50
-        end
+    local numPlayers = 0
+    for i, driver in ipairs(drivers) do
+        if i <= leaderboardSettings.store.numDrivers or driver.index == SIM.focusedCar then
+            numPlayers = numPlayers + 1
+            local color = COLOR.WHITE
+            local statusColor, statusText
+            if driver.index == SIM.focusedCar then
+                color = COLOR.YELLOW_DARK
+            end
 
-        if true then
-            drawLapCount(player.lapCount, vec2(posX, posY):scale(leaderboardSettings.store.leaderboardScale))
-            posX = posX + 50
-        end
+            local statusTexts = {
+                "OFF",
+                "RETIRED",
+                "FINISHED",
+                "IN PIT"
+            }
 
-        if true then
-            drawLastLap(player.lastLapTime, vec2(posX, posY):scale(leaderboardSettings.store.leaderboardScale))
-            posX = posX + 50
-        end
+            if not driver.isConnected then
+                statusColor = COLOR.WHITE
+                statusText = statusTexts[1]
+            elseif driver.isRetired then
+                statusColor = COLOR.RED
+                statusText = statusTexts[2]
+            elseif driver.isRaceFinished then
+                statusColor = COLOR.GREEN
+                statusText = statusTexts[3]
+            elseif driver.isInPitlane then
+                statusColor = COLOR.RED
+                statusText = statusTexts[4]
+            else
+                statusColor = COLOR.WHITE
+                statusText = "-"
+            end
 
-        posY = posY + 35
+            posX = 0
+            drawPosition(numPlayers, driver.position, driver.name, vec2(posX, posY):scale(leaderboardSettings.store.leaderboardScale), color)
+            posX = posX + 230
+            
+            if leaderboardSettings.store.tyreActive then
+                drawTyre(driver.tyre, vec2(posX, posY):scale(leaderboardSettings.store.leaderboardScale), color)
+                posX = posX + 50
+            end
+
+            if leaderboardSettings.store.lapCountActive then
+                drawLapCount(driver.lapCount, vec2(posX, posY):scale(leaderboardSettings.store.leaderboardScale), color)
+                posX = posX + 50
+            end
+
+            if leaderboardSettings.store.lastLapActive then
+                drawLastLap(driver.lastLapTime, vec2(posX, posY):scale(leaderboardSettings.store.leaderboardScale),color)
+                posX = posX + 90
+            end
+
+            if leaderboardSettings.store.statusActive then
+                local statusLenght = config.findLenghtLongestString(statusTexts, 18).x + 20
+                drawDriverStatus(statusText, statusColor, statusLenght, vec2(posX, posY):scale(leaderboardSettings.store.leaderboardScale))
+                posX = posX + statusLenght
+            end
+
+            posY = posY + 35
+
+            currentWindowSize = vec2(posX, posY) * leaderboardSettings.store.leaderboardScale
+        end
     end
 
     config.resize(currentWindowSize, "Leaderboard")
