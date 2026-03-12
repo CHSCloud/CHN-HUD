@@ -91,15 +91,15 @@ local function drawGap(driver, pos, color)
                     color = COLOR.RED
                 end
             else
-                gapText = "∞"
-                horizontalAligment = ui.Alignment.Center
+                gapText = "  ∞"
+                horizontalAligment = ui.Alignment.Start
                 fontSize = 25 * leaderboardSettings.store.leaderboardScale
             end
         end
     else
         gapText = "FIRST"
         color = COLOR.BLUE
-        horizontalAligment = ui.Alignment.Center
+        horizontalAligment = ui.Alignment.Start
     end
 
     ui.dwriteTextAligned(gapText, fontSize, horizontalAligment, ui.Alignment.Center, vec2(70, 30):scale(leaderboardSettings.store.leaderboardScale), false, color)
@@ -195,7 +195,7 @@ function leaderboard.windowMain()
 
             if true then
                 drawGap(driver, vec2(posX, posY):scale(leaderboardSettings.store.leaderboardScale), color)
-                posX = posX + 50
+                posX = posX + 70
             end
 
             if leaderboardSettings.store.statusActive then
