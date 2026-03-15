@@ -5,7 +5,9 @@ local leaderboardSettings = require("src.settings.tabs.leaderboardSettings")
 local leaderboard = {}
 
 local drivers = {}
+local storedPositions = {}
 local currentWindowSize = vec2()
+local replayActive = false
 
 -- Desenha posições
 ---@param driverDrawNumber number
@@ -81,7 +83,7 @@ local function drawGap(driver, pos, color)
     if driver.position ~= 1 then
         if intervalLaps > 0 then
             gapText = string.format("%d Lap", intervalLaps)
-        else 
+        else
             if gap < 98 then
                 gapText = string.format("+%.2f", math.max(gap, 0))
                 horizontalAligment = ui.Alignment.Start
@@ -97,7 +99,7 @@ local function drawGap(driver, pos, color)
             end
         end
     else
-        gapText = "FIRST"
+        gapText = ""
         color = COLOR.BLUE
         horizontalAligment = ui.Alignment.Start
     end
@@ -112,6 +114,48 @@ local function drawDriverStatus(statusText, statusColor, statusLenght, pos)
     ui.setCursor(pos)
     ui.dwriteTextAligned(statusText, 18 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Center, ui.Alignment.Center, vec2(statusLenght,30):scale(leaderboardSettings.store.leaderboardScale), false, statusColor)
 end
+
+local function drawOvertaking(driverIndex, pos)
+    local overtakingText
+    local alignment
+    local color = COLOR.WHITE
+    if storedPositions[driverIndex] ~= nil then
+        if storedPositions[driverIndex].isPositionChanges then
+            storedPositions[driverIndex].timeToDraw = SIM.currentSessionTime + 30000
+        end
+
+        if SIM.currentSessionTime <= storedPositions[driverIndex].timeToDraw then
+            local diff = storedPositions[driverIndex].lastPos - storedPositions[driverIndex].currentPos
+            if diff == 0 then return end
+
+            overtakingText = tostring(math.abs(diff))
+            alignment = ui.Alignment.End
+            local rotation
+            if diff > 0 then
+                color = COLOR.GREEN
+                rotation = 180
+            else
+                color = COLOR.RED
+                rotation = 0
+            end
+            ui.beginRotation()
+            ui.drawImage("assets/arrow.png", pos + vec2(0,5):scale(leaderboardSettings.store.leaderboardScale), pos + vec2(25, 25):scale(leaderboardSettings.store.leaderboardScale), color)
+            ui.endRotation(rotation)
+        else
+            if SIM.currentSessionTime > storedPositions[driverIndex].timeToDraw + 30000 then
+                storedPositions[driverIndex].lastPos = storedPositions[driverIndex].currentPos
+            end
+            overtakingText = "-"
+            alignment = ui.Alignment.Center
+        end
+        storedPositions[driverIndex].isPositionChanges = false
+    else
+        overtakingText = "-"
+        alignment = ui.Alignment.Center
+    end
+    ui.setCursor(pos + vec2(15):scale(leaderboardSettings.store.leaderboardScale))
+    ui.dwriteTextAligned(overtakingText, 20 * leaderboardSettings.store.leaderboardScale, alignment, ui.Alignment.Center, vec2(30,30):scale(leaderboardSettings.store.leaderboardScale), false, color)
+end 
 
 -- Atualiza a lista de jogadores
 local function updateDrivers()
@@ -136,12 +180,34 @@ local function updateDrivers()
 end
 
 function leaderboard.windowMain()
+    ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
+    ac.onSessionStart(function()
+        table.clear(storedPositions)
+        table.clear(drivers)
+    end)
     updateDrivers()
-
     local posY = 2.5
     local posX = 0
     local numPlayers = 0
     for i, driver in ipairs(drivers) do
+        if SIM.isSessionStarted then
+            if storedPositions[driver.index] == nil then
+                ac.log("Storing position for driver " .. driver.name)
+                storedPositions[driver.index] = {
+                    lastPos = driver.position,
+                    currentPos = driver.position,
+                    isPositionChanges = false,
+                    timeToDraw = -math.huge
+                }
+            end
+
+            if driver.position ~= storedPositions[driver.index].currentPos then
+                ac.log("Position changed for driver " .. driver.name .. ": " .. storedPositions[driver.index].currentPos .. " -> " .. driver.position)
+                storedPositions[driver.index].currentPos = driver.position
+                storedPositions[driver.index].isPositionChanges = true
+            end
+        end
+
         if i <= leaderboardSettings.store.numDrivers or (leaderboardSettings.store.focusedCarActive and driver.index == SIM.focusedCar) then
             numPlayers = numPlayers + 1
             local color = COLOR.WHITE
@@ -188,12 +254,17 @@ function leaderboard.windowMain()
                 posX = posX + 50
             end
 
+            if true then
+                drawOvertaking(driver.index, vec2(posX, posY):scale(leaderboardSettings.store.leaderboardScale))
+                posX = posX + 70
+            end
+
             if leaderboardSettings.store.lastLapActive then
                 drawLastLap(driver.lastLapTime, vec2(posX, posY):scale(leaderboardSettings.store.leaderboardScale),color)
                 posX = posX + 110
             end
 
-            if true then
+            if leaderboardSettings.store.gapActive then
                 drawGap(driver, vec2(posX, posY):scale(leaderboardSettings.store.leaderboardScale), color)
                 posX = posX + 70
             end
@@ -205,7 +276,6 @@ function leaderboard.windowMain()
             end
 
             posY = posY + 35
-
             currentWindowSize = vec2(posX, posY) * leaderboardSettings.store.leaderboardScale
         end
     end
@@ -213,5 +283,8 @@ function leaderboard.windowMain()
     config.resize(currentWindowSize, "Leaderboard")
     pinCheckBox.main(leaderboardSettings.store.leaderboardScale, "Leaderboard", config.getWindow("Leaderboard"):pinned(), currentWindowSize)
 end
+
+updateDrivers()
+table.clear(storedPositions)
 
 return leaderboard

@@ -16,6 +16,8 @@ local defaultValues = {
 
     lastLapActive = true,
 
+    gapActive = true,
+
     statusActive = true,
 
     focusedCarActive = true
@@ -49,6 +51,11 @@ local function drawContents(pos)
         
     if toggleButton.main("statusToggle", pos, leaderboardSettings.store.statusActive, "Tyres") then
         leaderboardSettings.store.statusActive = not leaderboardSettings.store.statusActive
+    end
+    pos.y = pos.y + 25
+        
+    if toggleButton.main("gapToggle", pos, leaderboardSettings.store.gapActive, "Gap") then
+        leaderboardSettings.store.gapActive = not leaderboardSettings.store.gapActive
     end
     pos.y = pos.y + 40
 
