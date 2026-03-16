@@ -18,9 +18,20 @@ local defaultValues = {
 
     gapActive = true,
 
+    overtakeArrowsActive = true,
+
     statusActive = true,
 
-    focusedCarActive = true
+    focusedCarActive = true,
+
+    positions = {
+        tyre = 1,
+        lapCount = 2,
+        lastLap = 3,
+        gap = 4,
+        overtakeArrows = 5,
+        status = 6
+    }
 }
 
 leaderboardSettings.store = ac.storage(defaultValues)
@@ -49,13 +60,18 @@ local function drawContents(pos)
     end
     pos.y = pos.y + 25
         
-    if toggleButton.main("statusToggle", pos, leaderboardSettings.store.statusActive, "Tyres") then
+    if toggleButton.main("statusToggle", pos, leaderboardSettings.store.statusActive, "Player status") then
         leaderboardSettings.store.statusActive = not leaderboardSettings.store.statusActive
     end
     pos.y = pos.y + 25
         
     if toggleButton.main("gapToggle", pos, leaderboardSettings.store.gapActive, "Gap") then
         leaderboardSettings.store.gapActive = not leaderboardSettings.store.gapActive
+    end
+    pos.y = pos.y + 25
+        
+    if toggleButton.main("overtakeToggle", pos, leaderboardSettings.store.overtakeArrowsActive, "Overtaking arrows") then
+        leaderboardSettings.store.overtakeArrowsActive = not leaderboardSettings.store.overtakeArrowsActive
     end
     pos.y = pos.y + 40
 
