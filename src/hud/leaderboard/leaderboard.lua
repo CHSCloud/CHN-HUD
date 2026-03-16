@@ -223,6 +223,9 @@ function leaderboard.windowMain()
     posY = 2.5
     posX = 0
     local numPlayers = 0
+
+    --for index, value in pairs(leaderboardSettings.store.positions) doend
+
     for i, driver in ipairs(drivers) do
         if SIM.isSessionStarted then
             if storedPositions[driver.index] == nil then
@@ -266,20 +269,24 @@ function leaderboard.windowMain()
             end
 
             posX = 0
+
             drawPosition(driver.logoPath, numPlayers, driver.position, driver.name, vec2(posX, posY):scale(leaderboardSettings.store.leaderboardScale), color)        
-            
-            drawTyre(driver.tyre, vec2(posX, posY):scale(leaderboardSettings.store.leaderboardScale), color)
 
-            drawLapCount(driver.lapCount, vec2(posX, posY):scale(leaderboardSettings.store.leaderboardScale), color)
-        
-            drawOvertaking(driver.index, vec2(posX, posY):scale(leaderboardSettings.store.leaderboardScale))
-
-            drawLastLap(driver.lastLapTime, vec2(posX, posY):scale(leaderboardSettings.store.leaderboardScale),color)
-
-            drawGap(driver, vec2(posX, posY):scale(leaderboardSettings.store.leaderboardScale), color)
-
-            drawDriverStatus(statusText, statusColor, vec2(posX, posY):scale(leaderboardSettings.store.leaderboardScale))
-
+            for i = 1, 10, 1 do
+                if i == leaderboardSettings.store.tyrePos then
+                    drawTyre(driver.tyre, vec2(posX, posY):scale(leaderboardSettings.store.leaderboardScale), color)
+                elseif i == leaderboardSettings.store.lapCountPos then
+                    drawLapCount(driver.lapCount, vec2(posX, posY):scale(leaderboardSettings.store.leaderboardScale), color)
+                elseif i == leaderboardSettings.store.lastLapPos then
+                    drawLastLap(driver.lastLapTime, vec2(posX, posY):scale(leaderboardSettings.store.leaderboardScale),color)
+                elseif i == leaderboardSettings.store.gapPos then
+                    drawGap(driver, vec2(posX, posY):scale(leaderboardSettings.store.leaderboardScale), color)
+                elseif i == leaderboardSettings.store.overtakeArrowsPos then
+                    drawOvertaking(driver.index, vec2(posX, posY):scale(leaderboardSettings.store.leaderboardScale))
+                elseif i == leaderboardSettings.store.statusPos then
+                    drawDriverStatus(statusText, statusColor, vec2(posX, posY):scale(leaderboardSettings.store.leaderboardScale))
+                end
+            end
 
             posY = posY + 35
             currentWindowSize = vec2(posX, posY) * leaderboardSettings.store.leaderboardScale
