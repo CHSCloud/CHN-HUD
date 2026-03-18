@@ -59,7 +59,7 @@ local function drawContents(pos)
         leaderboardSettings.store.tyreActive = not leaderboardSettings.store.tyreActive
     end
     local old = leaderboardSettings.store.tyrePos
-    leaderboardSettings.store.tyrePos = droplist.main("##tyrePos", "", vec2(pos.x + 100, pos.y - 2), 60, leaderboardSettings.store.tyrePos, positions, droplist.PosText.Start)
+    leaderboardSettings.store.tyrePos = droplist.main("##tyrePos", "", vec2(pos.x + ui.measureDWriteText("Tyres", 12).x + 50, pos.y - 2), 60, leaderboardSettings.store.tyrePos, positions, droplist.PosText.Start)
     if old ~= leaderboardSettings.store.tyrePos then
         invertPositions("tyrePos", old, leaderboardSettings.store.tyrePos)
     end
@@ -70,7 +70,7 @@ local function drawContents(pos)
         leaderboardSettings.store.lapCountActive = not leaderboardSettings.store.lapCountActive
     end
     old = leaderboardSettings.store.lapCountPos
-    leaderboardSettings.store.lapCountPos = droplist.main("##lapCountPos", "", vec2(pos.x + 100, pos.y - 2), 60, leaderboardSettings.store.lapCountPos, positions, droplist.PosText.Start)
+    leaderboardSettings.store.lapCountPos = droplist.main("##lapCountPos", "", vec2(pos.x + ui.measureDWriteText("Lap count", 12).x + 50, pos.y - 2), 60, leaderboardSettings.store.lapCountPos, positions, droplist.PosText.Start)
     if old ~= leaderboardSettings.store.lapCountPos then
         invertPositions("lapCountPos", old, leaderboardSettings.store.lapCountPos)
     end
@@ -80,7 +80,7 @@ local function drawContents(pos)
         leaderboardSettings.store.lastLapActive = not leaderboardSettings.store.lastLapActive
     end
     old = leaderboardSettings.store.lastLapPos
-    leaderboardSettings.store.lastLapPos = droplist.main("##lastLapPos", "", vec2(pos.x + 100, pos.y - 2), 60, leaderboardSettings.store.lastLapPos, positions, droplist.PosText.Start)
+    leaderboardSettings.store.lastLapPos = droplist.main("##lastLapPos", "", vec2(pos.x + ui.measureDWriteText("Last lap time", 12).x + 50, pos.y - 2), 60, leaderboardSettings.store.lastLapPos, positions, droplist.PosText.Start)
     if old ~= leaderboardSettings.store.lastLapPos then
         invertPositions("lastLapPos", old, leaderboardSettings.store.lastLapPos)
     end
@@ -90,7 +90,7 @@ local function drawContents(pos)
         leaderboardSettings.store.statusActive = not leaderboardSettings.store.statusActive
     end
     old = leaderboardSettings.store.statusPos
-    leaderboardSettings.store.statusPos = droplist.main("##statusPos", "", vec2(pos.x + 100, pos.y - 2), 60, leaderboardSettings.store.statusPos, positions, droplist.PosText.Start)
+    leaderboardSettings.store.statusPos = droplist.main("##statusPos", "", vec2(pos.x + ui.measureDWriteText("Player status", 12).x + 50, pos.y - 2), 60, leaderboardSettings.store.statusPos, positions, droplist.PosText.Start)
     if old ~= leaderboardSettings.store.statusPos then
         invertPositions("statusPos", old, leaderboardSettings.store.statusPos)
     end
@@ -100,7 +100,7 @@ local function drawContents(pos)
         leaderboardSettings.store.gapActive = not leaderboardSettings.store.gapActive
     end
     old = leaderboardSettings.store.gapPos
-    leaderboardSettings.store.gapPos = droplist.main("##gapPos", "", vec2(pos.x + 100, pos.y - 2), 60, leaderboardSettings.store.gapPos, positions, droplist.PosText.Start)
+    leaderboardSettings.store.gapPos = droplist.main("##gapPos", "", vec2(pos.x + ui.measureDWriteText("Gap", 12).x + 50, pos.y - 2), 60, leaderboardSettings.store.gapPos, positions, droplist.PosText.Start)
     if old ~= leaderboardSettings.store.gapPos then
         invertPositions("gapPos", old, leaderboardSettings.store.gapPos)
     end
@@ -110,7 +110,7 @@ local function drawContents(pos)
         leaderboardSettings.store.overtakeArrowsActive = not leaderboardSettings.store.overtakeArrowsActive
     end
     old = leaderboardSettings.store.overtakeArrowsPos
-    leaderboardSettings.store.overtakeArrowsPos = droplist.main("##overtakeArrowsPos", "", vec2(pos.x + 100, pos.y - 2), 60, leaderboardSettings.store.overtakeArrowsPos, positions, droplist.PosText.Start)
+    leaderboardSettings.store.overtakeArrowsPos = droplist.main("##overtakeArrowsPos", "", vec2(pos.x + ui.measureDWriteText("Overtaking arrows", 12).x + 50, pos.y - 2), 60, leaderboardSettings.store.overtakeArrowsPos, positions, droplist.PosText.Start)
     if old ~= leaderboardSettings.store.overtakeArrowsPos then
         invertPositions("overtakeArrowsPos", old, leaderboardSettings.store.overtakeArrowsPos)
     end
