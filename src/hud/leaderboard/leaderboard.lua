@@ -135,7 +135,7 @@ end
 ---@param pos vec2
 local function drawDriverStatus(statusText, statusColor, pos)
     if leaderboardSettings.store.statusActive then
-        local statusLenght = config.findLenghtLongestString(statusTexts, 18).x + 30
+        local statusLenght = config.findLenghtLongestString(statusTexts, 18).x + 60
         ui.setCursor(pos)
         ui.dwriteTextAligned(statusText, 18 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Center, ui.Alignment.Center, vec2(statusLenght,30):scale(leaderboardSettings.store.leaderboardScale), false, statusColor)
         posX = posX + statusLenght
@@ -224,6 +224,10 @@ function leaderboard.windowMain()
         table.clear(drivers)
     end)
     updateDrivers()
+    posY = 0
+    
+    
+    
     posY = 2.5
     posX = 0
     local numPlayers = 0
