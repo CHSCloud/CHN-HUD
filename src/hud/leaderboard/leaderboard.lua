@@ -41,15 +41,15 @@ local function drawPosition(logoPath, driverDrawNumber, carPosition, driverName,
     ui.drawRectFilled(pos - vec2(0,2.5):scale(leaderboardSettings.store.leaderboardScale), pos + vec2(currentWindowSize.x, 32.5 * leaderboardSettings.store.leaderboardScale), backgroundColor)
 
     -- Desenha posição do jogador
-    ui.drawRectFilled(pos + vec2(5):scale(leaderboardSettings.store.leaderboardScale), pos + vec2(35, 30):scale(leaderboardSettings.store.leaderboardScale), color, 5 * leaderboardSettings.store.leaderboardScale)
-    ui.setCursor(pos + vec2(5):scale(leaderboardSettings.store.leaderboardScale))
+    ui.drawRectFilled(pos + vec2(10):scale(leaderboardSettings.store.leaderboardScale), pos + vec2(40, 30):scale(leaderboardSettings.store.leaderboardScale), color, 5 * leaderboardSettings.store.leaderboardScale)
+    ui.setCursor(pos + vec2(10):scale(leaderboardSettings.store.leaderboardScale))
     ui.dwriteTextAligned(tostring(carPosition), 20 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Center, ui.Alignment.Center, vec2(30,30):scale(leaderboardSettings.store.leaderboardScale), false, COLOR.BLACK)
 
-    ui.setCursor(pos + vec2(40,2):scale(leaderboardSettings.store.leaderboardScale))
+    ui.setCursor(pos + vec2(50,2):scale(leaderboardSettings.store.leaderboardScale))
     ui.image(logoPath, vec2(28,28):scale(leaderboardSettings.store.leaderboardScale) , ui.ImageFit.Fill)
 
     -- Desenha nome do jogador
-    ui.setCursor(pos + vec2(80):scale(leaderboardSettings.store.leaderboardScale))
+    ui.setCursor(pos + vec2(90):scale(leaderboardSettings.store.leaderboardScale))
     ui.dwriteTextAligned(driverName, 18 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Start, ui.Alignment.Center, vec2(200,30):scale(leaderboardSettings.store.leaderboardScale), false, color)
     posX = posX + positionLenght
 end
@@ -230,6 +230,7 @@ function leaderboard.windowMain()
     posY = 0
     posX = 0
     local numPlayers = 0
+    ui.drawRectFilled(vec2(0, 0), vec2(currentWindowSize.x, 35 * leaderboardSettings.store.leaderboardScale), COLOR.WHITE, 5 * leaderboardSettings.store.leaderboardScale, ui.CornerFlags.Top)
 
     for i, driver in ipairs(drivers) do
         if SIM.isSessionStarted then
@@ -247,39 +248,43 @@ function leaderboard.windowMain()
                 storedPositions[driver.index].isPositionChanges = true
             end
         end
-        
         if i == 1 then
+            local color = COLOR.BLACK
             posX = positionLenght
-            posY = 30
+            posY = 35
+            ui.setCursor(vec2(7, 0):scale(leaderboardSettings.store.leaderboardScale))
+            ui.dwriteTextAligned("Pos", 18 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Center, ui.Alignment.Center, vec2(35, posY):scale(leaderboardSettings.store.leaderboardScale), false, color)
+            
+            ui.setCursor(vec2(90, 0):scale(leaderboardSettings.store.leaderboardScale))
+            ui.dwriteTextAligned("Driver name", 18 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Start, ui.Alignment.Center, vec2(200, posY):scale(leaderboardSettings.store.leaderboardScale), false, color)
+
             for index = 1, 6, 1 do
                 if index == leaderboardSettings.store.tyrePos and leaderboardSettings.store.tyreActive then
                     ui.setCursor(vec2(posX, 0):scale(leaderboardSettings.store.leaderboardScale))
-                    ui.dwriteTextAligned("Tyre", 18 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Center, ui.Alignment.Center, vec2(tyreLenght, posY):scale(leaderboardSettings.store.leaderboardScale), false, COLOR.WHITE)
+                    ui.dwriteTextAligned("Tyre", 18 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Center, ui.Alignment.Center, vec2(tyreLenght, posY):scale(leaderboardSettings.store.leaderboardScale), false, color)
                     posX = posX + tyreLenght
 
                 elseif index == leaderboardSettings.store.lapCountPos and leaderboardSettings.store.lapCountActive then
                     ui.setCursor(vec2(posX, 0):scale(leaderboardSettings.store.leaderboardScale))
-                    ui.dwriteTextAligned("Lap", 18 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Center, ui.Alignment.Center, vec2(lapCountLenght, posY):scale(leaderboardSettings.store.leaderboardScale), false, COLOR.WHITE)
+                    ui.dwriteTextAligned("Lap", 18 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Center, ui.Alignment.Center, vec2(lapCountLenght, posY):scale(leaderboardSettings.store.leaderboardScale), false, color)
                     posX = posX + lapCountLenght
 
                 elseif index == leaderboardSettings.store.lastLapPos and leaderboardSettings.store.lastLapActive then
                     ui.setCursor(vec2(posX, 0):scale(leaderboardSettings.store.leaderboardScale))
-                    ui.dwriteTextAligned("Last", 18 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Center, ui.Alignment.Center, vec2(lastLapLenght, posY):scale(leaderboardSettings.store.leaderboardScale), false, COLOR.WHITE)
+                    ui.dwriteTextAligned("Last", 18 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Center, ui.Alignment.Center, vec2(lastLapLenght, posY):scale(leaderboardSettings.store.leaderboardScale), false, color)
                     posX = posX + lastLapLenght
 
                 elseif index == leaderboardSettings.store.gapPos and leaderboardSettings.store.gapPos then
                     ui.setCursor(vec2(posX, 0):scale(leaderboardSettings.store.leaderboardScale))
-                    ui.dwriteTextAligned("Gap", 18 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Center, ui.Alignment.Center, vec2(gapLenght, posY):scale(leaderboardSettings.store.leaderboardScale), false, COLOR.WHITE)
+                    ui.dwriteTextAligned("Gap", 18 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Center, ui.Alignment.Center, vec2(gapLenght, posY):scale(leaderboardSettings.store.leaderboardScale), false, color)
                     posX = posX + gapLenght
 
                 elseif index == leaderboardSettings.store.overtakeArrowsPos and leaderboardSettings.store.overtakeArrowsActive then
-                    ui.setCursor(vec2(posX, 0):scale(leaderboardSettings.store.leaderboardScale))
-                    ui.dwriteTextAligned("Pos", 18 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Center, ui.Alignment.Center, vec2(overtakingLenght, posY):scale(leaderboardSettings.store.leaderboardScale), false, COLOR.WHITE)
                     posX = posX + overtakingLenght
                     
                 elseif index == leaderboardSettings.store.statusPos and leaderboardSettings.store.statusActive then
                     ui.setCursor(vec2(posX, 0):scale(leaderboardSettings.store.leaderboardScale))
-                    ui.dwriteTextAligned("Status", 18 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Center, ui.Alignment.Center, vec2(statusLenght, posY):scale(leaderboardSettings.store.leaderboardScale), false, COLOR.WHITE)
+                    ui.dwriteTextAligned("Status", 18 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Center, ui.Alignment.Center, vec2(statusLenght, posY):scale(leaderboardSettings.store.leaderboardScale), false, color)
                     posX = posX + statusLenght
                 end
             end
