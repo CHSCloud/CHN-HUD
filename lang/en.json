@@ -105,5 +105,14 @@
   "RESET_SECTIONS": "Reset sections to default",
   "CLEAR_SECTIONS": "Clear all sections",
   "TOTAL": "Total",
-  "DELTA_BAR": "Delta Bar"
+  "DELTA_BAR": "Delta Bar",
+  "NUM_DRIVERS": "Number of drivers",
+  "TYRES": "Tyres",
+  "LAP_COUNT": "Lap count",
+  "LAST_LAP_TIME": "Last lap time",
+  "BEST_LAP_TIME": "Best lap time",
+  "PLAYER_STATUS": "Player status",
+  "OVERTAKING_ARROWS": "Overtaking arrows",
+  "ALWAYS_FOCUSED_CAR": "Always display focused car",
+  "LEADERBOARD": "Leaderboard"
 }

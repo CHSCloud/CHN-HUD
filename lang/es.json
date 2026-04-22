@@ -105,5 +105,14 @@
   "RESET_SECTIONS": "Restablecer secciones a valores predeterminados",
   "CLEAR_SECTIONS": "Borrar todas las secciones",
   "TOTAL": "Total",
-  "DELTA_BAR": "Barra delta"
+  "DELTA_BAR": "Barra delta",
+  "NUM_DRIVERS": "Número de conductores",
+  "TYRES": "Neumáticos",
+  "LAP_COUNT": "Contador de vueltas",
+  "LAST_LAP_TIME": "Última vuelta",
+  "BEST_LAP_TIME": "Mejor vuelta",
+  "PLAYER_STATUS": "Estado del jugador",
+  "OVERTAKING_ARROWS": "Flechas de adelantamiento",
+  "ALWAYS_FOCUSED_CAR": "Siempre mostrar el coche enfocado",
+  "LEADERBOARD": "Tabla de clasificación"
 }

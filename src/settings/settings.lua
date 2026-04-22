@@ -159,7 +159,7 @@ function settings.windowMain()
     ui.tabItem(language.get("SESSION_FLAGS"), sessionFlagsSettings.sessionFlagsSettings)
     ui.tabItem(language.get("DELTA_BAR"), deltaBarSettings.deltaBarSettings)
     ui.tabItem(language.get("MAP"), mapSettings.mapSettings)
-    ui.tabItem("LIDERA", leaderboardSettings.leaderboardSettings)
+    ui.tabItem(language.get("LEADERBOARD"), leaderboardSettings.leaderboardSettings)
   end)
 
 

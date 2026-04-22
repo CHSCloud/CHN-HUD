@@ -106,32 +106,28 @@ local function drawGap(driver, pos, color)
         ui.setCursor(pos)
         local gap = ac.getGapBetweenCars(driver.index, drivers[1].index)
         local gapText
-        local horizontalAligment = ui.Alignment.Start
         local fontSize = 18 * leaderboardSettings.store.leaderboardScale
         local intervalLaps = drivers[1].lapCount - driver.lapCount
 
         if driver.position ~= 1 then
-            if intervalLaps > 0 then
+            if (intervalLaps > 0 and gap > 100) or intervalLaps > 1 then
                 gapText = string.format("%d Lap", intervalLaps)
             else
                 if gap < 98 then
-                    gapText = string.format("+%.2f", math.max(gap, 0))
-                    horizontalAligment = ui.Alignment.Start
+                    gapText = string.format("+%.1f", math.max(gap, 0))
                     if gap < 2 then
                         color = COLOR.GREEN
                     elseif gap > 20 then
                         color = COLOR.RED
                     end
                 else
-                    gapText = "  ∞"
-                    horizontalAligment = ui.Alignment.Start
+                    gapText = " ∞"
                     fontSize = 25 * leaderboardSettings.store.leaderboardScale
                 end
             end
         else
             gapText = ""
             color = COLOR.BLUE
-            horizontalAligment = ui.Alignment.Start
         end
 
         ui.dwriteTextAligned(gapText, fontSize, ui.Alignment.Center, ui.Alignment.Center, vec2(gapLenght, 30):scale(leaderboardSettings.store.leaderboardScale), false, color)
@@ -225,6 +221,10 @@ end
 
 function leaderboard.windowMain()
     ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
+    ac.onSessionStart(function()
+        table.clear(storedPositions)
+        table.clear(drivers)
+    end)
     updateDrivers()
 
     posY = 0

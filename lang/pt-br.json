@@ -105,5 +105,14 @@
   "RESET_SECTIONS": "Restaurar seções para o padrão",
   "CLEAR_SECTIONS": "Limpar todas as seções",
   "TOTAL": "Total",
-  "DELTA_BAR": "Barra delta"
+  "DELTA_BAR": "Barra delta",
+  "NUM_DRIVERS": "Número de pilotos",
+  "TYRES": "Pneus",
+  "LAP_COUNT": "Contador de voltas",
+  "LAST_LAP_TIME": "Última volta",
+  "BEST_LAP_TIME": "Melhor volta",
+  "PLAYER_STATUS": "Status do jogador",
+  "OVERTAKING_ARROWS": "Setas de ultrapassagem",
+  "ALWAYS_FOCUSED_CAR": "Sempre mostrar o carro focado",
+  "LEADERBOARD": "Tabela de classificação"
 }
