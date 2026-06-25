@@ -1,8 +1,7 @@
-local PedalsState = {}
-PedalsState.__index = PedalsState
+local pedalsData = {}
 
-function PedalsState:new()
-  local instance = {
+function pedalsData.new()
+  return {
     currentWindowSize = vec2(0, 0),
     currentWindowWidth = 0,
     currentWindowHeight = 0,
@@ -25,13 +24,10 @@ function PedalsState:new()
     barPaddingMidle = nil,
     contentPositions = {},
   }
-
-  setmetatable(instance, self)
-  return instance
 end
 
-function PedalsState:resetContentPositions(windowSize)
-  self.contentPositions = {
+function pedalsData.resetContentPositions(data, windowSize)
+  data.contentPositions = {
     { vec2(0, 0), vec2(0, 0) },
     { vec2(windowSize.x, 0), vec2(0, 0) },
     { vec2(0, windowSize.y), vec2(0, 0) },
@@ -41,8 +37,8 @@ function PedalsState:resetContentPositions(windowSize)
   }
 end
 
-function PedalsState:setPositionContentBorder(pos, size)
-  local positions = self.contentPositions[pos]
+function pedalsData.setPositionContentBorder(data, pos, size)
+  local positions = data.contentPositions[pos]
 
   if positions[1].x > 0 then
     positions[1].x = positions[1].x - size.x
@@ -55,8 +51,8 @@ function PedalsState:setPositionContentBorder(pos, size)
   positions[2] = size
 end
 
-function PedalsState:setPositionContentCenter(pos, size)
-  local positions = self.contentPositions[pos]
+function pedalsData.setPositionContentCenter(data, pos, size)
+  local positions = data.contentPositions[pos]
 
   if positions[1].y > 0 then
     positions[1].y = positions[1].y - size.y
@@ -65,4 +61,4 @@ function PedalsState:setPositionContentCenter(pos, size)
   positions[2] = size
 end
 
-return PedalsState
+return pedalsData

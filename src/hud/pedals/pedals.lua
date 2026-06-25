@@ -1,120 +1,124 @@
 local pedalsSettings = require("src.settings.tabs.pedalsSettings")
 local config = require("common.config")
 local pinCheckBox = require("src.ui.pinCheckBox")
-local pedalsState = require("src.hud.pedals.pedalsState")
+local pedalsData = require("src.data.pedals.pedalsData")
 local pedalsRenderer = require("src.hud.pedals.pedalsRenderer")
+
+local gear = require("src.hud.pedals.render.gear")
+
 local pedals = {}
-local state = pedalsState:new()
+
+local data = pedalsData.new()
 
 function pedals.windowMain()
 
   ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
-  state.fontBar = 15 * pedalsSettings.store.pedalsScale
-  state.fontBarInfinite = 25 * pedalsSettings.store.pedalsScale
-  state.fontContentBottom = 13 * pedalsSettings.store.pedalsScale
+  data.fontBar = 15 * pedalsSettings.store.pedalsScale
+  data.fontBarInfinite = 25 * pedalsSettings.store.pedalsScale
+  data.fontContentBottom = 13 * pedalsSettings.store.pedalsScale
 
-  state.barSize = vec2(20, 60) * pedalsSettings.store.pedalsScale
-  state.barSpace = 4 * pedalsSettings.store.pedalsScale
-  state.barLimitSize = vec2(20, 6) * pedalsSettings.store.pedalsScale
-  state.barMidleSize = vec2(20, 44) * pedalsSettings.store.pedalsScale
-  state.barPaddingMidle = 2 * pedalsSettings.store.pedalsScale
-  state:resetContentPositions(state.currentWindowSize)
+  data.barSize = vec2(20, 60) * pedalsSettings.store.pedalsScale
+  data.barSpace = 4 * pedalsSettings.store.pedalsScale
+  data.barLimitSize = vec2(20, 6) * pedalsSettings.store.pedalsScale
+  data.barMidleSize = vec2(20, 44) * pedalsSettings.store.pedalsScale
+  data.barPaddingMidle = 2 * pedalsSettings.store.pedalsScale
+  pedalsData.resetContentPositions(data, data.currentWindowSize)
 
   if pedalsSettings.store.textBarsActive and
-    state.contentMidle > 0 and
+    data.contentMidle > 0 and
     (pedalsSettings.store.clutchActive or pedalsSettings.store.brakeActive or pedalsSettings.store.throttleActive or pedalsSettings.store.handbrakeActive) then
-    state.contentTop = state.contentTop + 8 * pedalsSettings.store.pedalsScale
+    data.contentTop = data.contentTop + 8 * pedalsSettings.store.pedalsScale
   end
 
-  state.currentWindowWidth = 0
-  state.currentWindowHeight = state.contentMidle + state.contentTop + state.contentBottom
-  state.contentMidle = 0
+  data.currentWindowWidth = 0
+  data.currentWindowHeight = data.contentMidle + data.contentTop + data.contentBottom
+  data.contentMidle = 0
 
-  ui.drawRectFilled(vec2(0, 0), state.currentWindowSize, WindowsColor, 10 * pedalsSettings.store.pedalsScale)
+  ui.drawRectFilled(vec2(0, 0), data.currentWindowSize, WindowsColor, 10 * pedalsSettings.store.pedalsScale)
 
   if pedalsSettings.store.gearActive then
-    pedalsRenderer.drawGear(state)
+    gear.draw(data)
   else
-    state.fontGear = 0
+    data.fontGear = 0
   end
 
   if pedalsSettings.store.speedActive then
-    pedalsRenderer.drawSpeed(state)
+    pedalsRenderer.drawSpeed(data)
   end
 
-  state.currentWindowWidth = state.currentWindowWidth + 7 * pedalsSettings.store.pedalsScale + state.barSpace
+  data.currentWindowWidth = data.currentWindowWidth + 7 * pedalsSettings.store.pedalsScale + data.barSpace
 
   if pedalsSettings.store.clutchActive then
-    pedalsRenderer.drawClutch(state)
+    pedalsRenderer.drawClutch(data)
   end
 
   if pedalsSettings.store.brakeActive then
-    pedalsRenderer.drawBrake(state)
+    pedalsRenderer.drawBrake(data)
   end
 
   if pedalsSettings.store.throttleActive then
-    pedalsRenderer.drawAccelerator(state)
+    pedalsRenderer.drawAccelerator(data)
   end
 
   if pedalsSettings.store.handbrakeActive then
-    pedalsRenderer.drawHandbrake(state)
+    pedalsRenderer.drawHandbrake(data)
   end
 
-  state.currentWindowWidth = state.currentWindowWidth + 7 * pedalsSettings.store.pedalsScale
+  data.currentWindowWidth = data.currentWindowWidth + 7 * pedalsSettings.store.pedalsScale
 
   if pedalsSettings.store.wheelActive then
-    pedalsRenderer.drawWheel(state)
+    pedalsRenderer.drawWheel(data)
   end
 
   if pedalsSettings.store.absActive and CAR.absModes ~= 0 then
-    pedalsRenderer.drawABS(state)
+    pedalsRenderer.drawABS(data)
   end
 
   if pedalsSettings.store.brakeBiasActive then
-    pedalsRenderer.drawBrakeBias(state)
+    pedalsRenderer.drawBrakeBias(data)
   end
 
   if pedalsSettings.store.fuelActive then
-    pedalsRenderer.drawFuel(state)
+    pedalsRenderer.drawFuel(data)
   end
 
   if pedalsSettings.store.tractionControlActive and CAR.tractionControlModes ~= 0 then
-    pedalsRenderer.drawTC(state)
+    pedalsRenderer.drawTC(data)
   end
 
   if pedalsSettings.store.drsActvationActive and CAR.drsPresent then
-    pedalsRenderer.drawDRSActivation(state)
+    pedalsRenderer.drawDRSActivation(data)
   end
 
-  if state.currentWindowWidth < (state.contentPositions[1][2].x + state.contentPositions[2][2].x + state.contentPositions[5][2].x) or state.currentWindowWidth < (state.contentPositions[3][2].x + state.contentPositions[4][2].x + state.contentPositions[6][2].x) then
-    state.currentWindowWidth = math.max(state.contentPositions[1][2].x + state.contentPositions[2][2].x + state.contentPositions[5][2].x, state.contentPositions[3][2].x + state.contentPositions[4][2].x + state.contentPositions[6][2].x)
+  if data.currentWindowWidth < (data.contentPositions[1][2].x + data.contentPositions[2][2].x + data.contentPositions[5][2].x) or data.currentWindowWidth < (data.contentPositions[3][2].x + data.contentPositions[4][2].x + data.contentPositions[6][2].x) then
+    data.currentWindowWidth = math.max(data.contentPositions[1][2].x + data.contentPositions[2][2].x + data.contentPositions[5][2].x, data.contentPositions[3][2].x + data.contentPositions[4][2].x + data.contentPositions[6][2].x)
   end
 
   if pedalsSettings.store.p2pActive and CAR.kersPresent then
-    pedalsRenderer.drawP2p(state)
+    pedalsRenderer.drawP2p(data)
   end
 
   if pedalsSettings.store.rpmActive then
-    pedalsRenderer.drawRpm(state)
+    pedalsRenderer.drawRpm(data)
   end
 
-  if state.contentPositions[1][2] ~= vec2(0, 0) or state.contentPositions[2][2] ~= vec2(0, 0) or state.contentPositions[5][2] ~= vec2(0, 0) then
-    state.contentTop = math.max(state.contentPositions[1][2].y, state.contentPositions[2][2].y, state.contentPositions[5][2].y)
+  if data.contentPositions[1][2] ~= vec2(0, 0) or data.contentPositions[2][2] ~= vec2(0, 0) or data.contentPositions[5][2] ~= vec2(0, 0) then
+    data.contentTop = math.max(data.contentPositions[1][2].y, data.contentPositions[2][2].y, data.contentPositions[5][2].y)
   else
-    state.contentTop = 0
+    data.contentTop = 0
   end
 
-  if state.contentPositions[3][2] ~= vec2(0, 0) or state.contentPositions[4][2] ~= vec2(0, 0) or state.contentPositions[6][2] ~= vec2(0, 0) then
-    state.contentBottom = math.max(state.contentPositions[3][2].y, state.contentPositions[4][2].y, state.contentPositions[6][2].y)
+  if data.contentPositions[3][2] ~= vec2(0, 0) or data.contentPositions[4][2] ~= vec2(0, 0) or data.contentPositions[6][2] ~= vec2(0, 0) then
+    data.contentBottom = math.max(data.contentPositions[3][2].y, data.contentPositions[4][2].y, data.contentPositions[6][2].y)
   else
-    state.contentBottom = 0
+    data.contentBottom = 0
   end
 
-  state.currentWindowSize = vec2(state.currentWindowWidth, state.currentWindowHeight)
+  data.currentWindowSize = vec2(data.currentWindowWidth, data.currentWindowHeight)
 
-  config.resize(state.currentWindowSize, "Pedals")
+  config.resize(data.currentWindowSize, "Pedals")
 
-  pinCheckBox.main(pedalsSettings.store.pedalsScale, "Pedals", config.getWindow("Pedals"):pinned(), state.currentWindowSize)
+  pinCheckBox.main(pedalsSettings.store.pedalsScale, "Pedals", config.getWindow("Pedals"):pinned(), data.currentWindowSize)
 end
 
 return pedals
