@@ -1,5 +1,28 @@
+---@class pedalsData
+---@field currentWindowSize vec2
+---@field currentWindowWidth number
+---@field currentWindowHeight number
+---@field contentTop number
+---@field contentMidle number
+---@field contentBottom number
+---@field currentGear number
+---@field fontGear number
+---@field gearBackgroundWidth number
+---@field fontSpeed number
+---@field initDRSActivation number
+---@field oldKersCharge number
+---@field fontBar any
+---@field fontBarInfinite any
+---@field fontContentBottom any
+---@field barSize any
+---@field barSpace any
+---@field barLimitSize any
+---@field barMidleSize any
+---@field barPaddingMidle any
+---@field contentPositions vec2[][]
 local pedalsData = {}
 
+---@return pedalsData
 function pedalsData.new()
   return {
     currentWindowSize = vec2(0, 0),

@@ -2,12 +2,20 @@ local pedalsSettings = require("src.settings.tabs.pedalsSettings")
 local config = require("common.config")
 local pinCheckBox = require("src.ui.pinCheckBox")
 local pedalsData = require("src.data.pedals.pedalsData")
-local pedalsRenderer = require("src.hud.pedals.pedalsRenderer")
 
 local gear = require("src.hud.pedals.render.gear")
+local bars = require("src.hud.pedals.render.bars")
+local rpm = require("src.hud.pedals.render.rpm")
+local speed = require("src.hud.pedals.render.speed")
+local wheel = require("src.hud.pedals.render.wheel")
+local abs = require("src.hud.pedals.render.abs")
+local tc = require("src.hud.pedals.render.tc")
+local drs = require("src.hud.pedals.render.drs")
+local brakeBias = require("src.hud.pedals.render.brakeBias")
+local p2p = require("src.hud.pedals.render.p2p")
+local fuel = require("src.hud.pedals.render.fuel")
 
 local pedals = {}
-
 local data = pedalsData.new()
 
 function pedals.windowMain()
@@ -37,57 +45,57 @@ function pedals.windowMain()
   ui.drawRectFilled(vec2(0, 0), data.currentWindowSize, WindowsColor, 10 * pedalsSettings.store.pedalsScale)
 
   if pedalsSettings.store.gearActive then
-    gear.draw(data)
+    gear.drawGear(data)
   else
     data.fontGear = 0
   end
 
   if pedalsSettings.store.speedActive then
-    pedalsRenderer.drawSpeed(data)
+    speed.drawSpeed(data)
   end
 
   data.currentWindowWidth = data.currentWindowWidth + 7 * pedalsSettings.store.pedalsScale + data.barSpace
 
   if pedalsSettings.store.clutchActive then
-    pedalsRenderer.drawClutch(data)
+    bars.drawClutch(data)
   end
 
   if pedalsSettings.store.brakeActive then
-    pedalsRenderer.drawBrake(data)
+    bars.drawBrake(data)
   end
 
   if pedalsSettings.store.throttleActive then
-    pedalsRenderer.drawAccelerator(data)
+    bars.drawAccelerator(data)
   end
 
   if pedalsSettings.store.handbrakeActive then
-    pedalsRenderer.drawHandbrake(data)
+    bars.drawHandbrake(data)
   end
 
   data.currentWindowWidth = data.currentWindowWidth + 7 * pedalsSettings.store.pedalsScale
 
   if pedalsSettings.store.wheelActive then
-    pedalsRenderer.drawWheel(data)
+    wheel.drawWheel(data)
   end
 
   if pedalsSettings.store.absActive and CAR.absModes ~= 0 then
-    pedalsRenderer.drawABS(data)
+    abs.drawABS(data)
   end
 
   if pedalsSettings.store.brakeBiasActive then
-    pedalsRenderer.drawBrakeBias(data)
+    brakeBias.drawBrakeBias(data)
   end
 
   if pedalsSettings.store.fuelActive then
-    pedalsRenderer.drawFuel(data)
+    fuel.drawFuel(data)
   end
 
   if pedalsSettings.store.tractionControlActive and CAR.tractionControlModes ~= 0 then
-    pedalsRenderer.drawTC(data)
+    tc.drawTC(data)
   end
 
   if pedalsSettings.store.drsActvationActive and CAR.drsPresent then
-    pedalsRenderer.drawDRSActivation(data)
+    drs.drawDRSActivation(data)
   end
 
   if data.currentWindowWidth < (data.contentPositions[1][2].x + data.contentPositions[2][2].x + data.contentPositions[5][2].x) or data.currentWindowWidth < (data.contentPositions[3][2].x + data.contentPositions[4][2].x + data.contentPositions[6][2].x) then
@@ -95,11 +103,11 @@ function pedals.windowMain()
   end
 
   if pedalsSettings.store.p2pActive and CAR.kersPresent then
-    pedalsRenderer.drawP2p(data)
+    p2p.drawP2p(data)
   end
 
   if pedalsSettings.store.rpmActive then
-    pedalsRenderer.drawRpm(data)
+    rpm.drawRpm(data)
   end
 
   if data.contentPositions[1][2] ~= vec2(0, 0) or data.contentPositions[2][2] ~= vec2(0, 0) or data.contentPositions[5][2] ~= vec2(0, 0) then
