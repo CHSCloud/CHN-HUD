@@ -1,8 +1,8 @@
 local pedalsSettings = require("src.settings.tabs.pedalsSettings")
 local wheel = {}
 
+---@param data pedalsData
 function wheel.drawWheel(data)
-  data.contentMidle = 73 * pedalsSettings.store.pedalsScale
   local wheelBackgroundSize = vec2(55 * pedalsSettings.store.pedalsScale, data.currentWindowHeight)
 
   local p1 = data.currentWindowWidth - 4 * pedalsSettings.store.pedalsScale

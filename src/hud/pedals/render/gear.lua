@@ -1,8 +1,8 @@
 local pedalsSettings = require("src.settings.tabs.pedalsSettings")
 local gear = {}
 
---- @param data pedalsData
---- @param maxFontGear number
+---@param data pedalsData
+---@param maxFontGear number
 local function animateGear(data, maxFontGear)
   if data.fontGear < maxFontGear - 3 then
     if (40 * Timer) % 2 >= 1 then
@@ -13,6 +13,7 @@ local function animateGear(data, maxFontGear)
   end
 end
 
+---@param data pedalsData
 function gear.drawGear(data)
   data.contentMidle = 73 * pedalsSettings.store.pedalsScale
   data.gearBackgroundWidth = 60 * pedalsSettings.store.pedalsScale

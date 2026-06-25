@@ -1,6 +1,10 @@
 local pedalsSettings = require("src.settings.tabs.pedalsSettings")
 local bars = {}
 
+---@param data pedalsData
+---@param value number
+---@param color rgbm
+---@param posBar vec2
 local function drawBarText(data, value, color, posBar)
   data.contentMidle = 73 * pedalsSettings.store.pedalsScale
   if value < 98.99 then
@@ -13,6 +17,11 @@ local function drawBarText(data, value, color, posBar)
 end
 
 
+---@param data pedalsData
+---@param posBar vec2
+---@param value number
+---@param color rgbm
+---@param inverted boolean
 local function drawBarWithLimits(data, posBar, value, color, inverted)
   data.contentMidle = 73 * pedalsSettings.store.pedalsScale
   ui.drawRectFilled(posBar, posBar + data.barLimitSize, COLOR.GRAY_BG)
@@ -64,6 +73,11 @@ local function drawBarWithLimits(data, posBar, value, color, inverted)
   end
 end
 
+---@param data pedalsData
+---@param posBar vec2
+---@param value number
+---@param color rgbm
+---@param inverted boolean
 local function drawBarSimple(data, posBar, value, color, inverted)
   data.contentMidle = 73 * pedalsSettings.store.pedalsScale
   ui.drawRectFilled(posBar, posBar + data.barSize, COLOR.GRAY_BG)
@@ -75,6 +89,7 @@ local function drawBarSimple(data, posBar, value, color, inverted)
   end
 end
 
+---@param data pedalsData
 function bars.drawClutch(data)
   data.contentMidle = 73 * pedalsSettings.store.pedalsScale
   local posBar = vec2(data.currentWindowWidth, 6 * pedalsSettings.store.pedalsScale + data.contentTop)
@@ -92,6 +107,7 @@ function bars.drawClutch(data)
   data.currentWindowWidth = data.currentWindowWidth + data.barSize.x + data.barSpace
 end
 
+---@param data pedalsData
 function bars.drawBrake(data)
   data.contentMidle = 73 * pedalsSettings.store.pedalsScale
   local posBar = vec2(data.currentWindowWidth, 6 * pedalsSettings.store.pedalsScale + data.contentTop)
@@ -109,6 +125,7 @@ function bars.drawBrake(data)
   data.currentWindowWidth = data.currentWindowWidth + data.barSize.x + data.barSpace
 end
 
+---@param data pedalsData
 function bars.drawAccelerator(data)
   data.contentMidle = 73 * pedalsSettings.store.pedalsScale
   local posBar = vec2(data.currentWindowWidth, 6 * pedalsSettings.store.pedalsScale + data.contentTop)
@@ -126,6 +143,7 @@ function bars.drawAccelerator(data)
   data.currentWindowWidth = data.currentWindowWidth + data.barSize.x + data.barSpace
 end
 
+---@param data pedalsData
 function bars.drawHandbrake(data)
   data.contentMidle = 73 * pedalsSettings.store.pedalsScale
   local posBar = vec2(data.currentWindowWidth, 6 * pedalsSettings.store.pedalsScale + data.contentTop)

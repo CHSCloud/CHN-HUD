@@ -1,7 +1,7 @@
 local pedalsSettings = require("src.settings.tabs.pedalsSettings")
 local speed = {}
 
---- @param data pedalsData
+---@param data pedalsData
 function speed.drawSpeed(data)
   data.contentMidle = 73 * pedalsSettings.store.pedalsScale
   data.gearBackgroundWidth = 60 * pedalsSettings.store.pedalsScale
