@@ -1,101 +1,52 @@
 local config = require("common.config")
 local pinCheckBox = require("src.ui.pinCheckBox")
 local startingLightsSettings = require("src.settings.tabs.startingLightsSettings")
+local startingLightsData = require("src.data.startingLights.startingLightsData")
+
+local sessionStarting = require("src.hud.startingLights.render.sessionStarting")
+local sessionStarted = require("src.hud.startingLights.render.sessionStarted")
+local settingsActive = require("src.hud.startingLights.render.settingsActive")
+
 local startingLights = {}
+---@type startingLightsData
+local data = startingLightsData.new()
 
 function startingLights.windowMain()
     -- Raio
-    local radius = 20 * startingLightsSettings.store.startingLightsScale
+    data.radius = 20 * startingLightsSettings.store.startingLightsScale
     -- Posição do primeiro círculo
-    local pos = radius + radius / 2 + 2 * startingLightsSettings.store.startingLightsScale
+    data.pos = data.radius + data.radius / 2 + 2 * startingLightsSettings.store.startingLightsScale
     -- Distância entre os círculos
-    local distance = radius * 2 + radius / 2
+    data.distance = data.radius * 2 + data.radius / 2
     -- Grossura
-    local thickness = 1.5 * startingLightsSettings.store.startingLightsScale
+    data.thickness = 1.5 * startingLightsSettings.store.startingLightsScale
     -- Distancia da borda
-    local distanceBorder = 4 * startingLightsSettings.store.startingLightsScale
+    data.distanceBorder = 4 * startingLightsSettings.store.startingLightsScale
     --Polígonos dos círculos
-    local polygons = 50
-    local rounding = 50 * startingLightsSettings.store.startingLightsScale
-    local rounding2 = 50 * startingLightsSettings.store.startingLightsScale
+    data.polygons = 50
+    data.rounding = 50 * startingLightsSettings.store.startingLightsScale
 
     -- Proporções da tela
-    local currentWindowHeight = 3 * radius + distanceBorder
-    local currentWindowWidth = ((startingLightsSettings.store.numStartingLights - 1) * distance) + 3 * radius + distanceBorder
+    data.currentWindowHeight = 3 * data.radius + data.distanceBorder
+    data.currentWindowWidth = ((startingLightsSettings.store.numStartingLights - 1) * data.distance) + 3 * data.radius + data.distanceBorder
     
-    config.resize(vec2(currentWindowWidth, currentWindowHeight), "Starting Lights")
+    config.resize(vec2(data.currentWindowWidth, data.currentWindowHeight), "Starting Lights")
 
     if SIM.raceSessionType == ac.SessionType.Race then
-        local current = 0
         if SIM.timeToSessionStart < 10000 and SIM.timeToSessionStart > 0 then
-            -- Background
-            ui.drawRectFilled(vec2(0, 0), vec2(currentWindowWidth, currentWindowHeight), WindowsColor, rounding)
-            ui.drawRect(vec2(distanceBorder, distanceBorder), vec2(currentWindowWidth - distanceBorder, currentWindowHeight - distanceBorder), COLOR.WHITE, rounding2, ui.CornerFlags.All, thickness)
+            sessionStarting.drawSessionStarting(data)
 
-            -- Círculos do background
-            for i = 0, startingLightsSettings.store.numStartingLights - 1, 1 do
-                ui.drawCircleFilled(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.GRAY_BG, polygons)
-                ui.drawCircle(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.WHITE, polygons, thickness)
-            end
-
-            -- Círculos Vermelhos
-            local add = -(5000 / startingLightsSettings.store.numStartingLights)
-            for i = 7000, 2000, add do
-                
-                if SIM.timeToSessionStart < i and i > 2000 and current <= startingLightsSettings.store.numStartingLights - 1 then
-                    ui.drawCircleFilled(vec2(pos + current * distance , currentWindowHeight / 2), config.remapIntervalWithLimits(SIM.timeToSessionStart, i, i + add, 0, radius), COLOR.RED, polygons)
-                    ui.drawCircle(vec2(pos + current * distance , currentWindowHeight / 2), radius, COLOR.WHITE, polygons, thickness)
-                end 
-                current = current + 1
-            end
         elseif SIM.timeToSessionStart > -6000 and SIM.timeToSessionStart < 0 then
-            -- Background
-            ui.drawRectFilled(vec2(0, 0), vec2(currentWindowWidth, currentWindowHeight), WindowsColor, rounding)
-            ui.drawRect(vec2(distanceBorder, distanceBorder), vec2(currentWindowWidth - distanceBorder, currentWindowHeight - distanceBorder), COLOR.WHITE, rounding2, ui.CornerFlags.All, thickness)
-            
-            -- Cículos verdes
-            if 2 * Timer % 2 > 1 then
-                for i = 0, startingLightsSettings.store.numStartingLights - 1, 1 do
-                    if i % 2 == 0 then
-                        ui.drawCircleFilled(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.GREEN, polygons)
-                    else
-                        ui.drawCircleFilled(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.GRAY_BG, polygons)
-                    end
-                    ui.drawCircle(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.WHITE, polygons, thickness)
-                end
-            else
-                for i = 0, startingLightsSettings.store.numStartingLights - 1, 1 do
-                    if i % 2 == 1 then
-                        ui.drawCircleFilled(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.GREEN, polygons)
-                    else
-                        ui.drawCircleFilled(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.GRAY_BG, polygons)
-                    end
-                    ui.drawCircle(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.WHITE, polygons, thickness)
-                end
-            end
+            sessionStarted.drawSessionStarted(data)
+
         elseif SettingsActive then
-            -- Background
-            ui.drawRectFilled(vec2(0, 0), vec2(currentWindowWidth, currentWindowHeight), WindowsColor, rounding)
-            ui.drawRect(vec2(distanceBorder, distanceBorder), vec2(currentWindowWidth - distanceBorder, currentWindowHeight - distanceBorder), COLOR.WHITE, rounding2, ui.CornerFlags.All, thickness)
-            
-            -- Círculos Azuis
-            for i = 0, startingLightsSettings.store.numStartingLights - 1, 1 do
-                ui.drawCircleFilled(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.BLUE, polygons)
-                ui.drawCircle(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.WHITE, polygons, thickness)
-            end
+            settingsActive.drawSettingsActive(data)
         end
+
     elseif SettingsActive then
-        -- Background
-        ui.drawRectFilled(vec2(0, 0), vec2(currentWindowWidth, currentWindowHeight), WindowsColor, rounding)
-        ui.drawRect(vec2(distanceBorder, distanceBorder), vec2(currentWindowWidth - distanceBorder, currentWindowHeight - distanceBorder), COLOR.WHITE, rounding2, ui.CornerFlags.All, thickness)
-        
-        -- Círculos Azuis
-        for i = 0, startingLightsSettings.store.numStartingLights - 1, 1 do
-            ui.drawCircleFilled(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.BLUE, polygons)
-            ui.drawCircle(vec2(pos + i * distance , currentWindowHeight / 2), radius, COLOR.WHITE, polygons, thickness)
-        end
+        settingsActive.drawSettingsActive(data)
     end
-    pinCheckBox.main(startingLightsSettings.store.startingLightsScale, "Starting Lights", config.getWindow("Starting Lights"):pinned(), vec2(currentWindowWidth, currentWindowHeight))
+    pinCheckBox.main(startingLightsSettings.store.startingLightsScale, "Starting Lights", config.getWindow("Starting Lights"):pinned(), vec2(data.currentWindowWidth, data.currentWindowHeight))
 end
 
 return startingLights
