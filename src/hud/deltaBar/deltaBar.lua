@@ -1,4 +1,4 @@
-local config = require("common.config")
+local window = require("common.window")
 local pinCheckBox = require("src.ui.buttons.pinCheckBox")
 local deltaBarSettings = require("src.settings.tabs.deltaBarSettings")
 local deltaBarData = require("src.data.deltaBar.deltaBarData")
@@ -113,8 +113,8 @@ function deltaBar.windowMain()
     ui.dwriteTextAligned(deltaText, fontTextDelta, ui.Alignment.Center, ui.Alignment.Center, limitBackgroundText, false, textColor)
     ui.popDWriteFont()
 
-    config.resize(vec2(500,70):scale(deltaBarSettings.store.deltaBarScale), "Delta Bar")
-    pinCheckBox.main(deltaBarSettings.store.deltaBarScale, "Delta Bar", config.getWindow("Delta Bar"):pinned(), vec2(500,70):scale(deltaBarSettings.store.deltaBarScale))
+    window.resize(vec2(500,70):scale(deltaBarSettings.store.deltaBarScale), "Delta Bar")
+    pinCheckBox.main(deltaBarSettings.store.deltaBarScale, "Delta Bar", window.getWindow("Delta Bar"):pinned(), vec2(500,70):scale(deltaBarSettings.store.deltaBarScale))
 end
 
 

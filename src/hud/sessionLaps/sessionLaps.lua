@@ -1,7 +1,6 @@
 local sessionLapsSettings = require("src.settings.tabs.sessionLapsSettings")
-local language = require("lang.language")
 local pinCheckBox = require("src.ui.buttons.pinCheckBox")
-local config = require("common.config")
+local window = require("common.window")
 local sessionLapsData = require("src.data.sessionLaps.sessionLapsData")
 
 local laps = require("src.hud.sessionLaps.render.laps") 
@@ -44,8 +43,8 @@ function sessionLaps.windowMain()
     
     data.currentWindowSize = vec2(data.currentWindowWidth, data.currentWindowHeight * sessionLapsSettings.store.sessionLapsScale)
 
-    config.resize(data.currentWindowSize, "Session Laps")
-    pinCheckBox.main(sessionLapsSettings.store.sessionLapsScale, "Session Laps", config.getWindow("Session Laps"):pinned(), data.currentWindowSize)
+    window.resize(data.currentWindowSize, "Session Laps")
+    pinCheckBox.main(sessionLapsSettings.store.sessionLapsScale, "Session Laps", window.getWindow("Session Laps"):pinned(), data.currentWindowSize)
 end
 
 return sessionLaps

@@ -1,7 +1,7 @@
 local sessionFlagsSettings = require("src.settings.tabs.sessionFlagsSettings")
 local language = require("lang.language")
 local pinCheckBox = require("src.ui.buttons.pinCheckBox")
-local config = require("common.config")
+local window = require("common.window")
 local sessionFlagsData = require("src.data.sessionFlags.sessionFlagsData")
 
 local flags = require("src.hud.sessionFlags.render.flags")
@@ -31,7 +31,7 @@ function sessionFlags.windowMain()
     end
 
     data.flagLenght = vec2(data.lenght, data.lenght) * sessionFlagsSettings.store.sessionFlagsScale
-    --Bandeira branca config
+    --Bandeira branca window
     if SettingsActive then
         flags.drawFlag(data, "assets/flags/whiteFlag.png", language.get("WHITE_FLAG"), language.get("WHITE_FLAG"))
 
@@ -64,8 +64,8 @@ function sessionFlags.windowMain()
         flags.drawFlag(data, "assets/flags/greenFlag.png", language.get("GO_GO_GO"), language.get("GREEN_FLAG"))
     end
 
-    config.resize(data.currentWindowSize, "Session Flags")
-    pinCheckBox.main(1, "Session Flags", config.getWindow("Session Flags"):pinned(), data.currentWindowSize)
+    window.resize(data.currentWindowSize, "Session Flags")
+    pinCheckBox.main(1, "Session Flags", window.getWindow("Session Flags"):pinned(), data.currentWindowSize)
 end
 
 return sessionFlags

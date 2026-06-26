@@ -1,3 +1,4 @@
+local window = require("common.window")
 local config = require("common.config")
 local pinCheckBox = require("src.ui.buttons.pinCheckBox")
 local mapSettings = require("src.settings.tabs.mapSettings")
@@ -172,7 +173,7 @@ function map.windowMain()
 
 
     -- Animação do Background
-    if config.isMouseInWindow(ui.mouseLocalPos(), 0, ui.windowSize().x, 0, ui.windowSize().y) then
+    if window.isMouseInWindow(ui.mouseLocalPos(), 0, ui.windowSize().x, 0, ui.windowSize().y) then
         if data.transparancy < 0.85 then
             if 20 * Timer % 6 >= 1 then
                 data.transparancy = data.transparancy + 0.1
@@ -234,8 +235,8 @@ function map.windowMain()
         end
         players.drawPlayers(data)
     end
-    config.resize(data.currentWindowSize, "Map")
-    pinCheckBox.main(mapSettings.store.mapScale * 1.5, "Map", config.getWindow("Map"):pinned(), data.currentWindowSize)
+    window.resize(data.currentWindowSize, "Map")
+    pinCheckBox.main(mapSettings.store.mapScale * 1.5, "Map", window.getWindow("Map"):pinned(), data.currentWindowSize)
 end
 
 initMap()

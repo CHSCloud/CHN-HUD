@@ -1,5 +1,5 @@
 local pedalsSettings = require("src.settings.tabs.pedalsSettings")
-local config = require("common.config")
+local window = require("common.window")
 local pinCheckBox = require("src.ui.buttons.pinCheckBox")
 local pedalsData = require("src.data.pedals.pedalsData")
 
@@ -126,9 +126,9 @@ function pedals.windowMain()
 
   data.currentWindowSize = vec2(data.currentWindowWidth, data.currentWindowHeight)
 
-  config.resize(data.currentWindowSize, "Pedals")
+  window.resize(data.currentWindowSize, "Pedals")
 
-  pinCheckBox.main(pedalsSettings.store.pedalsScale, "Pedals", config.getWindow("Pedals"):pinned(), data.currentWindowSize)
+  pinCheckBox.main(pedalsSettings.store.pedalsScale, "Pedals", window.getWindow("Pedals"):pinned(), data.currentWindowSize)
 end
 
 return pedals

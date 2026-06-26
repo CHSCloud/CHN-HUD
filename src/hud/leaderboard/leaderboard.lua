@@ -1,4 +1,4 @@
-local config = require("common.config")
+local window = require("common.window")
 local pinCheckBox = require("src.ui.buttons.pinCheckBox")
 local leaderboardSettings = require("src.settings.tabs.leaderboardSettings")
 local leaderboardData = require("src.data.leaderboard.leaderboardData")
@@ -131,8 +131,8 @@ function leaderboard.windowMain()
         end
     end
 
-    config.resize(data.currentWindowSize, "Leaderboard")
-    pinCheckBox.main(leaderboardSettings.store.leaderboardScale, "Leaderboard", config.getWindow("Leaderboard"):pinned(), data.currentWindowSize)
+    window.resize(data.currentWindowSize, "Leaderboard")
+    pinCheckBox.main(leaderboardSettings.store.leaderboardScale, "Leaderboard", window.getWindow("Leaderboard"):pinned(), data.currentWindowSize)
 end
 
 updateDrivers()

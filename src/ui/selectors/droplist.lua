@@ -1,4 +1,4 @@
-local config = require("common.config")
+local window = require("common.window")
 local droplist = {}
 
 ---@alias droplist.PosText
@@ -36,14 +36,14 @@ function droplist.main(id, text, pos, size, selected, items, posText)
     end
     
     -- Se o mouse estiver na droplist
-    if config.isMouseInWindow(ui.mouseLocalPos(), pos.x, pos.x + size, pos.y,  pos.y + height) then
+    if window.isMouseInWindow(ui.mouseLocalPos(), pos.x, pos.x + size, pos.y,  pos.y + height) then
         color = USER_UI.accentColor
         if ui.mouseClicked(ui.MouseButton.Left) then
             active[id] = false
         end
     end
     -- Se o mouse estiver fora da droplist
-    if not config.isMouseInWindow(ui.mouseLocalPos(), pos.x, pos.x + size, pos.y,  pos.y + (itemsLenght + 1) * height) then
+    if not window.isMouseInWindow(ui.mouseLocalPos(), pos.x, pos.x + size, pos.y,  pos.y + (itemsLenght + 1) * height) then
         active[id] = false
     end
     ui.setCursor(pos)
@@ -58,7 +58,7 @@ function droplist.main(id, text, pos, size, selected, items, posText)
             ui.drawRectFilled(vec2(0,height), vec2(0,height) + vec2(size, height * (itemsLenght)), COLOR.GRAY_BG, rounding, ui.CornerFlags.Bottom)
             local i = 1
             for key, value in pairs(items) do
-                if config.isMouseInWindow(ui.mouseLocalPos(), 0, size, i * height, (i + 1) * height) then
+                if window.isMouseInWindow(ui.mouseLocalPos(), 0, size, i * height, (i + 1) * height) then
                     ui.drawRectFilled(vec2(padding, padding) + vec2(0, i * height), vec2(0,0) + vec2(0, i * height) + vec2(size - padding, height - padding), USER_UI.accentColor, rounding)
                     if ui.mouseClicked(ui.MouseButton.Left) then
                         active[id] = false
@@ -83,7 +83,7 @@ function droplist.main(id, text, pos, size, selected, items, posText)
         end
         
     else
-        if config.isMouseInWindow(ui.mouseLocalPos(), pos.x, pos.x + size, pos.y,  pos.y + height) then
+        if window.isMouseInWindow(ui.mouseLocalPos(), pos.x, pos.x + size, pos.y,  pos.y + height) then
             ui.setMouseCursor(ui.MouseCursor.Hand)
         end
         ui.drawRectFilled(pos, pos + vec2(size, height), color, rounding)

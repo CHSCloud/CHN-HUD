@@ -1,4 +1,4 @@
-local config = require("common.config")
+local window = require("common.window")
 local toggleButton = {}
 
 local positions = {}
@@ -34,7 +34,7 @@ function toggleButton.main(id, pos, key, text)
     end
 
     ui.dwriteDrawText(text, 12, pos + vec2(50, 2), COLOR.WHITE)
-    if config.isMouseInWindow(ui.mouseLocalPos(), pos.x, pos.x + size.x, pos.y, pos.y + size.y) then
+    if window.isMouseInWindow(ui.mouseLocalPos(), pos.x, pos.x + size.x, pos.y, pos.y + size.y) then
         ui.setMouseCursor(ui.MouseCursor.Hand)
         if ui.mouseClicked(ui.MouseButton.Left) then
             return true

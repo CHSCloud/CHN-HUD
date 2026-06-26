@@ -1,4 +1,6 @@
+local window = require("common.window")
 local config = require("common.config")
+
 local slider = {}
 
 ---@alias slider.PosText
@@ -42,7 +44,7 @@ function slider.main(text, outputText, pos, lenght, value, init, final, posText,
     local posValue = config.remapIntervalWithLimits(value, init, final, 0, lenght)
     ui.drawRectFilled(pos, pos + vec2(lenght, 15), USER_UI.accentColor, 20)
     ui.drawRectFilled(pos + vec2(posValue - width, - 5), pos + vec2(posValue + width, 20), COLOR.WHITE, 20)
-    if config.isMouseInWindow(ui.mouseLocalPos(), pos.x, pos.x + lenght, pos.y, pos.y + 15) then
+    if window.isMouseInWindow(ui.mouseLocalPos(), pos.x, pos.x + lenght, pos.y, pos.y + 15) then
         ui.setMouseCursor(ui.MouseCursor.Hand)
     end
     ui.setCursor(pos + vec2(lenght + 12, 0))

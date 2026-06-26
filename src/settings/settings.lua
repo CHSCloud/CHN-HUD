@@ -12,7 +12,7 @@ local button = require("src.ui.buttons.button")
 local slider = require("src.ui.selectors.slider")
 
 local language = require("lang.language")
-local config = require("common.config")
+local window = require("common.window")
 local droplist = require("src.ui.selectors.droplist")
 
 local settings = {}
@@ -105,9 +105,9 @@ local function geral()
   ui.setCursor(vec2(300, initPos + 20))
   
   -- Checkbox Pin All Apps
-  if toggleButton.main("pin", vec2(300, initPos), config.store.pinAllApps, language.get("PIN_ALL_APPS")) then
-    config.store.pinAllApps = not config.store.pinAllApps
-    config.pinAllApps(config.store.pinAllApps)
+  if toggleButton.main("pin", vec2(300, initPos), window.store.pinAllApps, language.get("PIN_ALL_APPS")) then
+    window.store.pinAllApps = not window.store.pinAllApps
+    window.pinAllApps(window.store.pinAllApps)
   end
   
   -- Seção de Cores
@@ -171,7 +171,7 @@ function settings.windowMain()
     ui.dwriteTextAligned(language.get("NEW_UPDATE"), 20, ui.Alignment.Start,ui.Alignment.Center, vec2(WindowSettingsSize.x, 35), false, COLOR.BLACK)
     local linkPosX = 20 + ui.measureDWriteText(language.get("NEW_UPDATE"), 20).x
     
-    if config.isMouseInWindow(ui.mouseLocalPos(), linkPosX + 10, linkPosX + ui.measureDWriteText("CHN HUD " .. onlineVersion, 20).x + 10, WindowSettingsSize.y - 30 + ui.getScrollY(), WindowSettingsSize.y + ui.getScrollY()) then
+    if window.isMouseInWindow(ui.mouseLocalPos(), linkPosX + 10, linkPosX + ui.measureDWriteText("CHN HUD " .. onlineVersion, 20).x + 10, WindowSettingsSize.y - 30 + ui.getScrollY(), WindowSettingsSize.y + ui.getScrollY()) then
       ui.setMouseCursor(ui.MouseCursor.Hand)
       ui.setCursor(vec2(linkPosX + 10, WindowSettingsSize.y - 30) + vec2(0,ui.getScrollY()))
       ui.dwriteTextHyperlink("CHN HUD " .. onlineVersion, 20, COLOR.RED)
@@ -183,7 +183,7 @@ function settings.windowMain()
       ui.dwriteTextHyperlink("CHN HUD " .. onlineVersion, 20, COLOR.BLACK)
     end
     
-    if config.isMouseInWindow(ui.mouseLocalPos(),WindowSettingsSize.x - 38, WindowSettingsSize.x - 12, WindowSettingsSize.y - 28 + ui.getScrollY(), WindowSettingsSize.x - 2 + ui.getScrollY()) then
+    if window.isMouseInWindow(ui.mouseLocalPos(),WindowSettingsSize.x - 38, WindowSettingsSize.x - 12, WindowSettingsSize.y - 28 + ui.getScrollY(), WindowSettingsSize.x - 2 + ui.getScrollY()) then
       ui.setMouseCursor(ui.MouseCursor.Hand)
       ui.drawRectFilled(WindowSettingsSize - vec2(38,30) + vec2(0,ui.getScrollY()), WindowSettingsSize - vec2(12,4) + vec2(0,ui.getScrollY()), COLOR.RED_DARK, 5)
       ui.drawLine(WindowSettingsSize - vec2(33,25) + vec2(0,ui.getScrollY()), WindowSettingsSize - vec2(17,9) + vec2(0,ui.getScrollY()), COLOR.WHITE, 2)
@@ -202,7 +202,7 @@ function settings.windowMain()
     posResize = WindowSettingsSize - vec2(45,45) + vec2(0,ui.getScrollY())
   end
 
-  if config.isMouseInWindow(ui.mouseLocalPos(), posResize.x - 5, posResize.x + 25, posResize.y - 5, posResize.y + 25) then
+  if window.isMouseInWindow(ui.mouseLocalPos(), posResize.x - 5, posResize.x + 25, posResize.y - 5, posResize.y + 25) then
     ui.setMouseCursor(ui.MouseCursor.Hand)  
     if ui.mouseClicked(ui.MouseButton.Left) then
       local settingsINI = ac.INIConfig.load(ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\CHN-HUD\\manifest.ini")
@@ -210,7 +210,7 @@ function settings.windowMain()
         local size = settingsINI:get("WINDOW_0", "SIZE", nil)
         if size ~= nil then
           local sizeSplit = string.split(size[1], ",")
-          config.resize(vec2(tonumber(sizeSplit[1]), tonumber(sizeSplit[2])), "Settings CHN")
+          window.resize(vec2(tonumber(sizeSplit[1]), tonumber(sizeSplit[2])), "Settings CHN")
         end
       end
     end

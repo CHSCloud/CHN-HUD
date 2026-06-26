@@ -1,6 +1,6 @@
 local pitLaneSettings = require("src.settings.tabs.pitLaneSettings")
 local pinCheckBox = require("src.ui.buttons.pinCheckBox")
-local config = require("common.config")
+local window = require("common.window")
 
 local init = require("src.hud.pitLane.render.init")
 local components = require("src.hud.pitLane.render.components")
@@ -59,9 +59,9 @@ function pitLane.windowMain()
 
   data.currentWindowSize = vec2(data.currentWindowWidth, data.currentWindowHeight)
 
-  config.resize(data.currentWindowSize, "Pit Lane")
+  window.resize(data.currentWindowSize, "Pit Lane")
   
-  pinCheckBox.main(pitLaneSettings.store.pitLaneScale, "Pit Lane", config.getWindow("Pit Lane"):pinned(), data.currentWindowSize)
+  pinCheckBox.main(pitLaneSettings.store.pitLaneScale, "Pit Lane", window.getWindow("Pit Lane"):pinned(), data.currentWindowSize)
 end
 
 return pitLane

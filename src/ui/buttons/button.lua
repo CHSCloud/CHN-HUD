@@ -1,4 +1,4 @@
-local config = require("common.config")
+local window = require("common.window")
 local button = {}
 
 --- @param pos vec2
@@ -13,7 +13,7 @@ function button.main(pos, text, focused)
         focused = ui.windowFocused(ui.FocusedFlags.RootWindow)
     end
 
-    if config.isMouseInWindow(ui.mouseLocalPos(), pos.x, pos.x + lenght, pos.y, pos.y + 25) then
+    if window.isMouseInWindow(ui.mouseLocalPos(), pos.x, pos.x + lenght, pos.y, pos.y + 25) then
         color = USER_UI.accentColor
         ui.setMouseCursor(ui.MouseCursor.Hand)
     end
