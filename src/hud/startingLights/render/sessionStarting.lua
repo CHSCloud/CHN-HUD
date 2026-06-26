@@ -1,5 +1,5 @@
 local startingLightsSettings = require("src.settings.tabs.startingLightsSettings")
-local config = require("common.config")
+local utils = require("common.utils")
 local sessionStarting = {}
 
 --- @param data startingLightsData
@@ -20,7 +20,7 @@ function sessionStarting.drawSessionStarting(data)
     for i = 7000, 2000, add do
         
         if SIM.timeToSessionStart < i and i > 2000 and current <= startingLightsSettings.store.numStartingLights - 1 then
-            ui.drawCircleFilled(vec2(data.pos + current * data.distance , data.currentWindowHeight / 2), config.remapIntervalWithLimits(SIM.timeToSessionStart, i, i + add, 0, data.radius), COLOR.RED, data.polygons)
+            ui.drawCircleFilled(vec2(data.pos + current * data.distance , data.currentWindowHeight / 2), utils.remapIntervalWithLimits(SIM.timeToSessionStart, i, i + add, 0, data.radius), COLOR.RED, data.polygons)
             ui.drawCircle(vec2(data.pos + current * data.distance , data.currentWindowHeight / 2), data.radius, COLOR.WHITE, data.polygons, data.thickness)
         end 
         current = current + 1

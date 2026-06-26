@@ -11,7 +11,7 @@ local toggleButton = require("src.ui.buttons.toggleButton")
 local button = require("src.ui.buttons.button")
 local slider = require("src.ui.selectors.slider")
 
-local language = require("lang.language")
+local language = require("language.language")
 local window = require("common.window")
 local droplist = require("src.ui.selectors.droplist")
 

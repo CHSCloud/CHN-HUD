@@ -1,4 +1,4 @@
-local config = require("common.config")
+local utils = require("common.utils")
 local formText = {}
 
 --- @param id string
@@ -11,7 +11,7 @@ local formText = {}
 --- @return string, vec2, boolean
 function formText.main(id, pos, text, size, rounding, color, textFlags)
     local textFormated = string.replace(text, '\\n', '\n')
-    local longestWord, _ = config.findLongestWord(textFormated)
+    local longestWord, _ = utils.findLongestWord(textFormated)
     local textLenght = ui.measureText(longestWord)
     if textLenght.x > size.x - 15 then
         size.x = textLenght.x + 15

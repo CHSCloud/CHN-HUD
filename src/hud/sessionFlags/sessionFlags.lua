@@ -1,5 +1,5 @@
 local sessionFlagsSettings = require("src.settings.tabs.sessionFlagsSettings")
-local language = require("lang.language")
+local language = require("language.language")
 local pinCheckBox = require("src.ui.buttons.pinCheckBox")
 local window = require("common.window")
 local sessionFlagsData = require("src.data.sessionFlags.sessionFlagsData")

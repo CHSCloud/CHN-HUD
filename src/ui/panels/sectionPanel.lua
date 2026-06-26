@@ -1,16 +1,16 @@
 local button = require("src.ui.buttons.button")
-local language = require("lang.language")
+local language = require("language.language")
 local droplist = require("src.ui.selectors.droplist")
 local formText = require("src.ui.forms.formText")
 
-local config = require("common.config")
+local utils = require("common.utils")
 local sectionPanel = {}
 
 --- @param pos vec2
 --- @param size vec2
 --- @return boolean
 local function deleteSectionButton(pos, size)
-    if config.isMouseInWindow(ui.mouseLocalPos(), pos.x, pos.x + size.x, pos.y, pos.y + size.y) then
+    if utils.isMouseInWindow(ui.mouseLocalPos(), pos.x, pos.x + size.x, pos.y, pos.y + size.y) then
         ui.drawRectFilled(pos, pos + size, USER_UI.accentColor, 2)
         if ui.mouseClicked(ui.MouseButton.Left) then    
             return true
@@ -96,13 +96,13 @@ function sectionPanel.main(id, iniFile, pos, size)
                 iniFile:set(section, "PROGRESS", progress)
                 if isItemEdited and ui.windowFocused(ui.FocusedFlags.ChildWindows) then edited = true end
 
-                position = droplist.main(section .. "POSITION", "", vec2(sizeText.x + sizeProgress.x + 40, 8 + height), config.findLenghtLongestString(positions, 12).x + 40, iniFile:get(section, "POSITION", 1), positions, droplist.PosText.Start)
+                position = droplist.main(section .. "POSITION", "", vec2(sizeText.x + sizeProgress.x + 40, 8 + height), utils.findLenghtLongestString(positions, 12).x + 40, iniFile:get(section, "POSITION", 1), positions, droplist.PosText.Start)
                 if position ~= iniFile:get(section, "POSITION", 1) then
                     iniFile:set(section, "POSITION", position)
                     edited = true
                 end
 
-                if deleteSectionButton(vec2(sizeText.x + sizeProgress.x + config.findLenghtLongestString(positions, 12).x + 100, 10 + height), vec2(20, 20)) and ui.windowFocused(ui.FocusedFlags.ChildWindows) then
+                if deleteSectionButton(vec2(sizeText.x + sizeProgress.x + utils.findLenghtLongestString(positions, 12).x + 100, 10 + height), vec2(20, 20)) and ui.windowFocused(ui.FocusedFlags.ChildWindows) then
                     iniFile:mapConfig(deleteSection(iniFile.sections, section, index))
                     edited = true
                 end

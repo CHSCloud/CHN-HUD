@@ -1,5 +1,5 @@
-local language = require("lang.language")
-local config = require("common.config")
+local language = require("language.language")
+local utils = require("common.utils")
 local slider = require("src.ui.selectors.slider")
 local button = require("src.ui.buttons.button")
 local droplist = require("src.ui.selectors.droplist")
@@ -94,7 +94,7 @@ local function drawOthers(pos)
     end
     if pedalsSettings.store.fuelActive then
         local old = pedalsSettings.store.fuelPos
-        pedalsSettings.store.fuelPos = droplist.main("##fuelPos", "|  " .. language.get("POSITION"), vec2(pos.x + ui.measureDWriteText(language.get("FUEL"), 12).x  + 60, pos.y - 4), config.findLenghtLongestString(positionsBorders, 12).x + 40, pedalsSettings.store.fuelPos, positionsBorders, droplist.PosText.Start)
+        pedalsSettings.store.fuelPos = droplist.main("##fuelPos", "|  " .. language.get("POSITION"), vec2(pos.x + ui.measureDWriteText(language.get("FUEL"), 12).x  + 60, pos.y - 4), utils.findLenghtLongestString(positionsBorders, 12).x + 40, pedalsSettings.store.fuelPos, positionsBorders, droplist.PosText.Start)
         if pedalsSettings.store.fuelPos ~= old then
             invertPositionBorder(old, pedalsSettings.store.fuelPos, "fuelPos")
         end
@@ -106,7 +106,7 @@ local function drawOthers(pos)
     end
     if pedalsSettings.store.brakeBiasActive then
         local old = pedalsSettings.store.brakebiasPos
-        pedalsSettings.store.brakebiasPos = droplist.main("##brakebiasPos", "|  " .. language.get("POSITION"), vec2(pos.x + ui.measureDWriteText(language.get("BRAKE_BIAS"), 12).x + 60, pos.y - 3), config.findLenghtLongestString(positionsBorders, 12).x + 40, pedalsSettings.store.brakebiasPos, positionsBorders, droplist.PosText.Start)
+        pedalsSettings.store.brakebiasPos = droplist.main("##brakebiasPos", "|  " .. language.get("POSITION"), vec2(pos.x + ui.measureDWriteText(language.get("BRAKE_BIAS"), 12).x + 60, pos.y - 3), utils.findLenghtLongestString(positionsBorders, 12).x + 40, pedalsSettings.store.brakebiasPos, positionsBorders, droplist.PosText.Start)
         if pedalsSettings.store.brakebiasPos ~= old then
             invertPositionBorder(old, pedalsSettings.store.brakebiasPos, "brakebiasPos")
         end
@@ -141,7 +141,7 @@ local function drawRPM(pos)
         pos.y = pos.y + 30
 
         local old = pedalsSettings.store.rpmPos
-        pedalsSettings.store.rpmPos = droplist.main("##rpmPos", language.get("POSITION"), vec2(pos.x, pos.y), config.findLenghtLongestString(positionsCenters, 12).x + 160, pedalsSettings.store.rpmPos, positionsCenters, droplist.PosText.Start)
+        pedalsSettings.store.rpmPos = droplist.main("##rpmPos", language.get("POSITION"), vec2(pos.x, pos.y), utils.findLenghtLongestString(positionsCenters, 12).x + 160, pedalsSettings.store.rpmPos, positionsCenters, droplist.PosText.Start)
         if pedalsSettings.store.rpmPos ~= old then
             invertPositionCenter(old, pedalsSettings.store.rpmPos, "rpmPos")
         end
@@ -153,7 +153,7 @@ local function drawRPM(pos)
         if pedalsSettings.store.rpmType == 1 then
 
             pos.y = pos.y + 40
-            pedalsSettings.store.rpmProcessType = droplist.main("##progress", language.get("PROGRESS"), vec2(pos.x, pos.y), config.findLenghtLongestString(processCircleType, 12).x + 40, pedalsSettings.store.rpmProcessType, processCircleType, droplist.PosText.Start)
+            pedalsSettings.store.rpmProcessType = droplist.main("##progress", language.get("PROGRESS"), vec2(pos.x, pos.y), utils.findLenghtLongestString(processCircleType, 12).x + 40, pedalsSettings.store.rpmProcessType, processCircleType, droplist.PosText.Start)
             for i = 1, 9 do
                 local c1, c2, c3 = COLOR.GREEN, COLOR.GREEN, COLOR.GREEN
                 
@@ -199,7 +199,7 @@ local function drawRPM(pos)
         if pedalsSettings.store.p2pActive then
             local old = pedalsSettings.store.p2pPos
             copyPos.y = copyPos.y + 30
-            pedalsSettings.store.p2pPos = droplist.main("##p2pPos",language.get("POSITION"), vec2(copyPos.x, copyPos.y - 3), config.findLenghtLongestString(positionsCenters, 12).x + 160, pedalsSettings.store.p2pPos, positionsCenters, droplist.PosText.Start)
+            pedalsSettings.store.p2pPos = droplist.main("##p2pPos",language.get("POSITION"), vec2(copyPos.x, copyPos.y - 3), utils.findLenghtLongestString(positionsCenters, 12).x + 160, pedalsSettings.store.p2pPos, positionsCenters, droplist.PosText.Start)
             if pedalsSettings.store.p2pPos ~= old then
                 invertPositionCenter(old, pedalsSettings.store.p2pPos, "p2pPos")
             end
@@ -294,7 +294,7 @@ function pedalsSettings.pedalsSettings()
     else
         if pedalsSettings.store.tractionControlActive then
             local old = pedalsSettings.store.tractionControlPos
-            pedalsSettings.store.tractionControlPos = droplist.main("##tractionControlPos", "|  " .. language.get("POSITION"), vec2(ui.measureText(language.get("TC")).x + 85, initPos - 3), config.findLenghtLongestString(positionsBorders, 12).x + 40, pedalsSettings.store.tractionControlPos, positionsBorders, droplist.PosText.Start)
+            pedalsSettings.store.tractionControlPos = droplist.main("##tractionControlPos", "|  " .. language.get("POSITION"), vec2(ui.measureText(language.get("TC")).x + 85, initPos - 3), utils.findLenghtLongestString(positionsBorders, 12).x + 40, pedalsSettings.store.tractionControlPos, positionsBorders, droplist.PosText.Start)
             if pedalsSettings.store.tractionControlPos ~= old then
                 invertPositionBorder(old, pedalsSettings.store.tractionControlPos, "tractionControlPos")
             end
@@ -312,7 +312,7 @@ function pedalsSettings.pedalsSettings()
     else
         if pedalsSettings.store.drsActvationActive then
             local old = pedalsSettings.store.drsPos
-            pedalsSettings.store.drsPos = droplist.main("##drsPos", "|  " .. language.get("POSITION"), vec2(ui.measureText("DRS").x + 85, initPos - 3), config.findLenghtLongestString(positionsBorders, 12).x + 40, pedalsSettings.store.drsPos, positionsBorders, droplist.PosText.Start)
+            pedalsSettings.store.drsPos = droplist.main("##drsPos", "|  " .. language.get("POSITION"), vec2(ui.measureText("DRS").x + 85, initPos - 3), utils.findLenghtLongestString(positionsBorders, 12).x + 40, pedalsSettings.store.drsPos, positionsBorders, droplist.PosText.Start)
             if pedalsSettings.store.drsPos ~= old then
                 invertPositionBorder(old, pedalsSettings.store.drsPos, "drsPos")
             end

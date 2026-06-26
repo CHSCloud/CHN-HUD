@@ -1,5 +1,5 @@
 local pitLaneSettings = require("src.settings.tabs.pitLaneSettings")
-local language = require("lang.language")
+local language = require("language.language")
 
 local components = {}
 

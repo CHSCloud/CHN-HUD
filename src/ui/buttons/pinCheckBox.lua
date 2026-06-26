@@ -1,5 +1,5 @@
 local window = require("common.window")
-local language = require("lang.language")
+local language = require("language.language")
 local pinCheckBox = {}
 
 local maxLenght = 20

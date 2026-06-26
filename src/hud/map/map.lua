@@ -1,5 +1,5 @@
 local window = require("common.window")
-local config = require("common.config")
+local utils = require("common.utils")
 local pinCheckBox = require("src.ui.buttons.pinCheckBox")
 local mapSettings = require("src.settings.tabs.mapSettings")
 local mapData = require("src.data.map.mapData")
@@ -18,7 +18,7 @@ local data = mapData.new()
 -- Inicializa todos os parâmetros do mapa
 local function initMap()
     -- Calculando todos os pontos do mapa
-    data.totalPoints = config.remapInterval(SIM.trackLengthM, 0, 4000, 0, 500)
+    data.totalPoints = utils.remapInterval(SIM.trackLengthM, 0, 4000, 0, 500)
 
     -- Armazenando pontos do mapa
     for i = 0, 1, 1 / data.totalPoints do
@@ -228,7 +228,7 @@ function map.windowMain()
     
         ui.drawImage(data.canvasZoom, -zoomScaled, data.currentWindowSize.x + zoomScaled)
     else
-        data.offset = config.floorVec(data.offset)
+        data.offset = utils.floorVec(data.offset)
         ui.drawImage(data.canvas, data.offset, data.baseWindowSize * mapSettings.store.mapScale + data.offset)
         if mapSettings.store.sectionsTrackActive then
             sections.drawTrackSections(data)

@@ -1,4 +1,4 @@
-local config = require("common.config")
+local utils = require("common.utils")
 local track = {}
 
 -- Desenha a pista
@@ -10,7 +10,7 @@ function track.drawTrack(data, thickness, color)
         local offsetX = (point.x - data.trackCenterX) * data.canvasScale
         local offsetY = (point.y - data.trackCenterY) * data.canvasScale
 
-        local rotatePos = config.rotateVec(vec2(offsetX, offsetY), data.angle)
+        local rotatePos = utils.rotateVec(vec2(offsetX, offsetY), data.angle)
 
         local finalX = data.canvasCenter.x + rotatePos.x
         local finalY = data.canvasCenter.y + rotatePos.y

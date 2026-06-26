@@ -1,4 +1,4 @@
-local language = require("lang.language")
+local language = require("language.language")
 local slider = require("src.ui.selectors.slider")
 local button = require("src.ui.buttons.button")
 local toggleButton = require("src.ui.buttons.toggleButton")

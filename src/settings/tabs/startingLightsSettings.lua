@@ -1,5 +1,5 @@
 
-local language = require("lang.language")
+local language = require("language.language")
 local button = require("src.ui.buttons.button")
 local slider = require("src.ui.selectors.slider")
 local startingLightsSettings = {}

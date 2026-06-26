@@ -5,8 +5,8 @@ local button = require("src.ui.buttons.button")
 local toggleButton = require("src.ui.buttons.toggleButton")
 local droplist = require("src.ui.selectors.droplist")
 local sectionPanel = require("src.ui.panels.sectionPanel")
-local config = require("common.config")
-local language = require("lang.language")
+local utils = require("common.utils")
+local language = require("language.language")
 
 
 local defaultValues = {}
@@ -50,10 +50,10 @@ local defaultValuesPlayers = {
     enemiesLenght = 10
 }  
 
-config.copyTable(defaultValuesTrack, defaultValues)
-config.copyTable(defaultValuesFeatures, defaultValues)
-config.copyTable(defaultValuesPlayers, defaultValues)
-config.copyTable(defaultValuesSections, defaultValues)
+utils.copyTable(defaultValuesTrack, defaultValues)
+utils.copyTable(defaultValuesFeatures, defaultValues)
+utils.copyTable(defaultValuesPlayers, defaultValues)
+utils.copyTable(defaultValuesSections, defaultValues)
 mapSettings.store = ac.storage(defaultValues)
 mapSettings.isClockwise = false -- Sentido de orintação da pista
 
@@ -361,7 +361,7 @@ local function sectionsSettings()
     initPos = initPos + 30
     if mapSettings.store.sectionsTrackActive then
         ui.dwriteDrawText(language.get("COLOR"), 12, vec2(250, initPos - 10), COLOR.WHITE)
-        mapSettings.store.sectionsType = droplist.main("sectionsType", language.get("TYPE"), vec2(20, initPos), config.findLenghtLongestString(types, 12).x + 40,  mapSettings.store.sectionsType, types, droplist.PosText.Start)
+        mapSettings.store.sectionsType = droplist.main("sectionsType", language.get("TYPE"), vec2(20, initPos), utils.findLenghtLongestString(types, 12).x + 40,  mapSettings.store.sectionsType, types, droplist.PosText.Start)
         mapSettings.store.sectionsBgColor = colorSelector.main(language.get("BG_COLOR_SECTIONS"), mapSettings.store.sectionsBgColor, vec2(250, initPos + 10), "bgcolor")
 
         ui.drawLine(vec2(220, initPos - 8), vec2(220, initPos + 65), COLOR.WHITE_LINE, 2)

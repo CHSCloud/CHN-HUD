@@ -1,5 +1,5 @@
 local sessionLapsSettings = require("src.settings.tabs.sessionLapsSettings")
-local language = require("lang.language")
+local language = require("language.language")
 local laps = {}
 
 ---@param posY number

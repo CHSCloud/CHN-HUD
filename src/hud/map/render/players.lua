@@ -1,5 +1,5 @@
 local mapSettings = require("src.settings.tabs.mapSettings")
-local config = require("common.config")
+local utils = require("common.utils")
 local players = {}
 
 -- Desenha um jogador
@@ -13,7 +13,7 @@ local players = {}
 local function drawPlayer(data, car, lenght, colorInternal, colorExternal, center, scale)
     local posX = (car.position.x - data.trackCenterX) * scale
     local posY = (car.position.z - data.trackCenterY) * scale
-    local rotatedPos = config.rotateVec(vec2(posX, posY), data.angle)
+    local rotatedPos = utils.rotateVec(vec2(posX, posY), data.angle)
     rotatedPos = center + rotatedPos + data.offset
     ui.drawCircleFilled(rotatedPos, lenght, colorInternal, 20)
     ui.drawCircle(rotatedPos, lenght, colorExternal, 20, lenght / 5)

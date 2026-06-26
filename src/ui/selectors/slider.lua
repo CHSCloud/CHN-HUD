@@ -1,5 +1,5 @@
 local window = require("common.window")
-local config = require("common.config")
+local utils = require("common.utils")
 
 local slider = {}
 
@@ -38,10 +38,10 @@ function slider.main(text, outputText, pos, lenght, value, init, final, posText,
         ui.invisibleButton("##" .. text, vec2(lenght, 15), ui.ButtonFlags.PressedOnClick)
     end
     if ui.itemActive() then
-        value = config.remapIntervalWithLimits(ui.mouseLocalPos().x, pos.x, pos.x + lenght, init, final)
+        value = utils.remapIntervalWithLimits(ui.mouseLocalPos().x, pos.x, pos.x + lenght, init, final)
     end
 
-    local posValue = config.remapIntervalWithLimits(value, init, final, 0, lenght)
+    local posValue = utils.remapIntervalWithLimits(value, init, final, 0, lenght)
     ui.drawRectFilled(pos, pos + vec2(lenght, 15), USER_UI.accentColor, 20)
     ui.drawRectFilled(pos + vec2(posValue - width, - 5), pos + vec2(posValue + width, 20), COLOR.WHITE, 20)
     if window.isMouseInWindow(ui.mouseLocalPos(), pos.x, pos.x + lenght, pos.y, pos.y + 15) then

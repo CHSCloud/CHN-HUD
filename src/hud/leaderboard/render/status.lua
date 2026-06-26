@@ -1,5 +1,5 @@
 local leaderboardSettings = require("src.settings.tabs.leaderboardSettings")
-local config = require("common.config")
+local utils = require("common.utils")
 local status = {}
 
 ---@param data leaderboardData
@@ -8,7 +8,7 @@ local status = {}
 ---@param pos vec2
 function status.drawDriverStatus(data, statusText, statusColor, pos)
     if leaderboardSettings.store.statusActive then
-        data.statusLenght = config.findLenghtLongestString(data.statusTexts, 18).x + 60
+        data.statusLenght = utils.findLenghtLongestString(data.statusTexts, 18).x + 60
         ui.setCursor(pos)
         ui.dwriteTextAligned(statusText, 18 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Center, ui.Alignment.Center, vec2(data.statusLenght,30):scale(leaderboardSettings.store.leaderboardScale), false, statusColor)
         data.posX = data.posX + data.statusLenght

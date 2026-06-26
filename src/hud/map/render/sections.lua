@@ -1,5 +1,5 @@
 local mapSettings = require("src.settings.tabs.mapSettings")
-local config = require("common.config")
+local utils = require("common.utils")
 local sections = {}
 
 -- Aumamenta janela com base no retângulo do texto
@@ -42,18 +42,18 @@ function sections.resizeWindowMap(data)
                 local posRotated
                 local textLenght = (vec2(lenght, lenght) / 2) * mapSettings.store.mapScale
                 if data.trackSections[i].position == 1 then
-                    posRotated = config.rotateVec(vec2((data.trackSections[i].center.x - data.trackCenterX) * scale, (data.trackSections[i].center.y - data.trackCenterY) * scale), data.angle)
+                    posRotated = utils.rotateVec(vec2((data.trackSections[i].center.x - data.trackCenterX) * scale, (data.trackSections[i].center.y - data.trackCenterY) * scale), data.angle)
 
                 elseif data.trackSections[i].position == 2 then
-                    posRotated = config.rotateVec(vec2((data.trackSections[i].left.x - data.trackCenterX) * scale, (data.trackSections[i].left.y - data.trackCenterY) * scale), data.angle)
+                    posRotated = utils.rotateVec(vec2((data.trackSections[i].left.x - data.trackCenterX) * scale, (data.trackSections[i].left.y - data.trackCenterY) * scale), data.angle)
                     local dir = (data.trackSections[i].right - data.trackSections[i].left):normalize()
-                    dir = config.rotateVec(dir, data.angle)
+                    dir = utils.rotateVec(dir, data.angle)
                     posRotated = posRotated + dir * (mapSettings.store.trackLenght/2 + borderMap + lenght/4) * mapSettings.store.mapScale
 
                 else
-                    posRotated = config.rotateVec(vec2((data.trackSections[i].right.x - data.trackCenterX) * scale, (data.trackSections[i].right.y - data.trackCenterY) * scale), data.angle)
+                    posRotated = utils.rotateVec(vec2((data.trackSections[i].right.x - data.trackCenterX) * scale, (data.trackSections[i].right.y - data.trackCenterY) * scale), data.angle)
                     local dir = (data.trackSections[i].left - data.trackSections[i].right):normalize()
-                    dir = config.rotateVec(dir, data.angle)
+                    dir = utils.rotateVec(dir, data.angle)
                     posRotated = posRotated + dir * (mapSettings.store.trackLenght/2 + borderMap + lenght/4) * mapSettings.store.mapScale
                 end
                 textPosition = data.windowCenter + posRotated
@@ -63,29 +63,29 @@ function sections.resizeWindowMap(data)
             end
         else
             for i = 1, #data.trackSections, 1 do
-                local longestText, count = config.findLongestWord(data.trackSections[i].name)
+                local longestText, count = utils.findLongestWord(data.trackSections[i].name)
                 local textLenght = ui.measureDWriteText(longestText, (lenght / 2)* mapSettings.store.mapScale) + vec2(5) * mapSettings.store.mapScale
                 textLenght = textLenght + vec2(0, textLenght.y * count) + vec2(0,5) * mapSettings.store.mapScale
                 local posRotated
                 local dir = vec2(0,0)
                 if data.trackSections[i].position == 1 then
-                    posRotated = config.rotateVec(vec2((data.trackSections[i].center.x - data.trackCenterX) * scale, (data.trackSections[i].center.y - data.trackCenterY) * scale), data.angle)
+                    posRotated = utils.rotateVec(vec2((data.trackSections[i].center.x - data.trackCenterX) * scale, (data.trackSections[i].center.y - data.trackCenterY) * scale), data.angle)
 
                 elseif data.trackSections[i].position == 2 then
-                    posRotated = config.rotateVec(vec2((data.trackSections[i].left.x - data.trackCenterX) * scale, (data.trackSections[i].left.y - data.trackCenterY) * scale), data.angle)
+                    posRotated = utils.rotateVec(vec2((data.trackSections[i].left.x - data.trackCenterX) * scale, (data.trackSections[i].left.y - data.trackCenterY) * scale), data.angle)
                     dir = (data.trackSections[i].right - data.trackSections[i].left):normalize()
-                    dir = config.rotateVec(dir, data.angle)
+                    dir = utils.rotateVec(dir, data.angle)
 
                 else
-                    posRotated = config.rotateVec(vec2((data.trackSections[i].right.x - data.trackCenterX) * scale, (data.trackSections[i].right.y - data.trackCenterY) * scale), data.angle)
+                    posRotated = utils.rotateVec(vec2((data.trackSections[i].right.x - data.trackCenterX) * scale, (data.trackSections[i].right.y - data.trackCenterY) * scale), data.angle)
                     dir = (data.trackSections[i].left - data.trackSections[i].right):normalize()
-                    dir = config.rotateVec(dir, data.angle)
+                    dir = utils.rotateVec(dir, data.angle)
                 end
                 local distance
                 if dir.x > 0 then
-                    distance = config.remapInterval(dir.x, 0, 1, textLenght.x / 20, 1)
+                    distance = utils.remapInterval(dir.x, 0, 1, textLenght.x / 20, 1)
                 else
-                    distance = config.remapInterval(dir.x, -1, 0, 1, textLenght.x / 20)
+                    distance = utils.remapInterval(dir.x, -1, 0, 1, textLenght.x / 20)
                 end
                 local centerText = posRotated + dir * (textLenght.x / (2 * distance) + ((mapSettings.store.trackLenght + borderMap)/2) * mapSettings.store.mapScale)
                 textPosition = data.windowCenter + centerText - textLenght / 2
@@ -103,18 +103,18 @@ function sections.resizeWindowMap(data)
             for i = 1, #data.trackSections, 1 do
                 local posRotated
                 if data.trackSections[i].position == 1 then
-                    posRotated = config.rotateVec(vec2((data.trackSections[i].center.x - data.trackCenterX) * scale, (data.trackSections[i].center.y - data.trackCenterY) * scale), data.angle)
+                    posRotated = utils.rotateVec(vec2((data.trackSections[i].center.x - data.trackCenterX) * scale, (data.trackSections[i].center.y - data.trackCenterY) * scale), data.angle)
 
                 elseif data.trackSections[i].position == 2 then
-                    posRotated = config.rotateVec(vec2((data.trackSections[i].left.x - data.trackCenterX) * scale, (data.trackSections[i].left.y - data.trackCenterY) * scale), data.angle)
+                    posRotated = utils.rotateVec(vec2((data.trackSections[i].left.x - data.trackCenterX) * scale, (data.trackSections[i].left.y - data.trackCenterY) * scale), data.angle)
                     local dir = (data.trackSections[i].right - data.trackSections[i].left):normalize()
-                    dir = config.rotateVec(dir, data.angle)
+                    dir = utils.rotateVec(dir, data.angle)
                     posRotated = posRotated + dir * (mapSettings.store.trackLenght/2 + borderMap + textLenght.x)
 
                 else
-                    posRotated = config.rotateVec(vec2((data.trackSections[i].right.x - data.trackCenterX) * scale, (data.trackSections[i].right.y - data.trackCenterY) * scale), data.angle)
+                    posRotated = utils.rotateVec(vec2((data.trackSections[i].right.x - data.trackCenterX) * scale, (data.trackSections[i].right.y - data.trackCenterY) * scale), data.angle)
                     local dir = (data.trackSections[i].left - data.trackSections[i].right):normalize()
-                    dir = config.rotateVec(dir, data.angle)
+                    dir = utils.rotateVec(dir, data.angle)
                     posRotated = posRotated + dir * (mapSettings.store.trackLenght/2 + borderMap + textLenght.x)
                 end
                 posRotated = data.canvasCenter + posRotated
@@ -123,29 +123,29 @@ function sections.resizeWindowMap(data)
             end
         else 
             for i = 1, #data.trackSections, 1 do
-                local longestText, count = config.findLongestWord(data.trackSections[i].name)
+                local longestText, count = utils.findLongestWord(data.trackSections[i].name)
                 local textLenght = (ui.measureDWriteText(longestText, lenght / 2) + vec2(5))
                 textLenght = textLenght + vec2(0, textLenght.y * count) + vec2(0,5)
                 local posRotated
                 local dir = vec2(0,0)
                 if data.trackSections[i].position == 1 then
-                    posRotated = config.rotateVec(vec2((data.trackSections[i].center.x - data.trackCenterX) * scale, (data.trackSections[i].center.y - data.trackCenterY) * scale), data.angle)
+                    posRotated = utils.rotateVec(vec2((data.trackSections[i].center.x - data.trackCenterX) * scale, (data.trackSections[i].center.y - data.trackCenterY) * scale), data.angle)
 
                 elseif data.trackSections[i].position == 2 then
-                    posRotated = config.rotateVec(vec2((data.trackSections[i].left.x - data.trackCenterX) * scale, (data.trackSections[i].left.y - data.trackCenterY) * scale), data.angle)
+                    posRotated = utils.rotateVec(vec2((data.trackSections[i].left.x - data.trackCenterX) * scale, (data.trackSections[i].left.y - data.trackCenterY) * scale), data.angle)
                     dir = (data.trackSections[i].right - data.trackSections[i].left):normalize()
-                    dir = config.rotateVec(dir, data.angle)
+                    dir = utils.rotateVec(dir, data.angle)
 
                 else
-                    posRotated = config.rotateVec(vec2((data.trackSections[i].right.x - data.trackCenterX) * scale, (data.trackSections[i].right.y - data.trackCenterY) * scale), data.angle)
+                    posRotated = utils.rotateVec(vec2((data.trackSections[i].right.x - data.trackCenterX) * scale, (data.trackSections[i].right.y - data.trackCenterY) * scale), data.angle)
                     dir = (data.trackSections[i].left - data.trackSections[i].right):normalize()
-                    dir = config.rotateVec(dir, data.angle)
+                    dir = utils.rotateVec(dir, data.angle)
                 end
                 local distance
                 if dir.x > 0 then
-                    distance = config.remapInterval(dir.x, 0, 1, textLenght.x / 30, 1)
+                    distance = utils.remapInterval(dir.x, 0, 1, textLenght.x / 30, 1)
                 else
-                    distance = config.remapInterval(dir.x, -1, 0, 1, textLenght.x / 30)
+                    distance = utils.remapInterval(dir.x, -1, 0, 1, textLenght.x / 30)
                 end
                 local centerText = posRotated + dir * (textLenght.x / (2 * distance) + (mapSettings.store.trackLenght + borderMap))
                 textPosition = data.canvasCenter + centerText - textLenght / 2
@@ -181,7 +181,7 @@ function sections.drawTrackSections(data)
     else
         for i = 1, #data.trackSections, 1 do
             if data.trackSections[i].name ~= "" then
-                local longestText, count = config.findLongestWord(data.trackSections[i].name)
+                local longestText, count = utils.findLongestWord(data.trackSections[i].name)
                 local textLenght = ui.measureDWriteText(longestText, (lenght / 2) * scale) + vec2(5) * scale
                 textLenght = textLenght + vec2(0, textLenght.y * count) + vec2(0,5) * scale
                 local position = data.trackSections[i].namePosition + data.offset

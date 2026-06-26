@@ -1,5 +1,5 @@
 
-local config = {}
+local utils = {}
 
 --- @param value number
 --- @param inMin number
@@ -7,7 +7,7 @@ local config = {}
 --- @param outMin number
 --- @param outMax number
 --- @return number
-function config.remapIntervalWithLimits(value, inMin, inMax, outMin, outMax)
+function utils.remapIntervalWithLimits(value, inMin, inMax, outMin, outMax)
     local output = outMin + (value - inMin) * (outMax - outMin) / (inMax - inMin)
     if output > outMax then
         output = outMax
@@ -23,14 +23,14 @@ end
 --- @param outMin number
 --- @param outMax number
 --- @return number
-function config.remapInterval(value, inMin, inMax, outMin, outMax)
+function utils.remapInterval(value, inMin, inMax, outMin, outMax)
     return (outMin + (value - inMin) * (outMax - outMin) / (inMax - inMin))
 end
 
 --- @param vec vec2 -- Vetor a ser rotacionado
 --- @param angleDeg number -- Ângulo em graus
 --- @return vec2
-function config.rotateVec(vec, angleDeg)
+function utils.rotateVec(vec, angleDeg)
     local rad = math.rad(angleDeg)
     local sin = math.sin(rad)
     local cos = math.cos(rad)
@@ -39,7 +39,7 @@ end
 
 --- @param vec vec2
 --- @return vec2
-function config.floorVec(vec)
+function utils.floorVec(vec)
     return vec2(math.floor(vec.x), math.floor(vec.y))
 end
 
@@ -47,14 +47,14 @@ end
 ---@param value number
 ---@param places number
 ---@return number
-function config.decimal(value, places)
+function utils.decimal(value, places)
     local factor = 10 ^ places
     return math.floor(value * factor) / factor
 end
 
 --- @param text string
 --- @return string, number
-function config.findLongestWord(text)
+function utils.findLongestWord(text)
     local longest = ""
     local count = -1
     for word in text:gmatch("[^\n]+") do
@@ -70,7 +70,7 @@ end
 --- @param table table
 --- @param fontSize number
 --- @return vec2
-function config.findLenghtLongestString(table, fontSize)
+function utils.findLenghtLongestString(table, fontSize)
     local max = vec2(0, 0)
     for _, value in ipairs(table) do
         local size = ui.measureDWriteText(value, fontSize)
@@ -83,10 +83,10 @@ end
 
 --- @param from table
 --- @param to table
-function config.copyTable(from, to)
+function utils.copyTable(from, to)
     for k, v in pairs(from) do
         to[k] = v
     end
 end
 
-return config
+return utils
