@@ -175,14 +175,14 @@ function map.windowMain()
     -- Animação do Background
     if window.isMouseInWindow(ui.mouseLocalPos(), 0, ui.windowSize().x, 0, ui.windowSize().y) then
         if data.transparancy < 0.85 then
-            if 20 * Timer % 6 >= 1 then
+            if 20 * TIMER % 6 >= 1 then
                 data.transparancy = data.transparancy + 0.1
             end
         end
         ui.drawRectFilled(vec2(0, 0), data.currentWindowSize, rgbm(WindowsColor.r,WindowsColor.g,WindowsColor.b, data.transparancy), 20 * mapSettings.store.mapScale)
     else
         if data.transparancy > 0 then
-            if 20 * Timer % 6 >= 1 then
+            if 20 * TIMER % 6 >= 1 then
                 data.transparancy = data.transparancy - 0.1
             end
              ui.drawRectFilled(vec2(0, 0), data.currentWindowSize, rgbm(WindowsColor.r,WindowsColor.g,WindowsColor.b, data.transparancy), 20 * mapSettings.store.mapScale)

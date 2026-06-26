@@ -56,7 +56,7 @@ function rpm.drawRpm(data)
       for i = 1, pedalsSettings.store.numLights, 1 do
         if (CAR.rpm >= rpmFinal * 0.98) then
           level = pedalsSettings.store.numLights
-          if (8 * Timer) % 2 >= 1 then
+          if (8 * TIMER) % 2 >= 1 then
             color = COLOR.GRAY_BG
           else
             color = COLOR.RED
@@ -74,7 +74,7 @@ function rpm.drawRpm(data)
     elseif pedalsSettings.store.rpmProcessType == 2 then
       if (CAR.rpm >= CAR.rpmLimiter * 0.96) then
         level = pedalsSettings.store.numLights
-        if (8 * Timer) % 2 >= 1 then
+        if (8 * TIMER) % 2 >= 1 then
           color = COLOR.GRAY_BG
         else
           color = COLOR.RED_DARK
@@ -133,7 +133,7 @@ function rpm.drawRpm(data)
 
       if (CAR.rpm >= rpmFinal) then
         length = initPosX + width
-        if (8 * Timer) % 2 >= 1 then
+        if (8 * TIMER) % 2 >= 1 then
           color = COLOR.GRAY_BG
         else
           color = COLOR.RED_DARK

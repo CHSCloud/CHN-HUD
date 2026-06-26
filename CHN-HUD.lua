@@ -1,4 +1,4 @@
-Timer = 0
+TIMER = 0
 SIM = ac.getSim()
 CAR = ac.getCar(SIM.focusedCar)
 USER_UI = ac.getUI()
@@ -66,7 +66,7 @@ end
 
 -- FUNÇÃO DE ATUALIZAÇÃO
 function script.update(dt)
-  Timer = Timer + dt
+  TIMER = TIMER + dt
   SIM = ac.getSim()
   CAR = ac.getCar(SIM.focusedCar)
   USER_UI = ac.getUI()

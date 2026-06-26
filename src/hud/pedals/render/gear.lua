@@ -5,7 +5,7 @@ local gear = {}
 ---@param maxFontGear number
 local function animateGear(data, maxFontGear)
   if data.fontGear < maxFontGear - 3 then
-    if (40 * Timer) % 2 >= 1 then
+    if (40 * TIMER) % 2 >= 1 then
       data.fontGear = data.fontGear + 10 * pedalsSettings.store.pedalsScale
     end
   else

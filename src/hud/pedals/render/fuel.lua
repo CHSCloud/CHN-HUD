@@ -16,7 +16,7 @@ function fuel.drawFuel(data)
   ui.dwriteTextAligned(string.format("%.2f", math.max(0, CAR.fuel)), data.fontContentBottom, ui.Alignment.Start, ui.Alignment.Center, vec2(50, 20):scale(pedalsSettings.store.pedalsScale), false, fuelColor)
   ui.setCursor(data.contentPositions[pedalsSettings.store.fuelPos][1] + vec2(4, 2.5):scale(pedalsSettings.store.pedalsScale))
   if CAR.fuel < 5.005 then
-    if (4 * Timer) % 2 >= 1 then
+    if (4 * TIMER) % 2 >= 1 then
       ui.image("assets/Fuel.png", vec2(16, 16):scale(pedalsSettings.store.pedalsScale), fuelColor, ui.ImageFit.Fit)
     end
   else

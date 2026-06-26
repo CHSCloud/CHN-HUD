@@ -13,10 +13,10 @@ function drs.drawDRSActivation(data)
   local color
   if CAR.drsAvailable then
     if data.initDRSActivation == 0 then
-      data.initDRSActivation = Timer
+      data.initDRSActivation = TIMER
     end
-    if Timer - data.initDRSActivation < 4 then
-      if (4 * Timer) % 2 >= 1 then
+    if TIMER - data.initDRSActivation < 4 then
+      if (4 * TIMER) % 2 >= 1 then
         color = COLOR.GREEN
       else
         color = COLOR.GRAY_BG

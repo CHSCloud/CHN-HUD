@@ -47,7 +47,7 @@ function pitLane.windowMain()
           if CAR.speedKmh <= CAR.speedLimiter then
             data.speedrgb = COLOR.WHITE
           elseif CAR.speedKmh > CAR.speedLimiter + 1 then
-            if (5 * Timer) % 2 >= 1 then 
+            if (5 * TIMER) % 2 >= 1 then 
               components.slowDown(data)
             end
             data.speedrgb = COLOR.RED
