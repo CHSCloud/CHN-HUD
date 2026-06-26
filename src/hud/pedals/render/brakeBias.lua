@@ -9,7 +9,7 @@ function brakeBias.drawBrakeBias(data)
   ui.dwriteTextAligned(string.format("%.1f", CAR.brakeBias * 100), data.fontContentBottom, ui.Alignment.Start, ui.Alignment.Center, vec2(30, 20):scale(pedalsSettings.store.pedalsScale), false, COLOR.WHITE)
 
   ui.setCursor(data.contentPositions[pedalsSettings.store.brakebiasPos][1] + vec2(4, 2) * pedalsSettings.store.pedalsScale)
-  ui.image("assets/BrakeBias.png", vec2(16, 16):scale(pedalsSettings.store.pedalsScale), ui.ImageFit.Fit)
+  ui.image("assets/pedals/BrakeBias.png", vec2(16, 16):scale(pedalsSettings.store.pedalsScale), ui.ImageFit.Fit)
 end
 
 return brakeBias

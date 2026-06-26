@@ -5,9 +5,9 @@ local laps = {}
 ---@param posY number
 local function drawBanner(posY)
     ui.setCursor(vec2(-60,posY + 1):scale(sessionLapsSettings.store.sessionLapsScale))
-    ui.image("assets/lapbackground.png", vec2(216, 21.6):scale(sessionLapsSettings.store.sessionLapsScale), COLOR.WHITE, ui.ImageFit.Fit)
+    ui.image("assets/sessionLaps/lapbackground.png", vec2(216, 21.6):scale(sessionLapsSettings.store.sessionLapsScale), COLOR.WHITE, ui.ImageFit.Fit)
     ui.setCursor(vec2(-60,posY + 1):scale(sessionLapsSettings.store.sessionLapsScale))
-    ui.image("assets/lapbackground1.png", vec2(216, 21.6):scale(sessionLapsSettings.store.sessionLapsScale), COLOR.YELLOW_DARK, ui.ImageFit.Fit)
+    ui.image("assets/sessionLaps/lapbackground1.png", vec2(216, 21.6):scale(sessionLapsSettings.store.sessionLapsScale), COLOR.YELLOW_DARK, ui.ImageFit.Fit)
 end
 
 ---@param data sessionLapsData

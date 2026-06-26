@@ -29,7 +29,7 @@ function overtaking.drawOvertaking(data, driverIndex, pos)
                         rotation = 0
                     end
                     ui.beginRotation()
-                    ui.drawImage("assets/arrow.png", pos + vec2(15,5):scale(leaderboardSettings.store.leaderboardScale), pos + vec2(40, 25):scale(leaderboardSettings.store.leaderboardScale), color)
+                    ui.drawImage("assets/ui/arrow.png", pos + vec2(15,5):scale(leaderboardSettings.store.leaderboardScale), pos + vec2(40, 25):scale(leaderboardSettings.store.leaderboardScale), color)
                     ui.endRotation(rotation)
                 else   
                     overtakingText = "-"

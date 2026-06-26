@@ -33,7 +33,7 @@ function sectors.drawStartFlag(data, thickness)
     local init = center + dir * thickness + data.canvasCenter
     local final = center - dir * thickness + data.canvasCenter
     local flagLenght = utils.rotateVec(data.dirTrack * thickness / 2, data.angle)
-    ui.drawImageQuad("assets/checkered.png", init + flagLenght, final + flagLenght, final - flagLenght, init - flagLenght)
+    ui.drawImageQuad("assets/map/checkered.png", init + flagLenght, final + flagLenght, final - flagLenght, init - flagLenght)
 end
 
 return sectors

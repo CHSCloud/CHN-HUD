@@ -75,7 +75,7 @@ function droplist.main(id, text, pos, size, selected, items, posText)
         ui.setCursor(pos + vec2(10))
         ui.dwriteTextAligned(items[selected], 12, ui.Alignment.Start, ui.Alignment.Center, vec2(size, height), false, COLOR.WHITE)
         ui.beginRotation()
-        ui.drawImage("assets/arrow.png", vec2(pos.x + size - 28, pos.y + 4), vec2(pos.x + size - 8, pos.y + height - 4))
+        ui.drawImage("assets/ui/arrow.png", vec2(pos.x + size - 28, pos.y + 4), vec2(pos.x + size - 8, pos.y + height - 4))
         ui.endRotation(180)
 
         if item ~= nil then
@@ -90,7 +90,7 @@ function droplist.main(id, text, pos, size, selected, items, posText)
         ui.setCursor(pos + vec2(10))
         ui.dwriteTextAligned(items[selected], 12, ui.Alignment.Start, ui.Alignment.Center, vec2(size, height), false, COLOR.WHITE)
         ui.beginRotation()
-        ui.drawImage("assets/arrow.png", vec2(pos.x + size - 28, pos.y + 4), vec2(pos.x + size - 8, pos.y + height - 4))
+        ui.drawImage("assets/ui/arrow.png", vec2(pos.x + size - 28, pos.y + 4), vec2(pos.x + size - 8, pos.y + height - 4))
         ui.endRotation(0)
     end
 

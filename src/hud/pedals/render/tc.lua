@@ -8,9 +8,9 @@ function tc.drawTC(data)
   pedalsData.setPositionContentBorder(data, pedalsSettings.store.tractionControlPos, size)
   ui.setCursor(data.contentPositions[pedalsSettings.store.tractionControlPos][1])
   if CAR.tractionControlInAction then
-    ui.image("assets/TC.png", size, COLOR.RED, ui.ImageFit.Fit)
+    ui.image("assets/pedals/TC.png", size, COLOR.RED, ui.ImageFit.Fit)
   else
-    ui.image("assets/TC.png", size, COLOR.WHITE, ui.ImageFit.Fit)
+    ui.image("assets/pedals/TC.png", size, COLOR.WHITE, ui.ImageFit.Fit)
   end
 end
 
