@@ -1,17 +1,10 @@
 local config = require("common.config")
 local pinCheckBox = require("src.ui.pinCheckBox")
 local deltaBarSettings = require("src.settings.tabs.deltaBarSettings")
+local deltaBarData = require("src.data.deltaBar.deltaBarData")
 
 local deltaBar = {}
--- Amostragem por posição da pista (persistente entre frames)
-local currentLapSamples = {}
-local previousLapSamples = {}
-local lastPreviousLapTimeMs = 0
-local sampleResolution = 1000 -- número de buckets por volta (0..1000)
--- Suavização exponencial do delta
-local smoothingAlpha = 0.1 -- 0 = suave, 1 = sem suavização
-local smoothedDelta = 0
-local smoothedDeltaMeter = 0
+local data = deltaBarData.new()
 
 function deltaBar.windowMain()
     --Limites e Tamanhos
@@ -33,38 +26,37 @@ function deltaBar.windowMain()
     local verde = {r= 102, g=213, b=79}
     local branco = {r= 255, g=255, b=255}
     local vermelho = {r= 226, g=9, b=38}
-
-    --------------------------------------------------------------------------------------------------------------------------
+    
     local barEnd = limitBarDeltaBackground.x / 2
     -- Atualiza previousLapSamples quando uma volta anterior nova existir
-    if CAR.previousLapTimeMs and CAR.previousLapTimeMs > 0 and CAR.previousLapTimeMs ~= lastPreviousLapTimeMs then
-        previousLapSamples = currentLapSamples
-        currentLapSamples = {}
-        lastPreviousLapTimeMs = CAR.previousLapTimeMs
+    if CAR.previousLapTimeMs and CAR.previousLapTimeMs > 0 and CAR.previousLapTimeMs ~= data.lastPreviousLapTimeMs then
+        data.previousLapSamples = data.currentLapSamples
+        data.currentLapSamples = {}
+        data.lastPreviousLapTimeMs = CAR.previousLapTimeMs
     end
 
     -- Amostragem da volta atual por posição (splinePosition de 0..1)
     local pos = CAR.splinePosition or 0
-    local idx = math.floor(pos * sampleResolution + 0.5)
-    if CAR.lapTimeMs and currentLapSamples[idx] == nil then
-        currentLapSamples[idx] = CAR.lapTimeMs
+    local idx = math.floor(pos * data.sampleResolution + 0.5)
+    if CAR.lapTimeMs and data.currentLapSamples[idx] == nil then
+        data.currentLapSamples[idx] = CAR.lapTimeMs
     end
 
     -- Sempre comparar com a volta anterior na mesma posição, se disponível
     local rawDelta
-    if previousLapSamples[idx] then
-        rawDelta = (CAR.lapTimeMs - previousLapSamples[idx]) / 1000
+    if data.previousLapSamples[idx] then
+        rawDelta = (CAR.lapTimeMs - data.previousLapSamples[idx]) / 1000
     else
         rawDelta = CAR.performanceMeter or 0
     end
     local rawDeltaMeter = CAR.performanceMeterSpeedDifferenceMs or 0
     
     -- Aplicar suavização exponencial
-    smoothedDelta = smoothingAlpha * rawDelta + (1 - smoothingAlpha) * smoothedDelta
-    smoothedDeltaMeter = smoothingAlpha * rawDeltaMeter + (1 - smoothingAlpha) * smoothedDeltaMeter
+    data.smoothedDelta = data.smoothingAlpha * rawDelta + (1 - data.smoothingAlpha) * data.smoothedDelta
+    data.smoothedDeltaMeter = data.smoothingAlpha * rawDeltaMeter + (1 - data.smoothingAlpha) * data.smoothedDeltaMeter
     
-    local delta = smoothedDelta
-    local deltaMeter = smoothedDeltaMeter
+    local delta = data.smoothedDelta
+    local deltaMeter = data.smoothedDeltaMeter
     
     --Background Barra Delta
     ui.drawRectFilled(vec2(0, 0), limitBarDeltaBackground, WindowsColor, cornerBarDeltaBackground)
