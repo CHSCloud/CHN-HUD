@@ -1,12 +1,13 @@
 local sessionLapsSettings = require("src.settings.tabs.sessionLapsSettings")
 local language = require("lang.language")
-local pinCheckBox = require("src.ui.pinCheckBox")
+local pinCheckBox = require("src.ui.buttons.pinCheckBox")
 local config = require("common.config")
 local sessionLapsData = require("src.data.sessionLaps.sessionLapsData")
 
 local laps = require("src.hud.sessionLaps.render.laps") 
 
 local sessionLaps = {}
+
 --- @type sessionLapsData
 local data = sessionLapsData.new()
 
@@ -16,13 +17,12 @@ if ac.onSessionStart then
     end)
 end
 
-
 function sessionLaps.windowMain()
     ui.pushDWriteFont("fonts/Montserrat-Bold.ttf") -- FONT TEXT
 
     data.currentWindowWidth = 240 * sessionLapsSettings.store.sessionLapsScale
     data.currentWindowHeight = 0
-    
+
     ui.drawRectFilled(vec2(0, 0), data.currentWindowSize, WindowsColor, 5 * sessionLapsSettings.store.sessionLapsScale)
     -- Volta atual
     if sessionLapsSettings.store.currentLapActive then

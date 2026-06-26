@@ -1,9 +1,9 @@
 local language = require("lang.language")
 local config = require("common.config")
-local slider = require("src.ui.slider")
-local button = require("src.ui.button")
-local droplist = require("src.ui.droplist")
-local toggleButton = require("src.ui.toggleButton")
+local slider = require("src.ui.selectors.slider")
+local button = require("src.ui.buttons.button")
+local droplist = require("src.ui.selectors.droplist")
+local toggleButton = require("src.ui.buttons.toggleButton")
 local pedalsSettings = {} 
 
 local defaultValues = {

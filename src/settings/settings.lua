@@ -7,13 +7,13 @@ local deltaBarSettings = require("src.settings.tabs.deltaBarSettings")
 local mapSettings = require("src.settings.tabs.mapSettings")
 local leaderboardSettings = require("src.settings.tabs.leaderboardSettings")
 
-local toggleButton = require("src.ui.toggleButton")
-local button = require("src.ui.button")
-local slider = require("src.ui.slider")
+local toggleButton = require("src.ui.buttons.toggleButton")
+local button = require("src.ui.buttons.button")
+local slider = require("src.ui.selectors.slider")
 
 local language = require("lang.language")
 local config = require("common.config")
-local droplist = require("src.ui.droplist")
+local droplist = require("src.ui.selectors.droplist")
 
 local settings = {}
 

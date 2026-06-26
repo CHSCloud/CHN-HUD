@@ -1,5 +1,5 @@
 local config = require("common.config")
-local pinCheckBox = require("src.ui.pinCheckBox")
+local pinCheckBox = require("src.ui.buttons.pinCheckBox")
 local leaderboardSettings = require("src.settings.tabs.leaderboardSettings")
 local leaderboardData = require("src.data.leaderboard.leaderboardData")
 
@@ -12,6 +12,7 @@ local status = require("src.hud.leaderboard.render.status")
 local titles = require("src.hud.leaderboard.render.titles")
 
 local leaderboard = {}
+
 ---@type leaderboardData
 local data = leaderboardData.new()
 

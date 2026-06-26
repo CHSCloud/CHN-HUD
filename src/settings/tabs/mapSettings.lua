@@ -1,10 +1,10 @@
 local mapSettings = {}
-local colorSelector = require("src.ui.colorSelector")
-local slider = require("src.ui.slider")
-local button = require("src.ui.button")
-local toggleButton = require("src.ui.toggleButton")
-local droplist = require("src.ui.droplist")
-local sectionPanel = require("src.ui.sectionPanel")
+local colorSelector = require("src.ui.selectors.colorSelector")
+local slider = require("src.ui.selectors.slider")
+local button = require("src.ui.buttons.button")
+local toggleButton = require("src.ui.buttons.toggleButton")
+local droplist = require("src.ui.selectors.droplist")
+local sectionPanel = require("src.ui.panels.sectionPanel")
 local config = require("common.config")
 local language = require("lang.language")
 

@@ -1,14 +1,16 @@
 local sessionFlagsSettings = require("src.settings.tabs.sessionFlagsSettings")
 local language = require("lang.language")
-local pinCheckBox = require("src.ui.pinCheckBox")
+local pinCheckBox = require("src.ui.buttons.pinCheckBox")
 local config = require("common.config")
 local sessionFlagsData = require("src.data.sessionFlags.sessionFlagsData")
 
 local flags = require("src.hud.sessionFlags.render.flags")
 
 local sessionFlags = {}
+
 ---@type sessionFlagsData
 local data = sessionFlagsData.new()
+
 function sessionFlags.windowMain()
     if data.currentTime > SIM.currentSessionTime then
         data.currentTime = 0
@@ -61,6 +63,7 @@ function sessionFlags.windowMain()
     elseif SIM.raceFlagType == ac.FlagType.Start and SIM.timeToSessionStart > -20000 then
         flags.drawFlag(data, "assets/flags/greenFlag.png", language.get("GO_GO_GO"), language.get("GREEN_FLAG"))
     end
+
     config.resize(data.currentWindowSize, "Session Flags")
     pinCheckBox.main(1, "Session Flags", config.getWindow("Session Flags"):pinned(), data.currentWindowSize)
 end

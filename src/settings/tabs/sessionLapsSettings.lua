@@ -1,7 +1,7 @@
 local language = require("lang.language")
-local slider = require("src.ui.slider")
-local button = require("src.ui.button")
-local toggleButton = require("src.ui.toggleButton")
+local slider = require("src.ui.selectors.slider")
+local button = require("src.ui.buttons.button")
+local toggleButton = require("src.ui.buttons.toggleButton")
 local sessionLapsSettings = {}
 
 local defaultValues = {

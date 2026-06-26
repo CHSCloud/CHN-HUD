@@ -1,8 +1,8 @@
 local language = require("lang.language")
-local toggleButton = require("src.ui.toggleButton")
-local droplist = require("src.ui.droplist")
-local button = require("src.ui.button")
-local slider = require("src.ui.slider")
+local toggleButton = require("src.ui.buttons.toggleButton")
+local droplist = require("src.ui.selectors.droplist")
+local button = require("src.ui.buttons.button")
+local slider = require("src.ui.selectors.slider")
 
 local leaderboardSettings = {}
 

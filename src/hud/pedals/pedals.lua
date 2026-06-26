@@ -1,6 +1,6 @@
 local pedalsSettings = require("src.settings.tabs.pedalsSettings")
 local config = require("common.config")
-local pinCheckBox = require("src.ui.pinCheckBox")
+local pinCheckBox = require("src.ui.buttons.pinCheckBox")
 local pedalsData = require("src.data.pedals.pedalsData")
 
 local gear = require("src.hud.pedals.render.gear")
@@ -16,6 +16,8 @@ local p2p = require("src.hud.pedals.render.p2p")
 local fuel = require("src.hud.pedals.render.fuel")
 
 local pedals = {}
+
+---@type pedalsData
 local data = pedalsData.new()
 
 function pedals.windowMain()

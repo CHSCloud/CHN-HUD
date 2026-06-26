@@ -1,7 +1,7 @@
-local button = require("src.ui.button")
+local button = require("src.ui.buttons.button")
 local language = require("lang.language")
-local droplist = require("src.ui.droplist")
-local formText = require("src.ui.formText")
+local droplist = require("src.ui.selectors.droplist")
+local formText = require("src.ui.forms.formText")
 
 local config = require("common.config")
 local sectionPanel = {}

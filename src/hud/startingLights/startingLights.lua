@@ -1,5 +1,5 @@
 local config = require("common.config")
-local pinCheckBox = require("src.ui.pinCheckBox")
+local pinCheckBox = require("src.ui.buttons.pinCheckBox")
 local startingLightsSettings = require("src.settings.tabs.startingLightsSettings")
 local startingLightsData = require("src.data.startingLights.startingLightsData")
 
@@ -8,6 +8,7 @@ local sessionStarted = require("src.hud.startingLights.render.sessionStarted")
 local settingsActive = require("src.hud.startingLights.render.settingsActive")
 
 local startingLights = {}
+
 ---@type startingLightsData
 local data = startingLightsData.new()
 

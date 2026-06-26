@@ -1,8 +1,8 @@
 local language = require("lang.language")
 local config = require("common.config")
-local button = require("src.ui.button")
-local droplist = require("src.ui.droplist")
-local slider = require("src.ui.slider")
+local button = require("src.ui.buttons.button")
+local droplist = require("src.ui.selectors.droplist")
+local slider = require("src.ui.selectors.slider")
 local pitLaneSettings = {}
 
 local defaultValues = {

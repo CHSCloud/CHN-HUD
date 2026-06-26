@@ -1,9 +1,11 @@
 local config = require("common.config")
-local pinCheckBox = require("src.ui.pinCheckBox")
+local pinCheckBox = require("src.ui.buttons.pinCheckBox")
 local deltaBarSettings = require("src.settings.tabs.deltaBarSettings")
 local deltaBarData = require("src.data.deltaBar.deltaBarData")
 
 local deltaBar = {}
+
+---@type deltaBarData
 local data = deltaBarData.new()
 
 function deltaBar.windowMain()

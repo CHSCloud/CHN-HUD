@@ -1,5 +1,5 @@
 local config = require("common.config")
-local pinCheckBox = require("src.ui.pinCheckBox")
+local pinCheckBox = require("src.ui.buttons.pinCheckBox")
 local mapSettings = require("src.settings.tabs.mapSettings")
 local mapData = require("src.data.map.mapData")
 
