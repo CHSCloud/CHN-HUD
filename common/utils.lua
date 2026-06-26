@@ -42,7 +42,6 @@ function utils.floorVec(vec)
     return vec2(math.floor(vec.x), math.floor(vec.y))
 end
 
-
 ---@param value number
 ---@param places number
 ---@return number
@@ -62,7 +61,7 @@ function utils.findLongestWord(text)
         end
         count = count + 1
     end
-    
+
     return longest, count
 end
 

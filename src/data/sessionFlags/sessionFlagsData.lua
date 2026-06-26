@@ -12,17 +12,17 @@ local sessionFlagsData = {}
 
 ---@return sessionFlagsData
 function sessionFlagsData.new()
-  return {
-    currentTime = 0,
-    add = -1,
-    lenght = 110,
-    currentWindowSize = vec2(0, 0),
-    fontSize1 = 0,
-    fontSize2 = 0,
-    rounding = 0,
-    posFlag = vec2(0, 0),
-    flagLenght = vec2(0, 0),
-  }
+    return {
+        currentTime = 0,
+        add = -1,
+        lenght = 110,
+        currentWindowSize = vec2(0, 0),
+        fontSize1 = 0,
+        fontSize2 = 0,
+        rounding = 0,
+        posFlag = vec2(0, 0),
+        flagLenght = vec2(0, 0),
+    }
 end
 
 return sessionFlagsData

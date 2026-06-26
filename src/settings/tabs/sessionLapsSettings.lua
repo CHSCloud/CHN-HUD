@@ -23,9 +23,11 @@ end
 function sessionLapsSettings.sessionLapsSettings()
     local initPos = 75
     -- Uso direto do store com a chave padronizada 'scale'
-    sessionLapsSettings.store.sessionLapsScale = slider.main(language.get("SIZE"), string.format("%.2f", sessionLapsSettings.store.sessionLapsScale), vec2(20, initPos), 250, sessionLapsSettings.store.sessionLapsScale, 0.7, 3)
+    sessionLapsSettings.store.sessionLapsScale = slider.main(language.get("SIZE"),
+        string.format("%.2f", sessionLapsSettings.store.sessionLapsScale), vec2(20, initPos), 250,
+        sessionLapsSettings.store.sessionLapsScale, 0.7, 3)
 
-    
+
     initPos = initPos + 30
     ui.dwriteDrawText(language.get("LAPS"), 12, vec2(15, initPos), COLOR.WHITE)
 
@@ -45,7 +47,7 @@ function sessionLapsSettings.sessionLapsSettings()
     end
 
     initPos = initPos + 40
-    
+
     if button.main(vec2(20, initPos), language.get("RESET_DEFAULT")) then
         resetToDefault()
     end

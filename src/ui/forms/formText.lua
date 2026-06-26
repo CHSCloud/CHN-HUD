@@ -18,12 +18,12 @@ function formText.main(id, pos, text, size, rounding, color, textFlags)
     end
     local _, count = string.gsub(textFormated, '\n', '')
     ui.drawRectFilled(pos, pos + vec2(size.x, size.y + textLenght.y * count), color, rounding)
-    ui.pushStyleColor(ui.StyleColor.FrameBg, rgbm.from0255(0,0,0,0))
+    ui.pushStyleColor(ui.StyleColor.FrameBg, rgbm.from0255(0, 0, 0, 0))
     ui.pushStyleColor(ui.StyleColor.Text, COLOR.BLACK)
     ui.setCursor(pos)
-    text = ui.inputText("##".. id, textFormated, textFlags, vec2(size.x, size.y * 2  + textLenght.y * count))
+    text = ui.inputText("##" .. id, textFormated, textFlags, vec2(size.x, size.y * 2 + textLenght.y * count))
     ui.popStyleColor(2)
-    
+
     return string.replace(text, '\n', '\\n'), vec2(size.x, size.y + textLenght.y * count), ui.itemEdited()
 end
 

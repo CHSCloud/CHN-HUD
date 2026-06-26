@@ -13,18 +13,18 @@ local sessionLapsData = {}
 
 ---@return sessionLapsData
 function sessionLapsData.new()
-  return {
-    previousBestlap = 0,
-    currentWindowSize = vec2(0, 0),
-    currentWindowHeight = 0,
-    currentWindowWidth = 0,
-    lastLap = "-:--.---",
-    minutes = 0,
-    seconds = 0,
-    milliseconds = 0,
-    bestLap = "-:--.---",
-    currentLap = "0:00.000",
-  }
+    return {
+        previousBestlap = 0,
+        currentWindowSize = vec2(0, 0),
+        currentWindowHeight = 0,
+        currentWindowWidth = 0,
+        lastLap = "-:--.---",
+        minutes = 0,
+        seconds = 0,
+        milliseconds = 0,
+        bestLap = "-:--.---",
+        currentLap = "0:00.000",
+    }
 end
 
 return sessionLapsData

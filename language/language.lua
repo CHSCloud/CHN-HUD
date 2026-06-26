@@ -19,7 +19,8 @@ local codes = {
 local translations = {}
 
 local function loadTranslations()
-    local file_path = ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\CHN-HUD\\language\\languages\\" .. codes[languageSettings.currentLanguage] .. ".json"
+    local file_path = ac.getFolder(ac.FolderID.ACApps) ..
+    "\\lua\\CHN-HUD\\language\\languages\\" .. codes[languageSettings.currentLanguage] .. ".json"
 
     if io.fileExists(file_path) then
         local content = io.load(file_path)

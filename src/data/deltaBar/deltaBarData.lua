@@ -10,15 +10,15 @@ local deltaBarData = {}
 
 ---@return deltaBarData
 function deltaBarData.new()
-  return {
-    currentLapSamples = {},
-    previousLapSamples = {},
-    lastPreviousLapTimeMs = 0,
-    sampleResolution = 1000,
-    smoothingAlpha = 0.1,
-    smoothedDelta = 0,
-    smoothedDeltaMeter = 0,
-  }
+    return {
+        currentLapSamples = {},
+        previousLapSamples = {},
+        lastPreviousLapTimeMs = 0,
+        sampleResolution = 1000,
+        smoothingAlpha = 0.1,
+        smoothedDelta = 0,
+        smoothedDeltaMeter = 0,
+    }
 end
 
 return deltaBarData

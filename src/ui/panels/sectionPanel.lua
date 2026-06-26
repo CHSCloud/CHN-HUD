@@ -12,7 +12,7 @@ local sectionPanel = {}
 local function deleteSectionButton(pos, size)
     if utils.isMouseInWindow(ui.mouseLocalPos(), pos.x, pos.x + size.x, pos.y, pos.y + size.y) then
         ui.drawRectFilled(pos, pos + size, USER_UI.accentColor, 2)
-        if ui.mouseClicked(ui.MouseButton.Left) then    
+        if ui.mouseClicked(ui.MouseButton.Left) then
             return true
         end
     else
@@ -35,7 +35,7 @@ local function deleteSection(sections, section, index)
         sections["SECTION_" .. tostring(index)] = nil
         index = index + 1
     end
-    
+
     return sections
 end
 
@@ -47,7 +47,7 @@ end
 function sectionPanel.main(id, iniFile, pos, size)
     local positions = {
         language.get("CENTER"),
-        language.get("LEFT"), 
+        language.get("LEFT"),
         language.get("RIGHT")
     }
 
@@ -55,11 +55,11 @@ function sectionPanel.main(id, iniFile, pos, size)
     local resetSectionsINI = false
     local position = 0
     local numberSections = 0
-    
+
     ui.drawRect(pos, pos + size, USER_UI.accentColor, 10, ui.CornerFlags.All, 3)
     ui.drawRect(pos + vec2(10, 40), pos + size - vec2(20, 40), COLOR.WHITE, 10, ui.CornerFlags.All, 3)
     ui.setCursor(pos + vec2(10, 43))
-    isEdited = ui.childWindow("##"..id, size - vec2(35,85), false, ui.WindowFlags.None + ui.WindowFlags.NoBackground,
+    isEdited = ui.childWindow("##" .. id, size - vec2(35, 85), false, ui.WindowFlags.None + ui.WindowFlags.NoBackground,
         ---@return boolean
         function()
             local isItemEdited = false
@@ -72,18 +72,20 @@ function sectionPanel.main(id, iniFile, pos, size)
                     section .. "TEXT",
                     vec2(40, 10 + height),
                     iniFile:get(section, "TEXT", ""),
-                    vec2(100, 20), 
+                    vec2(100, 20),
                     10,
                     COLOR.WHITE,
-                    ui.InputTextFlags.NoHorizontalScroll + ui.InputTextFlags.NoUndoRedo + ui.InputTextFlags.AlwaysInsertMode
+                    ui.InputTextFlags.NoHorizontalScroll + ui.InputTextFlags.NoUndoRedo +
+                    ui.InputTextFlags.AlwaysInsertMode
                 )
                 iniFile:set(section, "TEXT", text)
-                if isItemEdited and ui.windowFocused(ui.FocusedFlags.ChildWindows)then edited = true end
+                if isItemEdited and ui.windowFocused(ui.FocusedFlags.ChildWindows) then edited = true end
 
                 ui.drawCircleFilled(vec2(20, 20 + height), 10, COLOR.GRAY_BG)
-                ui.setCursor(vec2(20, 20 + height) - vec2(15,15))
-                ui.dwriteTextAligned(tostring(index), 12, ui.Alignment.Center, ui.Alignment.Center, vec2(30,30), false, COLOR.WHITE)
-                
+                ui.setCursor(vec2(20, 20 + height) - vec2(15, 15))
+                ui.dwriteTextAligned(tostring(index), 12, ui.Alignment.Center, ui.Alignment.Center, vec2(30, 30), false,
+                    COLOR.WHITE)
+
                 progress, sizeProgress, isItemEdited = formText.main(
                     section .. "PROGRESS",
                     vec2(45 + sizeText.x, 10 + height),
@@ -96,7 +98,9 @@ function sectionPanel.main(id, iniFile, pos, size)
                 iniFile:set(section, "PROGRESS", progress)
                 if isItemEdited and ui.windowFocused(ui.FocusedFlags.ChildWindows) then edited = true end
 
-                position = droplist.main(section .. "POSITION", "", vec2(sizeText.x + sizeProgress.x + 40, 8 + height), utils.findLenghtLongestString(positions, 12).x + 40, iniFile:get(section, "POSITION", 1), positions, droplist.PosText.Start)
+                position = droplist.main(section .. "POSITION", "", vec2(sizeText.x + sizeProgress.x + 40, 8 + height),
+                    utils.findLenghtLongestString(positions, 12).x + 40, iniFile:get(section, "POSITION", 1), positions,
+                    droplist.PosText.Start)
                 if position ~= iniFile:get(section, "POSITION", 1) then
                     iniFile:set(section, "POSITION", position)
                     edited = true
@@ -116,14 +120,14 @@ function sectionPanel.main(id, iniFile, pos, size)
         end
     ) or false
 
-    if button.main(pos + vec2(5,5), language.get("ADD_SECTION"), ui.windowFocused(ui.FocusedFlags.ChildWindows)) then
-        iniFile:set("SECTION_".. tostring(numberSections), "TEXT", tostring(ac.getTrackName()))
-        iniFile:set("SECTION_".. tostring(numberSections), "PROGRESS", 0)
-        iniFile:set("SECTION_".. tostring(numberSections), "POSITION", 1)
+    if button.main(pos + vec2(5, 5), language.get("ADD_SECTION"), ui.windowFocused(ui.FocusedFlags.ChildWindows)) then
+        iniFile:set("SECTION_" .. tostring(numberSections), "TEXT", tostring(ac.getTrackName()))
+        iniFile:set("SECTION_" .. tostring(numberSections), "PROGRESS", 0)
+        iniFile:set("SECTION_" .. tostring(numberSections), "POSITION", 1)
         isEdited = true
     end
 
-    if button.main(pos + vec2(10,size.y - 30), language.get("RESET_SECTIONS"), ui.windowFocused(ui.FocusedFlags.ChildWindows)) then
+    if button.main(pos + vec2(10, size.y - 30), language.get("RESET_SECTIONS"), ui.windowFocused(ui.FocusedFlags.ChildWindows)) then
         resetSectionsINI = true
     end
 

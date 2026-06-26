@@ -48,7 +48,7 @@ local defaultValuesPlayers = {
 
     focusedCarLenght = 10,
     enemiesLenght = 10
-}  
+}
 
 utils.copyTable(defaultValuesTrack, defaultValues)
 utils.copyTable(defaultValuesFeatures, defaultValues)
@@ -67,7 +67,7 @@ end
 
 local function resetToDefaultSections()
     for key, value in pairs(defaultValuesSections) do
-        if key ~= "sectionsTrackActive" then 
+        if key ~= "sectionsTrackActive" then
             mapSettings.store[key] = value
         end
     end
@@ -97,12 +97,14 @@ end
 --- @return table
 function mapSettings.resetSectionsINI()
     local trackSections = {}
-    local filePath = ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\CHN-HUD\\user\\trackSections\\" .. ac.getTrackName() .. ".ini"
+    local filePath = ac.getFolder(ac.FolderID.ACApps) ..
+    "\\lua\\CHN-HUD\\user\\trackSections\\" .. ac.getTrackName() .. ".ini"
     if not io.fileExists(filePath) then
         io.save(filePath, "")
     end
     local userSectionsINI = ac.INIConfig.load(filePath)
-    local defaultFilePath = ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\CHN-HUD\\user\\defaultTrackSections\\" .. ac.getTrackName() .. ".ini"
+    local defaultFilePath = ac.getFolder(ac.FolderID.ACApps) ..
+    "\\lua\\CHN-HUD\\user\\defaultTrackSections\\" .. ac.getTrackName() .. ".ini"
     if io.fileExists(defaultFilePath) then
         local defaultSectionsINI = ac.INIConfig.load(defaultFilePath)
         for i, section in defaultSectionsINI:iterate('SECTION', false) do
@@ -171,12 +173,14 @@ end
 --- @return table
 function mapSettings.loadSectionsINI()
     local trackSections = {}
-    local filePath = ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\CHN-HUD\\user\\trackSections\\" .. ac.getTrackName() .. ".ini"
+    local filePath = ac.getFolder(ac.FolderID.ACApps) ..
+    "\\lua\\CHN-HUD\\user\\trackSections\\" .. ac.getTrackName() .. ".ini"
     -- Caso o arquivo do usuário não exista, cria um novo
     if not io.fileExists(filePath) then
         io.save(filePath, "")
         local userSectionsINI = ac.INIConfig.load(filePath)
-        local defaultFilePath = ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\CHN-HUD\\user\\defaultTrackSections\\" .. ac.getTrackName() .. ".ini"
+        local defaultFilePath = ac.getFolder(ac.FolderID.ACApps) ..
+        "\\lua\\CHN-HUD\\user\\defaultTrackSections\\" .. ac.getTrackName() .. ".ini"
         -- Verifica se existe um arquivo padrão
         if io.fileExists(defaultFilePath) then
             local defaultSectionsINI = ac.INIConfig.load(defaultFilePath)
@@ -214,7 +218,7 @@ function mapSettings.loadSectionsINI()
                     local final = sectionsINI:get(section, 'OUT', 0)
                     local text = sectionsINI:get(section, 'TEXT', "")
                     if start ~= nil and final ~= nil and text ~= nil then
-                        local position = mapSettings.isClockwise and 2 or 3 
+                        local position = mapSettings.isClockwise and 2 or 3
                         local center = tonumber(((final - start) / 2) + start)
                         userSectionsINI:set(section, "TEXT", text)
                         userSectionsINI:set(section, "PROGRESS", center)
@@ -240,7 +244,7 @@ function mapSettings.loadSectionsINI()
             end
         end
         userSectionsINI:save()
-    else 
+    else
         -- Carrega o arquivo do usuário
         local userSectionsINI = ac.INIConfig.load(filePath)
         if userSectionsINI ~= nil then
@@ -277,14 +281,18 @@ local function trackSetitngs()
     local initPos = 100
 
     -- Escala:
-    mapSettings.store.mapScale = slider.main(language.get("SIZE"), string.format("%.2f", mapSettings.store.mapScale), vec2(20, initPos), 250, mapSettings.store.mapScale, 1, 2)
-    
+    mapSettings.store.mapScale = slider.main(language.get("SIZE"), string.format("%.2f", mapSettings.store.mapScale),
+        vec2(20, initPos), 250, mapSettings.store.mapScale, 1, 2)
+
 
     initPos = initPos + 50
-    mapSettings.store.angle = math.floor(slider.main(language.get("ANGLE"), string.format("%.0f", mapSettings.store.angle), vec2(20, initPos), 250, mapSettings.store.angle, 0, 360))
-    
+    mapSettings.store.angle = math.floor(slider.main(language.get("ANGLE"),
+        string.format("%.0f", mapSettings.store.angle), vec2(20, initPos), 250, mapSettings.store.angle, 0, 360))
+
     initPos = initPos + 50
-    mapSettings.store.trackLenght = math.floor(slider.main(language.get("TRACK_LENGHT"), string.format("%.0f", mapSettings.store.trackLenght), vec2(20, initPos), 250, mapSettings.store.trackLenght, 10, 20))
+    mapSettings.store.trackLenght = math.floor(slider.main(language.get("TRACK_LENGHT"),
+        string.format("%.0f", mapSettings.store.trackLenght), vec2(20, initPos), 250, mapSettings.store.trackLenght, 10,
+        20))
     initPos = initPos + 30
 
     if toggleButton.main("borderMap", vec2(20, initPos), mapSettings.store.borderActive, language.get("BORDER")) then
@@ -294,33 +302,38 @@ local function trackSetitngs()
         if mapSettings.store.borderLenght == -2 then
             mapSettings.store.borderLenght = 4
         end
-        mapSettings.store.borderLenght = math.floor(slider.main("", string.format("%.0f", mapSettings.store.borderLenght), vec2(130, initPos + 2), 200, mapSettings.store.borderLenght, 2, 10))
+        mapSettings.store.borderLenght = math.floor(slider.main("", string.format("%.0f", mapSettings.store.borderLenght),
+            vec2(130, initPos + 2), 200, mapSettings.store.borderLenght, 2, 10))
     else
-        mapSettings.store.borderLenght = -2 
+        mapSettings.store.borderLenght = -2
     end
 
     initPos = initPos + 40
-    if toggleButton.main("focus",vec2(20, initPos), mapSettings.store.focus, language.get("FOCUS")) then
+    if toggleButton.main("focus", vec2(20, initPos), mapSettings.store.focus, language.get("FOCUS")) then
         mapSettings.store.focus = not mapSettings.store.focus
     end
     if mapSettings.store.focus then
-        mapSettings.store.zoom = math.floor(slider.main(language.get("ZOOM"), string.format("%.0f", mapSettings.store.zoom), vec2(130, initPos + 2), 200, mapSettings.store.zoom, 0, 200, slider.PosText.Start))
+        mapSettings.store.zoom = math.floor(slider.main(language.get("ZOOM"),
+            string.format("%.0f", mapSettings.store.zoom), vec2(130, initPos + 2), 200, mapSettings.store.zoom, 0, 200,
+            slider.PosText.Start))
     end
-    
+
 
     initPos = initPos + 30
     ui.setCursor(vec2(15, initPos))
     ui.dwriteDrawText(language.get("COLOR"), 12, vec2(20, initPos), COLOR.WHITE)
 
     initPos = initPos + 20
-    mapSettings.store.colorTrack = colorSelector.main(language.get("TRACK"), mapSettings.store.colorTrack, vec2(20, initPos))
+    mapSettings.store.colorTrack = colorSelector.main(language.get("TRACK"), mapSettings.store.colorTrack,
+        vec2(20, initPos))
     initPos = initPos + 30
-    mapSettings.store.colorBorder = colorSelector.main(language.get("BORDER"), mapSettings.store.colorBorder, vec2(20, initPos))
+    mapSettings.store.colorBorder = colorSelector.main(language.get("BORDER"), mapSettings.store.colorBorder,
+        vec2(20, initPos))
     initPos = initPos + 30
 
     if button.main(vec2(20, initPos), language.get("RESET_DEFAULT")) then
         resetToDefaultTrack()
-    end 
+    end
 end
 
 -- Configurações das Características da pista
@@ -337,7 +350,8 @@ local function featuresSettings()
     initPos = initPos + 40
     ui.dwriteDrawText(language.get("COLOR"), 12, vec2(20, initPos - 10), COLOR.WHITE)
     initPos = initPos + 10
-    mapSettings.store.colorSectors = colorSelector.main(language.get("SECTORS"), mapSettings.store.colorSectors, vec2(20, initPos))
+    mapSettings.store.colorSectors = colorSelector.main(language.get("SECTORS"), mapSettings.store.colorSectors,
+        vec2(20, initPos))
     initPos = initPos + 30
     mapSettings.store.colorDRS = colorSelector.main(language.get("DRS"), mapSettings.store.colorDRS, vec2(20, initPos))
     initPos = initPos + 40
@@ -350,7 +364,7 @@ end
 -- Configurações das Seções
 local function sectionsSettings()
     local types = {
-        language.get("NUMBERS"), 
+        language.get("NUMBERS"),
         language.get("NAMES")
     }
     local initPos = 80
@@ -361,18 +375,27 @@ local function sectionsSettings()
     initPos = initPos + 30
     if mapSettings.store.sectionsTrackActive then
         ui.dwriteDrawText(language.get("COLOR"), 12, vec2(250, initPos - 10), COLOR.WHITE)
-        mapSettings.store.sectionsType = droplist.main("sectionsType", language.get("TYPE"), vec2(20, initPos), utils.findLenghtLongestString(types, 12).x + 40,  mapSettings.store.sectionsType, types, droplist.PosText.Start)
-        mapSettings.store.sectionsBgColor = colorSelector.main(language.get("BG_COLOR_SECTIONS"), mapSettings.store.sectionsBgColor, vec2(250, initPos + 10), "bgcolor")
+        mapSettings.store.sectionsType = droplist.main("sectionsType", language.get("TYPE"), vec2(20, initPos),
+            utils.findLenghtLongestString(types, 12).x + 40, mapSettings.store.sectionsType, types,
+            droplist.PosText.Start)
+        mapSettings.store.sectionsBgColor = colorSelector.main(language.get("BG_COLOR_SECTIONS"),
+            mapSettings.store.sectionsBgColor, vec2(250, initPos + 10), "bgcolor")
 
         ui.drawLine(vec2(220, initPos - 8), vec2(220, initPos + 65), COLOR.WHITE_LINE, 2)
         initPos = initPos + 35
-        mapSettings.store.sectionsLenght = math.floor(slider.main(language.get("LENGHT"), string.format("%.0f", mapSettings.store.sectionsLenght), vec2(20, initPos + 5), 100, mapSettings.store.sectionsLenght, 5, 10, slider.PosText.Start))
-        mapSettings.store.sectionsTextColor = colorSelector.main(language.get("TEXT_COLOR_SECTIONS"), mapSettings.store.sectionsTextColor, vec2(250, initPos + 5), "textcolor")
+        mapSettings.store.sectionsLenght = math.floor(slider.main(language.get("LENGHT"),
+            string.format("%.0f", mapSettings.store.sectionsLenght), vec2(20, initPos + 5), 100,
+            mapSettings.store.sectionsLenght, 5, 10, slider.PosText.Start))
+        mapSettings.store.sectionsTextColor = colorSelector.main(language.get("TEXT_COLOR_SECTIONS"),
+            mapSettings.store.sectionsTextColor, vec2(250, initPos + 5), "textcolor")
 
-        
+
         initPos = initPos + 40
-        local filePath = ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\CHN-HUD\\user\\trackSections\\" .. ac.getTrackName() .. ".ini"
-        mapSettings.store.trackSectionsEdited, mapSettings.store.resetSectionsINI = sectionPanel.main("sectionsPanel", ac.INIConfig.load(filePath), vec2(20, initPos), vec2(WindowSettingsSize.x - 40, math.max(300, WindowSettingsSize.y - 270)))
+        local filePath = ac.getFolder(ac.FolderID.ACApps) ..
+        "\\lua\\CHN-HUD\\user\\trackSections\\" .. ac.getTrackName() .. ".ini"
+        mapSettings.store.trackSectionsEdited, mapSettings.store.resetSectionsINI = sectionPanel.main("sectionsPanel",
+            ac.INIConfig.load(filePath), vec2(20, initPos),
+            vec2(WindowSettingsSize.x - 40, math.max(300, WindowSettingsSize.y - 270)))
         initPos = initPos + 310
     end
 
@@ -386,23 +409,31 @@ end
 local function playersSetitngs()
     local initPos = 100
 
-    mapSettings.store.focusedCarLenght = math.floor(slider.main(language.get("FOCUSED_CAR_LENGHT"), string.format("%.0f", mapSettings.store.focusedCarLenght), vec2(20, initPos), 200, mapSettings.store.focusedCarLenght, 5, 15))
+    mapSettings.store.focusedCarLenght = math.floor(slider.main(language.get("FOCUSED_CAR_LENGHT"),
+        string.format("%.0f", mapSettings.store.focusedCarLenght), vec2(20, initPos), 200,
+        mapSettings.store.focusedCarLenght, 5, 15))
     initPos = initPos + 50
-    mapSettings.store.enemiesLenght = math.floor(slider.main(language.get("ENEMIES_LENGHT"), string.format("%.0f", mapSettings.store.enemiesLenght), vec2(20, initPos), 200, mapSettings.store.enemiesLenght, 5, 15))
+    mapSettings.store.enemiesLenght = math.floor(slider.main(language.get("ENEMIES_LENGHT"),
+        string.format("%.0f", mapSettings.store.enemiesLenght), vec2(20, initPos), 200, mapSettings.store.enemiesLenght,
+        5, 15))
 
     initPos = initPos + 30
     ui.setCursor(vec2(20, initPos))
     ui.dwriteDrawText(language.get("FOCUSED_CAR_COLOR"), 12, vec2(20, initPos), COLOR.WHITE)
     initPos = initPos + 20
-    mapSettings.store.colorFocusedCar = colorSelector.main(language.get("INTERNAL"), mapSettings.store.colorFocusedCar, vec2(20, initPos), "##InternalFocused")
-    mapSettings.store.colorExternalFocusedCar = colorSelector.main(language.get("BORDER"), mapSettings.store.colorExternalFocusedCar, vec2(100, initPos), "##BorderFocused")
+    mapSettings.store.colorFocusedCar = colorSelector.main(language.get("INTERNAL"), mapSettings.store.colorFocusedCar,
+        vec2(20, initPos), "##InternalFocused")
+    mapSettings.store.colorExternalFocusedCar = colorSelector.main(language.get("BORDER"),
+        mapSettings.store.colorExternalFocusedCar, vec2(100, initPos), "##BorderFocused")
 
     initPos = initPos + 35
     ui.setCursor(vec2(20, initPos))
     ui.dwriteDrawText(language.get("ENEMIES_COLOR"), 12, vec2(20, initPos), COLOR.WHITE)
     initPos = initPos + 20
-    mapSettings.store.colorEnemies = colorSelector.main(language.get("INTERNAL"), mapSettings.store.colorEnemies, vec2(20, initPos), "##InternalEnemies")
-    mapSettings.store.colorExternalEnemies = colorSelector.main(language.get("BORDER"), mapSettings.store.colorExternalEnemies, vec2(100, initPos), "##BorderEnemies")
+    mapSettings.store.colorEnemies = colorSelector.main(language.get("INTERNAL"), mapSettings.store.colorEnemies,
+        vec2(20, initPos), "##InternalEnemies")
+    mapSettings.store.colorExternalEnemies = colorSelector.main(language.get("BORDER"),
+        mapSettings.store.colorExternalEnemies, vec2(100, initPos), "##BorderEnemies")
 
     initPos = initPos + 35
 
@@ -413,7 +444,7 @@ end
 
 
 function mapSettings.mapSettings()
-    ui.tabBar('##ID',function ()
+    ui.tabBar('##ID', function()
         ui.tabItem(language.get("TRACK"), trackSetitngs)
         ui.tabItem(language.get("FEATURES_OF_TRACK"), featuresSettings)
         ui.tabItem("Sections", sectionsSettings)

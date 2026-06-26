@@ -14,7 +14,7 @@ function track.drawTrack(data, thickness, color)
 
         local finalX = data.canvasCenter.x + rotatePos.x
         local finalY = data.canvasCenter.y + rotatePos.y
-        
+
         ui.pathLineTo(vec2(finalX, finalY))
     end
     ui.pathStroke(color, data.isTrackConnected, thickness)

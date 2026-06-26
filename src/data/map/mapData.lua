@@ -29,37 +29,36 @@ local mapData = {}
 
 ---@return mapData
 function mapData.new()
-  local baseWindowSize = vec2(300, 300)
-  local currentWindowSize = baseWindowSize
-  return {
-    minPos = vec2(math.huge, math.huge),
-    maxPos = vec2(-math.huge, -math.huge),
-    totalPoints = 0,
-    mapPoints = {},
-    sectors = {},
-    drs = {},
-    trackSections = {},
-    canvas = nil,
-    canvasZoom = nil,
-    canvasSize = vec2(600, 600),
-    canvasCenter = vec2(600 / 2, 600 / 2),
-    canvasScale = nil,
-    angle = nil,
-    offset = vec2(0, 0),
-    padding = 40,
-    baseWindowSize = baseWindowSize,
-    currentWindowSize = currentWindowSize,
-    windowCenter = currentWindowSize / 2,
-    trackLength = 0,
-    trackCenterX = 0,
-    trackCenterY = 0,
-    isTrackConnected = true,
-    startTrack = nil,
-    endTrack = nil,
-    dirTrack = vec2(0, 0),
-    transparancy = 0,
-  }
+    local baseWindowSize = vec2(300, 300)
+    local currentWindowSize = baseWindowSize
+    return {
+        minPos = vec2(math.huge, math.huge),
+        maxPos = vec2(-math.huge, -math.huge),
+        totalPoints = 0,
+        mapPoints = {},
+        sectors = {},
+        drs = {},
+        trackSections = {},
+        canvas = nil,
+        canvasZoom = nil,
+        canvasSize = vec2(600, 600),
+        canvasCenter = vec2(600 / 2, 600 / 2),
+        canvasScale = nil,
+        angle = nil,
+        offset = vec2(0, 0),
+        padding = 40,
+        baseWindowSize = baseWindowSize,
+        currentWindowSize = currentWindowSize,
+        windowCenter = currentWindowSize / 2,
+        trackLength = 0,
+        trackCenterX = 0,
+        trackCenterY = 0,
+        isTrackConnected = true,
+        startTrack = nil,
+        endTrack = nil,
+        dirTrack = vec2(0, 0),
+        transparancy = 0,
+    }
 end
-
 
 return mapData

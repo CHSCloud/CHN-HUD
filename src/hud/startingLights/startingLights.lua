@@ -29,25 +29,24 @@ function startingLights.windowMain()
 
     -- Proporções da tela
     data.currentWindowHeight = 3 * data.radius + data.distanceBorder
-    data.currentWindowWidth = ((startingLightsSettings.store.numStartingLights - 1) * data.distance) + 3 * data.radius + data.distanceBorder
-    
+    data.currentWindowWidth = ((startingLightsSettings.store.numStartingLights - 1) * data.distance) + 3 * data.radius +
+    data.distanceBorder
+
     window.resize(vec2(data.currentWindowWidth, data.currentWindowHeight), "Starting Lights")
 
     if SIM.raceSessionType == ac.SessionType.Race then
         if SIM.timeToSessionStart < 10000 and SIM.timeToSessionStart > 0 then
             sessionStarting.drawSessionStarting(data)
-
         elseif SIM.timeToSessionStart > -6000 and SIM.timeToSessionStart < 0 then
             sessionStarted.drawSessionStarted(data)
-
         elseif SettingsActive then
             settingsActive.drawSettingsActive(data)
         end
-
     elseif SettingsActive then
         settingsActive.drawSettingsActive(data)
     end
-    pinCheckBox.main(startingLightsSettings.store.startingLightsScale, "Starting Lights", window.getWindow("Starting Lights"):pinned(), vec2(data.currentWindowWidth, data.currentWindowHeight))
+    pinCheckBox.main(startingLightsSettings.store.startingLightsScale, "Starting Lights",
+        window.getWindow("Starting Lights"):pinned(), vec2(data.currentWindowWidth, data.currentWindowHeight))
 end
 
 return startingLights

@@ -23,13 +23,17 @@ function pitLaneSettings.pitLaneSettings()
         language.get("DEFAULT"),
         language.get("ALERT_PIT")
     }
-    
+
     local initPos = 75
-    
-    pitLaneSettings.store.pitLaneScale = slider.main(language.get("SIZE"), string.format("%.2f", pitLaneSettings.store.pitLaneScale), vec2(20, initPos), 250, pitLaneSettings.store.pitLaneScale, 0.7, 3)
+
+    pitLaneSettings.store.pitLaneScale = slider.main(language.get("SIZE"),
+        string.format("%.2f", pitLaneSettings.store.pitLaneScale), vec2(20, initPos), 250,
+        pitLaneSettings.store.pitLaneScale, 0.7, 3)
 
     initPos = initPos + 60
-    pitLaneSettings.store.optionPlate = droplist.main("##stylePitlane", language.get("STYLE"), vec2(20, initPos + 5), utils.findLenghtLongestString(plates, 12).x + 40, pitLaneSettings.store.optionPlate, plates, droplist.PosText.Default)
+    pitLaneSettings.store.optionPlate = droplist.main("##stylePitlane", language.get("STYLE"), vec2(20, initPos + 5),
+        utils.findLenghtLongestString(plates, 12).x + 40, pitLaneSettings.store.optionPlate, plates,
+        droplist.PosText.Default)
 
     initPos = initPos + 80
 

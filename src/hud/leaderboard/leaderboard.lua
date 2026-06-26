@@ -22,7 +22,7 @@ local function updateDrivers()
     for _, car in ac.iterateCars() do
         table.insert(data.drivers, {
             index = car.index,
-            name = string.sub(car:driverName(),1, 15),
+            name = string.sub(car:driverName(), 1, 15),
             position = car.racePosition,
             tyre = car:tyresName(),
             lapCount = car.lapCount,
@@ -32,7 +32,7 @@ local function updateDrivers()
             isRetired = car.isRetired,
             isRaceFinished = car.isRaceFinished,
             isInPitlane = car.isInPitlane,
-            logoPath = ac.getFolder(ac.FolderID.ContentCars) .. "\\".. ac.getCarID(car.index) .. "\\ui\\badge.png"
+            logoPath = ac.getFolder(ac.FolderID.ContentCars) .. "\\" .. ac.getCarID(car.index) .. "\\ui\\badge.png"
         })
     end
     table.sort(data.drivers, function(a, b) return a.position < b.position end)
@@ -49,7 +49,8 @@ function leaderboard.windowMain()
     data.posY = 0
     data.posX = 0
     local numPlayers = 0
-    ui.drawRectFilled(vec2(0, 0), vec2(data.currentWindowSize.x, 35 * leaderboardSettings.store.leaderboardScale), COLOR.WHITE, 5 * leaderboardSettings.store.leaderboardScale, ui.CornerFlags.Top)
+    ui.drawRectFilled(vec2(0, 0), vec2(data.currentWindowSize.x, 35 * leaderboardSettings.store.leaderboardScale),
+        COLOR.WHITE, 5 * leaderboardSettings.store.leaderboardScale, ui.CornerFlags.Top)
 
     for i, driver in ipairs(data.drivers) do
         if SIM.isSessionStarted then
@@ -76,7 +77,7 @@ function leaderboard.windowMain()
             numPlayers = numPlayers + 1
             local color = COLOR.WHITE
             local statusColor, statusText
-            
+
             if driver.index == SIM.focusedCar then
                 color = COLOR.YELLOW_DARK
             end
@@ -84,15 +85,12 @@ function leaderboard.windowMain()
             if not driver.isConnected then
                 statusColor = COLOR.WHITE
                 statusText = data.statusTexts[1]
-
             elseif driver.isRetired then
                 statusColor = COLOR.RED
                 statusText = data.statusTexts[2]
-
             elseif driver.isRaceFinished then
                 statusColor = COLOR.GREEN
                 statusText = data.statusTexts[3]
-
             elseif driver.isInPitlane then
                 statusColor = COLOR.RED
                 statusText = data.statusTexts[4]
@@ -103,26 +101,28 @@ function leaderboard.windowMain()
 
             data.posX = 0
 
-            position.drawPosition(data, driver.logoPath, numPlayers, driver.position, driver.name, vec2(data.posX, data.posY):scale(leaderboardSettings.store.leaderboardScale), color)
+            position.drawPosition(data, driver.logoPath, numPlayers, driver.position, driver.name,
+                vec2(data.posX, data.posY):scale(leaderboardSettings.store.leaderboardScale), color)
 
             for index = 1, 6, 1 do
                 if index == leaderboardSettings.store.tyrePos then
-                    tyres.drawTyre(data, driver.tyre, vec2(data.posX, data.posY):scale(leaderboardSettings.store.leaderboardScale), color)
-
+                    tyres.drawTyre(data, driver.tyre,
+                        vec2(data.posX, data.posY):scale(leaderboardSettings.store.leaderboardScale), color)
                 elseif index == leaderboardSettings.store.lapCountPos then
-                    laps.drawLapCount(data, driver.lapCount, vec2(data.posX, data.posY):scale(leaderboardSettings.store.leaderboardScale), color)
-
+                    laps.drawLapCount(data, driver.lapCount,
+                        vec2(data.posX, data.posY):scale(leaderboardSettings.store.leaderboardScale), color)
                 elseif index == leaderboardSettings.store.lastLapPos then
-                    laps.drawLastLap(data, driver.lastLapTime, vec2(data.posX, data.posY):scale(leaderboardSettings.store.leaderboardScale),color)
-
+                    laps.drawLastLap(data, driver.lastLapTime,
+                        vec2(data.posX, data.posY):scale(leaderboardSettings.store.leaderboardScale), color)
                 elseif index == leaderboardSettings.store.gapPos then
-                    gap.drawGap(data, driver, vec2(data.posX, data.posY):scale(leaderboardSettings.store.leaderboardScale), color)
-
+                    gap.drawGap(data, driver,
+                        vec2(data.posX, data.posY):scale(leaderboardSettings.store.leaderboardScale), color)
                 elseif index == leaderboardSettings.store.overtakeArrowsPos then
-                    overtaking.drawOvertaking(data, driver.index, vec2(data.posX, data.posY):scale(leaderboardSettings.store.leaderboardScale))
-
+                    overtaking.drawOvertaking(data, driver.index,
+                        vec2(data.posX, data.posY):scale(leaderboardSettings.store.leaderboardScale))
                 elseif index == leaderboardSettings.store.statusPos then
-                    status.drawDriverStatus(data, statusText, statusColor, vec2(data.posX, data.posY):scale(leaderboardSettings.store.leaderboardScale))
+                    status.drawDriverStatus(data, statusText, statusColor,
+                        vec2(data.posX, data.posY):scale(leaderboardSettings.store.leaderboardScale))
                 end
             end
 
@@ -132,7 +132,8 @@ function leaderboard.windowMain()
     end
 
     window.resize(data.currentWindowSize, "Leaderboard")
-    pinCheckBox.main(leaderboardSettings.store.leaderboardScale, "Leaderboard", window.getWindow("Leaderboard"):pinned(), data.currentWindowSize)
+    pinCheckBox.main(leaderboardSettings.store.leaderboardScale, "Leaderboard", window.getWindow("Leaderboard"):pinned(),
+        data.currentWindowSize)
 end
 
 updateDrivers()

@@ -6,7 +6,7 @@ local defaultValues = {
 
 window.store = ac.storage(defaultValues)
 
-local pinStorage = ac.storage{
+local pinStorage = ac.storage {
     ["Settings CHN"] = false,
     ["Pedals"] = false,
     ["Pit Lane"] = false,
@@ -33,8 +33,8 @@ local windowNames = {
 function window.init()
     local all = ac.getAppWindows()
     local win
-    for i=1, #all do
-        for j=1, #windowNames do
+    for i = 1, #all do
+        for j = 1, #windowNames do
             if all[i] ~= nil and all[i].title == windowNames[j] then
                 if all[i].name ~= nil then
                     win = ac.accessAppWindow(all[i].name)
@@ -53,8 +53,8 @@ end
 --- @param name string
 function window.getWindow(name)
     local data = window[name]
-    if data == nil then 
-        return nil 
+    if data == nil then
+        return nil
     end
     return data
 end
@@ -63,8 +63,8 @@ end
 --- @param nameWindow string
 function window.resize(size, nameWindow)
     local window = window.getWindow(nameWindow)
-    if window == nil then 
-        return 
+    if window == nil then
+        return
     end
     local ui_info = ac.getUI()
     window:resize(size * ui_info.uiScale)

@@ -4,7 +4,7 @@ local slider = require("src.ui.selectors.slider")
 local button = require("src.ui.buttons.button")
 local droplist = require("src.ui.selectors.droplist")
 local toggleButton = require("src.ui.buttons.toggleButton")
-local pedalsSettings = {} 
+local pedalsSettings = {}
 
 local defaultValues = {
     pedalsScale = 1,
@@ -87,36 +87,42 @@ end
 --- @param pos vec2
 local function drawOthers(pos)
     ui.dwriteDrawText(language.get("OTHERS"), 12, vec2(pos.x - 5, pos.y), COLOR.WHITE)
-  
-    pos.y = pos.y + 25; 
+
+    pos.y = pos.y + 25;
     if toggleButton.main("fuel", vec2(pos.x, pos.y), pedalsSettings.store.fuelActive, language.get("FUEL")) then
         pedalsSettings.store.fuelActive = not pedalsSettings.store.fuelActive
     end
     if pedalsSettings.store.fuelActive then
         local old = pedalsSettings.store.fuelPos
-        pedalsSettings.store.fuelPos = droplist.main("##fuelPos", "|  " .. language.get("POSITION"), vec2(pos.x + ui.measureDWriteText(language.get("FUEL"), 12).x  + 60, pos.y - 4), utils.findLenghtLongestString(positionsBorders, 12).x + 40, pedalsSettings.store.fuelPos, positionsBorders, droplist.PosText.Start)
+        pedalsSettings.store.fuelPos = droplist.main("##fuelPos", "|  " .. language.get("POSITION"),
+            vec2(pos.x + ui.measureDWriteText(language.get("FUEL"), 12).x + 60, pos.y - 4),
+            utils.findLenghtLongestString(positionsBorders, 12).x + 40, pedalsSettings.store.fuelPos, positionsBorders,
+            droplist.PosText.Start)
         if pedalsSettings.store.fuelPos ~= old then
             invertPositionBorder(old, pedalsSettings.store.fuelPos, "fuelPos")
         end
     end
-    
-    pos.y = pos.y + 30; 
+
+    pos.y = pos.y + 30;
     if toggleButton.main("brakeBias", vec2(pos.x, pos.y), pedalsSettings.store.brakeBiasActive, language.get("BRAKE_BIAS")) then
         pedalsSettings.store.brakeBiasActive = not pedalsSettings.store.brakeBiasActive
     end
     if pedalsSettings.store.brakeBiasActive then
         local old = pedalsSettings.store.brakebiasPos
-        pedalsSettings.store.brakebiasPos = droplist.main("##brakebiasPos", "|  " .. language.get("POSITION"), vec2(pos.x + ui.measureDWriteText(language.get("BRAKE_BIAS"), 12).x + 60, pos.y - 3), utils.findLenghtLongestString(positionsBorders, 12).x + 40, pedalsSettings.store.brakebiasPos, positionsBorders, droplist.PosText.Start)
+        pedalsSettings.store.brakebiasPos = droplist.main("##brakebiasPos", "|  " .. language.get("POSITION"),
+            vec2(pos.x + ui.measureDWriteText(language.get("BRAKE_BIAS"), 12).x + 60, pos.y - 3),
+            utils.findLenghtLongestString(positionsBorders, 12).x + 40, pedalsSettings.store.brakebiasPos,
+            positionsBorders, droplist.PosText.Start)
         if pedalsSettings.store.brakebiasPos ~= old then
             invertPositionBorder(old, pedalsSettings.store.brakebiasPos, "brakebiasPos")
         end
     end
-    pos.y = pos.y + 30; 
+    pos.y = pos.y + 30;
 end
 
 -- Desenha a seção de RPM
 local function drawRPM(pos)
-    local copyPos = pos + vec2(300,0)
+    local copyPos = pos + vec2(300, 0)
     --pedalsSettings.store.rpmPos = 5
     local rpmLabels = {
         language.get("SHIFT_LIGHTS"),
@@ -128,42 +134,51 @@ local function drawRPM(pos)
     }
 
     ui.dwriteDrawText("RPM", 12, vec2(pos.x - 5, pos.y), COLOR.WHITE)
-    
+
     pos.y = pos.y + 25
-    if toggleButton.main("rpm",vec2(pos.x,pos.y), pedalsSettings.store.rpmActive, "") then
+    if toggleButton.main("rpm", vec2(pos.x, pos.y), pedalsSettings.store.rpmActive, "") then
         pedalsSettings.store.rpmActive = not pedalsSettings.store.rpmActive
     end
 
     if pedalsSettings.store.rpmActive then
-
-        local exampleRPpedalsSettingsX = pos.x + 70   
+        local exampleRPpedalsSettingsX = pos.x + 70
         local exampleRPpedalsSettingsY = pos.y + 20
         pos.y = pos.y + 30
 
         local old = pedalsSettings.store.rpmPos
-        pedalsSettings.store.rpmPos = droplist.main("##rpmPos", language.get("POSITION"), vec2(pos.x, pos.y), utils.findLenghtLongestString(positionsCenters, 12).x + 160, pedalsSettings.store.rpmPos, positionsCenters, droplist.PosText.Start)
+        pedalsSettings.store.rpmPos = droplist.main("##rpmPos", language.get("POSITION"), vec2(pos.x, pos.y),
+            utils.findLenghtLongestString(positionsCenters, 12).x + 160, pedalsSettings.store.rpmPos, positionsCenters,
+            droplist.PosText.Start)
         if pedalsSettings.store.rpmPos ~= old then
             invertPositionCenter(old, pedalsSettings.store.rpmPos, "rpmPos")
         end
-        
+
         pos.y = pos.y + 30
 
-        pedalsSettings.store.rpmType = droplist.main("##rpmType", language.get("TYPE"), vec2(pos.x, pos.y + 5), 160, pedalsSettings.store.rpmType, rpmLabels, droplist.PosText.Start)
+        pedalsSettings.store.rpmType = droplist.main("##rpmType", language.get("TYPE"), vec2(pos.x, pos.y + 5), 160,
+            pedalsSettings.store.rpmType, rpmLabels, droplist.PosText.Start)
 
         if pedalsSettings.store.rpmType == 1 then
-
             pos.y = pos.y + 40
-            pedalsSettings.store.rpmProcessType = droplist.main("##progress", language.get("PROGRESS"), vec2(pos.x, pos.y), utils.findLenghtLongestString(processCircleType, 12).x + 40, pedalsSettings.store.rpmProcessType, processCircleType, droplist.PosText.Start)
+            pedalsSettings.store.rpmProcessType = droplist.main("##progress", language.get("PROGRESS"),
+                vec2(pos.x, pos.y), utils.findLenghtLongestString(processCircleType, 12).x + 40,
+                pedalsSettings.store.rpmProcessType, processCircleType, droplist.PosText.Start)
             for i = 1, 9 do
                 local c1, c2, c3 = COLOR.GREEN, COLOR.GREEN, COLOR.GREEN
-                
+
                 if pedalsSettings.store.rpmProcessType == 1 then
-                    if i > 7 then c1, c2, c3 = COLOR.GRAY_BG, COLOR.GRAY_BG, COLOR.RED_DARK
-                    elseif i > 4 then c1, c2, c3 = COLOR.GRAY_BG, COLOR.YELLOW, COLOR.YELLOW end
-                else 
+                    if i > 7 then
+                        c1, c2, c3 = COLOR.GRAY_BG, COLOR.GRAY_BG, COLOR.RED_DARK
+                    elseif i > 4 then
+                        c1, c2, c3 = COLOR.GRAY_BG, COLOR.YELLOW, COLOR.YELLOW
+                    end
+                else
                     c2, c3 = COLOR.YELLOW, COLOR.RED_DARK
-                    if i > 7 then c1, c2 = COLOR.GRAY_BG, COLOR.GRAY_BG
-                    elseif i > 4 then c1 = COLOR.GRAY_BG end
+                    if i > 7 then
+                        c1, c2 = COLOR.GRAY_BG, COLOR.GRAY_BG
+                    elseif i > 4 then
+                        c1 = COLOR.GRAY_BG
+                    end
                 end
 
                 ui.drawCircleFilled(vec2(exampleRPpedalsSettingsX, exampleRPpedalsSettingsY - 30), 5, c1, 20)
@@ -173,19 +188,28 @@ local function drawRPM(pos)
             end
 
             pos.y = pos.y + 30
-            pedalsSettings.store.numLights = math.floor(slider.main(language.get("NUM_LIGHTS"), string.format("%i", pedalsSettings.store.numLights), vec2(pos.x, pos.y + 10), 135, pedalsSettings.store.numLights, 6, 25, slider.PosText.Start))
-
+            pedalsSettings.store.numLights = math.floor(slider.main(language.get("NUM_LIGHTS"),
+                string.format("%i", pedalsSettings.store.numLights), vec2(pos.x, pos.y + 10), 135,
+                pedalsSettings.store.numLights, 6, 25, slider.PosText.Start))
         elseif pedalsSettings.store.rpmType == 2 then
             pos.y = pos.y + 35
-        
-            ui.drawRectFilled(vec2(exampleRPpedalsSettingsX - 5, exampleRPpedalsSettingsY - 35), vec2(exampleRPpedalsSettingsX + 93, exampleRPpedalsSettingsY - 25), COLOR.GRAY_BG, 10)
-            ui.drawRectFilled(vec2(exampleRPpedalsSettingsX - 5, exampleRPpedalsSettingsY - 35), vec2(exampleRPpedalsSettingsX - 5 + (98 * 0.45), exampleRPpedalsSettingsY - 25), COLOR.GREEN, 10)
-            ui.drawRectFilled(vec2(exampleRPpedalsSettingsX - 5, exampleRPpedalsSettingsY - 20), vec2(exampleRPpedalsSettingsX + 93, exampleRPpedalsSettingsY - 10), COLOR.GRAY_BG, 10)
-            ui.drawRectFilled(vec2(exampleRPpedalsSettingsX - 5, exampleRPpedalsSettingsY - 20), vec2(exampleRPpedalsSettingsX - 5 + (98 * 0.75), exampleRPpedalsSettingsY - 10), COLOR.YELLOW, 10)
-            ui.drawRectFilled(vec2(exampleRPpedalsSettingsX - 5, exampleRPpedalsSettingsY - 5), vec2(exampleRPpedalsSettingsX + 93, exampleRPpedalsSettingsY + 5), COLOR.GRAY_BG, 10)
-            ui.drawRectFilled(vec2(exampleRPpedalsSettingsX - 5, exampleRPpedalsSettingsY - 5), vec2(exampleRPpedalsSettingsX - 5 + (98), exampleRPpedalsSettingsY + 5), COLOR.RED, 10)
-            
-            pedalsSettings.store.barLength = slider.main(language.get("PERCENTAGE"), string.format("%.0f", (pedalsSettings.store.barLength+ 0.05) * 100) .. "%", vec2(pos.x, pos.y + 10), 130, pedalsSettings.store.barLength, 0.25, 0.95, slider.PosText.Start)
+
+            ui.drawRectFilled(vec2(exampleRPpedalsSettingsX - 5, exampleRPpedalsSettingsY - 35),
+                vec2(exampleRPpedalsSettingsX + 93, exampleRPpedalsSettingsY - 25), COLOR.GRAY_BG, 10)
+            ui.drawRectFilled(vec2(exampleRPpedalsSettingsX - 5, exampleRPpedalsSettingsY - 35),
+                vec2(exampleRPpedalsSettingsX - 5 + (98 * 0.45), exampleRPpedalsSettingsY - 25), COLOR.GREEN, 10)
+            ui.drawRectFilled(vec2(exampleRPpedalsSettingsX - 5, exampleRPpedalsSettingsY - 20),
+                vec2(exampleRPpedalsSettingsX + 93, exampleRPpedalsSettingsY - 10), COLOR.GRAY_BG, 10)
+            ui.drawRectFilled(vec2(exampleRPpedalsSettingsX - 5, exampleRPpedalsSettingsY - 20),
+                vec2(exampleRPpedalsSettingsX - 5 + (98 * 0.75), exampleRPpedalsSettingsY - 10), COLOR.YELLOW, 10)
+            ui.drawRectFilled(vec2(exampleRPpedalsSettingsX - 5, exampleRPpedalsSettingsY - 5),
+                vec2(exampleRPpedalsSettingsX + 93, exampleRPpedalsSettingsY + 5), COLOR.GRAY_BG, 10)
+            ui.drawRectFilled(vec2(exampleRPpedalsSettingsX - 5, exampleRPpedalsSettingsY - 5),
+                vec2(exampleRPpedalsSettingsX - 5 + (98), exampleRPpedalsSettingsY + 5), COLOR.RED, 10)
+
+            pedalsSettings.store.barLength = slider.main(language.get("PERCENTAGE"),
+                string.format("%.0f", (pedalsSettings.store.barLength + 0.05) * 100) .. "%", vec2(pos.x, pos.y + 10), 130,
+                pedalsSettings.store.barLength, 0.25, 0.95, slider.PosText.Start)
         end
         --
     end
@@ -199,17 +223,22 @@ local function drawRPM(pos)
         if pedalsSettings.store.p2pActive then
             local old = pedalsSettings.store.p2pPos
             copyPos.y = copyPos.y + 30
-            pedalsSettings.store.p2pPos = droplist.main("##p2pPos",language.get("POSITION"), vec2(copyPos.x, copyPos.y - 3), utils.findLenghtLongestString(positionsCenters, 12).x + 160, pedalsSettings.store.p2pPos, positionsCenters, droplist.PosText.Start)
+            pedalsSettings.store.p2pPos = droplist.main("##p2pPos", language.get("POSITION"),
+                vec2(copyPos.x, copyPos.y - 3), utils.findLenghtLongestString(positionsCenters, 12).x + 160,
+                pedalsSettings.store.p2pPos, positionsCenters, droplist.PosText.Start)
             if pedalsSettings.store.p2pPos ~= old then
                 invertPositionCenter(old, pedalsSettings.store.p2pPos, "p2pPos")
             end
 
             copyPos.y = copyPos.y + 30
-            pedalsSettings.store.p2pLenght = slider.main(language.get("LENGHT"), string.format("%.0f", (pedalsSettings.store.p2pLenght+ 0.05) * 100).."%", vec2(copyPos.x, copyPos.y + 10), 130, pedalsSettings.store.p2pLenght, 0.25, 0.95, slider.PosText.Start)
+            pedalsSettings.store.p2pLenght = slider.main(language.get("LENGHT"),
+                string.format("%.0f", (pedalsSettings.store.p2pLenght + 0.05) * 100) .. "%",
+                vec2(copyPos.x, copyPos.y + 10), 130, pedalsSettings.store.p2pLenght, 0.25, 0.95, slider.PosText.Start)
         end
-    else 
+    else
         ui.setCursor(vec2(copyPos.x + ui.measureDWriteText("P2P", 12).x + 30, copyPos.y))
-        ui.dwriteTextAligned(language.get("ALERT_P2P"), 12, ui.Alignment.Center, ui.Alignment.Center, vec2(180, 20), false, COLOR.RED)  
+        ui.dwriteTextAligned(language.get("ALERT_P2P"), 12, ui.Alignment.Center, ui.Alignment.Center, vec2(180, 20),
+            false, COLOR.RED)
     end
 end
 
@@ -242,9 +271,11 @@ function pedalsSettings.pedalsSettings()
     -- Layout
     local initPos = 55
     local posXStyle = 150
-    
+
     initPos = initPos + 20
-    pedalsSettings.store.pedalsScale = slider.main(language.get("SIZE"), string.format("%.2f", pedalsSettings.store.pedalsScale), vec2(20, initPos), 250, pedalsSettings.store.pedalsScale, 0.7, 3)
+    pedalsSettings.store.pedalsScale = slider.main(language.get("SIZE"),
+        string.format("%.2f", pedalsSettings.store.pedalsScale), vec2(20, initPos), 250, pedalsSettings.store
+    .pedalsScale, 0.7, 3)
 
 
     initPos = initPos + 35
@@ -252,71 +283,81 @@ function pedalsSettings.pedalsSettings()
 
     -- DIREÇÃO
     initPos = initPos + 10
-    
+
     ui.dwriteDrawText(language.get("STEERING"), 12, vec2(15, initPos), COLOR.WHITE)
-    
-    initPos = initPos + 25; 
-    if toggleButton.main("gear", vec2(20,initPos), pedalsSettings.store.gearActive, language.get("GEAR")) then
+
+    initPos = initPos + 25;
+    if toggleButton.main("gear", vec2(20, initPos), pedalsSettings.store.gearActive, language.get("GEAR")) then
         pedalsSettings.store.gearActive = not pedalsSettings.store.gearActive
     end
-    
-    initPos = initPos + 25; 
-    if toggleButton.main("speed",vec2(20,initPos), pedalsSettings.store.speedActive, language.get("SPEED")) then
+
+    initPos = initPos + 25;
+    if toggleButton.main("speed", vec2(20, initPos), pedalsSettings.store.speedActive, language.get("SPEED")) then
         pedalsSettings.store.speedActive = not pedalsSettings.store.speedActive
     end
-    
+
     initPos = initPos + 25;
-    if toggleButton.main("wheel", vec2(20,initPos), pedalsSettings.store.wheelActive, language.get("WHEEL")) then
+    if toggleButton.main("wheel", vec2(20, initPos), pedalsSettings.store.wheelActive, language.get("WHEEL")) then
         pedalsSettings.store.wheelActive = not pedalsSettings.store.wheelActive
     end
     if pedalsSettings.store.wheelActive then
-        pedalsSettings.store.wheelType = droplist.main("##wheelType", "", vec2(110, initPos - 3), 100, pedalsSettings.store.wheelType, wheelLabels, droplist.PosText.Start)
+        pedalsSettings.store.wheelType = droplist.main("##wheelType", "", vec2(110, initPos - 3), 100,
+            pedalsSettings.store.wheelType, wheelLabels, droplist.PosText.Start)
     end
-    
-    initPos = initPos + 25; 
-    if toggleButton.main("abs", vec2(20,initPos), pedalsSettings.store.absActive, language.get("ABS")) then
+
+    initPos = initPos + 25;
+    if toggleButton.main("abs", vec2(20, initPos), pedalsSettings.store.absActive, language.get("ABS")) then
         pedalsSettings.store.absActive = not pedalsSettings.store.absActive
     end
     -- Alerta do ABS
     if CAR.absModes == 0 then
         ui.setCursor(vec2(20 + ui.measureDWriteText("ABS", 12).x + 53, initPos))
-        ui.dwriteTextAligned(language.get("ALERT_ABS"), 12, ui.Alignment.Center, ui.Alignment.Center, vec2(180, 20), false, COLOR.RED)  
+        ui.dwriteTextAligned(language.get("ALERT_ABS"), 12, ui.Alignment.Center, ui.Alignment.Center, vec2(180, 20),
+            false, COLOR.RED)
     end
 
-    initPos = initPos + 25; 
+    initPos = initPos + 25;
     if toggleButton.main("tc", vec2(20, initPos), pedalsSettings.store.tractionControlActive, language.get("TC")) then
         pedalsSettings.store.tractionControlActive = not pedalsSettings.store.tractionControlActive
     end
 
     if CAR.tractionControlModes == 0 then
         ui.setCursor(vec2(20 + ui.measureDWriteText(language.get("TC"), 12).x + 55, initPos))
-        ui.dwriteTextAligned(language.get("ALERT_TC"), 12, ui.Alignment.Center, ui.Alignment.Center, vec2(250, 20), false, COLOR.RED)  
+        ui.dwriteTextAligned(language.get("ALERT_TC"), 12, ui.Alignment.Center, ui.Alignment.Center, vec2(250, 20), false,
+            COLOR.RED)
     else
         if pedalsSettings.store.tractionControlActive then
             local old = pedalsSettings.store.tractionControlPos
-            pedalsSettings.store.tractionControlPos = droplist.main("##tractionControlPos", "|  " .. language.get("POSITION"), vec2(ui.measureText(language.get("TC")).x + 85, initPos - 3), utils.findLenghtLongestString(positionsBorders, 12).x + 40, pedalsSettings.store.tractionControlPos, positionsBorders, droplist.PosText.Start)
+            pedalsSettings.store.tractionControlPos = droplist.main("##tractionControlPos",
+                "|  " .. language.get("POSITION"), vec2(ui.measureText(language.get("TC")).x + 85, initPos - 3),
+                utils.findLenghtLongestString(positionsBorders, 12).x + 40, pedalsSettings.store.tractionControlPos,
+                positionsBorders, droplist.PosText.Start)
             if pedalsSettings.store.tractionControlPos ~= old then
                 invertPositionBorder(old, pedalsSettings.store.tractionControlPos, "tractionControlPos")
             end
-        end 
+        end
     end
 
-    initPos = initPos + 30; 
+    initPos = initPos + 30;
     if toggleButton.main("drs", vec2(20, initPos), pedalsSettings.store.drsActvationActive, "DRS") then
         pedalsSettings.store.drsActvationActive = not pedalsSettings.store.drsActvationActive
     end
 
     if not CAR.drsPresent then
         ui.setCursor(vec2(20 + ui.measureDWriteText("DRS", 12).x + 18, initPos))
-        ui.dwriteTextAligned(language.get("ALERT_DRS"), 12, ui.Alignment.Center, ui.Alignment.Center, vec2(250, 20), false, COLOR.RED)  
+        ui.dwriteTextAligned(language.get("ALERT_DRS"), 12, ui.Alignment.Center, ui.Alignment.Center, vec2(250, 20),
+            false, COLOR.RED)
     else
         if pedalsSettings.store.drsActvationActive then
             local old = pedalsSettings.store.drsPos
-            pedalsSettings.store.drsPos = droplist.main("##drsPos", "|  " .. language.get("POSITION"), vec2(ui.measureText("DRS").x + 85, initPos - 3), utils.findLenghtLongestString(positionsBorders, 12).x + 40, pedalsSettings.store.drsPos, positionsBorders, droplist.PosText.Start)
+            pedalsSettings.store.drsPos = droplist.main("##drsPos", "|  " .. language.get("POSITION"),
+                vec2(ui.measureText("DRS").x + 85, initPos - 3),
+                utils.findLenghtLongestString(positionsBorders, 12).x + 40, pedalsSettings.store.drsPos, positionsBorders,
+                droplist.PosText.Start)
             if pedalsSettings.store.drsPos ~= old then
                 invertPositionBorder(old, pedalsSettings.store.drsPos, "drsPos")
             end
-        end 
+        end
     end
     initPos = initPos + 40
     ui.drawLine(vec2(10, initPos), vec2(WindowSettingsSize.x - 18, initPos), COLOR.WHITE_LINE, 2)
@@ -333,34 +374,34 @@ function pedalsSettings.pedalsSettings()
     initPos = initPos + 10
     ui.dwriteDrawText(language.get("PEDALS"), 12, vec2(15, initPos), COLOR.WHITE)
 
-    initPos = initPos + 25; 
-    if toggleButton.main("throttle", vec2(20,initPos), pedalsSettings.store.throttleActive, language.get("THROTTLE")) then
+    initPos = initPos + 25;
+    if toggleButton.main("throttle", vec2(20, initPos), pedalsSettings.store.throttleActive, language.get("THROTTLE")) then
         pedalsSettings.store.throttleActive = not pedalsSettings.store.throttleActive
     end
 
     ui.setCursor(vec2(posXStyle - 5, initPos - 25))
     ui.dwriteDrawText(language.get("PEDAL_STYLE"), 12, vec2(posXStyle - 5, initPos - 25), COLOR.WHITE)
-    if toggleButton.main("percentagePedals", vec2(posXStyle,initPos), pedalsSettings.store.textBarsActive, language.get("PERCENTAGE_PEDALS")) then
+    if toggleButton.main("percentagePedals", vec2(posXStyle, initPos), pedalsSettings.store.textBarsActive, language.get("PERCENTAGE_PEDALS")) then
         pedalsSettings.store.textBarsActive = not pedalsSettings.store.textBarsActive
     end
 
     initPos = initPos + 25
-    if toggleButton.main("limitLines", vec2(posXStyle,initPos), pedalsSettings.store.pedalLimitsLines, language.get("LIMIT_LINES")) then
+    if toggleButton.main("limitLines", vec2(posXStyle, initPos), pedalsSettings.store.pedalLimitsLines, language.get("LIMIT_LINES")) then
         pedalsSettings.store.pedalLimitsLines = not pedalsSettings.store.pedalLimitsLines
     end
 
     ui.setCursor(vec2(20, initPos))
-    if toggleButton.main("brake", vec2(20,initPos), pedalsSettings.store.brakeActive, language.get("BRAKE")) then
+    if toggleButton.main("brake", vec2(20, initPos), pedalsSettings.store.brakeActive, language.get("BRAKE")) then
         pedalsSettings.store.brakeActive = not pedalsSettings.store.brakeActive
     end
-    
-    initPos = initPos + 25; 
-    if toggleButton.main("clutch", vec2(20,initPos), pedalsSettings.store.clutchActive, language.get("CLUTCH")) then
+
+    initPos = initPos + 25;
+    if toggleButton.main("clutch", vec2(20, initPos), pedalsSettings.store.clutchActive, language.get("CLUTCH")) then
         pedalsSettings.store.clutchActive = not pedalsSettings.store.clutchActive
     end
-    
-    initPos = initPos + 25; 
-    if toggleButton.main("handbrake", vec2(20,initPos), pedalsSettings.store.handbrakeActive, language.get("HANDBRAKE")) then
+
+    initPos = initPos + 25;
+    if toggleButton.main("handbrake", vec2(20, initPos), pedalsSettings.store.handbrakeActive, language.get("HANDBRAKE")) then
         pedalsSettings.store.handbrakeActive = not pedalsSettings.store.handbrakeActive
     end
     --

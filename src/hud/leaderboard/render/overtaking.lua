@@ -8,7 +8,7 @@ local overtaking = {}
 function overtaking.drawOvertaking(data, driverIndex, pos)
     if leaderboardSettings.store.overtakeArrowsActive then
         local overtakingText
-        local space = vec2(0,0)
+        local space = vec2(0, 0)
         local color = COLOR.WHITE
         if data.storedPositions[driverIndex] ~= nil then
             if data.storedPositions[driverIndex].isPositionChanges then
@@ -29,12 +29,13 @@ function overtaking.drawOvertaking(data, driverIndex, pos)
                         rotation = 0
                     end
                     ui.beginRotation()
-                    ui.drawImage("assets/ui/arrow.png", pos + vec2(15,5):scale(leaderboardSettings.store.leaderboardScale), pos + vec2(40, 25):scale(leaderboardSettings.store.leaderboardScale), color)
+                    ui.drawImage("assets/ui/arrow.png",
+                        pos + vec2(15, 5):scale(leaderboardSettings.store.leaderboardScale),
+                        pos + vec2(40, 25):scale(leaderboardSettings.store.leaderboardScale), color)
                     ui.endRotation(rotation)
-                else   
+                else
                     overtakingText = "-"
                 end
-
             else
                 if SIM.currentSessionTime > data.storedPositions[driverIndex].timeToDraw + 30000 then
                     data.storedPositions[driverIndex].lastPos = data.storedPositions[driverIndex].currentPos
@@ -46,10 +47,12 @@ function overtaking.drawOvertaking(data, driverIndex, pos)
             overtakingText = "-"
         end
         ui.setCursor(pos + space)
-        ui.dwriteTextAligned(overtakingText, 20 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Center, ui.Alignment.Center, vec2(data.overtakingLenght,30):scale(leaderboardSettings.store.leaderboardScale), false, color)
-        
+        ui.dwriteTextAligned(overtakingText, 20 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Center,
+            ui.Alignment.Center, vec2(data.overtakingLenght, 30):scale(leaderboardSettings.store.leaderboardScale), false,
+            color)
+
         data.posX = data.posX + data.overtakingLenght
     end
-end 
+end
 
 return overtaking

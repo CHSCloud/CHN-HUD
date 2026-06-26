@@ -19,7 +19,9 @@ function sessionFlagsSettings.sessionFlagsSettings()
     local initPos = 75
 
     -- Escala:
-    sessionFlagsSettings.store.sessionFlagsScale = slider.main(language.get("SIZE"), string.format("%.2f", sessionFlagsSettings.store.sessionFlagsScale), vec2(20, initPos), 250, sessionFlagsSettings.store.sessionFlagsScale, 0.7, 3)
+    sessionFlagsSettings.store.sessionFlagsScale = slider.main(language.get("SIZE"),
+        string.format("%.2f", sessionFlagsSettings.store.sessionFlagsScale), vec2(20, initPos), 250,
+        sessionFlagsSettings.store.sessionFlagsScale, 0.7, 3)
 
     initPos = initPos + 40
 

@@ -16,21 +16,21 @@ local leaderboardData = {}
 
 ---@return leaderboardData
 function leaderboardData.new()
-  return {
-    drivers = {},
-    storedPositions = {},
-    currentWindowSize = vec2(),
-    statusTexts = {"OFF", "RETIRED", "FINISHED", "IN PIT"},
-    posY = 2.5,
-    posX = 0,
-    positionLenght = 260,
-    tyreLenght = 50,
-    lapCountLenght = 50,
-    lastLapLenght = 100,
-    gapLenght = 80,
-    statusLenght = 0,
-    overtakingLenght = 70,
-  }
+    return {
+        drivers = {},
+        storedPositions = {},
+        currentWindowSize = vec2(),
+        statusTexts = { "OFF", "RETIRED", "FINISHED", "IN PIT" },
+        posY = 2.5,
+        posX = 0,
+        positionLenght = 260,
+        tyreLenght = 50,
+        lapCountLenght = 50,
+        lastLapLenght = 100,
+        gapLenght = 80,
+        statusLenght = 0,
+        overtakingLenght = 70,
+    }
 end
 
 return leaderboardData

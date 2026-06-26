@@ -51,7 +51,7 @@ local function initMap()
         for _, sectionData in pairs(drsINI['sections']) do
             local dataStart = sectionData['START']
             local dataFinal = sectionData['END']
-            
+
             local startLeft = ac.trackCoordinateToWorld(vec3(-1, 0, tonumber(dataStart[1])))
             local startCenter = ac.trackCoordinateToWorld(vec3(0, 0, tonumber(dataStart[1])))
             local startRight = ac.trackCoordinateToWorld(vec3(1, 0, tonumber(dataStart[1])))
@@ -80,7 +80,7 @@ local function initMap()
         local nextPoint = ac.trackCoordinateToWorld(vec3(0, 0, ((i + 1) % data.totalPoints) / data.totalPoints))
         sum = sum + (currentPoint.x * nextPoint.z - nextPoint.x * currentPoint.z)
     end
-    if sum > 0 then 
+    if sum > 0 then
         mapSettings.isClockwise = true
     end
 
@@ -89,15 +89,15 @@ local function initMap()
 
     -- Comprimento da pista
     data.trackLength = math.distance(data.minPos, data.maxPos)
-    
+
     -- Verificando se a pista é conectada:
     data.startTrack = ac.trackCoordinateToWorld(vec3(0, 0, 0))
     data.endTrack = ac.trackCoordinateToWorld(vec3(0, 0, 0.01))
     local distance = math.distance(data.startTrack, data.endTrack)
-    if distance > 60 then 
+    if distance > 60 then
         data.isTrackConnected = false
     end
-    
+
     -- Centros da pista
     data.trackCenterX = (data.minPos.x + data.maxPos.x) / 2
     data.trackCenterY = (data.minPos.y + data.maxPos.y) / 2
@@ -124,7 +124,7 @@ function map.windowMain()
     end
 
     ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
-    data.offset = vec2(0,0)
+    data.offset = vec2(0, 0)
     data.currentWindowSize = vec2(300, 300)
     data.currentWindowSize = data.currentWindowSize:scale(mapSettings.store.mapScale)
     data.windowCenter = data.currentWindowSize / 2
@@ -150,8 +150,9 @@ function map.windowMain()
     -- Desenha borda
     if data.canvas == nil then return end
     data.canvas:clear()
-    data.canvas:update(function ()
-        track.drawTrack(data, mapSettings.store.trackLenght + mapSettings.store.borderLenght * 2, mapSettings.store.colorBorder)
+    data.canvas:update(function()
+        track.drawTrack(data, mapSettings.store.trackLenght + mapSettings.store.borderLenght * 2,
+            mapSettings.store.colorBorder)
         -- Desenha pista
         track.drawTrack(data, mapSettings.store.trackLenght, mapSettings.store.colorTrack)
         -- Desenha DRS
@@ -166,7 +167,7 @@ function map.windowMain()
         -- Desenha bandeira de largada
         if mapSettings.store.borderLenght < 0 then
             sectors.drawStartFlag(data, (mapSettings.store.trackLenght + 6) / 1.3)
-        else 
+        else
             sectors.drawStartFlag(data, (mapSettings.store.trackLenght + mapSettings.store.borderLenght * 2) / 1.3)
         end
     end)
@@ -179,34 +180,36 @@ function map.windowMain()
                 data.transparancy = data.transparancy + 0.1
             end
         end
-        ui.drawRectFilled(vec2(0, 0), data.currentWindowSize, rgbm(WindowsColor.r,WindowsColor.g,WindowsColor.b, data.transparancy), 20 * mapSettings.store.mapScale)
+        ui.drawRectFilled(vec2(0, 0), data.currentWindowSize,
+            rgbm(WindowsColor.r, WindowsColor.g, WindowsColor.b, data.transparancy), 20 * mapSettings.store.mapScale)
     else
         if data.transparancy > 0 then
             if 20 * TIMER % 6 >= 1 then
                 data.transparancy = data.transparancy - 0.1
             end
-             ui.drawRectFilled(vec2(0, 0), data.currentWindowSize, rgbm(WindowsColor.r,WindowsColor.g,WindowsColor.b, data.transparancy), 20 * mapSettings.store.mapScale)
+            ui.drawRectFilled(vec2(0, 0), data.currentWindowSize,
+                rgbm(WindowsColor.r, WindowsColor.g, WindowsColor.b, data.transparancy), 20 * mapSettings.store.mapScale)
         else
             data.transparancy = 0
         end
     end
-    
+
     if mapSettings.store.focus then
         if data.canvasZoom == nil then return end
         local zoomScaled = mapSettings.store.zoom * mapSettings.store.mapScale
         if mapSettings.store.sectionsTrackActive then
-            data.canvas:update(function ()
+            data.canvas:update(function()
                 sections.drawTrackSections(data)
                 players.drawPlayers(data)
             end)
         else
-            data.canvas:update(function ()
+            data.canvas:update(function()
                 players.drawPlayers(data)
             end)
         end
         data.canvasZoom:updateWithShader({
-            textures = {canvas = data.canvas},
-            values = {zoom = data.currentWindowSize.x / (2 * (2 * zoomScaled + data.currentWindowSize.x))},
+            textures = { canvas = data.canvas },
+            values = { zoom = data.currentWindowSize.x / (2 * (2 * zoomScaled + data.currentWindowSize.x)) },
             shader = [[
                 SamplerState mapSample {
                     Filter = MIN_MAG_MIP_LINEAR;
@@ -225,7 +228,7 @@ function map.windowMain()
                 }
             ]]
         })
-    
+
         ui.drawImage(data.canvasZoom, -zoomScaled, data.currentWindowSize.x + zoomScaled)
     else
         data.offset = utils.floorVec(data.offset)

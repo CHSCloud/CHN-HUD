@@ -3,7 +3,7 @@ local pinCheckBox = require("src.ui.buttons.pinCheckBox")
 local window = require("common.window")
 local sessionLapsData = require("src.data.sessionLaps.sessionLapsData")
 
-local laps = require("src.hud.sessionLaps.render.laps") 
+local laps = require("src.hud.sessionLaps.render.laps")
 
 local sessionLaps = {}
 
@@ -27,12 +27,12 @@ function sessionLaps.windowMain()
     if sessionLapsSettings.store.currentLapActive then
         laps.drawCurrent(data)
     end
-    
+
     -- Última volta
     if sessionLapsSettings.store.lastLapActive then
         laps.drawLast(data)
     end
-    
+
     -- Melhor volta
     if CAR.previousLapTimeMs == CAR.bestLapTimeMs and CAR.isLastLapValid then
         data.previousBestlap = CAR.bestLapTimeMs
@@ -40,11 +40,13 @@ function sessionLaps.windowMain()
     if sessionLapsSettings.store.bestLapActive then
         laps.drawBest(data)
     end
-    
-    data.currentWindowSize = vec2(data.currentWindowWidth, data.currentWindowHeight * sessionLapsSettings.store.sessionLapsScale)
+
+    data.currentWindowSize = vec2(data.currentWindowWidth,
+        data.currentWindowHeight * sessionLapsSettings.store.sessionLapsScale)
 
     window.resize(data.currentWindowSize, "Session Laps")
-    pinCheckBox.main(sessionLapsSettings.store.sessionLapsScale, "Session Laps", window.getWindow("Session Laps"):pinned(), data.currentWindowSize)
+    pinCheckBox.main(sessionLapsSettings.store.sessionLapsScale, "Session Laps",
+        window.getWindow("Session Laps"):pinned(), data.currentWindowSize)
 end
 
 return sessionLaps

@@ -1,4 +1,3 @@
-
 local leaderboardSettings = require("src.settings.tabs.leaderboardSettings")
 
 local gap = {}
@@ -9,7 +8,6 @@ local gap = {}
 ---@param pos vec2
 ---@param color rgbm
 function gap.drawGap(data, driver, pos, color)
-    
     if leaderboardSettings.store.gapActive then
         ui.setCursor(pos)
         local gap = ac.getGapBetweenCars(driver.index, data.drivers[1].index)
@@ -38,7 +36,8 @@ function gap.drawGap(data, driver, pos, color)
             color = COLOR.BLUE
         end
 
-        ui.dwriteTextAligned(gapText, fontSize, ui.Alignment.Center, ui.Alignment.Center, vec2(data.gapLenght, 30):scale(leaderboardSettings.store.leaderboardScale), false, color)
+        ui.dwriteTextAligned(gapText, fontSize, ui.Alignment.Center, ui.Alignment.Center,
+            vec2(data.gapLenght, 30):scale(leaderboardSettings.store.leaderboardScale), false, color)
         data.posX = data.posX + data.gapLenght
     end
 end
