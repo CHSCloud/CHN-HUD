@@ -8,7 +8,7 @@ local status = {}
 ---@param pos vec2
 function status.drawDriverStatus(data, statusText, statusColor, pos)
     if leaderboardSettings.store.statusActive then
-        data.statusLenght = utils.findLenghtLongestString(data.statusTexts, 18).x + 60
+        data.statusLenght = utils.findLenghtLongestString(data.statusTexts, 18).x + 40
         ui.setCursor(pos)
         ui.dwriteTextAligned(statusText, 18 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Center,
             ui.Alignment.Center, vec2(data.statusLenght, 30):scale(leaderboardSettings.store.leaderboardScale), false,

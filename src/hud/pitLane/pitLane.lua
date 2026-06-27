@@ -1,13 +1,14 @@
 local pitLaneSettings = require("src.settings.tabs.pitLaneSettings")
 local pinCheckBox = require("src.ui.buttons.pinCheckBox")
 local window = require("common.window")
+local pitLaneData = require("src.data.pitLane.pitLaneData")
 
 local init = require("src.hud.pitLane.components.init")
 local components = require("src.hud.pitLane.components.components")
 
 local pitLane = {}
 ---@type pitLaneData
-local data = require("src.data.pitLane.pitLaneData")
+local data = pitLaneData.new()
 
 function pitLane.windowMain()
     data.currentWindowHeight = 70 * pitLaneSettings.store.pitLaneScale

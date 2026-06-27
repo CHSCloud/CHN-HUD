@@ -7,6 +7,9 @@ local deltaBar = {}
 
 ---@type deltaBarData
 local data = deltaBarData.new()
+ac.onSessionStart(function()
+    data.clean(data)
+end)
 
 function deltaBar.windowMain()
     --Limites e Tamanhos
@@ -46,7 +49,7 @@ function deltaBar.windowMain()
 
     -- Sempre comparar com a volta anterior na mesma posição, se disponível
     local rawDelta
-    if data.previousLapSamples[idx] then
+    if data.previousLapSamples[idx] and data.previousLapSamples ~= {} then
         rawDelta = (CAR.lapTimeMs - data.previousLapSamples[idx]) / 1000
     else
         rawDelta = CAR.performanceMeter or 0

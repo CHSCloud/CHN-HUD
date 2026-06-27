@@ -23,15 +23,15 @@ function overtaking.drawOvertaking(data, driverIndex, pos)
                     local rotation
                     if diff > 0 then
                         color = COLOR.GREEN
-                        rotation = 180
+                        rotation = -180
                     else
                         color = COLOR.RED
                         rotation = 0
                     end
                     ui.beginRotation()
-                    ui.drawImage("assets/ui/arrow.png",
-                        pos + vec2(15, 5):scale(leaderboardSettings.store.leaderboardScale),
-                        pos + vec2(40, 25):scale(leaderboardSettings.store.leaderboardScale), color)
+                    ui.drawImage("assets/leaderboard/arrow.png",
+                        pos + vec2(14, 6):scale(leaderboardSettings.store.leaderboardScale),
+                        pos + vec2(28, 27):scale(leaderboardSettings.store.leaderboardScale), color)
                     ui.endRotation(rotation)
                 else
                     overtakingText = "-"
