@@ -3,7 +3,7 @@ local pinCheckBox = require("src.ui.buttons.pinCheckBox")
 local window = require("common.window")
 local sessionLapsData = require("src.data.sessionLaps.sessionLapsData")
 
-local laps = require("src.hud.sessionLaps.render.laps")
+local laps = require("src.hud.sessionLaps.components.laps")
 
 local sessionLaps = {}
 

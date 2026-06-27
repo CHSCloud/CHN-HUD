@@ -4,13 +4,14 @@ local droplist = require("src.ui.selectors.droplist")
 local formText = require("src.ui.forms.formText")
 
 local utils = require("common.utils")
+local window = require("common.window")
 local sectionPanel = {}
 
 --- @param pos vec2
 --- @param size vec2
 --- @return boolean
 local function deleteSectionButton(pos, size)
-    if utils.isMouseInWindow(ui.mouseLocalPos(), pos.x, pos.x + size.x, pos.y, pos.y + size.y) then
+    if window.isMouseInWindow(ui.mouseLocalPos(), pos.x, pos.x + size.x, pos.y, pos.y + size.y) then
         ui.drawRectFilled(pos, pos + size, USER_UI.accentColor, 2)
         if ui.mouseClicked(ui.MouseButton.Left) then
             return true

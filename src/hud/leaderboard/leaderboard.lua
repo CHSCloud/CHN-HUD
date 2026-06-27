@@ -3,13 +3,13 @@ local pinCheckBox = require("src.ui.buttons.pinCheckBox")
 local leaderboardSettings = require("src.settings.tabs.leaderboardSettings")
 local leaderboardData = require("src.data.leaderboard.leaderboardData")
 
-local position = require("src.hud.leaderboard.render.position")
-local laps = require("src.hud.leaderboard.render.laps")
-local tyres = require("src.hud.leaderboard.render.tyres")
-local gap = require("src.hud.leaderboard.render.gap")
-local overtaking = require("src.hud.leaderboard.render.overtaking")
-local status = require("src.hud.leaderboard.render.status")
-local titles = require("src.hud.leaderboard.render.titles")
+local position = require("src.hud.leaderboard.components.position")
+local laps = require("src.hud.leaderboard.components.laps")
+local tyres = require("src.hud.leaderboard.components.tyres")
+local gap = require("src.hud.leaderboard.components.gap")
+local overtaking = require("src.hud.leaderboard.components.overtaking")
+local status = require("src.hud.leaderboard.components.status")
+local titles = require("src.hud.leaderboard.components.titles")
 
 local leaderboard = {}
 

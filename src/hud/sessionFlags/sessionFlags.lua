@@ -4,7 +4,7 @@ local pinCheckBox = require("src.ui.buttons.pinCheckBox")
 local window = require("common.window")
 local sessionFlagsData = require("src.data.sessionFlags.sessionFlagsData")
 
-local flags = require("src.hud.sessionFlags.render.flags")
+local flags = require("src.hud.sessionFlags.components.flags")
 
 local sessionFlags = {}
 

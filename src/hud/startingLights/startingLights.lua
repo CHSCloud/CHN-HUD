@@ -3,9 +3,9 @@ local pinCheckBox = require("src.ui.buttons.pinCheckBox")
 local startingLightsSettings = require("src.settings.tabs.startingLightsSettings")
 local startingLightsData = require("src.data.startingLights.startingLightsData")
 
-local sessionStarting = require("src.hud.startingLights.render.sessionStarting")
-local sessionStarted = require("src.hud.startingLights.render.sessionStarted")
-local settingsActive = require("src.hud.startingLights.render.settingsActive")
+local sessionStarting = require("src.hud.startingLights.components.sessionStarting")
+local sessionStarted = require("src.hud.startingLights.components.sessionStarted")
+local settingsActive = require("src.hud.startingLights.components.settingsActive")
 
 local startingLights = {}
 

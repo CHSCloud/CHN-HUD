@@ -4,11 +4,11 @@ local pinCheckBox = require("src.ui.buttons.pinCheckBox")
 local mapSettings = require("src.settings.tabs.mapSettings")
 local mapData = require("src.data.map.mapData")
 
-local drs = require("src.hud.map.render.drs")
-local sections = require("src.hud.map.render.sections")
-local sectors = require("src.hud.map.render.sectors")
-local players = require("src.hud.map.render.players")
-local track = require("src.hud.map.render.track")
+local drs = require("src.hud.map.components.drs")
+local sections = require("src.hud.map.components.sections")
+local sectors = require("src.hud.map.components.sectors")
+local players = require("src.hud.map.components.players")
+local track = require("src.hud.map.components.track")
 
 local map = {}
 

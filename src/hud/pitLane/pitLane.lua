@@ -2,8 +2,8 @@ local pitLaneSettings = require("src.settings.tabs.pitLaneSettings")
 local pinCheckBox = require("src.ui.buttons.pinCheckBox")
 local window = require("common.window")
 
-local init = require("src.hud.pitLane.render.init")
-local components = require("src.hud.pitLane.render.components")
+local init = require("src.hud.pitLane.components.init")
+local components = require("src.hud.pitLane.components.components")
 
 local pitLane = {}
 ---@type pitLaneData
