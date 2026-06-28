@@ -20,7 +20,7 @@ end
 ---@param time number
 ---@param pos vec2
 function lap.drawLastLap(data, time, pos, color)
-    if leaderboardSettings.store.lastLapActive then
+    if leaderboardSettings.store.lastLapLeaderboardActive then
         local lastLapText
         if time == 0 then
             lastLapText = "-:--.---"

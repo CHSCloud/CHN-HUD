@@ -17,7 +17,7 @@ local defaultValues = {
     lapCountActive = true,
     lapCountPos = 2,
 
-    lastLapActive = true,
+    lastLapLeaderboardActive = true,
     lastLapPos = 3,
 
     gapActive = true,
@@ -80,8 +80,8 @@ local function drawContents(pos)
     end
     pos.y = pos.y + 40
 
-    if toggleButton.main("lastLapToggle", pos, leaderboardSettings.store.lastLapActive, language.get("LAST_LAP_TIME")) then
-        leaderboardSettings.store.lastLapActive = not leaderboardSettings.store.lastLapActive
+    if toggleButton.main("lastLapToggle", pos, leaderboardSettings.store.lastLapLeaderboardActive, language.get("LAST_LAP_TIME")) then
+        leaderboardSettings.store.lastLapLeaderboardActive = not leaderboardSettings.store.lastLapLeaderboardActive
     end
     old = leaderboardSettings.store.lastLapPos
     leaderboardSettings.store.lastLapPos = droplist.main("##lastLapPos", " |  " .. language.get("POSITION"),

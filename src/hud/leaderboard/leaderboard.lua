@@ -75,13 +75,13 @@ function leaderboard.windowMain()
 
         if i <= leaderboardSettings.store.numDrivers or (leaderboardSettings.store.focusedCarActive and driver.index == SIM.focusedCar) then
             numPlayers = numPlayers + 1
-            local color = COLOR.WHITE
-            local statusColor, statusText
 
+            local color = COLOR.WHITE
             if driver.index == SIM.focusedCar then
                 color = COLOR.YELLOW_DARK
             end
-
+            
+            local statusColor, statusText
             if not driver.isConnected then
                 statusColor = COLOR.WHITE
                 statusText = data.statusTexts[1]

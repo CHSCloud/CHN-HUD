@@ -26,6 +26,7 @@ function position.drawPosition(data, logoPath, driverDrawNumber, carPosition, dr
     ui.dwriteTextAligned(tostring(carPosition), 20 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Center,
         ui.Alignment.Center, vec2(30, 30):scale(leaderboardSettings.store.leaderboardScale), false, COLOR.BLACK)
 
+    -- Desenha logo do carro
     ui.setCursor(pos + vec2(50, 2):scale(leaderboardSettings.store.leaderboardScale))
     ui.image(logoPath, vec2(28, 28):scale(leaderboardSettings.store.leaderboardScale), ui.ImageFit.Fill)
 
