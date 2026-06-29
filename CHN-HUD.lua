@@ -12,6 +12,7 @@ local startingLights = require("src.hud.startingLights.startingLights")
 local map = require("src.hud.map.map")
 local deltaBar = require("src.hud.deltaBar.deltaBar")
 local leaderboard = require("src.hud.leaderboard.leaderboard")
+local tyres = require("src.hud.tyres.tyres")
 
 -- TELA DE CONFIGURAÇÕES
 function WindowSettings()
@@ -64,6 +65,10 @@ end
 -- TELA DO LEADERBOARD
 function WindowLeaderboard()
     leaderboard.windowMain()
+end
+
+function WindowTyres()
+    tyres.windowMain()
 end
 
 -- FUNÇÃO DE ATUALIZAÇÃO

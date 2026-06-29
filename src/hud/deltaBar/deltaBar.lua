@@ -7,8 +7,9 @@ local deltaBar = {}
 
 ---@type deltaBarData
 local data = deltaBarData.new()
+
 ac.onSessionStart(function()
-    data.clean(data)
+    deltaBarData.clean(data)
 end)
 
 function deltaBar.windowMain()

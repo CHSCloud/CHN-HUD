@@ -87,4 +87,17 @@ function utils.copyTable(from, to)
     end
 end
 
+
+---@param from rgbm
+---@param to rgbm
+---@param transition number
+function utils.colorLerp(from, to, transition)
+    return rgbm(
+        math.lerp(from.r, to.r, transition),
+        math.lerp(from.g, to.g, transition),
+        math.lerp(from.b, to.b, transition),
+        math.lerp(from.mult, to.mult, transition)
+    )
+end
+
 return utils
