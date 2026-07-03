@@ -40,10 +40,7 @@ end
 
 function leaderboard.windowMain()
     ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
-    ac.onSessionStart(function()
-        table.clear(data.storedPositions)
-        table.clear(data.drivers)
-    end)
+
     updateDrivers()
 
     data.posY = 0

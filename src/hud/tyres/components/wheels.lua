@@ -1,31 +1,69 @@
 local utils = require("common.utils")
 local wheels = {}
 
----comment
+---@param wheel ac.StateWheel
+---@param pos vec2
+---@param initTemp number
+---@param finalTemp number
+local function drawWheel(wheel, pos, initTemp, finalTemp)
+    local color = COLOR.BLUE
+    if wheel.tyreInsideTemperature > initTemp then
+        color = utils.colorLerp(
+            COLOR.BLUE, 
+            COLOR.GREEN, 
+            utils.remapIntervalWithLimits(wheel.tyreInsideTemperature, initTemp, finalTemp, 0, 1)
+        )
+    end
+    ui.drawRectFilled(pos, pos + vec2(14,70), color, 10, ui.CornerFlags.Left)
+
+    color = COLOR.BLUE
+    if wheel.tyreMiddleTemperature > initTemp then
+        color = utils.colorLerp(
+            COLOR.BLUE, 
+            COLOR.GREEN, 
+            utils.remapIntervalWithLimits(wheel.tyreMiddleTemperature, initTemp, finalTemp, 0, 1)
+        )
+    end
+    ui.drawRectFilled(pos + vec2(16), pos + vec2(30,70), color)
+
+    color = COLOR.BLUE
+    if wheel.tyreOutsideTemperature > initTemp then
+        color = utils.colorLerp(
+            COLOR.BLUE, 
+            COLOR.GREEN, 
+            utils.remapIntervalWithLimits(wheel.tyreOutsideTemperature, initTemp, finalTemp, 0, 1)
+        )
+    end
+    ui.drawRectFilled(pos + vec2(32), pos + vec2(46,70), color, 10, ui.CornerFlags.Right)
+end
+
 ---@param data tyresData
 ---@param pos vec2
 ---@param index number
-function wheels.drawWheel(data, pos, index)
+function wheels.drawWheelInfo(data, pos, index)
     local posWheel = pos + vec2(50)
     local textAligment = ui.Alignment.End
     local posPsi = pos - vec2(30)
-    local posCoreTemp = pos + vec2(-30, 60)
-    local posWear = pos + vec2(44, -22)
-    
+    local posCoreTemp = pos + vec2(-30, 50)
+    local posWear = pos + vec2(50, -22)
+
     if index == 1 or index == 3 then
         posWheel = pos
-        posPsi = pos + vec2(42)
+        posPsi = pos + vec2(56)
         textAligment = ui.Alignment.Start
-        posCoreTemp = pos + vec2(42, 60)
-        posWear = pos + vec2(-4, -22)
+        posCoreTemp = pos + vec2(56, 50)
+        posWear = pos + vec2(0, -22)
     end
 
-
-
     local wheel = data.wheels[index]
-    ui.drawRectFilled(posWheel, posWheel + vec2(10,80), COLOR.WHITE, 10, ui.CornerFlags.Left)
-    ui.drawRectFilled(posWheel + vec2(12), posWheel + vec2(22,80), COLOR.WHITE)
-    ui.drawRectFilled(posWheel + vec2(24), posWheel + vec2(34,80), COLOR.WHITE, 10, ui.CornerFlags.Right)
+
+    local initTemp = data.rearMinTemp
+    local finalTemp = data.rearMaxTemp
+    if index == 0 or index == 1 then
+        initTemp = data.frontMinTemp
+        finalTemp = data.frontMaxTemp  
+    end
+    drawWheel(wheel, posWheel, initTemp, finalTemp)
 
     ui.setCursor(posWear)
     ui.dwriteTextAligned(string.format("%0.f%%", (1 - wheel.tyreWear) * 100), 15, ui.Alignment.Center, ui.Alignment.Center, vec2(50,20))
