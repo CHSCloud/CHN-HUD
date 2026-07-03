@@ -8,12 +8,7 @@ local utils = {}
 --- @return number
 function utils.remapIntervalWithLimits(value, inMin, inMax, outMin, outMax)
     local output = outMin + (value - inMin) * (outMax - outMin) / (inMax - inMin)
-    if output > outMax then
-        output = outMax
-    elseif output < outMin then
-        output = outMin
-    end
-    return output
+    return math.clamp(output, outMin, outMax)
 end
 
 --- @param value number

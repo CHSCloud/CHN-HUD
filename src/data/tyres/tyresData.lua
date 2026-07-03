@@ -1,5 +1,7 @@
 ---@class tyresData
 ---@field wheels ac.StateWheel[]
+---@field lutFrontData ac.DataLUT11
+---@field lutRearData ac.DataLUT11
 ---@field frontMinTemp number
 ---@field frontMaxTemp number
 ---@field rearMinTemp number
@@ -10,6 +12,8 @@ local tyresData = {}
 function tyresData.new()
     return {
         wheels = CAR.wheels[1],
+        lutFrontData = nil,
+        lutRearData = nil,
         frontMinTemp = nil,
         frontMaxTemp = nil,
         rearMinTemp = nil,
@@ -58,9 +62,10 @@ function tyresData.loadTyresData(data)
 
         local lutFrontData =  ac.DataLUT11.carData(CAR.index, nameLutFrontFile)
         data.frontMinTemp, data.frontMaxTemp = getTempOptimumRange(lutFrontData)
-
+        data.lutFrontData = lutFrontData
         local lutRearData =  ac.DataLUT11.carData(CAR.index, nameLutRearFile)
         data.rearMinTemp, data.rearMaxTemp = getTempOptimumRange(lutRearData)
+        data.lutRearData = lutRearData
 
         ac.log(data.frontMinTemp)
         ac.log(data.frontMaxTemp)

@@ -1,39 +1,44 @@
 local utils = require("common.utils")
 local wheels = {}
 
+---@param lutData ac.DataLUT11
+---@param currentTemp number
+---@param initTemp number
+---@param finalTemp number
+---@return rgbm
+local function getColorWheel(lutData, currentTemp, initTemp, finalTemp)
+    local gripOptimum = lutData:get(initTemp)
+    local currentGrip = lutData:get(currentTemp)
+    local transition = utils.remapIntervalWithLimits(currentGrip, gripOptimum * 0.97, gripOptimum, 0, 1)
+    if currentTemp < initTemp then
+        return utils.colorLerp(COLOR.BLUE, COLOR.GREEN, transition)
+
+    elseif currentTemp >= initTemp and currentTemp <= finalTemp then
+        return COLOR.GREEN
+        
+    else
+        return utils.colorLerp(COLOR.RED, COLOR.GREEN, transition)
+    end
+end
+
+
+---@param lutData ac.DataLUT11
 ---@param wheel ac.StateWheel
 ---@param pos vec2
 ---@param initTemp number
 ---@param finalTemp number
-local function drawWheel(wheel, pos, initTemp, finalTemp)
+local function drawWheel(lutData, wheel, pos, initTemp, finalTemp)
     local color = COLOR.BLUE
-    if wheel.tyreInsideTemperature > initTemp then
-        color = utils.colorLerp(
-            COLOR.BLUE, 
-            COLOR.GREEN, 
-            utils.remapIntervalWithLimits(wheel.tyreInsideTemperature, initTemp, finalTemp, 0, 1)
-        )
-    end
+    ui.setCursor(pos + vec2(0, 70))
+    ui.text(string.format("%.1f", wheel.tyreInsideTemperature))
+    
+    color = getColorWheel(lutData, wheel.tyreInsideTemperature, initTemp, finalTemp)
     ui.drawRectFilled(pos, pos + vec2(14,70), color, 10, ui.CornerFlags.Left)
 
-    color = COLOR.BLUE
-    if wheel.tyreMiddleTemperature > initTemp then
-        color = utils.colorLerp(
-            COLOR.BLUE, 
-            COLOR.GREEN, 
-            utils.remapIntervalWithLimits(wheel.tyreMiddleTemperature, initTemp, finalTemp, 0, 1)
-        )
-    end
+    color = getColorWheel(lutData, wheel.tyreMiddleTemperature, initTemp, finalTemp)
     ui.drawRectFilled(pos + vec2(16), pos + vec2(30,70), color)
-
-    color = COLOR.BLUE
-    if wheel.tyreOutsideTemperature > initTemp then
-        color = utils.colorLerp(
-            COLOR.BLUE, 
-            COLOR.GREEN, 
-            utils.remapIntervalWithLimits(wheel.tyreOutsideTemperature, initTemp, finalTemp, 0, 1)
-        )
-    end
+   
+    color = getColorWheel(lutData, wheel.tyreOutsideTemperature, initTemp, finalTemp)
     ui.drawRectFilled(pos + vec2(32), pos + vec2(46,70), color, 10, ui.CornerFlags.Right)
 end
 
@@ -46,6 +51,7 @@ function wheels.drawWheelInfo(data, pos, index)
     local posPsi = pos - vec2(30)
     local posCoreTemp = pos + vec2(-30, 50)
     local posWear = pos + vec2(50, -22)
+    local lutData = data.lutRearData
 
     if index == 1 or index == 3 then
         posWheel = pos
@@ -62,8 +68,9 @@ function wheels.drawWheelInfo(data, pos, index)
     if index == 0 or index == 1 then
         initTemp = data.frontMinTemp
         finalTemp = data.frontMaxTemp  
+        lutData = data.lutFrontData
     end
-    drawWheel(wheel, posWheel, initTemp, finalTemp)
+    drawWheel(lutData, wheel, posWheel, initTemp, finalTemp)
 
     ui.setCursor(posWear)
     ui.dwriteTextAligned(string.format("%0.f%%", (1 - wheel.tyreWear) * 100), 15, ui.Alignment.Center, ui.Alignment.Center, vec2(50,20))
