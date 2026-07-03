@@ -40,6 +40,19 @@ local function drawWheel(lutData, wheel, pos, initTemp, finalTemp)
    
     color = getColorByTemperature(lutData, wheel.tyreOutsideTemperature, initTemp, finalTemp, COLOR.BLUE, COLOR.GREEN, COLOR.RED)
     ui.drawRectFilled(pos + vec2(32):scale(tyresSettings.store.tyresScale), pos + vec2(46,70):scale(tyresSettings.store.tyresScale), color, 10 * tyresSettings.store.tyresScale, ui.CornerFlags.Right)
+
+    if wheel.ndSlip > 2 then
+       ui.drawRectFilled(pos + vec2(0, 30):scale(tyresSettings.store.tyresScale), pos + vec2(46, 40):scale(tyresSettings.store.tyresScale), COLOR.RED, 10 * tyresSettings.store.tyresScale, ui.CornerFlags.All) 
+    end
+end
+
+---@param pos vec2
+local function drawWheelBroken(pos)
+    ui.drawRectFilled(pos, pos + vec2(14,70):scale(tyresSettings.store.tyresScale), COLOR.GRAY_BG, 10 * tyresSettings.store.tyresScale, ui.CornerFlags.Left)
+
+    ui.drawRectFilled(pos + vec2(16):scale(tyresSettings.store.tyresScale), pos + vec2(30,70):scale(tyresSettings.store.tyresScale), COLOR.GRAY_BG)
+   
+    ui.drawRectFilled(pos + vec2(32):scale(tyresSettings.store.tyresScale), pos + vec2(46,70):scale(tyresSettings.store.tyresScale), COLOR.GRAY_BG, 10 * tyresSettings.store.tyresScale, ui.CornerFlags.Right)
 end
 
 ---@param data tyresData
@@ -65,7 +78,6 @@ function wheels.drawWheelInfo(data, pos, index)
     end
 
     local wheel = data.wheels[index]
-
     local initTemp = data.rearMinTemp
     local finalTemp = data.rearMaxTemp
     if index == 0 or index == 1 then
@@ -74,36 +86,39 @@ function wheels.drawWheelInfo(data, pos, index)
         lutData = data.lutFrontData
         idealPressure = data.pressureIdealFront
     end
-    drawWheel(lutData, wheel, posWheel, initTemp, finalTemp)
 
+    if wheel.isBlown then
+        drawWheelBroken(posWheel)
+    else 
+        drawWheel(lutData, wheel, posWheel, initTemp, finalTemp)
+        local colorWear
+        if (1 - wheel.tyreWear) >= 0.5 then
+            colorWear = utils.colorLerp(COLOR.WHITE, COLOR.YELLOW, utils.remapIntervalWithLimits((1 - wheel.tyreWear), 1, 0.5, 0, 1))
+        elseif (1 - wheel.tyreWear) < 0.5 then
+            colorWear = utils.colorLerp(COLOR.YELLOW, COLOR.RED, utils.remapIntervalWithLimits((1 - wheel.tyreWear), 0.5, 0, 0, 1))
+        end
+        ui.setCursor(posWear)
+        ui.dwriteTextAligned(string.format("%0.f%%", (1 - wheel.tyreWear) * 100), 15 * tyresSettings.store.tyresScale, ui.Alignment.Center, ui.Alignment.Center, vec2(50,20):scale(tyresSettings.store.tyresScale), false, colorWear)
+        
+        ui.setCursor(posPsi)
+        ui.dwriteTextAligned(string.format("%0.f psi", wheel.tyrePressure), 16 * tyresSettings.store.tyresScale, textAligment, ui.Alignment.Center, vec2(70,20):scale(tyresSettings.store.tyresScale))
 
-    local colorWear
-    if (1 - wheel.tyreWear) >= 0.5 then
-        colorWear = utils.colorLerp(COLOR.WHITE, COLOR.YELLOW, utils.remapIntervalWithLimits((1 - wheel.tyreWear), 1, 0.5, 0, 1))
-    elseif (1 - wheel.tyreWear) < 0.5 then
-        colorWear = utils.colorLerp(COLOR.YELLOW, COLOR.RED, utils.remapIntervalWithLimits((1 - wheel.tyreWear), 0.5, 0, 0, 1))
+        local psiDelta = wheel.tyrePressure - idealPressure
+        local psiDeltaString = ""
+        if psiDelta > 0 then
+            psiDeltaString = string.format("+".."%0.2f psi", math.abs(psiDelta))
+        else
+            psiDeltaString = string.format("-".."%0.2f psi", math.abs(psiDelta))
+        end
+        local psiDeltaColor = utils.colorLerp(COLOR.BLUE_SKY, COLOR.GREEN, utils.remapIntervalWithLimits(psiDelta, -2, 2, 0, 1))
+        ui.setCursor(posPsiDelta)
+        ui.dwriteTextAligned(psiDeltaString, 12 * tyresSettings.store.tyresScale, textAligment, ui.Alignment.Center, vec2(70,20):scale(tyresSettings.store.tyresScale), false, psiDeltaColor)
+
+        local tyreCoreColor = getColorByTemperature(data.lutFrontData, wheel.tyreCoreTemperature, data.frontMinTemp, data.frontMaxTemp, COLOR.BLUE_SKY, COLOR.GREEN, COLOR.RED)
+        ui.setCursor(posCoreTemp)
+        ui.dwriteTextAligned(string.format("%0.f ºC", wheel.tyreCoreTemperature), 16 * tyresSettings.store.tyresScale, textAligment, ui.Alignment.Center, vec2(70,20):scale(tyresSettings.store.tyresScale), false, tyreCoreColor)
+
     end
-    ui.setCursor(posWear)
-    ui.dwriteTextAligned(string.format("%0.f%%", (1 - wheel.tyreWear) * 100), 15 * tyresSettings.store.tyresScale, ui.Alignment.Center, ui.Alignment.Center, vec2(50,20):scale(tyresSettings.store.tyresScale), false, colorWear)
-    
-    ui.setCursor(posPsi)
-    ui.dwriteTextAligned(string.format("%0.f psi", wheel.tyrePressure), 16 * tyresSettings.store.tyresScale, textAligment, ui.Alignment.Center, vec2(70,20):scale(tyresSettings.store.tyresScale))
-
-    local psiDelta = wheel.tyrePressure - idealPressure
-    local psiDeltaString = ""
-    if psiDelta > 0 then
-        psiDeltaString = string.format("+".."%0.2f psi", math.abs(psiDelta))
-    else
-        psiDeltaString = string.format("-".."%0.2f psi", math.abs(psiDelta))
-    end
-    local psiDeltaColor = utils.colorLerp(COLOR.BLUE_SKY, COLOR.GREEN, utils.remapIntervalWithLimits(psiDelta, -2, 2, 0, 1))
-    ui.setCursor(posPsiDelta)
-    ui.dwriteTextAligned(psiDeltaString, 12 * tyresSettings.store.tyresScale, textAligment, ui.Alignment.Center, vec2(70,20):scale(tyresSettings.store.tyresScale), false, psiDeltaColor)
-
-    local tyreCoreColor = getColorByTemperature(data.lutFrontData, wheel.tyreCoreTemperature, data.frontMinTemp, data.frontMaxTemp, COLOR.BLUE_SKY, COLOR.GREEN, COLOR.RED)
-    ui.setCursor(posCoreTemp)
-    ui.dwriteTextAligned(string.format("%0.f ºC", wheel.tyreCoreTemperature), 16 * tyresSettings.store.tyresScale, textAligment, ui.Alignment.Center, vec2(70,20):scale(tyresSettings.store.tyresScale), false, tyreCoreColor)
-
 end
 
 return wheels
