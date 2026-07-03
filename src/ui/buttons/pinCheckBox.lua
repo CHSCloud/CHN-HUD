@@ -12,7 +12,8 @@ local lenghts = {
     ["Session Flags"] = 0,
     ["Delta Bar"] = 0,
     ["Map"] = 0,
-    ["Leaderboard"] = 0
+    ["Leaderboard"] = 0,
+    ["Tyres"] = 0
 }
 
 --- @param pos vec2

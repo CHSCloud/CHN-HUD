@@ -6,6 +6,7 @@ local sessionFlagsSettings = require("src.settings.tabs.sessionFlagsSettings")
 local deltaBarSettings = require("src.settings.tabs.deltaBarSettings")
 local mapSettings = require("src.settings.tabs.mapSettings")
 local leaderboardSettings = require("src.settings.tabs.leaderboardSettings")
+local tyresSettings = require("src.settings.tabs.tyresSettings")
 
 local toggleButton = require("src.ui.buttons.toggleButton")
 local button = require("src.ui.buttons.button")
@@ -165,6 +166,7 @@ function settings.windowMain()
         ui.tabItem(language.get("DELTA_BAR"), deltaBarSettings.deltaBarSettings)
         ui.tabItem(language.get("MAP"), mapSettings.mapSettings)
         ui.tabItem(language.get("LEADERBOARD"), leaderboardSettings.leaderboardSettings)
+        ui.tabItem(language.get("TYRES"), tyresSettings.tyresSettings)
     end)
 
 

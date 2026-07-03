@@ -16,6 +16,7 @@ local pinStorage = ac.storage {
     ["Delta Bar"] = false,
     ["Map"] = false,
     ["Leaderboard"] = false,
+    ["Tyres"] = false
 }
 
 local windowNames = {
@@ -27,7 +28,8 @@ local windowNames = {
     "Session Flags",
     "Delta Bar",
     "Map",
-    "Leaderboard"
+    "Leaderboard",
+    "Tyres"
 }
 
 function window.init()

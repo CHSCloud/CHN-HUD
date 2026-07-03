@@ -1,4 +1,5 @@
 ---@class tyresData
+---@field currentWindowSize vec2
 ---@field wheels ac.StateWheel[]
 ---@field lutFrontData ac.DataLUT11
 ---@field lutRearData ac.DataLUT11
@@ -11,6 +12,7 @@ local tyresData = {}
 ---@return tyresData
 function tyresData.new()
     return {
+        currentWindowSize = vec2(300, 300),
         wheels = CAR.wheels[1],
         lutFrontData = nil,
         lutRearData = nil,
