@@ -7,6 +7,8 @@
 ---@field frontMaxTemp number
 ---@field rearMinTemp number
 ---@field rearMaxTemp number
+---@field pressureIdealFront number
+---@field pressureIdealRear number
 local tyresData = {}
 
 ---@return tyresData
@@ -14,12 +16,18 @@ function tyresData.new()
     return {
         currentWindowSize = vec2(300, 300),
         wheels = CAR.wheels[1],
+
         lutFrontData = nil,
         lutRearData = nil,
+
         frontMinTemp = nil,
         frontMaxTemp = nil,
         rearMinTemp = nil,
-        rearMaxTemp = nil
+        rearMaxTemp = nil,
+
+        pressureIdealFront = nil,
+        pressureIdealRear = nil
+
     } 
 end
 
@@ -61,6 +69,8 @@ function tyresData.loadTyresData(data)
 
         local nameLutFrontFile = sections['THERMAL_FRONT']['PERFORMANCE_CURVE'][1]
         local nameLutRearFile = sections['THERMAL_REAR']['PERFORMANCE_CURVE'][1]
+        data.pressureIdealFront = tonumber(sections['FRONT']['PRESSURE_IDEAL'][1]) or -1
+        data.pressureIdealRear = tonumber(sections['REAR']['PRESSURE_IDEAL'][1]) or -1
 
         local lutFrontData =  ac.DataLUT11.carData(CAR.index, nameLutFrontFile)
         data.frontMinTemp, data.frontMaxTemp = getTempOptimumRange(lutFrontData)
