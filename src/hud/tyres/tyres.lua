@@ -22,7 +22,7 @@ function tyres.windowMain()
     ui.dwriteTextAligned(tostring(ac.getTyresName(CAR.index)), 15 * tyresSettings.store.tyresScale, ui.Alignment.Start, ui.Alignment.Center, vec2(35,20):scale(tyresSettings.store.tyresScale))
 
     ui.setCursor(vec2(data.currentWindowSize.x - 210 * tyresSettings.store.tyresScale, 20 * tyresSettings.store.tyresScale))
-    ui.dwriteTextAligned(language.get("IDEAL") .. ": " ..  tostring(data.frontMinTemp) .. "ºC - " .. tostring(data.frontMaxTemp) .. "ºC", 13 * tyresSettings.store.tyresScale, ui.Alignment.End, ui.Alignment.Center, vec2(200,20):scale(tyresSettings.store.tyresScale), false, COLOR.WHITE)
+    ui.dwriteTextAligned(language.get("IDEAL") .. ": " ..  tostring(data.optThermal.min) .. "ºC ~ " .. tostring(data.optThermal.max) .. "ºC", 13 * tyresSettings.store.tyresScale, ui.Alignment.End, ui.Alignment.Center, vec2(200,20):scale(tyresSettings.store.tyresScale), false, COLOR.WHITE)
 
     wheels.drawWheelInfo(data, vec2(30, 90):scale(tyresSettings.store.tyresScale), 0)
 

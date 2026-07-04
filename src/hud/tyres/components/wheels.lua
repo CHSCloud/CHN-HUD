@@ -73,7 +73,6 @@ function wheels.drawWheelInfo(data, pos, index)
     local posPsiDelta = pos + vec2(-30, 23):scale(tyresSettings.store.tyresScale)
     local posCoreTemp = pos + vec2(-30, 50):scale(tyresSettings.store.tyresScale)
     local posWear = pos + vec2(50, -22):scale(tyresSettings.store.tyresScale)
-    local lutData = data.lutRearData
     local idealPressure = data.pressureIdealRear
 
     if index == 1 or index == 3 then
@@ -86,19 +85,16 @@ function wheels.drawWheelInfo(data, pos, index)
     end
 
     local wheel = data.wheels[index]
-    local initTemp = data.rearMinTemp
-    local finalTemp = data.rearMaxTemp
+    local initTemp = data.thermal[index + 1].min
+    local finalTemp = data.thermal[index + 1].max
     if index == 0 or index == 1 then
-        initTemp = data.frontMinTemp
-        finalTemp = data.frontMaxTemp  
-        lutData = data.lutFrontData
         idealPressure = data.pressureIdealFront
     end
 
     if wheel.isBlown then
         drawWheelBroken(posWheel)
     else 
-        drawWheel(lutData, wheel, posWheel, initTemp, finalTemp)
+        drawWheel(data.thermal[index + 1].lutData, wheel, posWheel, initTemp, finalTemp)
         local colorWear
         if (1 - wheel.tyreWear) >= 0.5 then
             colorWear = utils.colorLerp(COLOR.WHITE, COLOR.YELLOW, utils.remapIntervalWithLimits((1 - wheel.tyreWear), 1, 0.5, 0, 1))
@@ -122,7 +118,7 @@ function wheels.drawWheelInfo(data, pos, index)
         ui.setCursor(posPsiDelta)
         ui.dwriteTextAligned(psiDeltaString, 12 * tyresSettings.store.tyresScale, textAligment, ui.Alignment.Center, vec2(70,20):scale(tyresSettings.store.tyresScale), false, psiDeltaColor)
 
-        local tyreCoreColor = getColorByTemperature(data.lutFrontData, wheel.tyreCoreTemperature, data.frontMinTemp, data.frontMaxTemp, COLOR.BLUE_SKY, COLOR.GREEN, COLOR.RED)
+        local tyreCoreColor = getColorByTemperature(data.thermal[index + 1].lutData, wheel.tyreCoreTemperature, initTemp, finalTemp, COLOR.BLUE_SKY, COLOR.GREEN, COLOR.RED)
         ui.setCursor(posCoreTemp)
         ui.dwriteTextAligned(string.format("%0.f ºC", wheel.tyreCoreTemperature), 16 * tyresSettings.store.tyresScale, textAligment, ui.Alignment.Center, vec2(70,20):scale(tyresSettings.store.tyresScale), false, tyreCoreColor)
 
