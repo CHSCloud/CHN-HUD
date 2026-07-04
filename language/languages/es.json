@@ -114,5 +114,6 @@
     "PLAYER_STATUS": "Estado del jugador",
     "OVERTAKING_ARROWS": "Flechas de adelantamiento",
     "ALWAYS_FOCUSED_CAR": "Siempre mostrar el coche enfocado",
-    "LEADERBOARD": "Tabla de clasificación"
+    "LEADERBOARD": "Tabla de clasificación",
+    "IDEAL": "Ideal"
 }

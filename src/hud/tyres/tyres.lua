@@ -1,6 +1,7 @@
 local tyresSettings = require("src.settings.tabs.tyresSettings")
 local pinCheckBox = require("src.ui.buttons.pinCheckBox")
 local window = require("common.window")
+local language = require("language.language")
 
 local tyresData = require("src.data.tyres.tyresData")
 
@@ -17,11 +18,11 @@ function tyres.windowMain()
 
     ui.drawRectFilled(vec2(0,0), data.currentWindowSize, WindowsColor, 20 * tyresSettings.store.tyresScale)
     
-    ui.setCursor(vec2(20,20):scale(tyresSettings.store.tyresScale))
-    ui.dwriteTextAligned(tostring(ac.getTyresName(CAR.index)), 15 * tyresSettings.store.tyresScale, ui.Alignment.Center, ui.Alignment.Center, vec2(20,20):scale(tyresSettings.store.tyresScale))
+    ui.setCursor(vec2(15,20):scale(tyresSettings.store.tyresScale))
+    ui.dwriteTextAligned(tostring(ac.getTyresName(CAR.index)), 15 * tyresSettings.store.tyresScale, ui.Alignment.Start, ui.Alignment.Center, vec2(35,20):scale(tyresSettings.store.tyresScale))
 
-    ui.setCursor(vec2(data.currentWindowSize.x - 190 * tyresSettings.store.tyresScale, 20 * tyresSettings.store.tyresScale))
-    ui.dwriteTextAligned("Opt Temp: " ..  tostring(data.rearMinTemp) .. "ºC - " .. tostring(data.frontMaxTemp) .. "ºC", 12 * tyresSettings.store.tyresScale, ui.Alignment.Center, ui.Alignment.Center, vec2(200,20):scale(tyresSettings.store.tyresScale), false, COLOR.WHITE)
+    ui.setCursor(vec2(data.currentWindowSize.x - 210 * tyresSettings.store.tyresScale, 20 * tyresSettings.store.tyresScale))
+    ui.dwriteTextAligned(language.get("IDEAL") .. ": " ..  tostring(data.frontMinTemp) .. "ºC - " .. tostring(data.frontMaxTemp) .. "ºC", 13 * tyresSettings.store.tyresScale, ui.Alignment.End, ui.Alignment.Center, vec2(200,20):scale(tyresSettings.store.tyresScale), false, COLOR.WHITE)
 
     wheels.drawWheelInfo(data, vec2(30, 90):scale(tyresSettings.store.tyresScale), 0)
 

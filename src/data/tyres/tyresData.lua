@@ -79,8 +79,12 @@ function tyresData.loadTyresData(data)
         data.rearMinTemp, data.rearMaxTemp = getTempOptimumRange(lutRearData)
         data.lutRearData = lutRearData
 
+        ac.log("Front:")
         ac.log(data.frontMinTemp)
         ac.log(data.frontMaxTemp)
+        ac.log("Rear:")
+        ac.log(data.rearMinTemp)
+        ac.log(data.rearMaxTemp)
 
     end
 end
