@@ -16,6 +16,11 @@ local leaderboard = {}
 ---@type leaderboardData
 local data = leaderboardData.new()
 
+ac.onSessionStart(function()
+    table.clear(data.storedPositions)
+end)
+
+
 -- Atualiza a lista de jogadores
 local function updateDrivers()
     table.clear(data.drivers)
