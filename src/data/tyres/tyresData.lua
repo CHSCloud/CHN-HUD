@@ -1,5 +1,6 @@
 ---@class tyresData
 ---@field currentWindowSize vec2
+---@field wheelsPos vec2
 ---@field wheels ac.StateWheel[]
 ---@field pressure table<number, pressure>
 ---@field thermal table<number, thermal>
@@ -18,6 +19,7 @@ local tyresData = {}
 function tyresData.new()
     return {
         currentWindowSize = vec2(300, 300),
+        wheelsPos = vec2(0, 0),
         wheels = CAR.wheels[1],
 
         pressure = {

@@ -119,5 +119,12 @@
     "NAME": "Name",
     "GAP": "Gap",
     "STATUS": "Status",
-    "SHOW_TITLES": "Show titles"
+    "SHOW_TITLES": "Show titles",
+    "TEMPERATURE": "Temperature",
+    "IDEAL_TEMPERATURE": "Ideal temperature",
+    "TYRES_NAME": "Tyre names",
+    "PRESSURE": "Pressure",
+    "PRESSURE_DELTA": "Pressure delta",
+    "CORE_TEMPERATURE": "Core temperature",
+    "WEAR": "Wear"
 }

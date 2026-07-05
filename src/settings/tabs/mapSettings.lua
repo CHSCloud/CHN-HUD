@@ -8,7 +8,6 @@ local sectionPanel = require("src.ui.panels.sectionPanel")
 local utils = require("common.utils")
 local language = require("language.language")
 
-
 local defaultValues = {}
 
 local defaultValuesTrack = {

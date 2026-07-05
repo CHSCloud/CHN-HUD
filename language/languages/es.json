@@ -119,5 +119,12 @@
     "NAME": "Nombre",
     "GAP": "Gap",
     "STATUS": "Status",
-    "SHOW_TITLES": "Mostrar títulos"
+    "SHOW_TITLES": "Mostrar títulos",
+    "TEMPERATURE": "Temperatura",
+    "IDEAL_TEMPERATURE": "Temperatura ideal",
+    "TYRES_NAME": "Nombres de los neumáticos",
+    "PRESSURE": "Presión",
+    "PRESSURE_DELTA": "Diferencia de presión",
+    "CORE_TEMPERATURE": "Temperatura interna",
+    "WEAR": "Desgaste"
 }
