@@ -73,7 +73,6 @@ function wheels.drawWheelInfo(data, pos, index)
     local posPsiDelta = pos + vec2(-30, 23):scale(tyresSettings.store.tyresScale)
     local posCoreTemp = pos + vec2(-30, 50):scale(tyresSettings.store.tyresScale)
     local posWear = pos + vec2(50, -22):scale(tyresSettings.store.tyresScale)
-    local idealPressure = data.pressureIdealRear
 
     if index == 1 or index == 3 then
         posWheel = pos
@@ -87,9 +86,6 @@ function wheels.drawWheelInfo(data, pos, index)
     local wheel = data.wheels[index]
     local initTemp = data.thermal[index + 1].min
     local finalTemp = data.thermal[index + 1].max
-    if index == 0 or index == 1 then
-        idealPressure = data.pressureIdealFront
-    end
 
     if wheel.isBlown then
         drawWheelBroken(posWheel)
@@ -107,7 +103,7 @@ function wheels.drawWheelInfo(data, pos, index)
         ui.setCursor(posPsi)
         ui.dwriteTextAligned(string.format("%0.f psi", wheel.tyrePressure), 16 * tyresSettings.store.tyresScale, textAligment, ui.Alignment.Center, vec2(70,20):scale(tyresSettings.store.tyresScale))
 
-        local psiDelta = wheel.tyrePressure - idealPressure
+        local psiDelta = wheel.tyrePressure - data.pressure[index + 1].ideal
         local psiDeltaString = ""
         if psiDelta > 0 then
             psiDeltaString = string.format("+".."%0.2f psi", math.abs(psiDelta))

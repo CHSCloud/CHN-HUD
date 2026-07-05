@@ -1,16 +1,18 @@
 ---@class tyresData
 ---@field currentWindowSize vec2
 ---@field wheels ac.StateWheel[]
----@field thermal table<number, range>
----@field optThermal range
----@field pressureIdealFront number
----@field pressureIdealRear number
+---@field pressure table<number, pressure>
+---@field thermal table<number, thermal>
+---@field optThermal thermal
 local tyresData = {}
 
----@class range
+---@class thermal
 ---@field lutData ac.DataLUT11
 ---@field min number
 ---@field max number
+
+---@class pressure
+---@field ideal number
 
 ---@return tyresData
 function tyresData.new()
@@ -18,8 +20,12 @@ function tyresData.new()
         currentWindowSize = vec2(300, 300),
         wheels = CAR.wheels[1],
 
-        lutFrontData = nil,
-        lutRearData = nil,
+        pressure = {
+            { ideal = 0 }, -- Pneu 1
+            { ideal = 0 }, -- Pneu 2
+            { ideal = 0 }, -- Pneu 3
+            { ideal = 0 }  -- Pneu 4
+        },
 
         thermal = {
             { lutData = nil, min = 0, max = 0 }, -- Pneu 1
@@ -27,11 +33,8 @@ function tyresData.new()
             { lutData = nil, min = 0, max = 0 }, -- Pneu 3
             { lutData = nil, min = 0, max = 0 }  -- Pneu 4
         },
+
         optThermal = { min = math.huge, max = -math.huge },
-
-        pressureIdealFront = nil,
-        pressureIdealRear = nil
-
     } 
 end
 
@@ -67,8 +70,10 @@ function tyresData.loadTyresData(data)
     if tyresConfig ~= nil then
         local sections = tyresConfig['sections']
 
-        data.pressureIdealFront = tonumber(sections['FRONT']['PRESSURE_IDEAL'][1]) or -1
-        data.pressureIdealRear = tonumber(sections['REAR']['PRESSURE_IDEAL'][1]) or -1
+        data.pressure[1].ideal = tonumber(sections['FRONT_1']['PRESSURE_IDEAL'][1]) or 0
+        data.pressure[2].ideal = tonumber(sections['FRONT_2']['PRESSURE_IDEAL'][1]) or 0
+        data.pressure[3].ideal = tonumber(sections['REAR_1']['PRESSURE_IDEAL'][1]) or 0
+        data.pressure[4].ideal = tonumber(sections['REAR_2']['PRESSURE_IDEAL'][1]) or 0
 
         local nameLutFront1File = sections['THERMAL_FRONT_1']['PERFORMANCE_CURVE'][1]
         local nameLutFront2File = sections['THERMAL_FRONT_2']['PERFORMANCE_CURVE'][1]
@@ -99,21 +104,6 @@ function tyresData.loadTyresData(data)
                 data.optThermal.max = range.max
             end
         end
-
-        ac.log("Front 1:")
-        ac.log(data.thermal[1].min)
-        ac.log(data.thermal[1].max)
-        ac.log("Front 2:")
-        ac.log(data.thermal[2].min)
-        ac.log(data.thermal[2].max)
-        ac.log("Rear 1:")
-        ac.log(data.thermal[3].min)
-        ac.log(data.thermal[3].max)
-        ac.log("Rear 2:")
-        ac.log(data.thermal[4].min)
-        ac.log(data.thermal[4].max)
-        ac.log("Optimal:")
-        ac.log(data.optThermal.min .. " - " .. data.optThermal.max)
     end
 end
 
