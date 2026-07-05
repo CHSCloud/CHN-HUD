@@ -1,4 +1,5 @@
 local leaderboardSettings = require("src.settings.tabs.leaderboardSettings")
+local language = require("language.language")
 local titles = {}
 
 ---@param title string
@@ -14,6 +15,8 @@ end
 
 ---@param data leaderboardData
 function titles.drawTitles(data)
+    ui.drawRectFilled(vec2(0, 0), vec2(data.currentWindowSize.x, 35 * leaderboardSettings.store.leaderboardScale),
+        COLOR.WHITE, 5 * leaderboardSettings.store.leaderboardScale, ui.CornerFlags.Top)
     data.posX = data.positionLenght
     data.posY = 35
     ui.setCursor(vec2(7, 0):scale(leaderboardSettings.store.leaderboardScale))
@@ -21,27 +24,27 @@ function titles.drawTitles(data)
     .Center, vec2(35, data.posY):scale(leaderboardSettings.store.leaderboardScale), false, COLOR.BLACK)
 
     ui.setCursor(vec2(90, 0):scale(leaderboardSettings.store.leaderboardScale))
-    ui.dwriteTextAligned("Driver name", 18 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Start,
-        ui.Alignment.Center, vec2(200, data.posY):scale(leaderboardSettings.store.leaderboardScale), false, COLOR.BLACK)
+    ui.dwriteTextAligned(language.get("NAME"), 18 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Start,
+        ui.Alignment.Center, vec2(data.nameLenght, data.posY):scale(leaderboardSettings.store.leaderboardScale), false, COLOR.BLACK)
 
     for index = 1, 6, 1 do
         if index == leaderboardSettings.store.tyrePos and leaderboardSettings.store.tyreActive then
-            drawTitle("Tyre", data, data.tyreLenght)
+            drawTitle(language.get("TYRES"), data, data.tyreLenght)
 
         elseif index == leaderboardSettings.store.lapCountPos and leaderboardSettings.store.lapCountActive then
-            drawTitle("Lap", data, data.lapCountLenght)
+            drawTitle(language.get("LAPS"), data, data.lapCountLenght)
 
         elseif index == leaderboardSettings.store.lastLapPos and leaderboardSettings.store.lastLapLeaderboardActive then
-            drawTitle("Last", data, data.lastLapLenght)
+            drawTitle(language.get("LAST"), data, data.lastLapLenght)
 
         elseif index == leaderboardSettings.store.gapPos and leaderboardSettings.store.gapActive then
-            drawTitle("Gap", data, data.gapLenght)
+            drawTitle(language.get("GAP"), data, data.gapLenght)
 
         elseif index == leaderboardSettings.store.overtakeArrowsPos and leaderboardSettings.store.overtakeArrowsActive then
             data.posX = data.posX + data.overtakingLenght
 
         elseif index == leaderboardSettings.store.statusPos and leaderboardSettings.store.statusActive then
-            drawTitle("Status", data, data.statusLenght)
+            drawTitle(language.get("STATUS"), data, data.statusLenght)
         end
     end
 end

@@ -40,14 +40,12 @@ end
 
 function leaderboard.windowMain()
     ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
-
+    leaderboardData.setTitlesLeght(data)
     updateDrivers()
 
     data.posY = 0
     data.posX = 0
     local numPlayers = 0
-    ui.drawRectFilled(vec2(0, 0), vec2(data.currentWindowSize.x, 35 * leaderboardSettings.store.leaderboardScale),
-        COLOR.WHITE, 5 * leaderboardSettings.store.leaderboardScale, ui.CornerFlags.Top)
 
     for i, driver in ipairs(data.drivers) do
         if SIM.isSessionStarted then
@@ -66,7 +64,7 @@ function leaderboard.windowMain()
             end
         end
 
-        if i == 1 then
+        if i == 1 and leaderboardSettings.store.titlesActive then
             titles.drawTitles(data)
         end
 
@@ -100,26 +98,26 @@ function leaderboard.windowMain()
 
             position.drawPosition(data, driver.logoPath, numPlayers, driver.position, driver.name,
                 vec2(data.posX, data.posY):scale(leaderboardSettings.store.leaderboardScale), color)
-
+            
             for index = 1, 6, 1 do
                 if index == leaderboardSettings.store.tyrePos then
                     tyres.drawTyre(data, driver.tyre,
-                        vec2(data.posX, data.posY):scale(leaderboardSettings.store.leaderboardScale), color)
+                        vec2(data.posX, data.posY + 2.5):scale(leaderboardSettings.store.leaderboardScale), color)
                 elseif index == leaderboardSettings.store.lapCountPos then
                     laps.drawLapCount(data, driver.lapCount,
-                        vec2(data.posX, data.posY):scale(leaderboardSettings.store.leaderboardScale), color)
+                        vec2(data.posX, data.posY + 2.5):scale(leaderboardSettings.store.leaderboardScale), color)
                 elseif index == leaderboardSettings.store.lastLapPos then
                     laps.drawLastLap(data, driver.lastLapTime,
-                        vec2(data.posX, data.posY):scale(leaderboardSettings.store.leaderboardScale), color)
+                        vec2(data.posX, data.posY + 2.5):scale(leaderboardSettings.store.leaderboardScale), color)
                 elseif index == leaderboardSettings.store.gapPos then
                     gap.drawGap(data, driver,
-                        vec2(data.posX, data.posY):scale(leaderboardSettings.store.leaderboardScale), color)
+                        vec2(data.posX, data.posY + 2.5):scale(leaderboardSettings.store.leaderboardScale), color)
                 elseif index == leaderboardSettings.store.overtakeArrowsPos then
                     overtaking.drawOvertaking(data, driver.index,
-                        vec2(data.posX, data.posY):scale(leaderboardSettings.store.leaderboardScale))
+                        vec2(data.posX, data.posY + 2.5):scale(leaderboardSettings.store.leaderboardScale))
                 elseif index == leaderboardSettings.store.statusPos then
                     status.drawDriverStatus(data, statusText, statusColor,
-                        vec2(data.posX, data.posY):scale(leaderboardSettings.store.leaderboardScale))
+                        vec2(data.posX, data.posY + 2.5):scale(leaderboardSettings.store.leaderboardScale))
                 end
             end
 

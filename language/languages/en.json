@@ -115,5 +115,9 @@
     "OVERTAKING_ARROWS": "Overtaking arrows",
     "ALWAYS_FOCUSED_CAR": "Always display focused car",
     "LEADERBOARD": "Leaderboard",
-    "IDEAL": "Ideal"
+    "IDEAL": "Ideal",
+    "NAME": "Name",
+    "GAP": "Gap",
+    "STATUS": "Status",
+    "SHOW_TITLES": "Show titles"
 }

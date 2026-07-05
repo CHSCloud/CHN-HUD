@@ -115,5 +115,9 @@
     "OVERTAKING_ARROWS": "Setas de ultrapassagem",
     "ALWAYS_FOCUSED_CAR": "Sempre mostrar o carro focado",
     "LEADERBOARD": "Tabela de classificação",
-    "IDEAL": "Ideal"
+    "IDEAL": "Ideal",
+    "NAME": "Nome",
+    "GAP": "Gap",
+    "STATUS": "Status",
+    "SHOW_TITLES": "Mostrar títulos"
 }

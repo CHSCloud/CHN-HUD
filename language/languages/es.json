@@ -115,5 +115,9 @@
     "OVERTAKING_ARROWS": "Flechas de adelantamiento",
     "ALWAYS_FOCUSED_CAR": "Siempre mostrar el coche enfocado",
     "LEADERBOARD": "Tabla de clasificación",
-    "IDEAL": "Ideal"
+    "IDEAL": "Ideal",
+    "NAME": "Nombre",
+    "GAP": "Gap",
+    "STATUS": "Status",
+    "SHOW_TITLES": "Mostrar títulos"
 }

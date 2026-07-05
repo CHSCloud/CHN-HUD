@@ -31,7 +31,7 @@ local defaultValues = {
 
     focusedCarActive = true,
 
-
+    titlesActive = true,
 }
 
 leaderboardSettings.store = ac.storage(defaultValues)
@@ -55,6 +55,10 @@ end
 local function drawContents(pos)
     invertPositions("tyreActive", leaderboardSettings.store.tyrePos)
     local positions = { "1", "2", "3", "4", "5", "6" }
+
+    
+    ui.dwriteDrawText(language.get("ELEMENTS"), 12, vec2(pos.x - 5, pos.y), COLOR.WHITE)
+    pos.y = pos.y + 25
     if toggleButton.main("tyresToggle", pos, leaderboardSettings.store.tyreActive, language.get("TYRES")) then
         leaderboardSettings.store.tyreActive = not leaderboardSettings.store.tyreActive
     end
@@ -128,8 +132,15 @@ local function drawContents(pos)
     end
     pos.y = pos.y + 40
 
+    ui.dwriteDrawText(language.get("OTHERS"), 12, vec2(pos.x - 5, pos.y), COLOR.WHITE)
+    pos.y = pos.y + 25
     if toggleButton.main("focusedCarToggle", pos, leaderboardSettings.store.focusedCarActive, language.get("ALWAYS_FOCUSED_CAR")) then
         leaderboardSettings.store.focusedCarActive = not leaderboardSettings.store.focusedCarActive
+    end
+
+    pos.y = pos.y + 40
+    if toggleButton.main("titlesLeaderBoardToggle", pos, leaderboardSettings.store.titlesActive, language.get("SHOW_TITLES")) then
+        leaderboardSettings.store.titlesActive = not leaderboardSettings.store.titlesActive
     end
 
     return pos.y
