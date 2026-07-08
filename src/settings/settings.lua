@@ -53,31 +53,31 @@ if settings.store.optionLanguage ~= language.getCurrentLanguage() then
 end
 
 local isLatestVersion = true
-local onlineVersion = ''
+local onlineVersion = nil
 local isTabUpdateActive = false
 local function verifyVersion()
-    local manifest = ac.INIConfig.load(ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\CHN-HUD\\manifest.ini")
-    local currentVersion = ''
-    if manifest ~= nil then
-        currentVersion = manifest:get('ABOUT', 'VERSION', '')
-        if currentVersion == '' then
-            return
-        end
-
-        web.get("https://www.overtake.gg/downloads/chn-hud.78851/", function(err, response)
-            if err or response.status ~= 200 then return end
-
-            local html = response.body
-
-            onlineVersion = string.match(html, '<h1 class="p%-title%-value">.-<span class="u%-muted">(.-)</span>')
-
-            if onlineVersion then
-                if onlineVersion ~= currentVersion then
-                    isLatestVersion = false
-                    isTabUpdateActive = true
-                end
+    if onlineVersion == nil then
+        local manifest = ac.INIConfig.load(ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\CHN-HUD\\manifest.ini")
+        local currentVersion = ''
+        if manifest ~= nil then
+            currentVersion = manifest:get('ABOUT', 'VERSION', '')
+            if currentVersion == '' then
+                return
             end
-        end)
+            web.get("https://www.overtake.gg/downloads/chn-hud.78851/", function(err, response)
+                if err or response.status ~= 200 then return end
+
+                local html = response.body
+
+                onlineVersion = string.match(html, 'CHN HUD ([%d%.]+)')
+                if onlineVersion ~= nil then
+                    if onlineVersion ~= currentVersion then
+                        isLatestVersion = false
+                        isTabUpdateActive = true
+                    end
+                end
+            end)
+        end
     end
 end
 verifyVersion()
@@ -160,7 +160,7 @@ end
 
 function settings.windowMain()
     WindowSettingsSize = ui.windowSize()
-
+    
     ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
     ui.drawRectFilled(vec2(0, 0), WindowSettingsSize + ui.windowContentSize(), rgbm.from0255(18, 21, 29, 0.85), 0)
     ui.tabBar('##ID', function()
@@ -178,7 +178,7 @@ function settings.windowMain()
 
 
     local posResize
-    if not isLatestVersion and isTabUpdateActive then
+    if not isLatestVersion and isTabUpdateActive and onlineVersion ~= nil then
         ui.drawRectFilled(vec2(0, WindowSettingsSize.y - 35) + vec2(0, ui.getScrollY()),
             WindowSettingsSize + vec2(0, ui.getScrollY()), COLOR.WHITE)
 
