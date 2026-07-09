@@ -39,23 +39,6 @@ end
 
 ---@param lutFiles table
 ---@param sections ac.INIConfig
-local function trySetThermalIndividual(lutFiles, sections)
-    if sections['THERMAL_FRONT_1'] and sections['THERMAL_FRONT_1']['PERFORMANCE_CURVE'] then
-        lutFiles[1] = sections['THERMAL_FRONT_1']['PERFORMANCE_CURVE'][1] or ""
-    end
-    if sections['THERMAL_FRONT_2'] and sections['THERMAL_FRONT_2']['PERFORMANCE_CURVE'] then
-        lutFiles[2] = sections['THERMAL_FRONT_2']['PERFORMANCE_CURVE'][1] or ""
-    end
-    if sections['THERMAL_REAR_1'] and sections['THERMAL_REAR_1']['PERFORMANCE_CURVE'] then
-        lutFiles[3] = sections['THERMAL_REAR_1']['PERFORMANCE_CURVE'][1] or ""
-    end
-    if sections['THERMAL_REAR_2'] and sections['THERMAL_REAR_2']['PERFORMANCE_CURVE'] then
-        lutFiles[4] = sections['THERMAL_REAR_2']['PERFORMANCE_CURVE'][1] or ""
-    end
-end
-
----@param lutFiles table
----@param sections ac.INIConfig
 local function trySetThermalSections(lutFiles, sections)
     if sections['THERMAL_FRONT'] and sections['THERMAL_FRONT']['PERFORMANCE_CURVE'] then
         lutFiles[1] = sections['THERMAL_FRONT']['PERFORMANCE_CURVE'][1] or ""
@@ -76,11 +59,6 @@ local function getLutData(sections)
         "",
         ""
     }
-    
-    trySetThermalIndividual(lutFiles, sections)
-    if verifyValues(lutFiles) then
-        return lutFiles
-    end
 
     trySetThermalSections(lutFiles, sections)
 
