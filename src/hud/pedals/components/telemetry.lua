@@ -1,45 +1,68 @@
 local pedalsSettings = require("src.settings.tabs.pedalsSettings")
+local utils = require("common.utils")
 
 local telemetry = {}
-
-local function drawGrafh(telemetryData, parameter, color, min, max, data)
-    telemetryData[#telemetryData+1] = parameter
+---@param telemetryData table
+---@param parameter number
+---@param color rgbm
+---@param min vec2
+---@param max vec2
+local function drawGrafh(telemetryData, parameter, color, min, max)
+    telemetryData[#telemetryData+1] = utils.smoothValue(telemetryData[#telemetryData], parameter, 0.4)
     table.remove(telemetryData, 1)
     
-    local lenght = (max.x - min.x) / data.maxPointsTelemetry
+    local lenght = (max.x - min.x) / pedalsSettings.store.telemetryLenght * 1.5
+
     ui.pathClear()
     for i, value in ipairs(telemetryData) do
-        ui.pathLineTo(vec2(min.x + i * lenght, max.y - value * (max.y - data.contentTop - 8 * pedalsSettings.store.pedalsScale)))
+        local xAxis = max.x - (#telemetryData - i) * lenght
+        
+        if xAxis >= min.x then
+            ui.pathLineTo(vec2(xAxis, max.y - value * (max.y - 15 * pedalsSettings.store.pedalsScale)))
+        end
     end
     ui.pathSimpleStroke(color, false, 2)
 end
 
-
 ---@param data pedalsData
 function telemetry.drawTelemetry(data)
+    local min = vec2(10 * pedalsSettings.store.pedalsScale, 15 * pedalsSettings.store.pedalsScale)
+    local max = vec2(pedalsSettings.store.telemetryLenght * pedalsSettings.store.pedalsScale, data.currentWindowSize.y - 15 * pedalsSettings.store.pedalsScale)
+
+    local totalHeight = max.y - min.y
+    local rectHeight = totalHeight / 4
+    local rectWidth = max.x - min.x 
+    local padding
+    local init = min
+    for i = 1, 4, 1 do
+        if i == 4 then
+            padding =  0
+        else
+            padding =  2 * pedalsSettings.store.pedalsScale
+        end
+        ui.drawRectFilled(
+            init, 
+            init + vec2(rectWidth, rectHeight - padding), 
+            COLOR.GRAY
+        )
+        init = init + vec2(0, rectHeight)
+    end
     
-    local min = vec2(10 * pedalsSettings.store.pedalsScale, 8 * pedalsSettings.store.pedalsScale + data.contentTop)
-    local max = vec2(200 * pedalsSettings.store.pedalsScale, data.currentWindowSize.y - (8 * pedalsSettings.store.pedalsScale + data.contentBottom))
-    ui.drawRectFilled(
-        min, 
-        max, 
-        COLOR.GRAY_BG
-    )
 
     if pedalsSettings.store.telemetryThrottle then
-        drawGrafh(data.throttleTelemetry, CAR.gas, COLOR.GREEN, min, max, data)  
+        drawGrafh(data.throttleTelemetry, CAR.gas, COLOR.GREEN, min, max)
     end
 
     if pedalsSettings.store.telemetryBrake then
-        drawGrafh(data.brakeTelemetry, CAR.brake, COLOR.RED, min, max, data)
+        drawGrafh(data.brakeTelemetry, CAR.brake, COLOR.RED, min, max)
     end
 
     if pedalsSettings.store.telemetryClucth then
-        drawGrafh(data.clutchTelemetry, 1 - CAR.clutch, COLOR.BLUE, min, max, data)
+        drawGrafh(data.clutchTelemetry, 1 - CAR.clutch, COLOR.BLUE, min, max)
     end
 
     if pedalsSettings.store.telemetryHandbrake then
-        drawGrafh(data.handbrakeTelemetry, CAR.handbrake, COLOR.YELLOW, min, max, data)
+        drawGrafh(data.handbrakeTelemetry, CAR.handbrake, COLOR.YELLOW, min, max)
     end
 end
 

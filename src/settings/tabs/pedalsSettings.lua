@@ -47,6 +47,7 @@ local defaultValues = {
     drsPos = 1,
 
     telemetryActive = false,
+    telemetryLenght = 250,
     telemetryThrottle = true,
     telemetryBrake =  true,
     telemetryClucth = false,
@@ -421,6 +422,19 @@ function pedalsSettings.pedalsSettings()
     end
 
     if pedalsSettings.store.telemetryActive then
+        posYTelemetry = posYTelemetry + 25
+        pedalsSettings.store.telemetryLenght = slider.main(
+            language.get("SIZE"),
+            string.format("%.0f", pedalsSettings.store.telemetryLenght), 
+            vec2(posXTelemetry, posYTelemetry), 
+            150, 
+            pedalsSettings.store.telemetryLenght,
+            100, 
+            250, 
+            slider.PosText.Start, 
+            "telemetryLenght"
+        )
+
         posYTelemetry = posYTelemetry + 25
         if toggleButton.main("telemetryThrottle", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryThrottle, "Throttle") then
             pedalsSettings.store.telemetryThrottle = not pedalsSettings.store.telemetryThrottle

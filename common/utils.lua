@@ -95,4 +95,12 @@ function utils.colorLerp(from, to, transition)
     )
 end
 
+---@param last number 
+---@param current number
+---@param smooth number
+---@return number
+function utils.smoothValue(last, current, smooth)
+  return last + (current - last) * smooth
+end
+
 return utils

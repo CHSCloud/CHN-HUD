@@ -74,10 +74,14 @@ end
 
 
 function pedalsData.resetContentPositions(data, windowSize)
+    local distance = 0
+    if pedalsSettings.store.telemetryActive then
+        distance = pedalsSettings.store.telemetryLenght * pedalsSettings.store.pedalsScale
+    end
     data.contentPositions = {
-        { vec2(0, 0),                           vec2(0, 0) },
+        { vec2(distance, 0),                           vec2(0, 0) },
         { vec2(windowSize.x, 0),                vec2(0, 0) },
-        { vec2(0, windowSize.y),                vec2(0, 0) },
+        { vec2(distance, windowSize.y),                vec2(0, 0) },
         { vec2(windowSize.x, windowSize.y),     vec2(0, 0) },
         { vec2(windowSize.x / 2, 0),            vec2(0, 0) },
         { vec2(windowSize.x / 2, windowSize.y), vec2(0, 0) },
@@ -87,7 +91,7 @@ end
 function pedalsData.setPositionContentBorder(data, pos, size)
     local positions = data.contentPositions[pos]
 
-    if positions[1].x > 0 then
+    if positions[1].x == data.currentWindowSize.x then
         positions[1].x = positions[1].x - size.x
     end
 

@@ -16,30 +16,30 @@ function rpm.drawRpm(data)
         local center
         local posY
         if pedalsSettings.store.rpmPos == 5 then
-            space = data.currentWindowWidth * 0.95 - data.contentPositions[1][2].x - data.contentPositions[2][2].x
+            space = data.currentWindowWidth * 0.95 - data.contentPositions[1][2].x - data.contentPositions[1][1].x - data.contentPositions[2][2].x
             if space < 75 * pedalsSettings.store.pedalsScale then
                 data.currentWindowWidth = data.currentWindowWidth + (75 * pedalsSettings.store.pedalsScale - space)
-                space = data.currentWindowWidth * 0.95 - data.contentPositions[1][2].x - data.contentPositions[2][2].x
+                space = data.currentWindowWidth * 0.95 - data.contentPositions[1][2].x - data.contentPositions[1][1].x - data.contentPositions[2][2].x
             end
 
             if space == data.currentWindowWidth * 0.95 then
                 center = data.currentWindowWidth / 2
             else
-                center = data.contentPositions[1][2].x +
-                (data.currentWindowWidth - data.contentPositions[1][2].x - data.contentPositions[2][2].x) / 2
+                center = data.contentPositions[1][1].x + data.contentPositions[1][2].x +
+                (data.currentWindowWidth - data.contentPositions[1][1].x -data.contentPositions[1][2].x - data.contentPositions[2][2].x) / 2
             end
             posY = data.contentPositions[pedalsSettings.store.rpmPos][1].y + 10 * pedalsSettings.store.pedalsScale
         else
-            space = data.currentWindowWidth * 0.95 - data.contentPositions[3][2].x - data.contentPositions[4][2].x
+            space = data.currentWindowWidth * 0.95 - data.contentPositions[3][2].x - data.contentPositions[3][1].x - data.contentPositions[4][2].x
             if space < 75 * pedalsSettings.store.pedalsScale then
                 data.currentWindowWidth = data.currentWindowWidth + (75 * pedalsSettings.store.pedalsScale - space)
-                space = data.currentWindowWidth * 0.95 - data.contentPositions[3][2].x - data.contentPositions[4][2].x
+                space = data.currentWindowWidth * 0.95 - data.contentPositions[3][2].x - data.contentPositions[3][1].x - data.contentPositions[4][2].x
             end
             if space == data.currentWindowWidth * 0.95 then
                 center = data.currentWindowWidth / 2
             else
-                center = data.contentPositions[3][2].x +
-                (data.currentWindowWidth - data.contentPositions[3][2].x - data.contentPositions[4][2].x) / 2
+                center = data.contentPositions[3][2].x + data.contentPositions[3][1].x +
+                (data.currentWindowWidth - data.contentPositions[3][1].x - data.contentPositions[3][2].x - data.contentPositions[4][2].x) / 2
             end
             posY = data.contentPositions[pedalsSettings.store.rpmPos][1].y - 10 * pedalsSettings.store.pedalsScale
         end
