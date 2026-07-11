@@ -18,7 +18,7 @@ local function drawGrafh(telemetryData, parameter, color, min, max)
         local xAxis = max.x - (#telemetryData - i) * lenght
         
         if xAxis >= min.x then
-            ui.pathLineTo(vec2(xAxis, max.y - value * (max.y - 15 * pedalsSettings.store.pedalsScale)))
+            ui.pathLineTo(vec2(xAxis, max.y - value * (max.y - 10 * pedalsSettings.store.pedalsScale)))
         end
     end
     ui.pathSimpleStroke(color, false, 2)
@@ -26,8 +26,8 @@ end
 
 ---@param data pedalsData
 function telemetry.drawTelemetry(data)
-    local min = vec2(10 * pedalsSettings.store.pedalsScale, 15 * pedalsSettings.store.pedalsScale)
-    local max = vec2(pedalsSettings.store.telemetryLenght * pedalsSettings.store.pedalsScale, data.currentWindowSize.y - 15 * pedalsSettings.store.pedalsScale)
+    local min = vec2(10 * pedalsSettings.store.pedalsScale, 10 * pedalsSettings.store.pedalsScale)
+    local max = vec2(pedalsSettings.store.telemetryLenght * pedalsSettings.store.pedalsScale, data.currentWindowSize.y - 10 * pedalsSettings.store.pedalsScale)
 
     local totalHeight = max.y - min.y
     local rectHeight = totalHeight / 4
@@ -43,7 +43,7 @@ function telemetry.drawTelemetry(data)
         ui.drawRectFilled(
             init, 
             init + vec2(rectWidth, rectHeight - padding), 
-            COLOR.GRAY
+            COLOR.GRAY_BG
         )
         init = init + vec2(0, rectHeight)
     end

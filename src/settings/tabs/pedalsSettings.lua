@@ -277,7 +277,7 @@ function pedalsSettings.pedalsSettings()
 
     -- Layout
     local initPos = 55
-    local posXStyle = 150
+    local posXStyle = 180
 
     initPos = initPos + 20
     pedalsSettings.store.pedalsScale = slider.main(language.get("SIZE"),
@@ -414,41 +414,40 @@ function pedalsSettings.pedalsSettings()
     end
     --
 
-    local posXTelemetry = posXStyle + 250
+    local posXTelemetry = posXStyle + 230
     ui.setCursor(vec2(posXTelemetry - 5, posYTelemetry))
-    ui.dwriteDrawText("Tlemetry", 12, vec2(posXTelemetry - 5, posYTelemetry - 25), COLOR.WHITE)
-    if toggleButton.main("activeTelemetry", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryActive, "Active Telemetry") then
+    ui.dwriteDrawText(language.get("TELEMETRY"), 12, vec2(posXTelemetry - 5, posYTelemetry - 25), COLOR.WHITE)
+    if toggleButton.main("activeTelemetry", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryActive, "") then
         pedalsSettings.store.telemetryActive = not pedalsSettings.store.telemetryActive
     end
 
     if pedalsSettings.store.telemetryActive then
-        posYTelemetry = posYTelemetry + 25
         pedalsSettings.store.telemetryLenght = slider.main(
-            language.get("SIZE"),
+            "",
             string.format("%.0f", pedalsSettings.store.telemetryLenght), 
-            vec2(posXTelemetry, posYTelemetry), 
+            vec2(posXTelemetry + 40, posYTelemetry + 2), 
             150, 
             pedalsSettings.store.telemetryLenght,
             100, 
-            250, 
+            400, 
             slider.PosText.Start, 
             "telemetryLenght"
         )
 
         posYTelemetry = posYTelemetry + 25
-        if toggleButton.main("telemetryThrottle", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryThrottle, "Throttle") then
+        if toggleButton.main("telemetryThrottle", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryThrottle, language.get("THROTTLE")) then
             pedalsSettings.store.telemetryThrottle = not pedalsSettings.store.telemetryThrottle
         end
         posYTelemetry = posYTelemetry + 25
-        if toggleButton.main("telemetryBrake", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryBrake, "Brake") then
+        if toggleButton.main("telemetryBrake", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryBrake, language.get("BRAKE")) then
             pedalsSettings.store.telemetryBrake = not pedalsSettings.store.telemetryBrake
         end
         posYTelemetry = posYTelemetry + 25
-        if toggleButton.main("telemetryClutch", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryClucth, "Clucth") then
+        if toggleButton.main("telemetryClutch", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryClucth, language.get("CLUTCH")) then
             pedalsSettings.store.telemetryClucth = not pedalsSettings.store.telemetryClucth
         end
         posYTelemetry = posYTelemetry + 25
-        if toggleButton.main("telemetryHandbrake", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryHandbrake, "Handbrake") then
+        if toggleButton.main("telemetryHandbrake", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryHandbrake, language.get("HANDBRAKE")) then
             pedalsSettings.store.telemetryHandbrake = not pedalsSettings.store.telemetryHandbrake
         end
     end
