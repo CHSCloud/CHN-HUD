@@ -16,8 +16,6 @@ end
 ---@param data pedalsData
 function gear.drawGear(data)
     data.contentMidle = 73 * pedalsSettings.store.pedalsScale
-    data.gearBackgroundWidth = 60 * pedalsSettings.store.pedalsScale
-    data.currentWindowWidth = data.gearBackgroundWidth
     if data.currentGear ~= CAR.gear then
         data.fontGear = 0
         data.currentGear = CAR.gear
@@ -31,12 +29,12 @@ function gear.drawGear(data)
 
     if pedalsSettings.store.speedActive then
         animateGear(data, 40 * pedalsSettings.store.pedalsScale)
-        ui.setCursor(vec2(20, 11):scale(pedalsSettings.store.pedalsScale) + vec2(0, data.contentTop))
+        ui.setCursor(vec2(data.currentWindowWidth + 20 * pedalsSettings.store.pedalsScale, 11 * pedalsSettings.store.pedalsScale) + vec2(0, data.contentTop))
         ui.dwriteTextAligned(gear, data.fontGear, ui.Alignment.Center, ui.Alignment.Center,
             vec2(30, 30):scale(pedalsSettings.store.pedalsScale), false, COLOR.YELLOW_DARK)
     else
         animateGear(data, 45 * pedalsSettings.store.pedalsScale)
-        ui.setCursor(vec2(20, 15):scale(pedalsSettings.store.pedalsScale) + vec2(0, data.contentTop))
+        ui.setCursor(vec2(data.currentWindowWidth + 20 * pedalsSettings.store.pedalsScale, 15 * pedalsSettings.store.pedalsScale) + vec2(0, data.contentTop))
         ui.dwriteTextAligned(gear, data.fontGear, ui.Alignment.Center, ui.Alignment.Center,
             vec2(30, 40):scale(pedalsSettings.store.pedalsScale), false, COLOR.YELLOW_DARK)
     end

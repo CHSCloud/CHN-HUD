@@ -20,10 +20,27 @@
 ---@field barMidleSize any
 ---@field barPaddingMidle any
 ---@field contentPositions vec2[][]
+---@field throttleTelemetry table
+---@field brakeTelemetry table
+---@field clutchTelemetry table
+---@field handbrakeTelemetry table
+---@field maxPointsTelemetry number
 local pedalsData = {}
+
+---@param points number
+---@return table
+local function getEmptyTable(points)
+    local table = {}
+    for i = 1, points, 1 do
+        table[i] = 0
+    end
+    return table
+end
 
 ---@return pedalsData
 function pedalsData.new()
+    local maxPointsTelemetry = 300
+    
     return {
         currentWindowSize = vec2(0, 0),
         currentWindowWidth = 0,
@@ -46,8 +63,14 @@ function pedalsData.new()
         barMidleSize = nil,
         barPaddingMidle = nil,
         contentPositions = {},
+        throttleTelemetry = getEmptyTable(maxPointsTelemetry),
+        brakeTelemetry = getEmptyTable(maxPointsTelemetry),
+        clutchTelemetry = getEmptyTable(maxPointsTelemetry),
+        handbrakeTelemetry = getEmptyTable(maxPointsTelemetry),
+        maxPointsTelemetry = maxPointsTelemetry
     }
 end
+
 
 function pedalsData.resetContentPositions(data, windowSize)
     data.contentPositions = {
