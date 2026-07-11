@@ -46,8 +46,10 @@ function pedals.windowMain()
 
     ui.drawRectFilled(vec2(0, 0), data.currentWindowSize, WindowsColor, 10 * pedalsSettings.store.pedalsScale)
 
-    data.currentWindowWidth = 200 * pedalsSettings.store.pedalsScale
-    telemetry.drawTelemetry(data)
+    if pedalsSettings.store.telemetryActive then
+        data.currentWindowWidth = 200 * pedalsSettings.store.pedalsScale
+        telemetry.drawTelemetry(data)  
+    end
 
     if pedalsSettings.store.gearActive then
         gear.drawGear(data)

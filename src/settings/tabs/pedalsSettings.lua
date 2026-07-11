@@ -44,7 +44,13 @@ local defaultValues = {
     barLength = 0.55,
 
     drsActvationActive = false,
-    drsPos = 1
+    drsPos = 1,
+
+    telemetryActive = false,
+    telemetryThrottle = true,
+    telemetryBrake =  true,
+    telemetryClucth = false,
+    telemetryHandbrake = false
 }
 
 pedalsSettings.store = ac.storage(defaultValues)
@@ -379,6 +385,7 @@ function pedalsSettings.pedalsSettings()
         pedalsSettings.store.throttleActive = not pedalsSettings.store.throttleActive
     end
 
+    local posYTelemetry = initPos
     ui.setCursor(vec2(posXStyle - 5, initPos - 25))
     ui.dwriteDrawText(language.get("PEDAL_STYLE"), 12, vec2(posXStyle - 5, initPos - 25), COLOR.WHITE)
     if toggleButton.main("percentagePedals", vec2(posXStyle, initPos), pedalsSettings.store.textBarsActive, language.get("PERCENTAGE_PEDALS")) then
@@ -405,6 +412,35 @@ function pedalsSettings.pedalsSettings()
         pedalsSettings.store.handbrakeActive = not pedalsSettings.store.handbrakeActive
     end
     --
+
+    local posXTelemetry = posXStyle + 250
+    ui.setCursor(vec2(posXTelemetry - 5, posYTelemetry))
+    ui.dwriteDrawText("Tlemetry", 12, vec2(posXTelemetry - 5, posYTelemetry - 25), COLOR.WHITE)
+    if toggleButton.main("activeTelemetry", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryActive, "Active Telemetry") then
+        pedalsSettings.store.telemetryActive = not pedalsSettings.store.telemetryActive
+    end
+
+    if pedalsSettings.store.telemetryActive then
+        posYTelemetry = posYTelemetry + 25
+        if toggleButton.main("telemetryThrottle", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryThrottle, "Throttle") then
+            pedalsSettings.store.telemetryThrottle = not pedalsSettings.store.telemetryThrottle
+        end
+        posYTelemetry = posYTelemetry + 25
+        if toggleButton.main("telemetryBrake", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryBrake, "Brake") then
+            pedalsSettings.store.telemetryBrake = not pedalsSettings.store.telemetryBrake
+        end
+        posYTelemetry = posYTelemetry + 25
+        if toggleButton.main("telemetryClutch", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryClucth, "Clucth") then
+            pedalsSettings.store.telemetryClucth = not pedalsSettings.store.telemetryClucth
+        end
+        posYTelemetry = posYTelemetry + 25
+        if toggleButton.main("telemetryHandbrake", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryHandbrake, "Handbrake") then
+            pedalsSettings.store.telemetryHandbrake = not pedalsSettings.store.telemetryHandbrake
+        end
+    end
+
+    --
+
     -- Botão Reset
     initPos = initPos + 40
     if button.main(vec2(20, initPos), language.get("RESET_DEFAULT")) then

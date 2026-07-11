@@ -3,11 +3,9 @@ local pedalsSettings = require("src.settings.tabs.pedalsSettings")
 local telemetry = {}
 
 local function drawGrafh(telemetryData, parameter, color, min, max, data)
-    if #telemetryData+1 > data.maxPointsTelemetry then
-        table.remove(telemetryData, 1)
-    end
     telemetryData[#telemetryData+1] = parameter
-
+    table.remove(telemetryData, 1)
+    
     local lenght = (max.x - min.x) / data.maxPointsTelemetry
     ui.pathClear()
     for i, value in ipairs(telemetryData) do
@@ -27,14 +25,22 @@ function telemetry.drawTelemetry(data)
         max, 
         COLOR.GRAY_BG
     )
-    drawGrafh(data.throttleTelemetry, CAR.gas, COLOR.GREEN, min, max, data)
 
-    drawGrafh(data.brakeTelemetry, CAR.brake, COLOR.RED, min, max, data)
+    if pedalsSettings.store.telemetryThrottle then
+        drawGrafh(data.throttleTelemetry, CAR.gas, COLOR.GREEN, min, max, data)  
+    end
 
-    --drawGrafh(data.clutchTelemetry, 1 - CAR.clutch, COLOR.BLUE, min, max data)
+    if pedalsSettings.store.telemetryBrake then
+        drawGrafh(data.brakeTelemetry, CAR.brake, COLOR.RED, min, max, data)
+    end
 
-    --drawGrafh(data.handbrakeTelemetry, CAR.handbrake, COLOR.YELLOW, min, max data)
-    
+    if pedalsSettings.store.telemetryClucth then
+        drawGrafh(data.clutchTelemetry, 1 - CAR.clutch, COLOR.BLUE, min, max, data)
+    end
+
+    if pedalsSettings.store.telemetryHandbrake then
+        drawGrafh(data.handbrakeTelemetry, CAR.handbrake, COLOR.YELLOW, min, max, data)
+    end
 end
 
 return telemetry

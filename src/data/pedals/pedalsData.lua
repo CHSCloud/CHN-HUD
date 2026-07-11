@@ -1,3 +1,4 @@
+local pedalsSettings = require("src.settings.tabs.pedalsSettings")
 ---@class pedalsData
 ---@field currentWindowSize vec2
 ---@field currentWindowWidth number
