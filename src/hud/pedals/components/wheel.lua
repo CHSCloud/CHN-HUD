@@ -4,6 +4,7 @@ local wheel = {}
 ---@param data pedalsData
 function wheel.drawWheel(data)
     local wheelBackgroundSize = vec2(55 * pedalsSettings.store.pedalsScale, data.currentWindowHeight)
+    data.contentMidle = 73 * pedalsSettings.store.pedalsScale
 
     local p1 = data.currentWindowWidth - 4 * pedalsSettings.store.pedalsScale
     local p2 = 1 * pedalsSettings.store.pedalsScale + data.contentTop
