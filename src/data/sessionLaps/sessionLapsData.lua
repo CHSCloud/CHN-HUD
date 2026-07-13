@@ -9,6 +9,8 @@
 ---@field milliseconds number
 ---@field bestLap string
 ---@field currentLap string
+---@field sectorsTime table
+---@field lastSectorTime number
 local sessionLapsData = {}
 
 ---@return sessionLapsData
@@ -24,7 +26,21 @@ function sessionLapsData.new()
         milliseconds = 0,
         bestLap = "-:--.---",
         currentLap = "0:00.000",
+        sectorsTime = {
+            [0] = -1,
+            [1] = -1,
+            [2] = -1
+        },
+        lastSectorTime = -1
     }
 end
 
+function sessionLapsData.resetSectors(data)
+    data.sectorsTime = {
+        [0] = -1,
+        [1] = -1,
+        [2] = -1
+    }
+    data.lastSectorTime = -1
+end
 return sessionLapsData

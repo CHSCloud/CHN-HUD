@@ -4,17 +4,18 @@ local window = require("common.window")
 local sessionLapsData = require("src.data.sessionLaps.sessionLapsData")
 
 local laps = require("src.hud.sessionLaps.components.laps")
+local sectors = require("src.hud.sessionLaps.components.sectors")
 
 local sessionLaps = {}
 
 --- @type sessionLapsData
 local data = sessionLapsData.new()
 
-if ac.onSessionStart then
-    ac.onSessionStart(function()
-        data.previousBestlap = 0
-    end)
-end
+
+ac.onSessionStart(function()
+    data.previousBestlap = 0
+    sessionLapsData.resetSectors(data)
+end)
 
 function sessionLaps.windowMain()
     ui.pushDWriteFont("fonts/Montserrat-Bold.ttf") -- FONT TEXT
@@ -34,15 +35,14 @@ function sessionLaps.windowMain()
     end
 
     -- Melhor volta
-    if CAR.previousLapTimeMs == CAR.bestLapTimeMs and CAR.isLastLapValid then
-        data.previousBestlap = CAR.bestLapTimeMs
-    end
     if sessionLapsSettings.store.bestLapActive then
         laps.drawBest(data)
     end
 
-    data.currentWindowSize = vec2(data.currentWindowWidth,
-        data.currentWindowHeight * sessionLapsSettings.store.sessionLapsScale)
+    sectors.drawSectors(data)
+    
+    
+    data.currentWindowSize = vec2(data.currentWindowWidth, data.currentWindowHeight * sessionLapsSettings.store.sessionLapsScale)
 
     window.resize(data.currentWindowSize, "Session Laps")
     pinCheckBox.main(sessionLapsSettings.store.sessionLapsScale, "Session Laps",

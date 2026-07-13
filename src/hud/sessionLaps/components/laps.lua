@@ -78,6 +78,9 @@ end
 
 ---@param data sessionLapsData
 function laps.drawBest(data)
+    if CAR.previousLapTimeMs == CAR.bestLapTimeMs and CAR.isLastLapValid then
+        data.previousBestlap = CAR.bestLapTimeMs
+    end
     drawBanner(data.currentWindowHeight)
 
     if data.previousBestlap == 0 then
