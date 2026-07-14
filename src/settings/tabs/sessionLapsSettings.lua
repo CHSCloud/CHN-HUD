@@ -9,6 +9,8 @@ local defaultValues = {
     currentLapActive = true,
     lastLapActive = true,
     bestLapActive = true,
+    sectorsLapActive = true,
+    numberDivisions = 7
 }
 
 
@@ -44,6 +46,18 @@ function sessionLapsSettings.sessionLapsSettings()
     initPos = initPos + 25
     if toggleButton.main("best", vec2(20, initPos), sessionLapsSettings.store.bestLapActive, language.get("BEST")) then
         sessionLapsSettings.store.bestLapActive = not sessionLapsSettings.store.bestLapActive
+    end
+
+    initPos = initPos + 25
+    if toggleButton.main("sectorsLapActive", vec2(20, initPos), sessionLapsSettings.store.sectorsLapActive, language.get("SECTORS")) then
+        sessionLapsSettings.store.sectorsLapActive = not sessionLapsSettings.store.sectorsLapActive
+    end
+
+    if sessionLapsSettings.store.sectorsLapActive then
+        initPos = initPos + 30
+        sessionLapsSettings.store.numberDivisions = math.floor(slider.main("",
+            string.format("%d", sessionLapsSettings.store.numberDivisions), vec2(20, initPos), 250,
+            sessionLapsSettings.store.numberDivisions, 3, 10))
     end
 
     initPos = initPos + 40

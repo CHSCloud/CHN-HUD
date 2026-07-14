@@ -19,6 +19,12 @@ local function drawSector(data, sectorNumber)
         local milliseconds = math.round((seconds % 1) * 1000)
         ui.dwriteTextAligned(string.format("%d:%02d.%03d", minutes, seconds, milliseconds), 12 * sessionLapsSettings.store.sessionLapsScale, ui.Alignment.Start, ui.Alignment.Center, vec2(100,20):scale(sessionLapsSettings.store.sessionLapsScale),false, COLOR.WHITE)
     end
+
+    for i = 1, sessionLapsSettings.store.numberDivisions do
+        local x = 110 + (i * (100 / (sessionLapsSettings.store.numberDivisions + 1)))
+        ui.drawCircleFilled(vec2(x, data.currentWindowHeight + 10):scale(sessionLapsSettings.store.sessionLapsScale), 3 * sessionLapsSettings.store.sessionLapsScale, COLOR.WHITE, 10)
+    end
+
     data.currentWindowHeight = data.currentWindowHeight + 20
 end
 
@@ -37,7 +43,7 @@ function sectors.drawSectors(data)
         data.sectorsTime[(CAR.currentSector - 1) % 3] = CAR.lastSplits[2]
         data.lastSectorTime = CAR.lastSplits[2]
     end
-
+    
     drawSector(data, 0)
 
     drawSector(data, 1)

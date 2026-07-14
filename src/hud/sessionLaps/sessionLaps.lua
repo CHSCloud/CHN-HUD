@@ -22,7 +22,10 @@ function sessionLaps.windowMain()
 
     data.currentWindowWidth = 240 * sessionLapsSettings.store.sessionLapsScale
     data.currentWindowHeight = 0
-
+    sessionLapsData.setSectorsDivisions(data, sessionLapsSettings.store.numberDivisions - 1)
+    for i = 1, #data.sectorsDivisions[0], 1 do
+        ac.log("Divisão ".. tostring(i) .. " - ".. tostring(data.sectorsDivisions[0][i]) .. " - ".. tostring(data.sectorsDivisions[1][i]) .. " - ".. tostring(data.sectorsDivisions[2][i]))
+    end
     ui.drawRectFilled(vec2(0, 0), data.currentWindowSize, WindowsColor, 5 * sessionLapsSettings.store.sessionLapsScale)
     -- Volta atual
     if sessionLapsSettings.store.currentLapActive then
@@ -39,7 +42,10 @@ function sessionLaps.windowMain()
         laps.drawBest(data)
     end
 
-    sectors.drawSectors(data)
+    -- Setores
+    if sessionLapsSettings.store.sectorsLapActive then
+        sectors.drawSectors(data)
+    end
     
     
     data.currentWindowSize = vec2(data.currentWindowWidth, data.currentWindowHeight * sessionLapsSettings.store.sessionLapsScale)
