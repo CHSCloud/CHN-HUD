@@ -10,11 +10,13 @@ local sessionLaps = {}
 
 --- @type sessionLapsData
 local data = sessionLapsData.new()
-
+sessionLapsData.setSectorsDivisions(data, sessionLapsSettings.store.numberDivisions - 1)
 
 ac.onSessionStart(function()
     data.previousBestlap = 0
     sessionLapsData.resetSectors(data)
+    sessionLapsData.setSectorsDivisions(data, sessionLapsSettings.store.numberDivisions - 1)
+    data.showLastDivisions = false
 end)
 
 function sessionLaps.windowMain()
@@ -22,9 +24,9 @@ function sessionLaps.windowMain()
 
     data.currentWindowWidth = 240 * sessionLapsSettings.store.sessionLapsScale
     data.currentWindowHeight = 0
-    sessionLapsData.setSectorsDivisions(data, sessionLapsSettings.store.numberDivisions - 1)
-    for i = 1, #data.sectorsDivisions[0], 1 do
-        ac.log("Divisão ".. tostring(i) .. " - ".. tostring(data.sectorsDivisions[0][i]) .. " - ".. tostring(data.sectorsDivisions[1][i]) .. " - ".. tostring(data.sectorsDivisions[2][i]))
+    if data.currentNumberDivisions ~= sessionLapsSettings.store.numberDivisions then
+        sessionLapsData.setSectorsDivisions(data, sessionLapsSettings.store.numberDivisions - 1)
+        data.currentNumberDivisions = sessionLapsSettings.store.numberDivisions
     end
     ui.drawRectFilled(vec2(0, 0), data.currentWindowSize, WindowsColor, 5 * sessionLapsSettings.store.sessionLapsScale)
     -- Volta atual

@@ -1,17 +1,23 @@
+local sessionLapsSettings = require("src.settings.tabs.sessionLapsSettings")
 ---@class sessionLapsData
 ---@field previousBestlap number
 ---@field currentWindowSize vec2
 ---@field currentWindowHeight number
 ---@field currentWindowWidth number
 ---@field lastLap string
+---@field lastLapNumber number
 ---@field minutes number
 ---@field seconds number
 ---@field milliseconds number
 ---@field bestLap string
 ---@field currentLap string
 ---@field sectorsTime table
----@field lastSectorTime number
 ---@field sectorsDivisions table
+---@field lastSectorsDivisionsTime table
+---@field currentSectorsDivisionsTime table
+---@field lastSectorTime number
+---@field currentNumberDivisions number
+---@field showLastDivisions boolean
 local sessionLapsData = {}
 
 ---@return sessionLapsData
@@ -22,6 +28,7 @@ function sessionLapsData.new()
         currentWindowHeight = 0,
         currentWindowWidth = 0,
         lastLap = "-:--.---",
+        lastLapNumber = CAR.lapCount,
         minutes = 0,
         seconds = 0,
         milliseconds = 0,
@@ -37,7 +44,19 @@ function sessionLapsData.new()
             [1] = {},
             [2] = {}
         },
-        lastSectorTime = -1
+        lastSectorsDivisionsTime = {
+            [0] = {},
+            [1] = {},
+            [2] = {}
+        },
+        currentSectorsDivisionsTime = {
+            [0] = {},
+            [1] = {},
+            [2] = {}
+        },
+        lastSectorTime = -1,
+        currentNumberDivisions = sessionLapsSettings.store.numberDivisions,
+        showLastDivisions = false
     }
 end
 
@@ -47,7 +66,6 @@ function sessionLapsData.setSectorsDivisions(data, numberDivisions)
     for i = 0, #SIM.lapSplits - 1 do
         table.clear(data.sectorsDivisions[i])
         local start = SIM.lapSplits[i]
-        table.insert(data.sectorsDivisions[i], start)
 
         local final = SIM.lapSplits[i == #SIM.lapSplits - 1 and 0 or i + 1]
 
@@ -65,10 +83,31 @@ function sessionLapsData.setSectorsDivisions(data, numberDivisions)
         end
         table.insert(data.sectorsDivisions[i], final)
     end
+    
+    for i = 0, #data.lastSectorsDivisionsTime do
+        table.clear(data.lastSectorsDivisionsTime[i])
+        table.clear(data.currentSectorsDivisionsTime[i])
+        for _ = 1, numberDivisions + 1 do
+            ac.log(data.lastSectorsDivisionsTime[i])
+            table.insert(data.lastSectorsDivisionsTime[i], -1)
+            table.insert(data.currentSectorsDivisionsTime[i], -1)
+        end
+    end
+
 end
 
+---@param data sessionLapsData
+---@param numberDivisions number
+function sessionLapsData.resetCurrentDivision(data, numberDivisions)
+    for i = 0, #data.currentSectorsDivisionsTime do
+        table.clear(data.currentSectorsDivisionsTime[i])
+        for _ = 1, numberDivisions + 1 do
+            table.insert(data.currentSectorsDivisionsTime[i], -1)
+        end
+    end
+end
 
-
+---@param data sessionLapsData
 function sessionLapsData.resetSectors(data)
     data.sectorsTime = {
         [0] = -1,
@@ -77,4 +116,32 @@ function sessionLapsData.resetSectors(data)
     }
     data.lastSectorTime = -1
 end
+
+---@param data sessionLapsData
+---@param sectorNumber number
+---@param division number
+---@return number
+function sessionLapsData.getTimeOfDivision(data, sectorNumber, division)
+    local lastTimeDivisions = 0
+    if sectorNumber == 0  and division == 0 then
+        return CAR.lapTimeMs
+    end
+
+    for sector = 0, sectorNumber do
+
+        if sector == sectorNumber then
+            for div = 1, division - 1 do
+                lastTimeDivisions =  lastTimeDivisions + data.currentSectorsDivisionsTime[sector][div]
+            end
+            
+        else
+            for div = 1, sessionLapsSettings.store.numberDivisions do
+                lastTimeDivisions =  lastTimeDivisions + data.currentSectorsDivisionsTime[sector][div]
+            end
+        end
+    end
+
+    return (CAR.lapTimeMs - lastTimeDivisions)
+end
+
 return sessionLapsData
