@@ -44,8 +44,7 @@ local function drawSector(data, sectorNumber)
                     isPassed = (CAR.splinePosition >= currentDiv)
                 end
             end
-
-            if isPassed then
+            if isPassed and not (CAR.currentSector == 0 and CAR.splinePosition > SIM.lapSplits[1])then
                 if data.currentSectorsDivisionsTime[sectorNumber][i] == -1 then
                     data.currentSectorsDivisionsTime[sectorNumber][i] = sessionLapsData.getTimeOfDivision(data, sectorNumber, i)
 
