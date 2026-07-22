@@ -20,8 +20,27 @@ local sessionLapsSettings = require("src.settings.tabs.sessionLapsSettings")
 ---@field showLastDivisions boolean
 local sessionLapsData = {}
 
+---@return table
+local function generateSectorsTime()
+    local times = {}
+    for i = 0, #SIM.lapSplits - 1 do
+        times[i] = -1
+    end
+    return times
+end
+
+---@return table
+local function generateDivision()
+    local division = {}
+    for i = 0, #SIM.lapSplits - 1 do
+        division[i] = {}
+    end
+    return division
+end
+
 ---@return sessionLapsData
 function sessionLapsData.new()
+    
     return {
         previousBestlap = 0,
         currentWindowSize = vec2(0, 0),
@@ -34,26 +53,10 @@ function sessionLapsData.new()
         milliseconds = 0,
         bestLap = "-:--.---",
         currentLap = "0:00.000",
-        sectorsTime = {
-            [0] = -1,
-            [1] = -1,
-            [2] = -1
-        },
-        sectorsDivisions = {
-            [0] = {},
-            [1] = {},
-            [2] = {}
-        },
-        lastSectorsDivisionsTime = {
-            [0] = {},
-            [1] = {},
-            [2] = {}
-        },
-        currentSectorsDivisionsTime = {
-            [0] = {},
-            [1] = {},
-            [2] = {}
-        },
+        sectorsTime = generateSectorsTime(),
+        sectorsDivisions = generateDivision(),
+        lastSectorsDivisionsTime = generateDivision(),
+        currentSectorsDivisionsTime = generateDivision(),
         lastSectorTime = -1,
         currentNumberDivisions = sessionLapsSettings.store.numberDivisions,
         showLastDivisions = false

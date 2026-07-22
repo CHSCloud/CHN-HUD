@@ -80,7 +80,7 @@ local function drawSector(data, sectorNumber)
             if sectorNumber == 0 and i == 1 and CAR.splinePosition >= data.sectorsDivisions[sectorNumber][i] then
                 data.showLastDivisions = false
                 ac.log("COPIOU PARA O LAST")
-                for i = 0, 2 do
+                for i = 0, #SIM.lapSplits - 1 do
                     utils.copyTable(data.currentSectorsDivisionsTime[i], data.lastSectorsDivisionsTime[i])
                 end
                 sessionLapsData.resetCurrentDivision(data, sessionLapsSettings.store.numberDivisions - 1)
@@ -121,11 +121,10 @@ function sectors.drawSectors(data)
         data.lastLapNumber = CAR.lapCount 
         data.showLastDivisions = true
     end
-    drawSector(data, 0)
 
-    drawSector(data, 1)
-
-    drawSector(data, 2)
+    for sector = 0, #SIM.lapSplits - 1 do
+        drawSector(data, sector)
+    end
 
     data.currentWindowHeight = data.currentWindowHeight + 5
 
