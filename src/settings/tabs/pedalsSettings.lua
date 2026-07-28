@@ -49,6 +49,7 @@ local defaultValues = {
     telemetryActive = false,
     telemetryLenght = 250,
     telemetryPos = 1,
+    telemetryInverted = false,
     telemetryThrottle = true,
     telemetryBrake =  true,
     telemetryClucth = false,
@@ -448,6 +449,10 @@ function pedalsSettings.pedalsSettings()
             droplist.PosText.Start)
 
         posYTelemetry = posYTelemetry + 35
+        if toggleButton.main("telemetryInverted", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryInverted, "Inverter Gráfico") then
+            pedalsSettings.store.telemetryInverted = not pedalsSettings.store.telemetryInverted
+        end
+        posYTelemetry = posYTelemetry + 25
         if toggleButton.main("telemetryThrottle", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryThrottle, language.get("THROTTLE")) then
             pedalsSettings.store.telemetryThrottle = not pedalsSettings.store.telemetryThrottle
         end
