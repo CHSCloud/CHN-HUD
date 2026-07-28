@@ -46,9 +46,9 @@ function pedals.windowMain()
 
     ui.drawRectFilled(vec2(0, 0), data.currentWindowSize, WindowsColor, 10 * pedalsSettings.store.pedalsScale)
 
-    if pedalsSettings.store.telemetryActive then
+    if pedalsSettings.store.telemetryActive and pedalsSettings.store.telemetryPos == 1 then
+        telemetry.drawTelemetry(data)
         data.currentWindowWidth = pedalsSettings.store.telemetryLenght * pedalsSettings.store.pedalsScale
-        telemetry.drawTelemetry(data)  
     end
 
     if pedalsSettings.store.gearActive then
@@ -120,6 +120,11 @@ function pedals.windowMain()
 
     if pedalsSettings.store.rpmActive then
         rpm.drawRpm(data)
+    end
+
+    if pedalsSettings.store.telemetryActive and pedalsSettings.store.telemetryPos == 2 then
+        telemetry.drawTelemetry(data)
+        data.currentWindowWidth = data.currentWindowWidth + pedalsSettings.store.telemetryLenght * pedalsSettings.store.pedalsScale
     end
 
     if data.contentPositions[1][2] ~= vec2(0, 0) or data.contentPositions[2][2] ~= vec2(0, 0) or data.contentPositions[5][2] ~= vec2(0, 0) then

@@ -48,6 +48,7 @@ local defaultValues = {
 
     telemetryActive = false,
     telemetryLenght = 250,
+    telemetryPos = 1,
     telemetryThrottle = true,
     telemetryBrake =  true,
     telemetryClucth = false,
@@ -61,6 +62,7 @@ local positionsKeysCenter = {}
 
 local positionsBorders = {}
 local positionsCenters = {}
+local positionsTelemetry = {}
 
 local function resetToDefault()
     for key, value in pairs(defaultValues) do
@@ -260,6 +262,11 @@ function pedalsSettings.pedalsSettings()
         [5] = language.get("TOP_CENTER"),
         [6] = language.get("BOTTOM_CENTER")
     }
+    positionsTelemetry = {
+        language.get("LEFT"),
+        language.get("RIGHT")
+    }
+
     positionsKeysBorders = {
         brakebiasPos = pedalsSettings.store.brakebiasPos,
         fuelPos = pedalsSettings.store.fuelPos,
@@ -433,8 +440,14 @@ function pedalsSettings.pedalsSettings()
             slider.PosText.Start, 
             "telemetryLenght"
         )
+        posYTelemetry = posYTelemetry + 35
 
-        posYTelemetry = posYTelemetry + 25
+        pedalsSettings.store.telemetryPos = droplist.main("##telemetryPos",language.get("POSITION"),
+            vec2(posXTelemetry, posYTelemetry - 4),
+            utils.findLenghtLongestString(positionsTelemetry, 12).x + 40, pedalsSettings.store.telemetryPos, positionsTelemetry,
+            droplist.PosText.Start)
+
+        posYTelemetry = posYTelemetry + 35
         if toggleButton.main("telemetryThrottle", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryThrottle, language.get("THROTTLE")) then
             pedalsSettings.store.telemetryThrottle = not pedalsSettings.store.telemetryThrottle
         end

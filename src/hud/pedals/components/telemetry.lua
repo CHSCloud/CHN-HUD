@@ -26,8 +26,8 @@ end
 
 ---@param data pedalsData
 function telemetry.drawTelemetry(data)
-    local min = vec2(10 * pedalsSettings.store.pedalsScale, 10 * pedalsSettings.store.pedalsScale)
-    local max = vec2(pedalsSettings.store.telemetryLenght * pedalsSettings.store.pedalsScale, data.currentWindowSize.y - 10 * pedalsSettings.store.pedalsScale)
+    local min = vec2(data.currentWindowWidth + 10 * pedalsSettings.store.pedalsScale, 10 * pedalsSettings.store.pedalsScale)
+    local max = vec2(data.currentWindowWidth + pedalsSettings.store.telemetryLenght * pedalsSettings.store.pedalsScale - 10 * pedalsSettings.store.pedalsScale, data.currentWindowSize.y - 10 * pedalsSettings.store.pedalsScale)
 
     local totalHeight = max.y - min.y
     local rectHeight = totalHeight / 4
