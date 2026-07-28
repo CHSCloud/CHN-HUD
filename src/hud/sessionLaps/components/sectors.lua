@@ -79,7 +79,6 @@ local function drawSector(data, sectorNumber)
 
             if sectorNumber == 0 and i == 1 and CAR.splinePosition >= data.sectorsDivisions[sectorNumber][i] then
                 data.showLastDivisions = false
-                ac.log("COPIOU PARA O LAST")
                 for i = 0, #SIM.lapSplits - 1 do
                     utils.copyTable(data.currentSectorsDivisionsTime[i], data.lastSectorsDivisionsTime[i])
                 end
@@ -111,12 +110,13 @@ function sectors.drawSectors(data)
     end
 
     if data.lastSectorTime ~= CAR.previousSectorTime and CAR.previousSectorTime ~= 0 then
-        data.sectorsTime[(CAR.currentSector - 1) % 3] = CAR.previousSectorTime
+        data.sectorsTime[(CAR.currentSector - 1) % #SIM.lapSplits] = CAR.previousSectorTime
         data.lastSectorTime = CAR.previousSectorTime
-    elseif CAR.lastSplits[2] ~= nil and CAR.previousSectorTime == 0 then
-        data.sectorsTime[(CAR.currentSector - 1) % 3] = CAR.lastSplits[2]
-        data.lastSectorTime = CAR.lastSplits[2]
+    elseif CAR.lastSplits[#SIM.lapSplits - 1] ~= nil and CAR.previousSectorTime == 0 then
+        data.sectorsTime[(CAR.currentSector - 1) % #SIM.lapSplits] = CAR.lastSplits[#SIM.lapSplits - 1]
+        data.lastSectorTime = CAR.lastSplits[#SIM.lapSplits - 1]
     end
+    
     if data.lastLapNumber ~= CAR.lapCount then
         data.lastLapNumber = CAR.lapCount 
         data.showLastDivisions = true
@@ -127,13 +127,6 @@ function sectors.drawSectors(data)
     end
 
     data.currentWindowHeight = data.currentWindowHeight + 5
-
-    --[[
-    ac.log("Posicao: ".. string.format("%.2f",CAR.splinePosition))
-    ac.log("splits ".. tostring(SIM.lapSplits))
-    ac.log("Tempo do setor ".. tostring(CAR.previousSectorTime))
-    ac.log("Setor Atual ".. tostring(CAR.currentSector))
-    ac.log("Tempos dos setores ".. tostring(CAR.currentSplits))]]
 end
 
 return sectors

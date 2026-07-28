@@ -131,7 +131,6 @@ function sessionLapsData.getTimeOfDivision(data, sectorNumber, division)
     end
 
     for sector = 0, sectorNumber do
-
         if sector == sectorNumber then
             for div = 1, division - 1 do
                 lastTimeDivisions =  lastTimeDivisions + data.currentSectorsDivisionsTime[sector][div]
