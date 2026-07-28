@@ -127,5 +127,6 @@
     "PRESSURE_DELTA": "Pressure delta",
     "CORE_TEMPERATURE": "Core temperature",
     "WEAR": "Wear",
-    "TELEMETRY": "Telemetry"
+    "TELEMETRY": "Telemetry",
+    "INVERT_GRAPH": "Invert graph"
 }

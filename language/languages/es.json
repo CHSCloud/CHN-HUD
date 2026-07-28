@@ -127,5 +127,6 @@
     "PRESSURE_DELTA": "Diferencia de presión",
     "CORE_TEMPERATURE": "Temperatura interna",
     "WEAR": "Desgaste",
-    "TELEMETRY": "Telemetría"
+    "TELEMETRY": "Telemetría",
+    "INVERT_GRAPH": "Invertir gráfico"
 }

@@ -449,7 +449,7 @@ function pedalsSettings.pedalsSettings()
             droplist.PosText.Start)
 
         posYTelemetry = posYTelemetry + 35
-        if toggleButton.main("telemetryInverted", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryInverted, "Inverter Gráfico") then
+        if toggleButton.main("telemetryInverted", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryInverted, language.get("INVERT_GRAPH")) then
             pedalsSettings.store.telemetryInverted = not pedalsSettings.store.telemetryInverted
         end
         posYTelemetry = posYTelemetry + 25
