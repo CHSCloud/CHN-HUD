@@ -112,11 +112,9 @@ end
 
 ---@param data sessionLapsData
 function sessionLapsData.resetSectors(data)
-    data.sectorsTime = {
-        [0] = -1,
-        [1] = -1,
-        [2] = -1
-    }
+    for i = 0, #SIM.lapSplits - 1 do
+        data.sectorsTime[i] = -1
+    end
     data.lastSectorTime = -1
 end
 
@@ -129,7 +127,7 @@ function sessionLapsData.getTimeOfDivision(data, sectorNumber, division)
     if sectorNumber == 0  and division == 0 then
         return CAR.lapTimeMs
     end
-
+    
     for sector = 0, sectorNumber do
         if sector == sectorNumber then
             for div = 1, division - 1 do

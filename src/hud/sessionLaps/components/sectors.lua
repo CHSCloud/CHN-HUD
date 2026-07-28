@@ -54,7 +54,7 @@ local function drawSector(data, sectorNumber)
                     
                     ac.log("Atual recebe: " .. string.format("%d:%02d.%03d", minutes, seconds, milliseconds))
                 end
-                if CAR.lapCount == 0 then
+                if CAR.lapCount == 0 or data.lastSectorsDivisionsTime[sectorNumber][i] == -1 then
                     color = COLOR.WHITE
                 else
                     if data.currentSectorsDivisionsTime[sectorNumber][i] < data.lastSectorsDivisionsTime[sectorNumber][i] then
@@ -67,7 +67,7 @@ local function drawSector(data, sectorNumber)
                 color = COLOR.GRAY_BG
             end
         else
-            if CAR.lapCount == 1 then
+            if CAR.lapCount == 1 or data.lastSectorsDivisionsTime[sectorNumber][i] == -1 then
                 color = COLOR.WHITE
             else
                 if data.currentSectorsDivisionsTime[sectorNumber][i] < data.lastSectorsDivisionsTime[sectorNumber][i] then
