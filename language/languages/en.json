@@ -128,5 +128,6 @@
     "CORE_TEMPERATURE": "Core temperature",
     "WEAR": "Wear",
     "TELEMETRY": "Telemetry",
-    "INVERT_GRAPH": "Invert graph"
+    "INVERT_GRAPH": "Invert graph",
+    "PERIOD": "Period"
 }

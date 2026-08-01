@@ -128,5 +128,6 @@
     "CORE_TEMPERATURE": "Temperatura interna",
     "WEAR": "Desgaste",
     "TELEMETRY": "Telemetria",
-    "INVERT_GRAPH": "Inverter gráfico"
+    "INVERT_GRAPH": "Inverter gráfico",
+    "PERIOD": "Período"
 }

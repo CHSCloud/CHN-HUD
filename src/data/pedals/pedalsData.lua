@@ -25,7 +25,7 @@ local pedalsSettings = require("src.settings.tabs.pedalsSettings")
 ---@field brakeTelemetry table
 ---@field clutchTelemetry table
 ---@field handbrakeTelemetry table
----@field maxPointsTelemetry number
+---@field lastTelemetryPeriod number
 local pedalsData = {}
 
 ---@param points number
@@ -40,7 +40,6 @@ end
 
 ---@return pedalsData
 function pedalsData.new()
-    local maxPointsTelemetry = 300
     
     return {
         currentWindowSize = vec2(0, 0),
@@ -64,15 +63,37 @@ function pedalsData.new()
         barMidleSize = nil,
         barPaddingMidle = nil,
         contentPositions = {},
-        throttleTelemetry = getEmptyTable(maxPointsTelemetry),
-        brakeTelemetry = getEmptyTable(maxPointsTelemetry),
-        clutchTelemetry = getEmptyTable(maxPointsTelemetry),
-        handbrakeTelemetry = getEmptyTable(maxPointsTelemetry),
-        maxPointsTelemetry = maxPointsTelemetry
+        throttleTelemetry = getEmptyTable(pedalsSettings.store.telemetryPeriod),
+        brakeTelemetry = getEmptyTable(pedalsSettings.store.telemetryPeriod),
+        clutchTelemetry = getEmptyTable(pedalsSettings.store.telemetryPeriod),
+        handbrakeTelemetry = getEmptyTable(pedalsSettings.store.telemetryPeriod),
+        lastTelemetryPeriod = pedalsSettings.store.telemetryPeriod,
     }
 end
 
+---@param graph table
+---@param newSize number
+local function resizeTable(graph, newSize)
+    local currentSize = #graph
+    if newSize < currentSize then
+        table.move(graph, newSize, currentSize, newSize)
+    elseif newSize > currentSize then
+        for i = currentSize + 1, newSize do
+            graph[i] = 0
+        end
+    end
+end
 
+---@param data pedalsData
+function pedalsData.remapTelemetry(data)
+    resizeTable(data.throttleTelemetry, pedalsSettings.store.telemetryPeriod)
+    resizeTable(data.brakeTelemetry, pedalsSettings.store.telemetryPeriod)  
+    resizeTable(data.clutchTelemetry, pedalsSettings.store.telemetryPeriod)
+    resizeTable(data.handbrakeTelemetry, pedalsSettings.store.telemetryPeriod)
+end
+
+---@param data pedalsData
+---@param windowSize vec2
 function pedalsData.resetContentPositions(data, windowSize)
     local distanceLeft = 0
     local distanceRight = windowSize.x
@@ -92,6 +113,9 @@ function pedalsData.resetContentPositions(data, windowSize)
     }
 end
 
+---@param data pedalsData
+---@param pos vec2
+---@param size vec2
 function pedalsData.setPositionContentBorder(data, pos, size)
     local positions = data.contentPositions[pos]
 
@@ -106,6 +130,9 @@ function pedalsData.setPositionContentBorder(data, pos, size)
     positions[2] = size
 end
 
+---@param data pedalsData
+---@param pos vec2
+---@param size vec2
 function pedalsData.setPositionContentCenter(data, pos, size)
     local positions = data.contentPositions[pos]
 

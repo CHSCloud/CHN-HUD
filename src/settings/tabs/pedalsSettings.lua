@@ -46,8 +46,9 @@ local defaultValues = {
     drsActvationActive = false,
     drsPos = 1,
 
-    telemetryActive = false,
+    telemetryActive = true,
     telemetryLenght = 250,
+    telemetryPeriod = 300,
     telemetryPos = 1,
     telemetryInverted = false,
     telemetryThrottle = true,
@@ -430,16 +431,29 @@ function pedalsSettings.pedalsSettings()
     end
 
     if pedalsSettings.store.telemetryActive then
+        posYTelemetry = posYTelemetry + 35
         pedalsSettings.store.telemetryLenght = slider.main(
-            "",
+            language.get("LENGHT"),
             string.format("%.0f", pedalsSettings.store.telemetryLenght), 
-            vec2(posXTelemetry + 40, posYTelemetry + 2), 
+            vec2(posXTelemetry, posYTelemetry + 2), 
             150, 
             pedalsSettings.store.telemetryLenght,
             100, 
-            400, 
+            400,
             slider.PosText.Start, 
             "telemetryLenght"
+        )
+        posYTelemetry = posYTelemetry + 35
+        pedalsSettings.store.telemetryPeriod = slider.main(
+            language.get("PERIOD"),
+            string.format("%.0f", pedalsSettings.store.telemetryPeriod), 
+            vec2(posXTelemetry, posYTelemetry + 2), 
+            150, 
+            pedalsSettings.store.telemetryPeriod,
+            200, 
+            800, 
+            slider.PosText.Start, 
+            "telemetryPeriod"
         )
         posYTelemetry = posYTelemetry + 35
 
@@ -448,7 +462,10 @@ function pedalsSettings.pedalsSettings()
             utils.findLenghtLongestString(positionsTelemetry, 12).x + 40, pedalsSettings.store.telemetryPos, positionsTelemetry,
             droplist.PosText.Start)
 
-        posYTelemetry = posYTelemetry + 35
+        
+        posYTelemetry = 560
+        posXTelemetry = posXTelemetry + 270
+        ui.drawLine(vec2(posXTelemetry - 15, posYTelemetry - 10), vec2(posXTelemetry - 15, posYTelemetry + 130), COLOR.WHITE_LINE, 2)
         if toggleButton.main("telemetryInverted", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryInverted, language.get("INVERT_GRAPH")) then
             pedalsSettings.store.telemetryInverted = not pedalsSettings.store.telemetryInverted
         end
@@ -473,7 +490,7 @@ function pedalsSettings.pedalsSettings()
     --
 
     -- Botão Reset
-    initPos = initPos + 40
+    initPos = initPos + 60
     if button.main(vec2(20, initPos), language.get("RESET_DEFAULT")) then
         resetToDefault()
     end

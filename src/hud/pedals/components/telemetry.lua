@@ -1,4 +1,5 @@
 local pedalsSettings = require("src.settings.tabs.pedalsSettings")
+local pedalsData = require("src.data.pedals.pedalsData")
 local utils = require("common.utils")
 
 local telemetry = {}
@@ -11,7 +12,7 @@ local function drawGraph(telemetryData, parameter, color, min, max)
     telemetryData[#telemetryData+1] = utils.smoothValue(telemetryData[#telemetryData], parameter, 0.4)
     table.remove(telemetryData, 1)
 
-    local lenght = (max.x - min.x) / pedalsSettings.store.telemetryLenght * 1.5
+    local lenght = (400 * pedalsSettings.store.pedalsScale) / pedalsSettings.store.telemetryPeriod
 
     ui.pathClear()
     for i, value in ipairs(telemetryData) do
@@ -21,7 +22,7 @@ local function drawGraph(telemetryData, parameter, color, min, max)
             ui.pathLineTo(vec2(xAxis, max.y - value * (max.y - 10 * pedalsSettings.store.pedalsScale)))
         end
     end
-    ui.pathSimpleStroke(color, false, 2)
+    ui.pathSimpleStroke(color, false, 2 * pedalsSettings.store.pedalsScale)
 end
 
 ---@param telemetryData table
@@ -33,7 +34,7 @@ local function drawGraphInverted(telemetryData, parameter, color, min, max)
     table.insert(telemetryData, 1, utils.smoothValue(telemetryData[1], parameter, 0.4))
     table.remove(telemetryData, #telemetryData)
     
-    local lenght = (max.x - min.x) / pedalsSettings.store.telemetryLenght * 1.5
+    local lenght = (400 * pedalsSettings.store.pedalsScale) / pedalsSettings.store.telemetryPeriod
 
     ui.pathClear()
     for i, value in ipairs(telemetryData) do
@@ -42,11 +43,16 @@ local function drawGraphInverted(telemetryData, parameter, color, min, max)
             ui.pathLineTo(vec2(xAxis, max.y - value * (max.y - 10 * pedalsSettings.store.pedalsScale)))
         end
     end
-    ui.pathSimpleStroke(color, false, 2)
+    ui.pathSimpleStroke(color, false, 2 * pedalsSettings.store.pedalsScale)
 end
 
 ---@param data pedalsData
 function telemetry.drawTelemetry(data)
+    if data.lastTelemetryPeriod ~= pedalsSettings.store.telemetryPeriod then
+        data.lastTelemetryPeriod = pedalsSettings.store.telemetryPeriod
+        pedalsData.remapTelemetry(data)
+    end
+
     local min = vec2(data.currentWindowWidth + 10 * pedalsSettings.store.pedalsScale, 10 * pedalsSettings.store.pedalsScale)
     local max = vec2(data.currentWindowWidth + pedalsSettings.store.telemetryLenght * pedalsSettings.store.pedalsScale - 10 * pedalsSettings.store.pedalsScale, data.currentWindowSize.y - 10 * pedalsSettings.store.pedalsScale)
 
