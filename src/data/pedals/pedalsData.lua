@@ -114,7 +114,7 @@ function pedalsData.resetContentPositions(data, windowSize)
 end
 
 ---@param data pedalsData
----@param pos vec2
+---@param pos number
 ---@param size vec2
 function pedalsData.setPositionContentBorder(data, pos, size)
     local positions = data.contentPositions[pos]
@@ -131,7 +131,7 @@ function pedalsData.setPositionContentBorder(data, pos, size)
 end
 
 ---@param data pedalsData
----@param pos vec2
+---@param pos number
 ---@param size vec2
 function pedalsData.setPositionContentCenter(data, pos, size)
     local positions = data.contentPositions[pos]

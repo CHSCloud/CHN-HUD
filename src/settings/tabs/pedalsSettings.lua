@@ -450,7 +450,7 @@ function pedalsSettings.pedalsSettings()
             vec2(posXTelemetry, posYTelemetry + 2), 
             150, 
             pedalsSettings.store.telemetryPeriod,
-            200, 
+            250, 
             800, 
             slider.PosText.Start, 
             "telemetryPeriod"
@@ -486,7 +486,6 @@ function pedalsSettings.pedalsSettings()
             pedalsSettings.store.telemetryHandbrake = not pedalsSettings.store.telemetryHandbrake
         end
     end
-
     --
 
     -- Botão Reset
