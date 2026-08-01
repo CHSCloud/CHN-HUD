@@ -464,7 +464,7 @@ function pedalsSettings.pedalsSettings()
 
         
         posYTelemetry = 560
-        posXTelemetry = posXTelemetry + 270
+        posXTelemetry = posXTelemetry + 280
         ui.drawLine(vec2(posXTelemetry - 15, posYTelemetry - 10), vec2(posXTelemetry - 15, posYTelemetry + 130), COLOR.WHITE_LINE, 2)
         if toggleButton.main("telemetryInverted", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryInverted, language.get("INVERT_GRAPH")) then
             pedalsSettings.store.telemetryInverted = not pedalsSettings.store.telemetryInverted

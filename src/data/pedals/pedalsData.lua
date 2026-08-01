@@ -1,4 +1,6 @@
 local pedalsSettings = require("src.settings.tabs.pedalsSettings")
+local utils = require("common.utils")
+
 ---@class pedalsData
 ---@field currentWindowSize vec2
 ---@field currentWindowWidth number
@@ -71,25 +73,12 @@ function pedalsData.new()
     }
 end
 
----@param graph table
----@param newSize number
-local function resizeTable(graph, newSize)
-    local currentSize = #graph
-    if newSize < currentSize then
-        table.move(graph, newSize, currentSize, newSize)
-    elseif newSize > currentSize then
-        for i = currentSize + 1, newSize do
-            graph[i] = 0
-        end
-    end
-end
-
 ---@param data pedalsData
 function pedalsData.remapTelemetry(data)
-    resizeTable(data.throttleTelemetry, pedalsSettings.store.telemetryPeriod)
-    resizeTable(data.brakeTelemetry, pedalsSettings.store.telemetryPeriod)  
-    resizeTable(data.clutchTelemetry, pedalsSettings.store.telemetryPeriod)
-    resizeTable(data.handbrakeTelemetry, pedalsSettings.store.telemetryPeriod)
+    utils.resizeTable(data.throttleTelemetry, pedalsSettings.store.telemetryPeriod)
+    utils.resizeTable(data.brakeTelemetry, pedalsSettings.store.telemetryPeriod)  
+    utils.resizeTable(data.clutchTelemetry, pedalsSettings.store.telemetryPeriod)
+    utils.resizeTable(data.handbrakeTelemetry, pedalsSettings.store.telemetryPeriod)
 end
 
 ---@param data pedalsData

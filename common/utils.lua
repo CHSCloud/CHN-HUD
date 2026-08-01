@@ -82,6 +82,18 @@ function utils.copyTable(from, to)
     end
 end
 
+---@param tlb table
+---@param newSize number
+function utils.resizeTable(tlb, newSize)
+    local currentSize = #tlb
+    if newSize < currentSize then
+        table.move(tlb, newSize, currentSize, newSize)
+    elseif newSize > currentSize then
+        for i = currentSize + 1, newSize do
+            tlb[i] = 0
+        end
+    end
+end
 
 ---@param from rgbm
 ---@param to rgbm
