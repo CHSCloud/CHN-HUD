@@ -107,30 +107,30 @@ function rpm.drawRpm(data)
         local center
         local initPosY
         if pedalsSettings.store.rpmPos == 5 then
-            space = data.currentWindowWidth - data.contentPositions[1][2].x - data.contentPositions[2][2].x
+            space = data.currentWindowWidth - data.contentPositions[1][2].x - data.contentPositions[1][1].x -data.contentPositions[2][2].x
             width = space * pedalsSettings.store.barLength
             if space < 75 * pedalsSettings.store.pedalsScale then
                 data.currentWindowWidth = data.currentWindowWidth + (75 * pedalsSettings.store.pedalsScale - space)
-                space = data.currentWindowWidth - data.contentPositions[1][2].x - data.contentPositions[2][2].x
+                space = data.currentWindowWidth - data.contentPositions[1][2].x - data.contentPositions[1][1].x - data.contentPositions[2][2].x
                 width = space * pedalsSettings.store.barLength
             end
 
-            center = data.contentPositions[1][2].x +
-            (data.currentWindowWidth - data.contentPositions[1][2].x - data.contentPositions[2][2].x) / 2
+            center = data.contentPositions[1][1].x + data.contentPositions[1][2].x +
+            (data.currentWindowWidth - data.contentPositions[1][2].x - data.contentPositions[1][1].x - data.contentPositions[2][2].x) / 2
             pedalsData.setPositionContentCenter(data, pedalsSettings.store.rpmPos,
                 vec2(width, 20 * pedalsSettings.store.pedalsScale))
             initPosY = data.contentPositions[1][1].y + 4 * pedalsSettings.store.pedalsScale
         else
-            space = data.currentWindowWidth - data.contentPositions[3][2].x - data.contentPositions[4][2].x
+            space = data.currentWindowWidth - data.contentPositions[3][2].x - data.contentPositions[3][1].x - data.contentPositions[4][2].x
             width = space * pedalsSettings.store.barLength
             if space < 75 * pedalsSettings.store.pedalsScale then
                 data.currentWindowWidth = data.currentWindowWidth + (75 * pedalsSettings.store.pedalsScale - space)
-                space = data.currentWindowWidth - data.contentPositions[3][2].x - data.contentPositions[4][2].x
+                space = data.currentWindowWidth - data.contentPositions[3][2].x - data.contentPositions[3][1].x - data.contentPositions[4][2].x
                 width = space * pedalsSettings.store.barLength
             end
 
-            center = data.contentPositions[3][2].x +
-            (data.currentWindowWidth - data.contentPositions[3][2].x - data.contentPositions[4][2].x) / 2
+            center = data.contentPositions[3][1].x + data.contentPositions[3][2].x +
+            (data.currentWindowWidth - data.contentPositions[3][2].x - data.contentPositions[3][1].x - data.contentPositions[4][2].x) / 2
             pedalsData.setPositionContentCenter(data, pedalsSettings.store.rpmPos,
                 vec2(width, 20 * pedalsSettings.store.pedalsScale))
             initPosY = data.contentPositions[pedalsSettings.store.rpmPos][1].y + 2 * pedalsSettings.store.pedalsScale
