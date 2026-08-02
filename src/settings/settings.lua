@@ -22,6 +22,7 @@ local defaultValues = {
     optionLanguage = 1,
     selectedSpeed = 1,
     selectedTemperature = 1,
+    selectedFuel = 1,
     transparancy = 0.85,
     windowsColor = rgbm.from0255(18, 21, 29, 0.85)
 }
@@ -47,6 +48,7 @@ SettingsActive = false
 WindowsColor = settings.store.windowsColor
 SelectedSpeed = settings.store.selectedSpeed
 SelectedTemperature = settings.store.selectedTemperature
+SelectedFuel = settings.store.selectedFuel
 
 if settings.store.optionLanguage ~= language.getCurrentLanguage() then
     language.setlanguage(settings.store.optionLanguage)
@@ -107,6 +109,11 @@ local function geral()
     settings.store.selectedTemperature = droplist.main("##Temperature", language.get("TEMPERATURE"), vec2(20, initPos), 150,
         settings.store.selectedTemperature, { "Celsius", "Fahrenheit" })
     SelectedTemperature = settings.store.selectedTemperature
+
+    initPos = initPos + 55
+    settings.store.selectedFuel = droplist.main("##Fuel", language.get("FUEL"), vec2(20, initPos), 150,
+        settings.store.selectedFuel, { language.get("LITERS"), language.get("GALLONS") })
+    SelectedFuel = settings.store.selectedFuel
 
     initPos = initPos + 38
     ui.drawLine(vec2(10, initPos), vec2(WindowSettingsSize.x - 18, initPos), COLOR.WHITE_LINE, 2)
