@@ -48,6 +48,7 @@ end
 
 ---@param data pedalsData
 function telemetry.drawTelemetry(data)
+    data.contentMidle = 73 * pedalsSettings.store.pedalsScale
     if data.lastTelemetryPeriod ~= pedalsSettings.store.telemetryPeriod then
         data.lastTelemetryPeriod = pedalsSettings.store.telemetryPeriod
         pedalsData.remapTelemetry(data)
