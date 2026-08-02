@@ -55,9 +55,9 @@ function sessionLapsSettings.sessionLapsSettings()
 
     if sessionLapsSettings.store.sectorsLapActive then
         initPos = initPos + 30
-        sessionLapsSettings.store.numberDivisions = math.floor(slider.main("",
+        sessionLapsSettings.store.numberDivisions = math.floor(slider.main(language.get("MICRO_SECTORS"),
             string.format("%d", sessionLapsSettings.store.numberDivisions), vec2(20, initPos), 250,
-            sessionLapsSettings.store.numberDivisions, 3, 10))
+            sessionLapsSettings.store.numberDivisions, 3, 10, slider.PosText.Start))
     end
 
     initPos = initPos + 40
