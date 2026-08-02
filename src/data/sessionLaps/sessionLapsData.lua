@@ -91,7 +91,6 @@ function sessionLapsData.setSectorsDivisions(data, numberDivisions)
         table.clear(data.lastSectorsDivisionsTime[i])
         table.clear(data.currentSectorsDivisionsTime[i])
         for _ = 1, numberDivisions + 1 do
-            ac.log(data.lastSectorsDivisionsTime[i])
             table.insert(data.lastSectorsDivisionsTime[i], -1)
             table.insert(data.currentSectorsDivisionsTime[i], -1)
         end

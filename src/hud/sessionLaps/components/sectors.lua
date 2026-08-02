@@ -47,12 +47,6 @@ local function drawSector(data, sectorNumber)
             if isPassed and not (CAR.currentSector == 0 and CAR.splinePosition > SIM.lapSplits[1])then
                 if data.currentSectorsDivisionsTime[sectorNumber][i] == -1 then
                     data.currentSectorsDivisionsTime[sectorNumber][i] = sessionLapsData.getTimeOfDivision(data, sectorNumber, i)
-
-                    local minutes = data.currentSectorsDivisionsTime[sectorNumber][i] / 60E3
-                    local seconds = (minutes % 1) * 60
-                    local milliseconds = math.round((seconds % 1) * 1000)
-                    
-                    ac.log("Atual recebe: " .. string.format("%d:%02d.%03d", minutes, seconds, milliseconds))
                 end
                 if CAR.lapCount == 0 or data.lastSectorsDivisionsTime[sectorNumber][i] == -1 then
                     color = COLOR.WHITE
