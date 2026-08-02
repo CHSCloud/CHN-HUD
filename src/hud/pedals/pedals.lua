@@ -108,18 +108,6 @@ function pedals.windowMain()
         drs.drawDRSActivation(data)
     end
 
-    local windowWidth = data.currentWindowWidth
-    local telemetryWidth = 0
-    if pedalsSettings.store.telemetryActive then
-        windowWidth = data.currentWindowWidth - pedalsSettings.store.telemetryLenght * pedalsSettings.store.pedalsScale
-        telemetryWidth = pedalsSettings.store.telemetryLenght * pedalsSettings.store.pedalsScale
-    end
-    if windowWidth < (data.contentPositions[1][2].x + data.contentPositions[2][2].x + data.contentPositions[5][2].x) or windowWidth < (data.contentPositions[3][2].x + data.contentPositions[4][2].x + data.contentPositions[6][2].x) then
-        data.currentWindowWidth = math.max(
-        data.contentPositions[1][2].x + data.contentPositions[2][2].x + data.contentPositions[5][2].x,
-            data.contentPositions[3][2].x + data.contentPositions[4][2].x + data.contentPositions[6][2].x) + telemetryWidth
-    end
-
     if pedalsSettings.store.p2pActive and CAR.kersPresent then
         p2p.drawP2p(data)
     end
@@ -147,7 +135,17 @@ function pedals.windowMain()
         data.contentBottom = 0
     end
 
-    
+    local windowWidth = data.currentWindowWidth
+    local telemetryWidth = 0
+    if pedalsSettings.store.telemetryActive then
+        windowWidth = data.currentWindowWidth - pedalsSettings.store.telemetryLenght * pedalsSettings.store.pedalsScale
+        telemetryWidth = pedalsSettings.store.telemetryLenght * pedalsSettings.store.pedalsScale
+    end
+    if windowWidth < (data.contentPositions[1][2].x + data.contentPositions[2][2].x + data.contentPositions[5][2].x) or windowWidth < (data.contentPositions[3][2].x + data.contentPositions[4][2].x + data.contentPositions[6][2].x) then
+        data.currentWindowWidth = math.max(
+        data.contentPositions[1][2].x + data.contentPositions[2][2].x + data.contentPositions[5][2].x,
+            data.contentPositions[3][2].x + data.contentPositions[4][2].x + data.contentPositions[6][2].x) + telemetryWidth
+    end
 
     data.currentWindowSize = vec2(data.currentWindowWidth, data.currentWindowHeight)
 
