@@ -13,6 +13,7 @@ local language = require("language.language")
 ---@field tyreLenght number
 ---@field lapCountLenght number
 ---@field lastLapLenght number
+---@field bestLapLenght number
 ---@field gapLenght number
 ---@field statusLenght number
 ---@field overtakingLenght number
@@ -32,6 +33,7 @@ function leaderboardData.new()
         tyreLenght = 50,
         lapCountLenght = 60,
         lastLapLenght = 100,
+        bestLapLenght = 100,
         gapLenght = 80,
         statusLenght = 21,
         overtakingLenght = 70,
@@ -44,6 +46,7 @@ function leaderboardData.setTitlesLeght(data)
     data.tyreLenght = math.max(ui.measureDWriteText(language.get("TYRES"), 18).x + 20, 50)
     data.lapCountLenght = math.max(ui.measureDWriteText(language.get("LAPS"), 18).x + 20, 60)
     data.lastLapLenght = math.max(ui.measureDWriteText(language.get("LAST"), 18).x + 20, 100)
+    data.bestLapLenght = math.max(ui.measureDWriteText(language.get("BEST"), 18).x + 20, 100)
     data.gapLenght = math.max(ui.measureDWriteText(language.get("GAP"), 18).x + 20, 80)
     data.statusLenght = math.max(ui.measureDWriteText(language.get("STATUS"), 18).x + 20, 21)
 end

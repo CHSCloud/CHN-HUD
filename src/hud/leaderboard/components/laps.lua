@@ -38,4 +38,27 @@ function lap.drawLastLap(data, time, pos, color)
     end
 end
 
+-- Desenha tempo da melhor volta
+---@param data leaderboardData
+---@param time number
+---@param pos vec2
+function lap.drawBestLap(data, time, pos, color)
+    if leaderboardSettings.store.bestLapLeaderboardActive then
+        local bestLapText
+        if time == 0 then
+            bestLapText = "-:--.---"
+        else
+            local minutes = time / 60E3
+            local seconds = (minutes % 1) * 60
+            local milliseconds = math.round((seconds % 1) * 1000)
+            bestLapText = string.format("%d:%02d.%03d", minutes, seconds, milliseconds)
+        end
+        ui.setCursor(pos)
+        ui.dwriteTextAligned(bestLapText, 20 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Center,
+            ui.Alignment.Center, vec2(data.bestLapLenght, 30):scale(leaderboardSettings.store.leaderboardScale), false,
+            color)
+        data.posX = data.posX + data.bestLapLenght
+    end
+end
+
 return lap

@@ -27,7 +27,7 @@ function titles.drawTitles(data)
     ui.dwriteTextAligned(language.get("NAME"), 18 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Start,
         ui.Alignment.Center, vec2(data.nameLenght, data.posY):scale(leaderboardSettings.store.leaderboardScale), false, COLOR.BLACK)
 
-    for index = 1, 6, 1 do
+    for index = 1, 7, 1 do
         if index == leaderboardSettings.store.tyrePos and leaderboardSettings.store.tyreActive then
             drawTitle(language.get("TYRES"), data, data.tyreLenght)
 
@@ -36,6 +36,9 @@ function titles.drawTitles(data)
 
         elseif index == leaderboardSettings.store.lastLapPos and leaderboardSettings.store.lastLapLeaderboardActive then
             drawTitle(language.get("LAST"), data, data.lastLapLenght)
+
+        elseif index == leaderboardSettings.store.bestLapPos and leaderboardSettings.store.bestLapLeaderboardActive then
+            drawTitle(language.get("BEST"), data, data.bestLapLenght)
 
         elseif index == leaderboardSettings.store.gapPos and leaderboardSettings.store.gapActive then
             drawTitle(language.get("GAP"), data, data.gapLenght)

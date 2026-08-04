@@ -3,14 +3,17 @@ local toggleButton = require("src.ui.buttons.toggleButton")
 local droplist = require("src.ui.selectors.droplist")
 local button = require("src.ui.buttons.button")
 local slider = require("src.ui.selectors.slider")
+local utils = require("common.utils")
 
 local leaderboardSettings = {}
 
-local defaultValues = {
+local defaultValues = {}
+local defaultGeneralValues = {
     leaderboardScale = 1,
 
     numDrivers = 10,
-
+}
+local defaultContentValues = {
     tyreActive = true,
     tyrePos = 1,
 
@@ -20,24 +23,35 @@ local defaultValues = {
     lastLapLeaderboardActive = true,
     lastLapPos = 3,
 
+    bestLapLeaderboardActive = true,
+    bestLapPos = 4,
+
     gapActive = true,
-    gapPos = 4,
+    gapPos = 5,
 
     overtakeArrowsActive = true,
-    overtakeArrowsPos = 5,
+    overtakeArrowsPos = 6,
 
     statusActive = true,
-    statusPos = 6,
+    statusPos = 7,
 
     focusedCarActive = true,
 
     titlesActive = true,
 }
 
+utils.copyTable(defaultGeneralValues, defaultValues)
+utils.copyTable(defaultContentValues, defaultValues)
 leaderboardSettings.store = ac.storage(defaultValues)
 
-local function resetToDefault()
-    for key, value in pairs(defaultValues) do
+local function resetGeneralToDefault()
+    for key, value in pairs(defaultGeneralValues) do
+        leaderboardSettings.store[key] = value
+    end
+end
+
+local function resetContentToDefault()
+    for key, value in pairs(defaultContentValues) do
         leaderboardSettings.store[key] = value
     end
 end
@@ -53,7 +67,7 @@ end
 local function contents()
     local pos = vec2(20, 80)
     invertPositions("tyreActive", leaderboardSettings.store.tyrePos)
-    local positions = { "1", "2", "3", "4", "5", "6" }
+    local positions = { "1", "2", "3", "4", "5", "6", "7" }
 
     ui.dwriteDrawText(language.get("CONTENT"), 12, vec2(pos.x - 5, pos.y), COLOR.WHITE)
     pos.y = pos.y + 25
@@ -91,6 +105,18 @@ local function contents()
         leaderboardSettings.store.lastLapPos, positions, droplist.PosText.Start)
     if old ~= leaderboardSettings.store.lastLapPos then
         invertPositions("lastLapPos", old, leaderboardSettings.store.lastLapPos)
+    end
+    pos.y = pos.y + 40
+
+    if toggleButton.main("bestLapToggle", pos, leaderboardSettings.store.bestLapLeaderboardActive, language.get("BEST_LAP_TIME")) then
+        leaderboardSettings.store.bestLapLeaderboardActive = not leaderboardSettings.store.bestLapLeaderboardActive
+    end
+    old = leaderboardSettings.store.bestLapPos
+    leaderboardSettings.store.bestLapPos = droplist.main("##bestLapPos", " |  " .. language.get("POSITION"),
+        vec2(pos.x + ui.measureDWriteText(language.get("BEST_LAP_TIME"), 12).x + 55, pos.y - 2), 60,
+        leaderboardSettings.store.bestLapPos, positions, droplist.PosText.Start)
+    if old ~= leaderboardSettings.store.bestLapPos then
+        invertPositions("bestLapPos", old, leaderboardSettings.store.bestLapPos)
     end
     pos.y = pos.y + 40
 
@@ -140,8 +166,10 @@ local function contents()
     if toggleButton.main("titlesLeaderBoardToggle", pos, leaderboardSettings.store.titlesActive, language.get("SHOW_TITLES")) then
         leaderboardSettings.store.titlesActive = not leaderboardSettings.store.titlesActive
     end
-
-    return pos.y
+    pos.y = pos.y + 40
+    if button.main(vec2(20, pos.y), language.get("RESET_DEFAULT")) then
+        resetContentToDefault()
+    end
 end
 
 local function general()
@@ -161,7 +189,7 @@ local function general()
     posY = posY + 40
 
     if button.main(vec2(20, posY), language.get("RESET_DEFAULT")) then
-        resetToDefault()
+        resetGeneralToDefault()
     end
 end
 

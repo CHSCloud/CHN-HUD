@@ -104,22 +104,31 @@ function leaderboard.windowMain()
             position.drawPosition(data, driver.logoPath, numPlayers, driver.position, driver.name,
                 vec2(data.posX, data.posY):scale(leaderboardSettings.store.leaderboardScale), color)
             
-            for index = 1, 6, 1 do
+            for index = 1, 7, 1 do
                 if index == leaderboardSettings.store.tyrePos then
                     tyres.drawTyre(data, driver.tyre,
                         vec2(data.posX, data.posY + 2.5):scale(leaderboardSettings.store.leaderboardScale), color)
+
                 elseif index == leaderboardSettings.store.lapCountPos then
                     laps.drawLapCount(data, driver.lapCount,
                         vec2(data.posX, data.posY + 2.5):scale(leaderboardSettings.store.leaderboardScale), color)
+
                 elseif index == leaderboardSettings.store.lastLapPos then
                     laps.drawLastLap(data, driver.lastLapTime,
                         vec2(data.posX, data.posY + 2.5):scale(leaderboardSettings.store.leaderboardScale), color)
+
+                elseif index == leaderboardSettings.store.bestLapPos then
+                    laps.drawBestLap(data, driver.bestLapTime,
+                        vec2(data.posX, data.posY + 2.5):scale(leaderboardSettings.store.leaderboardScale), color)
+
                 elseif index == leaderboardSettings.store.gapPos then
                     gap.drawGap(data, driver,
                         vec2(data.posX, data.posY + 2.5):scale(leaderboardSettings.store.leaderboardScale), color)
+
                 elseif index == leaderboardSettings.store.overtakeArrowsPos then
                     overtaking.drawOvertaking(data, driver.index,
                         vec2(data.posX, data.posY + 2.5):scale(leaderboardSettings.store.leaderboardScale))
+
                 elseif index == leaderboardSettings.store.statusPos then
                     status.drawDriverStatus(data, statusText, statusColor,
                         vec2(data.posX, data.posY + 2.5):scale(leaderboardSettings.store.leaderboardScale))
