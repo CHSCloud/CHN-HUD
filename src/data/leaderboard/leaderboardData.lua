@@ -15,6 +15,7 @@ local language = require("language.language")
 ---@field lastLapLenght number
 ---@field bestLapLenght number
 ---@field gapLenght number
+---@field intLenght number
 ---@field statusLenght number
 ---@field overtakingLenght number
 local leaderboardData = {}
@@ -35,6 +36,7 @@ function leaderboardData.new()
         lastLapLenght = 100,
         bestLapLenght = 100,
         gapLenght = 80,
+        intLenght = 80,
         statusLenght = 21,
         overtakingLenght = 70,
     }
@@ -48,6 +50,7 @@ function leaderboardData.setTitlesLeght(data)
     data.lastLapLenght = math.max(ui.measureDWriteText(language.get("LAST"), 18).x + 20, 100)
     data.bestLapLenght = math.max(ui.measureDWriteText(language.get("BEST"), 18).x + 20, 100)
     data.gapLenght = math.max(ui.measureDWriteText(language.get("GAP"), 18).x + 20, 80)
+    data.intLenght = math.max(ui.measureDWriteText(language.get("INT"), 18).x + 20, 80)
     data.statusLenght = math.max(ui.measureDWriteText(language.get("STATUS"), 18).x + 20, 21)
 end
 

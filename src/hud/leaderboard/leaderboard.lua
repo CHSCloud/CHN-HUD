@@ -7,6 +7,7 @@ local position = require("src.hud.leaderboard.components.position")
 local laps = require("src.hud.leaderboard.components.laps")
 local tyres = require("src.hud.leaderboard.components.tyres")
 local gap = require("src.hud.leaderboard.components.gap")
+local int = require("src.hud.leaderboard.components.int")
 local overtaking = require("src.hud.leaderboard.components.overtaking")
 local status = require("src.hud.leaderboard.components.status")
 local titles = require("src.hud.leaderboard.components.titles")
@@ -104,7 +105,7 @@ function leaderboard.windowMain()
             position.drawPosition(data, driver.logoPath, numPlayers, driver.position, driver.name,
                 vec2(data.posX, data.posY):scale(leaderboardSettings.store.leaderboardScale), color)
             
-            for index = 1, 7, 1 do
+            for index = 1, 8, 1 do
                 if index == leaderboardSettings.store.tyrePos then
                     tyres.drawTyre(data, driver.tyre,
                         vec2(data.posX, data.posY + 2.5):scale(leaderboardSettings.store.leaderboardScale), color)
@@ -123,6 +124,10 @@ function leaderboard.windowMain()
 
                 elseif index == leaderboardSettings.store.gapPos then
                     gap.drawGap(data, driver,
+                        vec2(data.posX, data.posY + 2.5):scale(leaderboardSettings.store.leaderboardScale), color)
+
+                elseif index == leaderboardSettings.store.intPos then
+                    int.drawInt(data, driver,
                         vec2(data.posX, data.posY + 2.5):scale(leaderboardSettings.store.leaderboardScale), color)
 
                 elseif index == leaderboardSettings.store.overtakeArrowsPos then

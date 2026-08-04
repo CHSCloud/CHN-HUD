@@ -8,7 +8,7 @@
  - Telemetria
  - Visualização em Galões no combustível
  - Visualização de tempo de setores e micro-setores
- - 
+ - LeaderBoard: Best Lap, Int
 ### Correções de bugs
  - Volante não espadir a tela ao ser adicionando sozinho
  - Cores do P2P não aparecendo

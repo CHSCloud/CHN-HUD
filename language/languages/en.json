@@ -121,6 +121,7 @@
     "IDEAL": "Ideal",
     "NAME": "Name",
     "GAP": "Gap",
+    "INT": "Int",
     "STATUS": "Status",
     "SHOW_TITLES": "Show titles",
     "TEMPERATURE": "Temperature",

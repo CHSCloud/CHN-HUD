@@ -29,11 +29,14 @@ local defaultContentValues = {
     gapActive = true,
     gapPos = 5,
 
+    intActive = true,
+    intPos = 6,
+
     overtakeArrowsActive = true,
-    overtakeArrowsPos = 6,
+    overtakeArrowsPos = 7,
 
     statusActive = true,
-    statusPos = 7,
+    statusPos = 8,
 
     focusedCarActive = true,
 
@@ -57,7 +60,7 @@ local function resetContentToDefault()
 end
 
 local function invertPositions(keyActive, oldPos, newPos)
-    for key, value in pairs(defaultValues) do
+    for key, _ in pairs(defaultValues) do
         if key ~= keyActive and leaderboardSettings.store[key] == newPos and string.match(key, "Pos") then
             leaderboardSettings.store[key] = oldPos
         end
@@ -67,7 +70,7 @@ end
 local function contents()
     local pos = vec2(20, 80)
     invertPositions("tyreActive", leaderboardSettings.store.tyrePos)
-    local positions = { "1", "2", "3", "4", "5", "6", "7" }
+    local positions = { "1", "2", "3", "4", "5", "6", "7", "8"}
 
     ui.dwriteDrawText(language.get("CONTENT"), 12, vec2(pos.x - 5, pos.y), COLOR.WHITE)
     pos.y = pos.y + 25
@@ -141,6 +144,18 @@ local function contents()
         droplist.PosText.Start)
     if old ~= leaderboardSettings.store.gapPos then
         invertPositions("gapPos", old, leaderboardSettings.store.gapPos)
+    end
+    pos.y = pos.y + 40
+
+    if toggleButton.main("intToggle", pos, leaderboardSettings.store.intActive, language.get("INT")) then
+        leaderboardSettings.store.intActive = not leaderboardSettings.store.intActive
+    end
+    old = leaderboardSettings.store.intPos
+    leaderboardSettings.store.intPos = droplist.main("##intPos", " |  " .. language.get("POSITION"),
+        vec2(pos.x + ui.measureDWriteText(language.get("INT"), 12).x + 55, pos.y - 2), 60, leaderboardSettings.store.intPos, positions,
+        droplist.PosText.Start)
+    if old ~= leaderboardSettings.store.intPos then
+        invertPositions("intPos", old, leaderboardSettings.store.intPos)
     end
     pos.y = pos.y + 40
 
