@@ -58,12 +58,12 @@ function telemetry.drawTelemetry(data)
     local max = vec2(data.currentWindowWidth + pedalsSettings.store.telemetryLenght * pedalsSettings.store.pedalsScale - 10 * pedalsSettings.store.pedalsScale, data.currentWindowSize.y - 10 * pedalsSettings.store.pedalsScale)
 
     local totalHeight = max.y - min.y
-    local rectHeight = totalHeight / 4
+    local rectHeight = totalHeight / 6
     local rectWidth = max.x - min.x 
     local padding
     local init = min
-    for i = 1, 4, 1 do
-        if i == 4 then
+    for i = 1, 6, 1 do
+        if i == 6 then
             padding =  0
         else
             padding =  2 * pedalsSettings.store.pedalsScale

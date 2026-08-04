@@ -34,7 +34,7 @@ function tyresSettings.tyresSettings()
 
     pos.y = pos.y + 35;
 
-    ui.dwriteDrawText(language.get("ELEMENTS"), 12, vec2(pos.x - 5, pos.y), COLOR.WHITE)
+    ui.dwriteDrawText(language.get("CONTENT"), 12, vec2(pos.x - 5, pos.y), COLOR.WHITE)
     pos.y = pos.y + 25;
     if toggleButton.main("idealTemp", vec2(pos.x, pos.y), tyresSettings.store.idealTempActive, language.get("IDEAL_TEMPERATURE")) then
         tyresSettings.store.idealTempActive = not tyresSettings.store.idealTempActive

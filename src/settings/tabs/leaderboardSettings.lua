@@ -50,14 +50,12 @@ local function invertPositions(keyActive, oldPos, newPos)
     end
 end
 
----comment
----@param pos vec2
-local function drawContents(pos)
+local function contents()
+    local pos = vec2(20, 80)
     invertPositions("tyreActive", leaderboardSettings.store.tyrePos)
     local positions = { "1", "2", "3", "4", "5", "6" }
 
-    
-    ui.dwriteDrawText(language.get("ELEMENTS"), 12, vec2(pos.x - 5, pos.y), COLOR.WHITE)
+    ui.dwriteDrawText(language.get("CONTENT"), 12, vec2(pos.x - 5, pos.y), COLOR.WHITE)
     pos.y = pos.y + 25
     if toggleButton.main("tyresToggle", pos, leaderboardSettings.store.tyreActive, language.get("TYRES")) then
         leaderboardSettings.store.tyreActive = not leaderboardSettings.store.tyreActive
@@ -146,8 +144,8 @@ local function drawContents(pos)
     return pos.y
 end
 
-function leaderboardSettings.leaderboardSettings()
-    local posY = 75
+local function general()
+    local posY = 100
 
     -- Escala:
     leaderboardSettings.store.leaderboardScale = slider.main(language.get("SIZE"),
@@ -161,12 +159,18 @@ function leaderboardSettings.leaderboardSettings()
         leaderboardSettings.store.numDrivers, 1, 20))
 
     posY = posY + 40
-    posY = drawContents(vec2(20, posY))
-    posY = posY + 40
 
     if button.main(vec2(20, posY), language.get("RESET_DEFAULT")) then
         resetToDefault()
     end
+end
+
+
+function leaderboardSettings.leaderboardSettings()
+    ui.tabBar('##ID', function()
+        ui.tabItem(language.get("GENERAL"), general)
+        ui.tabItem(language.get("CONTENT"), contents)
+    end)
 end
 
 return leaderboardSettings

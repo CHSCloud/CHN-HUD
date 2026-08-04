@@ -30,15 +30,19 @@ local function loadTranslations()
     end
 end
 
+---@param key integer | string
 function language.setlanguage(key)
     languageSettings.currentLanguage = key
     loadTranslations()
 end
 
+---@param key string
+---@return string
 function language.get(key)
     return translations[key]
 end
 
+---@return integer | string
 function language.getCurrentLanguage()
     return languageSettings.currentLanguage
 end
