@@ -21,7 +21,6 @@ ac.onSessionStart(function()
     table.clear(data.storedPositions)
 end)
 
-
 -- Atualiza a lista de jogadores
 local function updateDrivers()
     table.clear(data.drivers)
@@ -38,7 +37,8 @@ local function updateDrivers()
             isRetired = car.isRetired,
             isRaceFinished = car.isRaceFinished,
             isInPitlane = car.isInPitlane,
-            logoPath = ac.getFolder(ac.FolderID.ContentCars) .. "\\" .. ac.getCarID(car.index) .. "\\ui\\badge.png"
+            logoPath = ac.getFolder(ac.FolderID.ContentCars) .. "\\" .. ac.getCarID(car.index) .. "\\ui\\badge.png",
+            nationPath = ac.getFolder(ac.FolderID.Root) .. "\\content\\gui\\NationFlags\\" .. car:driverNationCode() .. ".png"
         })
     end
     table.sort(data.drivers, function(a, b) return a.position < b.position end)
@@ -102,7 +102,7 @@ function leaderboard.windowMain()
 
             data.posX = 0
 
-            position.drawPosition(data, driver.logoPath, numPlayers, driver.position, driver.name,
+            position.drawPosition(data, driver.logoPath, driver.nationPath, numPlayers, driver.position, driver.name,
                 vec2(data.posX, data.posY):scale(leaderboardSettings.store.leaderboardScale), color)
             
             for index = 1, 8, 1 do

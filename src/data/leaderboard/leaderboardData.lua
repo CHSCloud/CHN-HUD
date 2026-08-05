@@ -29,7 +29,7 @@ function leaderboardData.new()
         statusTexts = { "OFF", "RET", "END", "PIT" },
         posY = 2.5,
         posX = 0,
-        positionLenght = 280,
+        positionLenght = 320,
         nameLenght = 200,
         tyreLenght = 50,
         lapCountLenght = 60,
