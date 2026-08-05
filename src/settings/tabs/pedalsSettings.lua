@@ -66,6 +66,16 @@ local positionsBorders = {}
 local positionsCenters = {}
 local positionsTelemetry = {}
 
+local wheelsLabels = {
+    "Iracing",
+    language.get("SIMPLE")
+}
+
+Wheels = {
+    "Iracing.png",
+    ""
+}
+
 local function resetToDefault()
     for key, value in pairs(defaultValues) do
         pedalsSettings.store[key] = value
@@ -93,6 +103,23 @@ local function invertPositionCenter(oldPos, newPos, keyPos)
         end
     end
 end
+
+local function findWheels()
+    local dir =  ac.getFolder(ac.FolderID.Root) .. "\\apps\\lua\\CHN-HUD\\assets\\pedals\\wheels"
+    local files = io.popen('dir /b "' .. dir .. '"')
+
+    if files then
+        for arquivo in files:lines() do
+            if arquivo ~= "Iracing.png" then
+                table.insert(Wheels, arquivo)
+                table.insert(wheelsLabels, arquivo:gsub(".png", ""))
+            end
+        end
+        files:close()
+    end
+end
+
+findWheels()
 
 -- Desenha a seção de outros
 --- @param pos vec2
@@ -279,11 +306,7 @@ function pedalsSettings.pedalsSettings()
         rpmPos = pedalsSettings.store.rpmPos,
         p2pPos = pedalsSettings.store.p2pPos
     }
-    local wheelLabels = {
-        "Iracing",
-        language.get("SIMPLE")
-    }
-
+    
     -- Layout
     local initPos = 55
     local posXStyle = 180
@@ -318,7 +341,7 @@ function pedalsSettings.pedalsSettings()
     end
     if pedalsSettings.store.wheelActive then
         pedalsSettings.store.wheelType = droplist.main("##wheelType", "", vec2(110, initPos - 3), 100,
-            pedalsSettings.store.wheelType, wheelLabels, droplist.PosText.Start)
+            pedalsSettings.store.wheelType, wheelsLabels, droplist.PosText.Start)
     end
 
     initPos = initPos + 25;
@@ -379,7 +402,7 @@ function pedalsSettings.pedalsSettings()
     ui.drawLine(vec2(10, initPos), vec2(WindowSettingsSize.x - 18, initPos), COLOR.WHITE_LINE, 2)
 
     -- OUTROS
-    drawOthers(vec2(290, 120))
+    drawOthers(vec2(380, 120))
 
     -- RPM
     drawRPM(vec2(20, 320))

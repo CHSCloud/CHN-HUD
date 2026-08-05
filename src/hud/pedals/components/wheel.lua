@@ -10,10 +10,10 @@ function wheel.drawWheel(data)
     local p2 = 1 * pedalsSettings.store.pedalsScale + data.contentTop
     local width = 65 * pedalsSettings.store.pedalsScale
     local height = 72 * pedalsSettings.store.pedalsScale
-    if pedalsSettings.store.wheelType == 1 then
+    if pedalsSettings.store.wheelType == 1 or pedalsSettings.store.wheelType > 2 then
         ui.setCursor(vec2(p1, p2))
         ui.beginRotation()
-        ui.image("assets/pedals/Wheel.png", vec2(width, height), ui.ImageFit.Fit)
+        ui.image("assets/pedals/wheels/" .. Wheels[pedalsSettings.store.wheelType], vec2(width, height), ui.ImageFit.Fit)
         ui.endRotation(90 - CAR.steer)
     elseif pedalsSettings.store.wheelType == 2 then
         local thickness = 7 * pedalsSettings.store.pedalsScale
