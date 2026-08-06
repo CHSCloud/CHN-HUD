@@ -43,6 +43,9 @@ local defaultValues = {
     rpmProcessType = 1,
     numLights = 9,
     barLength = 0.55,
+    manualRpmActive = false,
+    rpmMin = CAR.rpmLimiter * 0.80,
+    rpmMax = CAR.rpmLimiter * 0.98,
 
     drsActvationActive = false,
     drsPos = 1,
@@ -328,6 +331,26 @@ local function drawRPM(pos)
                 string.format("%.0f", (pedalsSettings.store.barLength + 0.05) * 100) .. "%", vec2(pos.x, pos.y + 10), 130,
                 pedalsSettings.store.barLength, 0.25, 0.95, slider.PosText.Start)
         end
+
+        pos.y = pos.y + 40
+        if toggleButton.main("rpmManual", vec2(pos.x, pos.y), pedalsSettings.store.manualRpmActive, "Set Rpm limits") then
+            pedalsSettings.store.manualRpmActive = not pedalsSettings.store.manualRpmActive
+        end
+        if pedalsSettings.store.manualRpmActive then
+            pos.y = pos.y + 20
+            pedalsSettings.store.rpmMin = slider.main("Min",
+            string.format("%.0f", pedalsSettings.store.rpmMin) .. " rpm", vec2(pos.x, pos.y + 10), 150,
+            pedalsSettings.store.rpmMin, CAR.rpmMinimum, CAR.rpmLimiter, slider.PosText.Start)
+
+            pos.y = pos.y + 30
+            pedalsSettings.store.rpmMax = slider.main("Max",
+            string.format("%.0f", pedalsSettings.store.rpmMax) .. " rpm", vec2(pos.x, pos.y + 10), 150,
+            pedalsSettings.store.rpmMax, CAR.rpmMinimum, CAR.rpmLimiter, slider.PosText.Start)
+        else
+            pedalsSettings.store.rpmMin = CAR.rpmLimiter * 0.80
+            pedalsSettings.store.rpmMax = CAR.rpmLimiter * 0.98
+        end
+
         --
     end
 
@@ -455,7 +478,7 @@ function pedalsSettings.pedalsSettings()
     drawRPM(vec2(20, 320))
 
     -- PEDAIS
-    initPos = 520
+    initPos = 600
     ui.drawLine(vec2(10, initPos), vec2(WindowSettingsSize.x - 18, initPos), COLOR.WHITE_LINE, 2)
     initPos = initPos + 10
     ui.dwriteDrawText(language.get("PEDALS"), 12, vec2(15, initPos), COLOR.WHITE)
@@ -533,7 +556,7 @@ function pedalsSettings.pedalsSettings()
             droplist.PosText.Start)
 
         
-        posYTelemetry = 560
+        posYTelemetry = 630
         posXTelemetry = posXTelemetry + 280
         ui.drawLine(vec2(posXTelemetry - 15, posYTelemetry - 10), vec2(posXTelemetry - 15, posYTelemetry + 130), COLOR.WHITE_LINE, 2)
         if toggleButton.main("telemetryInverted", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryInverted, language.get("INVERT_GRAPH")) then

@@ -5,9 +5,7 @@ local rpm = {}
 
 ---@param data pedalsData
 function rpm.drawRpm(data)
-    local rpmStart = CAR.rpmLimiter * 0.80
-    local rpmFinal = CAR.rpmLimiter * 0.98
-    local rpmRange = rpmFinal - rpmStart
+    local rpmRange = pedalsSettings.store.rpmMax - pedalsSettings.store.rpmMin
 
     if pedalsSettings.store.rpmType == 1 then
         local area = 0
@@ -53,13 +51,13 @@ function rpm.drawRpm(data)
         local initPos = center -
         (((pedalsSettings.store.numLights - 1) * spaceCircles) / 2) * pedalsSettings.store.pedalsScale
         local level = 0
-        if CAR.rpm >= rpmStart then
-            level = ((pedalsSettings.store.numLights * (CAR.rpm - rpmStart)) / rpmRange) + 1
+        if CAR.rpm >= pedalsSettings.store.rpmMin then
+            level = ((pedalsSettings.store.numLights * (CAR.rpm - pedalsSettings.store.rpmMin)) / rpmRange) + 1
         end
         local color = COLOR.GREEN
         if pedalsSettings.store.rpmProcessType == 1 then
             for i = 1, pedalsSettings.store.numLights, 1 do
-                if (CAR.rpm >= rpmFinal * 0.98) then
+                if (CAR.rpm >= pedalsSettings.store.rpmMax * 0.98) then
                     level = pedalsSettings.store.numLights
                     if (8 * TIMER) % 2 >= 1 then
                         color = COLOR.GRAY_BG
@@ -139,20 +137,20 @@ function rpm.drawRpm(data)
         initPosX = center - (width / 2)
         ui.drawRectFilled(vec2(initPosX, initPosY), vec2(initPosX + width, initPosY + barHeight), COLOR.GRAY_BG,
             10 * pedalsSettings.store.pedalsScale)
-        if CAR.rpm >= rpmStart then
-            local length = initPosX + ((width * (CAR.rpm - rpmStart)) / rpmRange)
+        if CAR.rpm >= pedalsSettings.store.rpmMin then
+            local length = initPosX + ((width * (CAR.rpm - pedalsSettings.store.rpmMin)) / rpmRange)
             local color = COLOR.GREEN
 
-            if (CAR.rpm >= rpmFinal) then
+            if (CAR.rpm >= pedalsSettings.store.rpmMax) then
                 length = initPosX + width
                 if (8 * TIMER) % 2 >= 1 then
                     color = COLOR.GRAY_BG
                 else
                     color = COLOR.RED_DARK
                 end
-            elseif (CAR.rpm >= rpmFinal * 0.95) then
+            elseif (CAR.rpm >= pedalsSettings.store.rpmMax * 0.95) then
                 color = COLOR.RED_DARK
-            elseif (CAR.rpm >= rpmFinal * 0.90) then
+            elseif (CAR.rpm >= pedalsSettings.store.rpmMax * 0.90) then
                 color = COLOR.YELLOW
             end
 
