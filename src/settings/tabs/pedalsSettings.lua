@@ -115,7 +115,7 @@ local function findWheels()
     table.insert(wheelsLabels, language.get("SIMPLE"))
     io.scanDir(dir, function(fileName)
         table.insert(Wheels, fileName)
-        table.insert(wheelsLabels, string.sub(fileName:gsub("%.%w+$", ""), 1, 18))
+        table.insert(wheelsLabels, string.sub(fileName:gsub("%.%w+$", ""), 1, 25))
     end)
 end
 
@@ -141,7 +141,7 @@ local function selectNewWheel()
             newWheel:write(content)
             newWheel:close()
             findWheels()
-            pedalsSettings.store.wheelType = table.indexOf(wheelsLabels, name:gsub("%.%w+$", "")) or 1
+            pedalsSettings.store.wheelType = table.indexOf(wheelsLabels, string.sub(name:gsub("%.%w+$", ""), 1, 25)) or 1
         end
     end)
 end
