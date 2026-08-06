@@ -504,7 +504,7 @@ function pedalsSettings.pedalsSettings()
         posYTelemetry = posYTelemetry + 35
         pedalsSettings.store.telemetryLenght = slider.main(
             language.get("LENGHT"),
-            string.format("%.0f", pedalsSettings.store.telemetryLenght), 
+            string.format("%.0f", utils.remapInterval(pedalsSettings.store.telemetryLenght, 100, 400, 0, 100)), 
             vec2(posXTelemetry, posYTelemetry + 2), 
             150, 
             pedalsSettings.store.telemetryLenght,
@@ -516,7 +516,7 @@ function pedalsSettings.pedalsSettings()
         posYTelemetry = posYTelemetry + 35
         pedalsSettings.store.telemetryPeriod = slider.main(
             language.get("PERIOD"),
-            string.format("%.0f", pedalsSettings.store.telemetryPeriod), 
+            string.format("%.0f", utils.remapInterval(pedalsSettings.store.telemetryPeriod, 250, 800, 0, 100)), 
             vec2(posXTelemetry, posYTelemetry + 2), 
             150, 
             pedalsSettings.store.telemetryPeriod,
