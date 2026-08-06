@@ -28,7 +28,7 @@ function wheel.drawWheel(data)
         )
         ui.endRotation(90 - CAR.steer)
     end
-
+    
     data.currentWindowWidth = data.currentWindowWidth + wheelBackgroundSize.x + 12 * pedalsSettings.store.pedalsScale +
     data.barSpace
 end

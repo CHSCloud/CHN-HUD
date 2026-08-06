@@ -3,6 +3,7 @@ local utils = require("common.utils")
 local slider = require("src.ui.selectors.slider")
 local button = require("src.ui.buttons.button")
 local droplist = require("src.ui.selectors.droplist")
+local droplistWithRemove = require("src.ui.selectors.droplistWithRemove")
 local toggleButton = require("src.ui.buttons.toggleButton")
 local pedalsSettings = {}
 
@@ -118,14 +119,6 @@ local function findWheels()
     end)
 end
 
-ac.onFolderChanged(ac.getFolder(ac.FolderID.ACAppsLua) .. "\\CHN-HUD\\assets\\pedals\\wheels\\", nil, true, function(files)
-    findWheels()
-    if pedalsSettings.store.wheelType > #wheelsLabels then
-        pedalsSettings.store.wheelType = 1
-    end
-end)
-
-
 local function selectNewWheel()
     os.openFileDialog({
         defaultFolder = ac.getFolder(ac.FolderID.Root), 
@@ -153,13 +146,21 @@ local function selectNewWheel()
     end)
 end
 
+---@param wheelType number
+local function removeWheel(wheelType)
+    local fileName = Wheels[wheelType]
+    io.deleteFile(ac.getFolder(ac.FolderID.ACAppsLua) .. "\\CHN-HUD\\assets\\pedals\\wheels\\" .. fileName)
+    table.remove(Wheels, wheelType)
+    table.remove(wheelsLabels, wheelType)
+end
+
 -- Desenha a seção de outros
 --- @param pos vec2
 local function drawOthers(pos)
     ui.dwriteDrawText(language.get("OTHERS"), 12, vec2(pos.x - 5, pos.y), COLOR.WHITE)
 
     pos.y = pos.y + 25;
-    if toggleButton.main("fuel", vec2(pos.x, pos.y), pedalsSettings.store.fuelActive, language.get("FUEL")) then
+    if toggleButton.main("fuel", pos, pedalsSettings.store.fuelActive, language.get("FUEL")) then
         pedalsSettings.store.fuelActive = not pedalsSettings.store.fuelActive
     end
     if pedalsSettings.store.fuelActive then
@@ -174,7 +175,7 @@ local function drawOthers(pos)
     end
 
     pos.y = pos.y + 30;
-    if toggleButton.main("brakeBias", vec2(pos.x, pos.y), pedalsSettings.store.brakeBiasActive, language.get("BRAKE_BIAS")) then
+    if toggleButton.main("brakeBias", pos, pedalsSettings.store.brakeBiasActive, language.get("BRAKE_BIAS")) then
         pedalsSettings.store.brakeBiasActive = not pedalsSettings.store.brakeBiasActive
     end
     if pedalsSettings.store.brakeBiasActive then
@@ -187,7 +188,52 @@ local function drawOthers(pos)
             invertPositionBorder(old, pedalsSettings.store.brakebiasPos, "brakebiasPos")
         end
     end
+
     pos.y = pos.y + 30;
+    if toggleButton.main("tc", pos, pedalsSettings.store.tractionControlActive, language.get("TC")) then
+        pedalsSettings.store.tractionControlActive = not pedalsSettings.store.tractionControlActive
+    end
+
+    if CAR.tractionControlModes == 0 then
+        ui.setCursor(vec2(pos.x + ui.measureDWriteText(language.get("TC"), 12).x + 55, pos.y))
+        ui.dwriteTextAligned(language.get("ALERT_TC"), 12, ui.Alignment.Center, ui.Alignment.Center, vec2(250, 20), false,
+            COLOR.RED)
+    else
+        if pedalsSettings.store.tractionControlActive then
+            local old = pedalsSettings.store.tractionControlPos
+            pedalsSettings.store.tractionControlPos = droplist.main("##tractionControlPos",
+                "|  " .. language.get("POSITION"), vec2(pos.x + ui.measureText(language.get("TC")).x + 85, pos.y - 3),
+                utils.findLenghtLongestString(positionsBorders, 12).x + 40, pedalsSettings.store.tractionControlPos,
+                positionsBorders, droplist.PosText.Start)
+            if pedalsSettings.store.tractionControlPos ~= old then
+                invertPositionBorder(old, pedalsSettings.store.tractionControlPos, "tractionControlPos")
+            end
+        end
+    end
+
+    pos.y = pos.y + 30;
+    if toggleButton.main("drs", pos, pedalsSettings.store.drsActvationActive, "DRS") then
+        pedalsSettings.store.drsActvationActive = not pedalsSettings.store.drsActvationActive
+    end
+
+    if not CAR.drsPresent then
+        ui.setCursor(vec2(pos.x + ui.measureDWriteText("DRS", 12).x + 18, pos.y))
+        ui.dwriteTextAligned(language.get("ALERT_DRS"), 12, ui.Alignment.Center, ui.Alignment.Center, vec2(250, 20),
+            false, COLOR.RED)
+    else
+        if pedalsSettings.store.drsActvationActive then
+            local old = pedalsSettings.store.drsPos
+            pedalsSettings.store.drsPos = droplist.main("##drsPos", "|  " .. language.get("POSITION"),
+                vec2(pos.x + ui.measureText("DRS").x + 85, pos.y - 3),
+                utils.findLenghtLongestString(positionsBorders, 12).x + 40, pedalsSettings.store.drsPos, positionsBorders,
+                droplist.PosText.Start)
+            if pedalsSettings.store.drsPos ~= old then
+                invertPositionBorder(old, pedalsSettings.store.drsPos, "drsPos")
+            end
+        end
+    end
+
+    return pos
 end
 
 -- Desenha a seção de RPM
@@ -368,19 +414,6 @@ function pedalsSettings.pedalsSettings()
     end
 
     initPos = initPos + 25;
-    if toggleButton.main("wheel", vec2(20, initPos), pedalsSettings.store.wheelActive, language.get("WHEEL")) then
-        pedalsSettings.store.wheelActive = not pedalsSettings.store.wheelActive
-    end
-    if pedalsSettings.store.wheelActive then
-        pedalsSettings.store.wheelType = droplist.main("##wheelType", "", vec2(110, initPos - 3), utils.findLenghtLongestString(wheelsLabels, 12).x + 40,
-            pedalsSettings.store.wheelType, wheelsLabels, droplist.PosText.Start)
-
-        if button.main(vec2(utils.findLenghtLongestString(wheelsLabels, 12).x + 170, initPos - 3), "Upload Wheel") then
-            selectNewWheel()
-        end
-    end
-
-    initPos = initPos + 25;
     if toggleButton.main("abs", vec2(20, initPos), pedalsSettings.store.absActive, language.get("ABS")) then
         pedalsSettings.store.absActive = not pedalsSettings.store.absActive
     end
@@ -392,49 +425,25 @@ function pedalsSettings.pedalsSettings()
     end
 
     initPos = initPos + 25;
-    if toggleButton.main("tc", vec2(20, initPos), pedalsSettings.store.tractionControlActive, language.get("TC")) then
-        pedalsSettings.store.tractionControlActive = not pedalsSettings.store.tractionControlActive
+    if toggleButton.main("wheel", vec2(20, initPos), pedalsSettings.store.wheelActive, language.get("WHEEL")) then
+        pedalsSettings.store.wheelActive = not pedalsSettings.store.wheelActive
     end
+    if pedalsSettings.store.wheelActive then
+        local isRemoved
+        pedalsSettings.store.wheelType, isRemoved = droplistWithRemove.main("##wheelType", "", vec2(110, initPos - 3), utils.findLenghtLongestString(wheelsLabels, 12).x + 50,
+            pedalsSettings.store.wheelType, wheelsLabels, droplistWithRemove.PosText.Start, {language.get("SIMPLE"), "Iracing"})
 
-    if CAR.tractionControlModes == 0 then
-        ui.setCursor(vec2(20 + ui.measureDWriteText(language.get("TC"), 12).x + 55, initPos))
-        ui.dwriteTextAligned(language.get("ALERT_TC"), 12, ui.Alignment.Center, ui.Alignment.Center, vec2(250, 20), false,
-            COLOR.RED)
-    else
-        if pedalsSettings.store.tractionControlActive then
-            local old = pedalsSettings.store.tractionControlPos
-            pedalsSettings.store.tractionControlPos = droplist.main("##tractionControlPos",
-                "|  " .. language.get("POSITION"), vec2(ui.measureText(language.get("TC")).x + 85, initPos - 3),
-                utils.findLenghtLongestString(positionsBorders, 12).x + 40, pedalsSettings.store.tractionControlPos,
-                positionsBorders, droplist.PosText.Start)
-            if pedalsSettings.store.tractionControlPos ~= old then
-                invertPositionBorder(old, pedalsSettings.store.tractionControlPos, "tractionControlPos")
-            end
+        if not isRemoved then
+            removeWheel(pedalsSettings.store.wheelType)
+            pedalsSettings.store.wheelType = 1
+        end
+
+        if button.main(vec2(20, initPos + 35), language.get("UPLOAD_WHEEL")) then
+            selectNewWheel()
         end
     end
 
-    initPos = initPos + 30;
-    if toggleButton.main("drs", vec2(20, initPos), pedalsSettings.store.drsActvationActive, "DRS") then
-        pedalsSettings.store.drsActvationActive = not pedalsSettings.store.drsActvationActive
-    end
-
-    if not CAR.drsPresent then
-        ui.setCursor(vec2(20 + ui.measureDWriteText("DRS", 12).x + 18, initPos))
-        ui.dwriteTextAligned(language.get("ALERT_DRS"), 12, ui.Alignment.Center, ui.Alignment.Center, vec2(250, 20),
-            false, COLOR.RED)
-    else
-        if pedalsSettings.store.drsActvationActive then
-            local old = pedalsSettings.store.drsPos
-            pedalsSettings.store.drsPos = droplist.main("##drsPos", "|  " .. language.get("POSITION"),
-                vec2(ui.measureText("DRS").x + 85, initPos - 3),
-                utils.findLenghtLongestString(positionsBorders, 12).x + 40, pedalsSettings.store.drsPos, positionsBorders,
-                droplist.PosText.Start)
-            if pedalsSettings.store.drsPos ~= old then
-                invertPositionBorder(old, pedalsSettings.store.drsPos, "drsPos")
-            end
-        end
-    end
-    initPos = initPos + 40
+    initPos = initPos + 75
     ui.drawLine(vec2(10, initPos), vec2(WindowSettingsSize.x - 18, initPos), COLOR.WHITE_LINE, 2)
 
     -- OUTROS
@@ -556,5 +565,11 @@ end
 
 -- Executando funções de inicialização
 findWheels()
+ac.onFolderChanged(ac.getFolder(ac.FolderID.ACAppsLua) .. "\\CHN-HUD\\assets\\pedals\\wheels\\", nil, true, function(files)
+    findWheels()
+    if pedalsSettings.store.wheelType > #wheelsLabels then
+        pedalsSettings.store.wheelType = 1
+    end
+end)
 
 return pedalsSettings

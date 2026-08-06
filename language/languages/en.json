@@ -2,6 +2,7 @@
     "GEAR": "Gear",
     "SPEED": "Speed",
     "WHEEL": "Wheel",
+    "UPLOAD_WHEEL": "Upload Wheel",
     "SIZE": "Scale",
     "ABS": "ABS",
     "ALERT_ABS": "This car does not have ABS",

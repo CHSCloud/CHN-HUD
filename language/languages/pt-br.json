@@ -2,6 +2,7 @@
     "GEAR": "Marcha",
     "SPEED": "Velocidade",
     "WHEEL": "Volante",
+    "UPLOAD_WHEEL": "Subir Volante",
     "SIZE": "Escala",
     "ABS": "ABS",
     "ALERT_ABS": "Este carro não possui ABS",
