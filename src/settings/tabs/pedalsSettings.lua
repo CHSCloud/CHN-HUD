@@ -122,7 +122,7 @@ end
 local function selectNewWheel()
     os.openFileDialog({
         defaultFolder = ac.getFolder(ac.FolderID.Root), 
-        fileTypes = {{name = 'Images (.png, .jpg, .jpeg, .webp)', mask = '*.png;*.jpg;*.jpeg;*.webp'}}, 
+        fileTypes = {{name = language.get("IMAGES") .. ' (.png, .jpg, .jpeg, .webp)', mask = '*.png;*.jpg;*.jpeg;*.webp'}}, 
         addAllFilesFileType = true, 
         flags = bit.bor(os.DialogFlags.PathMustExist, os.DialogFlags.FileMustExist)
     }, function (err, filename)

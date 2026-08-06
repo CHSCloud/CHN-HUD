@@ -134,5 +134,6 @@
     "WEAR": "Wear",
     "TELEMETRY": "Telemetry",
     "INVERT_GRAPH": "Invert graph",
-    "PERIOD": "Period"
+    "PERIOD": "Period",
+    "IMAGES": "Images"
 }
