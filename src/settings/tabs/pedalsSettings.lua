@@ -67,14 +67,16 @@ local positionsCenters = {}
 local positionsTelemetry = {}
 
 local wheelsLabels = {
-    "Iracing",
     language.get("SIMPLE")
 }
 
 Wheels = {
-    "Iracing.png",
     ""
 }
+
+if pedalsSettings.store.wheelType > #wheelsLabels then
+    pedalsSettings.store.wheelType = 1
+end
 
 local function resetToDefault()
     for key, value in pairs(defaultValues) do
@@ -105,21 +107,51 @@ local function invertPositionCenter(oldPos, newPos, keyPos)
 end
 
 local function findWheels()
-    local dir =  ac.getFolder(ac.FolderID.Root) .. "\\apps\\lua\\CHN-HUD\\assets\\pedals\\wheels"
-    local files = io.popen('dir /b "' .. dir .. '"')
-
-    if files then
-        for arquivo in files:lines() do
-            if arquivo ~= "Iracing.png" then
-                table.insert(Wheels, arquivo)
-                table.insert(wheelsLabels, arquivo:gsub(".png", ""))
-            end
-        end
-        files:close()
-    end
+    local dir = ac.getFolder(ac.FolderID.ACAppsLua) .. "\\CHN-HUD\\assets\\pedals\\wheels"
+    table.clear(Wheels)
+    table.clear(wheelsLabels)
+    table.insert(Wheels, "")
+    table.insert(wheelsLabels, language.get("SIMPLE"))
+    io.scanDir(dir, function(fileName)
+        table.insert(Wheels, fileName)
+        table.insert(wheelsLabels, string.sub(fileName:gsub("%.%w+$", ""), 1, 18))
+    end)
 end
 
-findWheels()
+ac.onFolderChanged(ac.getFolder(ac.FolderID.ACAppsLua) .. "\\CHN-HUD\\assets\\pedals\\wheels\\", nil, true, function(files)
+    findWheels()
+    if pedalsSettings.store.wheelType > #wheelsLabels then
+        pedalsSettings.store.wheelType = 1
+    end
+end)
+
+
+local function selectNewWheel()
+    os.openFileDialog({
+        defaultFolder = ac.getFolder(ac.FolderID.Root), 
+        fileTypes = {{name = 'Images (.png, .jpg, .jpeg, .webp)', mask = '*.png;*.jpg;*.jpeg;*.webp'}}, 
+        addAllFilesFileType = true, 
+        flags = bit.bor(os.DialogFlags.PathMustExist, os.DialogFlags.FileMustExist)
+    }, function (err, filename)
+        if err or not filename or filename == "" then return end
+
+        local sourceFile = io.open(filename, "rb")
+
+        if not sourceFile then return end
+
+        local content = sourceFile:read("*a")
+        sourceFile:close()
+        
+        local name = filename:match("([^\\/]+)$")
+        local newWheel = io.open(ac.getFolder(ac.FolderID.ACAppsLua) .. "\\CHN-HUD\\assets\\pedals\\wheels\\" .. name, "wb")
+        if newWheel then
+            newWheel:write(content)
+            newWheel:close()
+            findWheels()
+            pedalsSettings.store.wheelType = table.indexOf(wheelsLabels, name:gsub("%.%w+$", "")) or 1
+        end
+    end)
+end
 
 -- Desenha a seção de outros
 --- @param pos vec2
@@ -340,8 +372,12 @@ function pedalsSettings.pedalsSettings()
         pedalsSettings.store.wheelActive = not pedalsSettings.store.wheelActive
     end
     if pedalsSettings.store.wheelActive then
-        pedalsSettings.store.wheelType = droplist.main("##wheelType", "", vec2(110, initPos - 3), 100,
+        pedalsSettings.store.wheelType = droplist.main("##wheelType", "", vec2(110, initPos - 3), utils.findLenghtLongestString(wheelsLabels, 12).x + 40,
             pedalsSettings.store.wheelType, wheelsLabels, droplist.PosText.Start)
+
+        if button.main(vec2(utils.findLenghtLongestString(wheelsLabels, 12).x + 170, initPos - 3), "Upload Wheel") then
+            selectNewWheel()
+        end
     end
 
     initPos = initPos + 25;
@@ -402,7 +438,7 @@ function pedalsSettings.pedalsSettings()
     ui.drawLine(vec2(10, initPos), vec2(WindowSettingsSize.x - 18, initPos), COLOR.WHITE_LINE, 2)
 
     -- OUTROS
-    drawOthers(vec2(380, 120))
+    drawOthers(vec2(420, 120))
 
     -- RPM
     drawRPM(vec2(20, 320))
@@ -517,5 +553,8 @@ function pedalsSettings.pedalsSettings()
         resetToDefault()
     end
 end
+
+-- Executando funções de inicialização
+findWheels()
 
 return pedalsSettings
