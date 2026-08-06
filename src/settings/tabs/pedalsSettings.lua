@@ -433,7 +433,8 @@ function pedalsSettings.pedalsSettings()
         pedalsSettings.store.wheelType, isRemoved = droplistWithRemove.main("##wheelType", "", vec2(110, initPos - 3), utils.findLenghtLongestString(wheelsLabels, 12).x + 50,
             pedalsSettings.store.wheelType, wheelsLabels, droplistWithRemove.PosText.Start, {language.get("SIMPLE"), "Iracing"})
 
-        if not isRemoved then
+        if isRemoved then
+            ac.log("Removendo volante: ".. tostring(pedalsSettings.store.wheelType))
             removeWheel(pedalsSettings.store.wheelType)
             pedalsSettings.store.wheelType = 1
         end

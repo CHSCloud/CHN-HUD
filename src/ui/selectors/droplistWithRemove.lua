@@ -57,6 +57,7 @@ function droplistWithRemove.main(id, text, pos, size, selected, items, posText, 
         active[id] = true
         -- Desenha a droplistWithRemove
         ui.setCursor(pos)
+        local isRemoved = false
         local item = ui.childWindow("##droplistWithRemove", vec2(size, height * (itemsLenght + 1)), false,
             ui.WindowFlags.None + ui.WindowFlags.NoBackground, function()
             ui.drawRectFilled(vec2(0, height), vec2(0, height) + vec2(size, height * (itemsLenght)), COLOR.GRAY_BG,
@@ -89,7 +90,8 @@ function droplistWithRemove.main(id, text, pos, size, selected, items, posText, 
                             ui.drawLine(vec2(size - 21, i * height + 19),vec2(size - 8, i * height + 6), COLOR.WHITE, 2)
                             if ui.mouseClicked(ui.MouseButton.Left) then
                                 active[id] = false
-                                return -1
+                                isRemoved = true
+                                return key
                             end
                             
                         end
@@ -110,10 +112,8 @@ function droplistWithRemove.main(id, text, pos, size, selected, items, posText, 
         ui.drawImage("assets/ui/arrow.png", vec2(pos.x + size - 28, pos.y + 4),
             vec2(pos.x + size - 8, pos.y + height - 4))
         ui.endRotation(180)
-        if item == -1 then
-            return selected, false
-        elseif item ~= nil then
-            return item, true
+        if item ~= nil then
+            return item, isRemoved
         end
     else
         if window.isMouseInWindow(ui.mouseLocalPos(), pos.x, pos.x + size, pos.y, pos.y + height) then
@@ -129,7 +129,7 @@ function droplistWithRemove.main(id, text, pos, size, selected, items, posText, 
         ui.endRotation(0)
     end
 
-    return selected, true
+    return selected, false
 end
 
 return droplistWithRemove
