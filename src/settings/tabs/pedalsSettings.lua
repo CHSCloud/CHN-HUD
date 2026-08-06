@@ -121,6 +121,7 @@ end
 
 local function selectNewWheel()
     os.openFileDialog({
+        title = language.get("SELECT_WHEEL"),
         defaultFolder = ac.getFolder(ac.FolderID.Root), 
         fileTypes = {{name = language.get("IMAGES") .. ' (.png, .jpg, .jpeg, .webp)', mask = '*.png;*.jpg;*.jpeg;*.webp'}}, 
         addAllFilesFileType = true, 

@@ -135,5 +135,6 @@
     "TELEMETRY": "Telemetry",
     "INVERT_GRAPH": "Invert graph",
     "PERIOD": "Period",
-    "IMAGES": "Images"
+    "IMAGES": "Images",
+    "SELECT_WHEEL": "Select steering wheel"
 }

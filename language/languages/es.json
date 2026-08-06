@@ -135,5 +135,6 @@
     "TELEMETRY": "Telemetría",
     "INVERT_GRAPH": "Invertir gráfico",
     "PERIOD": "Período",
-    "IMAGES": "Imágenes"
+    "IMAGES": "Imágenes",
+    "SELECT_WHEEL": "Seleccionar volante"
 }
