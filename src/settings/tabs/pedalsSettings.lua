@@ -458,7 +458,6 @@ function pedalsSettings.pedalsSettings()
             pedalsSettings.store.wheelType, wheelsLabels, droplistWithRemove.PosText.Start, {language.get("SIMPLE"), "Iracing"})
 
         if isRemoved then
-            ac.log("Removendo volante: ".. tostring(pedalsSettings.store.wheelType))
             removeWheel(pedalsSettings.store.wheelType)
             pedalsSettings.store.wheelType = 1
         end
@@ -582,7 +581,7 @@ function pedalsSettings.pedalsSettings()
     --
 
     -- Botão Reset
-    initPos = initPos + 60
+    initPos = initPos + 70
     if button.main(vec2(20, initPos), language.get("RESET_DEFAULT")) then
         resetToDefault()
     end
