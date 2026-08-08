@@ -2,6 +2,7 @@ local button = require("src.ui.buttons.button")
 local language = require("language.language")
 local droplist = require("src.ui.selectors.droplist")
 local formText = require("src.ui.forms.formText")
+local slider = require("src.ui.selectors.slider")
 
 local utils = require("common.utils")
 local window = require("common.window")
@@ -86,20 +87,17 @@ function sectionPanel.main(id, iniFile, pos, size)
                 ui.setCursor(vec2(20, 20 + height) - vec2(15, 15))
                 ui.dwriteTextAligned(tostring(index), 12, ui.Alignment.Center, ui.Alignment.Center, vec2(30, 30), false,
                     COLOR.WHITE)
+                
+                sizeProgress = vec2(180, 20)
+                progress = slider.main("", string.format("%i", (tonumber(iniFile:get(section, "PROGRESS", 0)) or 0) * 100), vec2(45 + sizeText.x, 10 + height), sizeProgress.x, tonumber(iniFile:get(section, "PROGRESS", "0")) or 0, 0, 1, slider.PosText.Start, section .. "PROGRESS")
+                if progress ~= tonumber(iniFile:get(section, "PROGRESS", "0")) then
+                    isItemEdited = true
+                end
 
-                progress, sizeProgress, isItemEdited = formText.main(
-                    section .. "PROGRESS",
-                    vec2(45 + sizeText.x, 10 + height),
-                    iniFile:get(section, "PROGRESS", "0"),
-                    vec2(100, 20),
-                    10,
-                    COLOR.WHITE,
-                    ui.InputTextFlags.CharsDecimal
-                )
                 iniFile:set(section, "PROGRESS", progress)
                 if isItemEdited and ui.windowFocused(ui.FocusedFlags.ChildWindows) then edited = true end
 
-                position = droplist.main(section .. "POSITION", "", vec2(sizeText.x + sizeProgress.x + 40, 8 + height),
+                position = droplist.main(section .. "POSITION", "", vec2(sizeText.x + sizeProgress.x + 90, 8 + height),
                     utils.findLenghtLongestString(positions, 12).x + 40, iniFile:get(section, "POSITION", 1), positions,
                     droplist.PosText.Start)
                 if position ~= iniFile:get(section, "POSITION", 1) then
@@ -107,7 +105,7 @@ function sectionPanel.main(id, iniFile, pos, size)
                     edited = true
                 end
 
-                if deleteSectionButton(vec2(sizeText.x + sizeProgress.x + utils.findLenghtLongestString(positions, 12).x + 100, 10 + height), vec2(20, 20)) and ui.windowFocused(ui.FocusedFlags.ChildWindows) then
+                if deleteSectionButton(vec2(sizeText.x + sizeProgress.x + utils.findLenghtLongestString(positions, 12).x + 150, 10 + height), vec2(20, 20)) and ui.windowFocused(ui.FocusedFlags.ChildWindows) then
                     iniFile:mapConfig(deleteSection(iniFile.sections, section, index))
                     edited = true
                 end
