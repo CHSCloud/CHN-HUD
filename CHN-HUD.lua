@@ -16,65 +16,65 @@ local tyres = require("src.hud.tyres.tyres")
 
 -- TELA DE CONFIGURAÇÕES
 function WindowSettings()
-    settings.windowMain()
+	settings.windowMain()
 end
 
 function WindowOpenSettings()
-    settings.windowOpenSettings()
+	settings.windowOpenSettings()
 end
 
 function WindowCloseSettings()
-    settings.windowCloseSettings()
+	settings.windowCloseSettings()
 end
 
 -- TELA DOS PEDAIS
 function WindowPedals()
-    pedals.windowMain()
+	pedals.windowMain()
 end
 
 -- TELA DO PIT LANE
 function WindowPitLane()
-    pitLane.windowMain()
+	pitLane.windowMain()
 end
 
 -- TELA DE BANDEIRAS
 function WindowSessionflags()
-    sessionFlags.windowMain()
+	sessionFlags.windowMain()
 end
 
 -- TELA DE LUZES DE LARGADA
 function WindowStartingLights()
-    startingLights.windowMain()
+	startingLights.windowMain()
 end
 
 -- TELA DE VOLTAS DA SESSÃO
 function WindowSessionlaps()
-    sessionLaps.windowMain()
+	sessionLaps.windowMain()
 end
 
 -- TELA DO MAPA
 function WindowMap()
-    map.windowMain()
+	map.windowMain()
 end
 
 -- TELA DO DELTA BAR
 function WindowdeltaBar()
-    deltaBar.windowMain()
+	deltaBar.windowMain()
 end
 
 -- TELA DO LEADERBOARD
 function WindowLeaderboard()
-    leaderboard.windowMain()
+	leaderboard.windowMain()
 end
 
 function WindowTyres()
-    tyres.windowMain()
+	tyres.windowMain()
 end
 
 -- FUNÇÃO DE ATUALIZAÇÃO
 function script.update(dt)
-    TIMER = TIMER + dt
-    SIM = ac.getSim()
-    CAR = ac.getCar(SIM.focusedCar)
-    USER_UI = ac.getUI()
+	TIMER = TIMER + dt
+	SIM = ac.getSim()
+	CAR = ac.getCar(SIM.focusedCar)
+	USER_UI = ac.getUI()
 end
