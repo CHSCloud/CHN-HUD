@@ -412,13 +412,13 @@ local function drawRPM(pos)
 		end
 
 		pos.y = pos.y + 40
-		if toggleButton.main("rpmManual", vec2(pos.x, pos.y), pedalsSettings.store.manualRpmActive, "Set Rpm limits") then
+		if toggleButton.main("rpmManual", vec2(pos.x, pos.y), pedalsSettings.store.manualRpmActive, language.get("MANUAL_RPM")) then
 			pedalsSettings.store.manualRpmActive = not pedalsSettings.store.manualRpmActive
 		end
 		if pedalsSettings.store.manualRpmActive then
 			pos.y = pos.y + 20
 			pedalsSettings.store.rpmMin = slider.main(
-				"Min",
+				language.get("MIN"),
 				string.format("%.0f", pedalsSettings.store.rpmMin) .. " rpm",
 				vec2(pos.x, pos.y + 10),
 				150,
@@ -430,7 +430,7 @@ local function drawRPM(pos)
 
 			pos.y = pos.y + 30
 			pedalsSettings.store.rpmMax = slider.main(
-				"Max",
+				language.get("MAX"),
 				string.format("%.0f", pedalsSettings.store.rpmMax) .. " rpm",
 				vec2(pos.x, pos.y + 10),
 				150,

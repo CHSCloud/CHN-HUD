@@ -14,6 +14,8 @@
  - LeaderBoard: 
     - Best Lap
     - Int
+ - Map
+    - Opção de slider para progresso
 ### Correções de bugs
  - Volante não espadir a tela ao ser adicionando sozinho
  - Cores do P2P não aparecendo
