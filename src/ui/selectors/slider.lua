@@ -48,7 +48,7 @@ function slider.main(text, outputText, pos, lenght, value, init, final, posText,
         ui.setMouseCursor(ui.MouseCursor.Hand)
     end
     ui.setCursor(pos + vec2(lenght + 12, 0))
-    ui.dwriteTextAligned(outputText, 15, ui.Alignment.Start, ui.Alignment.Center, vec2(60, 15), false, COLOR.WHITE)
+    ui.dwriteTextAligned(outputText, 15, ui.Alignment.Start, ui.Alignment.Center, vec2(200, 15), false, COLOR.WHITE)
     return value
 end
 
