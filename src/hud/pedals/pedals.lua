@@ -19,9 +19,16 @@ local telemetry = require("src.hud.pedals.components.telemetry")
 local pedals = {}
 
 ---@type pedalsData
-local data = pedalsData.new()
+local data
+ac.onSessionStart(function()
+	data = pedalsData.new()
+end)
 
 function pedals.windowMain()
+	if data == nil then
+		data = pedalsData.new()
+	end
+
 	ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
 	data.fontBar = 15 * pedalsSettings.store.pedalsScale
 	data.fontBarInfinite = 25 * pedalsSettings.store.pedalsScale

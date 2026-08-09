@@ -10,9 +10,15 @@ local settingsActive = require("src.hud.startingLights.components.settingsActive
 local startingLights = {}
 
 ---@type startingLightsData
-local data = startingLightsData.new()
+local data
+ac.onSessionStart(function()
+	data = startingLightsData.new()
+end)
 
 function startingLights.windowMain()
+	if data == nil then
+		data = startingLightsData.new()
+	end
 	-- Raio
 	data.radius = 20 * startingLightsSettings.store.startingLightsScale
 	-- Posição do primeiro círculo

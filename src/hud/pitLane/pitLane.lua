@@ -8,9 +8,15 @@ local components = require("src.hud.pitLane.components.components")
 
 local pitLane = {}
 ---@type pitLaneData
-local data = pitLaneData.new()
+local data
+ac.onSessionStart(function()
+	data = pitLaneData.new()
+end)
 
 function pitLane.windowMain()
+	if data == nil then
+		data = pitLaneData.new()
+	end
 	data.currentWindowHeight = 70 * pitLaneSettings.store.pitLaneScale
 	data.fontYou = 17 * pitLaneSettings.store.pitLaneScale
 

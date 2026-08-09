@@ -16,59 +16,59 @@ local tyres = require("src.hud.tyres.tyres")
 
 -- TELA DE CONFIGURAÇÕES
 function WindowSettings()
-	settings.windowMain()
+	pcall(settings.windowMain)
 end
 
 function WindowOpenSettings()
-	settings.windowOpenSettings()
+	pcall(settings.windowOpenSettings)
 end
 
 function WindowCloseSettings()
-	settings.windowCloseSettings()
+	pcall(settings.windowCloseSettings)
 end
 
 -- TELA DOS PEDAIS
 function WindowPedals()
-	pedals.windowMain()
+	pcall(pedals.windowMain)
 end
 
 -- TELA DO PIT LANE
 function WindowPitLane()
-	pitLane.windowMain()
+	pcall(pitLane.windowMain)
 end
 
 -- TELA DE BANDEIRAS
 function WindowSessionflags()
-	sessionFlags.windowMain()
+	pcall(sessionFlags.windowMain)
 end
 
 -- TELA DE LUZES DE LARGADA
 function WindowStartingLights()
-	startingLights.windowMain()
+	pcall(startingLights.windowMain)
 end
 
 -- TELA DE VOLTAS DA SESSÃO
 function WindowSessionlaps()
-	sessionLaps.windowMain()
+	pcall(sessionLaps.windowMain)
 end
 
 -- TELA DO MAPA
 function WindowMap()
-	map.windowMain()
+	pcall(map.windowMain)
 end
 
 -- TELA DO DELTA BAR
 function WindowdeltaBar()
-	deltaBar.windowMain()
+	pcall(deltaBar.windowMain)
 end
 
 -- TELA DO LEADERBOARD
 function WindowLeaderboard()
-	leaderboard.windowMain()
+	pcall(leaderboard.windowMain)
 end
 
 function WindowTyres()
-	tyres.windowMain()
+	pcall(tyres.windowMain)
 end
 
 -- FUNÇÃO DE ATUALIZAÇÃO

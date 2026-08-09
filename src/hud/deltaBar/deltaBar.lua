@@ -6,13 +6,18 @@ local deltaBarData = require("src.data.deltaBar.deltaBarData")
 local deltaBar = {}
 
 ---@type deltaBarData
-local data = deltaBarData.new()
-
+local data
 ac.onSessionStart(function()
+	data = deltaBarData.new()
 	deltaBarData.clean(data)
 end)
 
 function deltaBar.windowMain()
+	if data == nil then
+		data = deltaBarData.new()
+		deltaBarData.clean(data)
+	end
+
 	--Limites e Tamanhos
 	local limitBarDeltaBackground = vec2(500, 25):scale(deltaBarSettings.store.deltaBarScale)
 	local limitBackgroundText = vec2(90, 40):scale(deltaBarSettings.store.deltaBarScale)

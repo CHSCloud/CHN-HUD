@@ -15,9 +15,9 @@ local titles = require("src.hud.leaderboard.components.titles")
 local leaderboard = {}
 
 ---@type leaderboardData
-local data = leaderboardData.new()
-
+local data
 ac.onSessionStart(function()
+	data = leaderboardData.new()
 	table.clear(data.storedPositions)
 end)
 
@@ -46,6 +46,10 @@ local function updateDrivers()
 end
 
 function leaderboard.windowMain()
+	if data == nil then
+		data = leaderboardData.new()
+		table.clear(data.storedPositions)
+	end
 	ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
 	leaderboardData.setTitlesLeght(data)
 	updateDrivers()

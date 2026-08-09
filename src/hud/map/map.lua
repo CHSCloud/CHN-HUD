@@ -13,10 +13,18 @@ local track = require("src.hud.map.components.track")
 local map = {}
 
 ---@type mapData
-local data = mapData.new()
-mapData.initMap(data)
+local data
+ac.onSessionStart(function()
+	data = mapData.new()
+	mapData.initMap(data)
+end)
 
 function map.windowMain()
+	if data == nil then
+		data = mapData.new()
+		mapData.initMap(data)
+	end
+
 	if mapSettings.store.resetSectionsINI then
 		data.trackSections = mapSettings.resetSectionsINI()
 	end

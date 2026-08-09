@@ -9,10 +9,17 @@ local wheels = require("src.hud.tyres.components.wheels")
 
 local tyres = {}
 
-local data = tyresData.new()
-tyresData.loadTyresData(data)
+local data
+ac.onSessionStart(function()
+	data = tyresData.new()
+	tyresData.loadTyresData(data)
+end)
 
 function tyres.windowMain()
+	if data == nil then
+		data = tyresData.new()
+		tyresData.loadTyresData(data)
+	end
 	data.wheels = CAR.wheels
 	ui.drawRectFilled(vec2(0, 0), data.currentWindowSize, WindowsColor, 20 * tyresSettings.store.tyresScale)
 	data.currentWindowSize = vec2(300, 250):scale(tyresSettings.store.tyresScale)

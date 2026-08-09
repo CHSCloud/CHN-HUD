@@ -9,10 +9,9 @@ local sectors = require("src.hud.sessionLaps.components.sectors")
 local sessionLaps = {}
 
 --- @type sessionLapsData
-local data = sessionLapsData.new()
-sessionLapsData.setSectorsDivisions(data, sessionLapsSettings.store.numberDivisions - 1)
-
+local data
 ac.onSessionStart(function()
+	data = sessionLapsData.new()
 	data.previousBestlap = 0
 	sessionLapsData.resetSectors(data)
 	sessionLapsData.setSectorsDivisions(data, sessionLapsSettings.store.numberDivisions - 1)
@@ -20,6 +19,14 @@ ac.onSessionStart(function()
 end)
 
 function sessionLaps.windowMain()
+	if data == nil then
+		data = sessionLapsData.new()
+		data.previousBestlap = 0
+		sessionLapsData.resetSectors(data)
+		sessionLapsData.setSectorsDivisions(data, sessionLapsSettings.store.numberDivisions - 1)
+		data.showLastDivisions = false
+	end
+
 	ui.pushDWriteFont("fonts/Montserrat-Bold.ttf") -- FONT TEXT
 
 	data.currentWindowWidth = 240 * sessionLapsSettings.store.sessionLapsScale
