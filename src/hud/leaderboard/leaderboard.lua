@@ -146,7 +146,4 @@ function leaderboard.windowMain()
 	pinCheckBox.main(leaderboardSettings.store.leaderboardScale, "Leaderboard", window.getWindow("Leaderboard"):pinned(), data.currentWindowSize)
 end
 
-updateDrivers()
-table.clear(data.storedPositions)
-
 return leaderboard
