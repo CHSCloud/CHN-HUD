@@ -16,10 +16,6 @@ local leaderboard = {}
 
 ---@type leaderboardData
 local data
-ac.onSessionStart(function()
-	data = leaderboardData.new()
-	table.clear(data.storedPositions)
-end)
 
 -- Atualiza a lista de jogadores
 local function updateDrivers()
@@ -47,10 +43,11 @@ local function updateDrivers()
 end
 
 function leaderboard.windowMain()
-	if data == nil then
+	ac.onSessionStart(function()
 		data = leaderboardData.new()
 		table.clear(data.storedPositions)
-	end
+	end)
+	
 	ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
 	leaderboardData.setTitlesLeght(data)
 	updateDrivers()
