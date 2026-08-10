@@ -44,14 +44,14 @@ end
 
 ---@param data leaderboardData
 function leaderboardData.setTitlesLeght(data)
-    data.nameLenght = math.max(ui.measureDWriteText(language.get("NAME"), 18).x + 20, 200)
-    data.tyreLenght = math.max(ui.measureDWriteText(language.get("TYRES"), 18).x + 20, 50)
-    data.lapCountLenght = math.max(ui.measureDWriteText(language.get("LAPS"), 18).x + 20, 60)
-    data.lastLapLenght = math.max(ui.measureDWriteText(language.get("LAST"), 18).x + 20, 100)
-    data.bestLapLenght = math.max(ui.measureDWriteText(language.get("BEST"), 18).x + 20, 100)
-    data.gapLenght = math.max(ui.measureDWriteText(language.get("GAP"), 18).x + 20, 80)
-    data.intLenght = math.max(ui.measureDWriteText(language.get("INT"), 18).x + 20, 80)
-    data.statusLenght = math.max(ui.measureDWriteText(language.get("STATUS"), 18).x + 20, 21)
+	data.nameLenght = math.max(ui.measureDWriteText(language.get("NAME"), 18).x + 20, 200)
+	data.tyreLenght = math.max(ui.measureDWriteText(language.get("TYRES"), 18).x + 20, 50)
+	data.lapCountLenght = math.max(ui.measureDWriteText(language.get("LAPS"), 18).x + 20, 60)
+	data.lastLapLenght = math.max(ui.measureDWriteText(language.get("LAST"), 18).x + 20, 100)
+	data.bestLapLenght = math.max(ui.measureDWriteText(language.get("BEST"), 18).x + 20, 100)
+	data.gapLenght = math.max(ui.measureDWriteText(language.get("GAP"), 18).x + 20, 80)
+	data.intLenght = math.max(ui.measureDWriteText(language.get("INT"), 18).x + 20, 80)
+	data.statusLenght = math.max(ui.measureDWriteText(language.get("STATUS"), 18).x + 20, 21)
 end
 
 return leaderboardData

@@ -2,6 +2,7 @@
     "GEAR": "Marcha",
     "SPEED": "Velocidade",
     "WHEEL": "Volante",
+    "UPLOAD_WHEEL": "Subir Volante",
     "SIZE": "Escala",
     "ABS": "ABS",
     "ALERT_ABS": "Este carro não possui ABS",
@@ -51,6 +52,9 @@
     "TYPE": "Tipo",
     "PROGRESS": "Progresso",
     "SHIFT_LIGHTS": "Luzes de mudança",
+    "MANUAL_RPM": "Definir manualmente os limites de RPM",
+    "MIN": "Mínimo",
+    "MAX": "Maximo",
     "PIN_ALL_APPS": "Fixar todos os aplicativos",
     "NUM_LIGHTS": "Número de luzes",
     "WHITE_FLAG": "Bandeira Branca",
@@ -133,5 +137,7 @@
     "WEAR": "Desgaste",
     "TELEMETRY": "Telemetria",
     "INVERT_GRAPH": "Inverter gráfico",
-    "PERIOD": "Período"
+    "PERIOD": "Período",
+    "IMAGES": "Imagens",
+    "SELECT_WHEEL": "Selecionar volante"
 }

@@ -9,52 +9,57 @@ local sectors = require("src.hud.sessionLaps.components.sectors")
 local sessionLaps = {}
 
 --- @type sessionLapsData
-local data = sessionLapsData.new()
-sessionLapsData.setSectorsDivisions(data, sessionLapsSettings.store.numberDivisions - 1)
-
+local data
 ac.onSessionStart(function()
-    data.previousBestlap = 0
-    sessionLapsData.resetSectors(data)
-    sessionLapsData.setSectorsDivisions(data, sessionLapsSettings.store.numberDivisions - 1)
-    data.showLastDivisions = false
+	data = sessionLapsData.new()
+	data.previousBestlap = 0
+	sessionLapsData.resetSectors(data)
+	sessionLapsData.setSectorsDivisions(data, sessionLapsSettings.store.numberDivisions - 1)
+	data.showLastDivisions = false
 end)
 
 function sessionLaps.windowMain()
-    ui.pushDWriteFont("fonts/Montserrat-Bold.ttf") -- FONT TEXT
+	if data == nil then
+		data = sessionLapsData.new()
+		data.previousBestlap = 0
+		sessionLapsData.resetSectors(data)
+		sessionLapsData.setSectorsDivisions(data, sessionLapsSettings.store.numberDivisions - 1)
+		data.showLastDivisions = false
+	end
 
-    data.currentWindowWidth = 240 * sessionLapsSettings.store.sessionLapsScale
-    data.currentWindowHeight = 0
-    if data.currentNumberDivisions ~= sessionLapsSettings.store.numberDivisions then
-        sessionLapsData.setSectorsDivisions(data, sessionLapsSettings.store.numberDivisions - 1)
-        data.currentNumberDivisions = sessionLapsSettings.store.numberDivisions
-    end
-    ui.drawRectFilled(vec2(0, 0), data.currentWindowSize, WindowsColor, 5 * sessionLapsSettings.store.sessionLapsScale)
-    -- Volta atual
-    if sessionLapsSettings.store.currentLapActive then
-        laps.drawCurrent(data)
-    end
+	ui.pushDWriteFont("fonts/Montserrat-Bold.ttf") -- FONT TEXT
 
-    -- Última volta
-    if sessionLapsSettings.store.lastLapActive then
-        laps.drawLast(data)
-    end
+	data.currentWindowWidth = 240 * sessionLapsSettings.store.sessionLapsScale
+	data.currentWindowHeight = 0
+	if data.currentNumberDivisions ~= sessionLapsSettings.store.numberDivisions then
+		sessionLapsData.setSectorsDivisions(data, sessionLapsSettings.store.numberDivisions - 1)
+		data.currentNumberDivisions = sessionLapsSettings.store.numberDivisions
+	end
+	ui.drawRectFilled(vec2(0, 0), data.currentWindowSize, WindowsColor, 5 * sessionLapsSettings.store.sessionLapsScale)
+	-- Volta atual
+	if sessionLapsSettings.store.currentLapActive then
+		laps.drawCurrent(data)
+	end
 
-    -- Melhor volta
-    if sessionLapsSettings.store.bestLapActive then
-        laps.drawBest(data)
-    end
+	-- Última volta
+	if sessionLapsSettings.store.lastLapActive then
+		laps.drawLast(data)
+	end
 
-    -- Setores
-    if sessionLapsSettings.store.sectorsLapActive then
-        sectors.drawSectors(data)
-    end
-    
-    
-    data.currentWindowSize = vec2(data.currentWindowWidth, data.currentWindowHeight * sessionLapsSettings.store.sessionLapsScale)
+	-- Melhor volta
+	if sessionLapsSettings.store.bestLapActive then
+		laps.drawBest(data)
+	end
 
-    window.resize(data.currentWindowSize, "Session Laps")
-    pinCheckBox.main(sessionLapsSettings.store.sessionLapsScale, "Session Laps",
-        window.getWindow("Session Laps"):pinned(), data.currentWindowSize)
+	-- Setores
+	if sessionLapsSettings.store.sectorsLapActive then
+		sectors.drawSectors(data)
+	end
+
+	data.currentWindowSize = vec2(data.currentWindowWidth, data.currentWindowHeight * sessionLapsSettings.store.sessionLapsScale)
+
+	window.resize(data.currentWindowSize, "Session Laps")
+	pinCheckBox.main(sessionLapsSettings.store.sessionLapsScale, "Session Laps", window.getWindow("Session Laps"):pinned(), data.currentWindowSize)
 end
 
 return sessionLaps

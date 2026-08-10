@@ -18,23 +18,23 @@ local pitLaneData = {}
 
 ---@return pitLaneData
 function pitLaneData.new()
-    return {
-        currentWindowWidth = 0,
-        currentWindowHeight = 0,
-        currentWindowSize = vec2(0, 0),
-        posLimit = vec2(-10, 5),
-        fontLimit = 0,
-        posSpeedLimit = vec2(6, 22),
-        fontSpeedLimit = 0,
-        posYou = vec2(63, 5),
-        fontYou = 0,
-        posSpeedYou = vec2(80, 22),
-        fontSpeedYou = 0,
-        fontSlowDown = 0,
-        kmhString = "--",
-        limitPitString = "--",
-        speedrgb = COLOR.WHITE,
-    }
+	return {
+		currentWindowWidth = 0,
+		currentWindowHeight = 0,
+		currentWindowSize = vec2(0, 0),
+		posLimit = vec2(-10, 5),
+		fontLimit = 0,
+		posSpeedLimit = vec2(6, 22),
+		fontSpeedLimit = 0,
+		posYou = vec2(63, 5),
+		fontYou = 0,
+		posSpeedYou = vec2(80, 22),
+		fontSpeedYou = 0,
+		fontSlowDown = 0,
+		kmhString = "--",
+		limitPitString = "--",
+		speedrgb = COLOR.WHITE,
+	}
 end
 
 return pitLaneData

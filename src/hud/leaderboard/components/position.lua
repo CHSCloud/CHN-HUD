@@ -20,10 +20,23 @@ function position.drawPosition(data, logoPath, nationPath, driverDrawNumber, car
     ui.drawRectFilled(pos,
         pos + vec2(data.currentWindowSize.x, 35 * leaderboardSettings.store.leaderboardScale), backgroundColor)
 
-    -- Desenha posição do jogador
-    ui.drawRectFilled(pos + vec2(10, 2.5):scale(leaderboardSettings.store.leaderboardScale), pos + vec2(40, 32.5):scale(leaderboardSettings.store.leaderboardScale), color, 5 * leaderboardSettings.store.leaderboardScale)
-    ui.setCursor(pos + vec2(10, 2.5):scale(leaderboardSettings.store.leaderboardScale))
-    ui.dwriteTextAligned(tostring(carPosition), 20 * leaderboardSettings.store.leaderboardScale, ui.Alignment.Center, ui.Alignment.Center, vec2(30, 30):scale(leaderboardSettings.store.leaderboardScale), false, COLOR.BLACK)
+	-- Desenha posição do jogador
+	ui.drawRectFilled(
+		pos + vec2(10, 2.5):scale(leaderboardSettings.store.leaderboardScale),
+		pos + vec2(40, 32.5):scale(leaderboardSettings.store.leaderboardScale),
+		color,
+		5 * leaderboardSettings.store.leaderboardScale
+	)
+	ui.setCursor(pos + vec2(10, 2.5):scale(leaderboardSettings.store.leaderboardScale))
+	ui.dwriteTextAligned(
+		tostring(carPosition),
+		20 * leaderboardSettings.store.leaderboardScale,
+		ui.Alignment.Center,
+		ui.Alignment.Center,
+		vec2(30, 30):scale(leaderboardSettings.store.leaderboardScale),
+		false,
+		COLOR.BLACK
+	)
 
     -- Desenha logo do carro
     ui.setCursor(pos + vec2(50, 2.5):scale(leaderboardSettings.store.leaderboardScale))

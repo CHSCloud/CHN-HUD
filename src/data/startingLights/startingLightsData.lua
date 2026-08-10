@@ -12,17 +12,17 @@ local startingLightsData = {}
 
 ---@return startingLightsData
 function startingLightsData.new()
-    return {
-        radius = 20,
-        pos = 0,
-        distance = 0,
-        thickness = 1.5,
-        distanceBorder = 4,
-        polygons = 50,
-        rounding = 50,
-        currentWindowHeight = 0,
-        currentWindowWidth = 0,
-    }
+	return {
+		radius = 20,
+		pos = 0,
+		distance = 0,
+		thickness = 1.5,
+		distanceBorder = 4,
+		polygons = 50,
+		rounding = 50,
+		currentWindowHeight = 0,
+		currentWindowWidth = 0,
+	}
 end
 
 return startingLightsData

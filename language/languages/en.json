@@ -2,6 +2,7 @@
     "GEAR": "Gear",
     "SPEED": "Speed",
     "WHEEL": "Wheel",
+    "UPLOAD_WHEEL": "Upload Wheel",
     "SIZE": "Scale",
     "ABS": "ABS",
     "ALERT_ABS": "This car does not have ABS",
@@ -51,6 +52,9 @@
     "TYPE": "Type",
     "PROGRESS": "Progress",
     "SHIFT_LIGHTS": "Shift Lights",
+    "MANUAL_RPM": "Manually set RPM limits",
+    "MIN": "Minimum",
+    "MAX": "Maximum",
     "PIN_ALL_APPS": "Pin all apps",
     "NUM_LIGHTS": "Num of lights",
     "WHITE_FLAG": "White Flag",
@@ -133,5 +137,7 @@
     "WEAR": "Wear",
     "TELEMETRY": "Telemetry",
     "INVERT_GRAPH": "Invert graph",
-    "PERIOD": "Period"
+    "PERIOD": "Period",
+    "IMAGES": "Images",
+    "SELECT_WHEEL": "Select steering wheel"
 }
