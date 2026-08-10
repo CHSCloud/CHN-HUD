@@ -10,12 +10,11 @@ local pitLane = {}
 ---@type pitLaneData
 local data
 
-
 function pitLane.windowMain()
 	ac.onSessionStart(function()
 		data = pitLaneData.new()
 	end)
-	
+
 	data.currentWindowHeight = 70 * pitLaneSettings.store.pitLaneScale
 	data.fontYou = 17 * pitLaneSettings.store.pitLaneScale
 

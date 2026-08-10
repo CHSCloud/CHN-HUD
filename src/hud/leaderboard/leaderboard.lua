@@ -34,7 +34,7 @@ local function updateDrivers()
 			isRaceFinished = car.isRaceFinished,
 			isInPitlane = car.isInPitlane,
 			logoPath = ac.getFolder(ac.FolderID.ContentCars) .. "\\" .. ac.getCarID(car.index) .. "\\ui\\badge.png",
-            nationPath = ac.getFolder(ac.FolderID.Root) .. "\\content\\gui\\NationFlags\\" .. car:driverNationCode() .. ".png"
+			nationPath = ac.getFolder(ac.FolderID.Root) .. "\\content\\gui\\NationFlags\\" .. car:driverNationCode() .. ".png",
 		})
 	end
 	table.sort(data.drivers, function(a, b)
@@ -47,7 +47,7 @@ function leaderboard.windowMain()
 		data = leaderboardData.new()
 		table.clear(data.storedPositions)
 	end)
-	
+
 	ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
 	leaderboardData.setTitlesLeght(data)
 	updateDrivers()
@@ -103,11 +103,19 @@ function leaderboard.windowMain()
 				statusText = "-"
 			end
 
-            data.posX = 0
-            position.drawPosition(data, driver.logoPath, driver.nationPath, numPlayers, driver.position, driver.name,
-                vec2(data.posX, data.posY):scale(leaderboardSettings.store.leaderboardScale), color)
-            
-            for index = 1, 8, 1 do
+			data.posX = 0
+			position.drawPosition(
+				data,
+				driver.logoPath,
+				driver.nationPath,
+				numPlayers,
+				driver.position,
+				driver.name,
+				vec2(data.posX, data.posY):scale(leaderboardSettings.store.leaderboardScale),
+				color
+			)
+
+			for index = 1, 8, 1 do
 				if index == leaderboardSettings.store.tyrePos then
 					tyres.drawTyre(data, driver.tyre, vec2(data.posX, data.posY + 2.5):scale(leaderboardSettings.store.leaderboardScale), color)
 				elseif index == leaderboardSettings.store.lapCountPos then

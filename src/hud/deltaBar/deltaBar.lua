@@ -8,7 +8,6 @@ local deltaBar = {}
 ---@type deltaBarData
 local data
 
-
 function deltaBar.windowMain()
 	ac.onSessionStart(function()
 		data = deltaBarData.new()

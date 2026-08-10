@@ -16,7 +16,7 @@ function tyres.windowMain()
 		data = tyresData.new()
 		tyresData.loadTyresData(data)
 	end)
-	
+
 	data.wheels = CAR.wheels
 	ui.drawRectFilled(vec2(0, 0), data.currentWindowSize, WindowsColor, 20 * tyresSettings.store.tyresScale)
 	data.currentWindowSize = vec2(300, 250):scale(tyresSettings.store.tyresScale)

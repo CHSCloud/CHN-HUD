@@ -21,7 +21,6 @@ function map.windowMain()
 		mapData.initMap(data)
 	end)
 
-
 	if mapSettings.store.resetSectionsINI then
 		data.trackSections = mapSettings.resetSectionsINI()
 	end

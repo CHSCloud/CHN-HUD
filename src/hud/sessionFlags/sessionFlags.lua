@@ -11,7 +11,6 @@ local sessionFlags = {}
 ---@type sessionFlagsData
 local data
 
-
 function sessionFlags.windowMain()
 	ac.onSessionStart(function()
 		data = sessionFlagsData.new()
