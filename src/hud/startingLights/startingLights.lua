@@ -11,14 +11,11 @@ local startingLights = {}
 
 ---@type startingLightsData
 local data
-ac.onSessionStart(function()
-	data = startingLightsData.new()
-end)
 
 function startingLights.windowMain()
-	if data == nil then
+	ac.onSessionStart(function()
 		data = startingLightsData.new()
-	end
+	end)
 	-- Raio
 	data.radius = 20 * startingLightsSettings.store.startingLightsScale
 	-- Posição do primeiro círculo

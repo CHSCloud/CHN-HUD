@@ -14,16 +14,13 @@ local map = {}
 
 ---@type mapData
 local data
-ac.onSessionStart(function()
-	data = mapData.new()
-	mapData.initMap(data)
-end)
 
 function map.windowMain()
-	if data == nil then
+	ac.onSessionStart(function()
 		data = mapData.new()
 		mapData.initMap(data)
-	end
+	end)
+
 
 	if mapSettings.store.resetSectionsINI then
 		data.trackSections = mapSettings.resetSectionsINI()

@@ -20,14 +20,11 @@ local pedals = {}
 
 ---@type pedalsData
 local data
-ac.onSessionStart(function()
-	data = pedalsData.new()
-end)
 
 function pedals.windowMain()
-	if data == nil then
+	ac.onSessionStart(function()
 		data = pedalsData.new()
-	end
+	end)
 
 	ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
 	data.fontBar = 15 * pedalsSettings.store.pedalsScale
