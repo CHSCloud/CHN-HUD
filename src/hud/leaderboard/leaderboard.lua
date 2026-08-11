@@ -43,10 +43,10 @@ local function updateDrivers()
 end
 
 function leaderboard.windowMain()
-	ac.onSessionStart(function()
+	if data == nil then
 		data = leaderboardData.new()
 		table.clear(data.storedPositions)
-	end)
+	end
 
 	ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
 	leaderboardData.setTitlesLeght(data)

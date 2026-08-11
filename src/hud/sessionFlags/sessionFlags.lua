@@ -12,9 +12,9 @@ local sessionFlags = {}
 local data
 
 function sessionFlags.windowMain()
-	ac.onSessionStart(function()
+	if data == nil then
 		data = sessionFlagsData.new()
-	end)
+	end
 	if data.currentTime > SIM.currentSessionTime then
 		data.currentTime = 0
 	end

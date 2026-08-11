@@ -9,10 +9,10 @@ local deltaBar = {}
 local data
 
 function deltaBar.windowMain()
-	ac.onSessionStart(function()
+	if data == nil then
 		data = deltaBarData.new()
 		deltaBarData.clean(data)
-	end)
+	end
 
 	--Limites e Tamanhos
 	local limitBarDeltaBackground = vec2(500, 25):scale(deltaBarSettings.store.deltaBarScale)

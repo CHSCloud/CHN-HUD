@@ -12,10 +12,10 @@ local tyres = {}
 local data
 
 function tyres.windowMain()
-	ac.onSessionStart(function()
+	if data == nil then
 		data = tyresData.new()
 		tyresData.loadTyresData(data)
-	end)
+	end
 
 	data.wheels = CAR.wheels
 	ui.drawRectFilled(vec2(0, 0), data.currentWindowSize, WindowsColor, 20 * tyresSettings.store.tyresScale)

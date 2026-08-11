@@ -11,9 +11,9 @@ local pitLane = {}
 local data
 
 function pitLane.windowMain()
-	ac.onSessionStart(function()
+	if data == nil then
 		data = pitLaneData.new()
-	end)
+	end
 
 	data.currentWindowHeight = 70 * pitLaneSettings.store.pitLaneScale
 	data.fontYou = 17 * pitLaneSettings.store.pitLaneScale

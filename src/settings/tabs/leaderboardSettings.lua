@@ -14,6 +14,10 @@ local defaultGeneralValues = {
 	numDrivers = 10,
 }
 local defaultContentValues = {
+	nationActive = true,
+
+	logoActive = true,
+
 	tyreActive = true,
 	tyrePos = 1,
 
@@ -74,6 +78,18 @@ local function contents()
 
 	ui.dwriteDrawText(language.get("CONTENT"), 12, vec2(pos.x - 5, pos.y), COLOR.WHITE)
 	pos.y = pos.y + 25
+	if toggleButton.main("logoToggle", pos, leaderboardSettings.store.logoActive, "Logo") then
+		leaderboardSettings.store.logoActive = not leaderboardSettings.store.logoActive
+	end
+	
+	pos.y = pos.y + 40
+
+	if toggleButton.main("nationToggle", pos, leaderboardSettings.store.nationActive, "Nation") then
+		leaderboardSettings.store.nationActive = not leaderboardSettings.store.nationActive
+	end
+	
+	pos.y = pos.y + 40
+	
 	if toggleButton.main("tyresToggle", pos, leaderboardSettings.store.tyreActive, language.get("TYRES")) then
 		leaderboardSettings.store.tyreActive = not leaderboardSettings.store.tyreActive
 	end

@@ -16,10 +16,10 @@ local map = {}
 local data
 
 function map.windowMain()
-	ac.onSessionStart(function()
+	if data == nil then
 		data = mapData.new()
 		mapData.initMap(data)
-	end)
+	end
 
 	if mapSettings.store.resetSectionsINI then
 		data.trackSections = mapSettings.resetSectionsINI()
