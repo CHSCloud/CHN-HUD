@@ -52,7 +52,7 @@ function laps.drawCurrent(data)
 		ui.Alignment.Center,
 		vec2(150, 25):scale(sessionLapsSettings.store.sessionLapsScale),
 		false,
-		rgbm(WindowsColor.r, WindowsColor.g, WindowsColor.b, 1)
+		COLOR.BLACK
 	)
 	-- LINE
 	ui.drawRectFilled(
@@ -110,7 +110,7 @@ function laps.drawLast(data)
 		ui.Alignment.Center,
 		vec2(150, 25):scale(sessionLapsSettings.store.sessionLapsScale),
 		false,
-		rgbm(WindowsColor.r, WindowsColor.g, WindowsColor.b, 1)
+		COLOR.BLACK
 	)
 	-- LINE
 	data.currentWindowHeight = data.currentWindowHeight + 26
@@ -158,7 +158,7 @@ function laps.drawBest(data)
 		ui.Alignment.Center,
 		vec2(150, 25):scale(sessionLapsSettings.store.sessionLapsScale),
 		false,
-		rgbm(WindowsColor.r, WindowsColor.g, WindowsColor.b, 1)
+		COLOR.BLACK
 	)
 	data.currentWindowHeight = data.currentWindowHeight + 27
 end

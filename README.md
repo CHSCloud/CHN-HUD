@@ -11,6 +11,7 @@
  - Escalonamento do leaderboard incorreto
  - Bug na seleção de volante no pedals, que quando o jogo iniciava ia para o "Simple"
  - Erros de tradução
+ - Cor das letras dos setores não muda
 
 
 ## 1.3.1
