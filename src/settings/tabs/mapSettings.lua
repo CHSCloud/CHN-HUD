@@ -2,6 +2,7 @@ local mapSettings = {}
 local colorSelector = require("src.ui.selectors.colorSelector")
 local slider = require("src.ui.selectors.slider")
 local button = require("src.ui.buttons.button")
+local tab = require("src.ui.buttons.tab")
 local toggleButton = require("src.ui.buttons.toggleButton")
 local droplist = require("src.ui.selectors.droplist")
 local sectionPanel = require("src.ui.panels.sectionPanel")
@@ -273,7 +274,7 @@ end
 
 -- Configurações da pista
 local function trackSetitngs()
-	local initPos = 100
+	local initPos = 110
 
 	-- Escala:
 	mapSettings.store.mapScale =
@@ -347,7 +348,7 @@ end
 
 -- Configurações das Características da pista
 local function featuresSettings()
-	local initPos = 80
+	local initPos = 90
 	if toggleButton.main("sectors", vec2(20, initPos), mapSettings.store.sectorsActive, language.get("SECTORS")) then
 		mapSettings.store.sectorsActive = not mapSettings.store.sectorsActive
 	end
@@ -375,8 +376,8 @@ local function sectionsSettings()
 		language.get("NUMBERS"),
 		language.get("NAMES"),
 	}
-	local initPos = 80
-	if toggleButton.main("sectionsTrackActive", vec2(20, initPos), mapSettings.store.sectionsTrackActive, language.get("SECTIONS")) then
+	local initPos = 90
+	if toggleButton.main("sectionsTrackActive", vec2(20, initPos), mapSettings.store.sectionsTrackActive, language.get("SHOW_SECTIONS")) then
 		mapSettings.store.sectionsTrackActive = not mapSettings.store.sectionsTrackActive
 	end
 
@@ -430,7 +431,7 @@ end
 
 -- Configurações dos Jogadores
 local function playersSetitngs()
-	local initPos = 100
+	local initPos = 110
 
 	mapSettings.store.focusedCarLenght = math.floor(
 		slider.main(
@@ -480,12 +481,13 @@ local function playersSetitngs()
 end
 
 function mapSettings.mapSettings()
-	ui.tabBar("##ID", function()
-		ui.tabItem(language.get("TRACK"), trackSetitngs)
-		ui.tabItem(language.get("FEATURES_OF_TRACK"), featuresSettings)
-		ui.tabItem("Sections", sectionsSettings)
-		ui.tabItem(language.get("PLAYERS"), playersSetitngs)
-	end)
+	local id = "mapTab"
+	tab.tabStart(id, vec2(5, 52))
+	tab.item(id, language.get("TRACK"), trackSetitngs)
+	tab.item(id, language.get("FEATURES_OF_TRACK"), featuresSettings)
+	tab.item(id, language.get("SECTIONS"), sectionsSettings)
+	tab.item(id, language.get("PLAYERS"), playersSetitngs)
+	tab.tabEnd(id)
 end
 
 return mapSettings

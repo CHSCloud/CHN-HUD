@@ -10,6 +10,7 @@ local tyresSettings = require("src.settings.tabs.tyresSettings")
 
 local toggleButton = require("src.ui.buttons.toggleButton")
 local button = require("src.ui.buttons.button")
+local tab = require("src.ui.buttons.tab")
 local slider = require("src.ui.selectors.slider")
 
 local language = require("language.language")
@@ -171,21 +172,25 @@ function settings.windowCloseSettings()
 end
 
 function settings.windowMain()
+
+
 	WindowSettingsSize = ui.windowSize()
 	ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
 	ui.drawRectFilled(vec2(0, 0), WindowSettingsSize + ui.windowContentSize(), rgbm.from0255(18, 21, 29, 0.85), 0)
-	ui.tabBar("##ID", function()
-		ui.tabItem(language.get("GENERAL"), tabPin and ui.TabItemFlags.SetSelected, geral)
-		ui.tabItem(language.get("PEDALS"), pedalsSettings.pedalsSettings)
-		ui.tabItem(language.get("PIT_LANE"), pitLaneSettings.pitLaneSettings)
-		ui.tabItem(language.get("SESSION_LAPS"), sessionLapsSettings.sessionLapsSettings)
-		ui.tabItem(language.get("STARTING_LIGHTS"), startingLightsSettings.startingLightsSettings)
-		ui.tabItem(language.get("SESSION_FLAGS"), sessionFlagsSettings.sessionFlagsSettings)
-		ui.tabItem(language.get("DELTA_BAR"), deltaBarSettings.deltaBarSettings)
-		ui.tabItem(language.get("MAP"), mapSettings.mapSettings)
-		ui.tabItem(language.get("LEADERBOARD"), leaderboardSettings.leaderboardSettings)
-		ui.tabItem(language.get("TYRES"), tyresSettings.tyresSettings)
-	end)
+
+	local id = "mainTab"
+	tab.tabStart(id, vec2(5,25))
+	tab.item(id, language.get("GENERAL"), geral)
+	tab.item(id, language.get("PEDALS"), pedalsSettings.pedalsSettings)
+	tab.item(id, language.get("PIT_LANE"), pitLaneSettings.pitLaneSettings)
+	tab.item(id, language.get("SESSION_LAPS"), sessionLapsSettings.sessionLapsSettings)
+	tab.item(id, language.get("STARTING_LIGHTS"), startingLightsSettings.startingLightsSettings)
+	tab.item(id, language.get("SESSION_FLAGS"), sessionFlagsSettings.sessionFlagsSettings)
+	tab.item(id, language.get("DELTA_BAR"), deltaBarSettings.deltaBarSettings)
+	tab.item(id, language.get("MAP"), mapSettings.mapSettings)
+	tab.item(id, language.get("LEADERBOARD"), leaderboardSettings.leaderboardSettings)
+	tab.item(id, language.get("TYRES"), tyresSettings.tyresSettings)
+	tab.tabEnd(id)
 
 	local posResize
 	if not isLatestVersion and isTabUpdateActive and onlineVersion ~= nil then

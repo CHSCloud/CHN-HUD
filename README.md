@@ -4,11 +4,12 @@
 
 ## 1.3.3
 ### Adições
-
+ - Novas tabs
 ### Correções de bugs
  - Deltar bar não resetando
  - Refinando chamadas de funções protegidas
- - Redimencionamento do leaderboard incorreto
+ - Escalonamento do leaderboard incorreto
+ - Erros de tradução
 
 
 ## 1.3.1

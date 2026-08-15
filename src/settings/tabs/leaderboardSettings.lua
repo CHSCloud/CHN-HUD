@@ -3,6 +3,7 @@ local toggleButton = require("src.ui.buttons.toggleButton")
 local droplist = require("src.ui.selectors.droplist")
 local button = require("src.ui.buttons.button")
 local slider = require("src.ui.selectors.slider")
+local tab = require("src.ui.buttons.tab")
 local utils = require("common.utils")
 
 local leaderboardSettings = {}
@@ -72,7 +73,7 @@ local function invertPositions(keyActive, oldPos, newPos)
 end
 
 local function contents()
-	local pos = vec2(20, 80)
+	local pos = vec2(20, 90)
 	invertPositions("tyreActive", leaderboardSettings.store.tyrePos)
 	local positions = { "1", "2", "3", "4", "5", "6", "7", "8" }
 
@@ -252,7 +253,7 @@ local function contents()
 end
 
 local function general()
-	local posY = 100
+	local posY = 120
 
 	-- Escala:
 	leaderboardSettings.store.leaderboardScale = slider.main(
@@ -287,10 +288,11 @@ local function general()
 end
 
 function leaderboardSettings.leaderboardSettings()
-	ui.tabBar("##ID", function()
-		ui.tabItem(language.get("GENERAL"), general)
-		ui.tabItem(language.get("CONTENT"), contents)
-	end)
+	local id = "leaderTab"
+	tab.tabStart(id, vec2(5,52))
+	tab.item(id, language.get("GENERAL"), general)
+	tab.item(id, language.get("CONTENT"), contents)
+	tab.tabEnd(id)
 end
 
 return leaderboardSettings
