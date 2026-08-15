@@ -29,7 +29,6 @@ end
 
 function sessionLaps.windowMain()
 	ui.pushDWriteFont("fonts/Montserrat-Bold.ttf") -- FONT TEXT
-
 	data.currentWindowWidth = 240 * sessionLapsSettings.store.sessionLapsScale
 	data.currentWindowHeight = 0
 	if data.currentNumberDivisions ~= sessionLapsSettings.store.numberDivisions then

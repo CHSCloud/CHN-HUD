@@ -10,6 +10,9 @@ local data
 
 function deltaBar.init()
 	data = deltaBarData.new()
+end
+
+function deltaBar.onSessionStart()
 	deltaBarData.clean(data)
 end
 

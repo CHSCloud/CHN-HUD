@@ -2,6 +2,13 @@
 
  Hud em desenvolvimento para o Assetto Corsa, inicialmente baseado no iOverlay
 
+## 1.3.3
+### Adições
+
+### Correções de bugs
+ - Deltar bar não resetando
+ - Refinando chamadas de funções protegidas
+
 
 ## 1.3.1
 ### Adições

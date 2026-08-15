@@ -56,6 +56,7 @@ end
 ac.onSessionStart(function (sessionIndex, restarted)
 	if restarted then
 		callProtectedFunction(sessionLaps.onSessionStart)
+		callProtectedFunction(deltaBar.onSessionStart)
 	end
 end)
 
