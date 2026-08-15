@@ -2,7 +2,9 @@ TIMER = 0
 SIM = ac.getSim()
 CAR = ac.getCar(SIM.focusedCar)
 USER_UI = ac.getUI()
+local isAppsInit = false
 
+local language = require("language.language")
 local settings = require("src.settings.settings")
 local pitLane = require("src.hud.pitLane.pitLane")
 local pedals = require("src.hud.pedals.pedals")
@@ -14,67 +16,101 @@ local deltaBar = require("src.hud.deltaBar.deltaBar")
 local leaderboard = require("src.hud.leaderboard.leaderboard")
 local tyres = require("src.hud.tyres.tyres")
 
--- TELA DE CONFIGURAÇÕES
-function WindowSettings()
-	pcall(settings.windowMain)
+---@Credits This function was inspired by the "call_protected_function" function from CMRT Complete HUD.
+---@param app function
+local function callProtectedFunction(app)
+	xpcall(app, function (Error)
+		ac.debug("Error in function: " .. Error, debug.traceback())
+	end)
 end
 
-function WindowOpenSettings()
-	pcall(settings.windowOpenSettings)
-end
-
-function WindowCloseSettings()
-	pcall(settings.windowCloseSettings)
-end
-
--- TELA DOS PEDAIS
-function WindowPedals()
-	pcall(pedals.windowMain)
-end
-
--- TELA DO PIT LANE
-function WindowPitLane()
-	pcall(pitLane.windowMain)
-end
-
--- TELA DE BANDEIRAS
-function WindowSessionflags()
-	pcall(sessionFlags.windowMain)
-end
-
--- TELA DE LUZES DE LARGADA
-function WindowStartingLights()
-	pcall(startingLights.windowMain)
-end
-
--- TELA DE VOLTAS DA SESSÃO
-function WindowSessionlaps()
-	pcall(sessionLaps.windowMain)
-end
-
--- TELA DO MAPA
-function WindowMap()
-	pcall(map.windowMain)
-end
-
--- TELA DO DELTA BAR
-function WindowdeltaBar()
-	pcall(deltaBar.windowMain)
-end
-
--- TELA DO LEADERBOARD
-function WindowLeaderboard()
-	pcall(leaderboard.windowMain)
-end
-
-function WindowTyres()
-	pcall(tyres.windowMain)
+-- INICIALIZA TODOS OS APPS
+local function initApps()
+	language.loadTranslations()
+	pitLane.init()
+	pedals.init()
+	sessionLaps.init()
+	sessionFlags.init()
+	startingLights.init()
+	map.init()
+	deltaBar.init()
+	leaderboard.init()
+	tyres.init()
 end
 
 -- FUNÇÃO DE ATUALIZAÇÃO
+---@param dt number
 function script.update(dt)
 	TIMER = TIMER + dt
 	SIM = ac.getSim()
 	CAR = ac.getCar(SIM.focusedCar)
 	USER_UI = ac.getUI()
+
+	if not isAppsInit then
+		callProtectedFunction(initApps)
+		isAppsInit = true
+	end
+end
+
+-- FUNÇÃO CHAMADA PARA RESTART DAS SESSÕES
+ac.onSessionStart(function (sessionIndex, restarted)
+	if restarted then
+		callProtectedFunction(sessionLaps.onSessionStart)
+	end
+end)
+
+-- TELA DE CONFIGURAÇÕES
+function WindowSettings()
+	callProtectedFunction(settings.windowMain)
+end
+function WindowOpenSettings()
+	callProtectedFunction(settings.windowOpenSettings)
+end
+function WindowCloseSettings()
+	callProtectedFunction(settings.windowCloseSettings)
+end
+--
+
+-- TELA DOS PEDAIS
+function WindowPedals()
+	callProtectedFunction(pedals.windowMain)
+end
+
+-- TELA DO PIT LANE
+function WindowPitLane()
+	callProtectedFunction(pitLane.windowMain)
+end
+
+-- TELA DE BANDEIRAS
+function WindowSessionflags()
+	callProtectedFunction(sessionFlags.windowMain)
+end
+
+-- TELA DE LUZES DE LARGADA
+function WindowStartingLights()
+	callProtectedFunction(startingLights.windowMain)
+end
+
+-- TELA DE VOLTAS DA SESSÃO
+function WindowSessionlaps()
+	callProtectedFunction(sessionLaps.windowMain)
+end
+
+-- TELA DO MAPA
+function WindowMap()
+	callProtectedFunction(map.windowMain)
+end
+
+-- TELA DO DELTA BAR
+function WindowdeltaBar()
+	callProtectedFunction(deltaBar.windowMain)
+end
+
+-- TELA DO LEADERBOARD
+function WindowLeaderboard()
+	callProtectedFunction(leaderboard.windowMain)
+end
+
+function WindowTyres()
+	callProtectedFunction(tyres.windowMain)
 end

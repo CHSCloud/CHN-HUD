@@ -17,6 +17,11 @@ local leaderboard = {}
 ---@type leaderboardData
 local data
 
+function leaderboard.init()
+	data = leaderboardData.new()
+	table.clear(data.storedPositions)
+end
+
 -- Atualiza a lista de jogadores
 local function updateDrivers()
 	table.clear(data.drivers)
@@ -43,11 +48,6 @@ local function updateDrivers()
 end
 
 function leaderboard.windowMain()
-	if data == nil then
-		data = leaderboardData.new()
-		table.clear(data.storedPositions)
-	end
-
 	ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
 	leaderboardData.setTitlesLeght(data)
 	updateDrivers()

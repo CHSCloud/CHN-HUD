@@ -11,10 +11,11 @@ local sessionFlags = {}
 ---@type sessionFlagsData
 local data
 
+function sessionFlags.init()
+	data = sessionFlagsData.new()
+end
+
 function sessionFlags.windowMain()
-	if data == nil then
-		data = sessionFlagsData.new()
-	end
 	if data.currentTime > SIM.currentSessionTime then
 		data.currentTime = 0
 	end

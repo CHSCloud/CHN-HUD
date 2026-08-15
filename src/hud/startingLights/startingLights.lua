@@ -12,10 +12,11 @@ local startingLights = {}
 ---@type startingLightsData
 local data
 
+function startingLights.init()
+	data = startingLightsData.new()
+end
+
 function startingLights.windowMain()
-	if data == nil then
-		data = startingLightsData.new()
-	end
 	-- Raio
 	data.radius = 20 * startingLightsSettings.store.startingLightsScale
 	-- Posição do primeiro círculo

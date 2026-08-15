@@ -32,6 +32,7 @@ local windowNames = {
 	"Tyres",
 }
 
+---@Credits This function was inspired by the "settings.init()" function from CMRT Complete HUD.
 function window.init()
 	local all = ac.getAppWindows()
 	local win

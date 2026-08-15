@@ -11,25 +11,23 @@ local sessionLaps = {}
 --- @type sessionLapsData
 local data
 
-ac.onSessionStart(function (sessionIndex, restarted)
-	if restarted then
-		data = sessionLapsData.new()
-		data.previousBestlap = 0
-		sessionLapsData.resetSectors(data)
-		sessionLapsData.setSectorsDivisions(data, sessionLapsSettings.store.numberDivisions - 1)
-		data.showLastDivisions = false
-	end
-end)
+function sessionLaps.init()
+	data = sessionLapsData.new()
+	data.previousBestlap = 0
+	sessionLapsData.resetSectors(data)
+	sessionLapsData.setSectorsDivisions(data, sessionLapsSettings.store.numberDivisions - 1)
+	data.showLastDivisions = false
+end
+
+function sessionLaps.onSessionStart()
+	data = sessionLapsData.new()
+	data.previousBestlap = 0
+	sessionLapsData.resetSectors(data)
+	sessionLapsData.setSectorsDivisions(data, sessionLapsSettings.store.numberDivisions - 1)
+	data.showLastDivisions = false
+end
 
 function sessionLaps.windowMain()
-	if data == nil then
-		data = sessionLapsData.new()
-		data.previousBestlap = 0
-		sessionLapsData.resetSectors(data)
-		sessionLapsData.setSectorsDivisions(data, sessionLapsSettings.store.numberDivisions - 1)
-		data.showLastDivisions = false
-	end
-
 	ui.pushDWriteFont("fonts/Montserrat-Bold.ttf") -- FONT TEXT
 
 	data.currentWindowWidth = 240 * sessionLapsSettings.store.sessionLapsScale

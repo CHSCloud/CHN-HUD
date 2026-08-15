@@ -9,14 +9,15 @@ local wheels = require("src.hud.tyres.components.wheels")
 
 local tyres = {}
 
+---@type tyresData
 local data
 
-function tyres.windowMain()
-	if data == nil then
-		data = tyresData.new()
-		tyresData.loadTyresData(data)
-	end
+function tyres.init()
+	data = tyresData.new()
+	tyresData.loadTyresData(data)
+end
 
+function tyres.windowMain()
 	data.wheels = CAR.wheels
 	ui.drawRectFilled(vec2(0, 0), data.currentWindowSize, WindowsColor, 20 * tyresSettings.store.tyresScale)
 	data.currentWindowSize = vec2(300, 250):scale(tyresSettings.store.tyresScale)
@@ -70,6 +71,7 @@ function tyres.windowMain()
 	wheels.drawWheelInfo(data, vec2(175 * tyresSettings.store.tyresScale, data.wheelsPos.y + 130 * tyresSettings.store.tyresScale), 3)
 
 	window.resize(data.currentWindowSize, "Tyres")
+	
 	pinCheckBox.main(tyresSettings.store.tyresScale, "Tyres", window.getWindow("Tyres"):pinned(), data.currentWindowSize)
 end
 

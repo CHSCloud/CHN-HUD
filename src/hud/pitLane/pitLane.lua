@@ -10,11 +10,11 @@ local pitLane = {}
 ---@type pitLaneData
 local data
 
-function pitLane.windowMain()
-	if data == nil then
-		data = pitLaneData.new()
-	end
+function pitLane.init()
+	data = pitLaneData.new()
+end
 
+function pitLane.windowMain()
 	data.currentWindowHeight = 70 * pitLaneSettings.store.pitLaneScale
 	data.fontYou = 17 * pitLaneSettings.store.pitLaneScale
 

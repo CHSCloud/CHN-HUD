@@ -8,12 +8,12 @@ local deltaBar = {}
 ---@type deltaBarData
 local data
 
-function deltaBar.windowMain()
-	if data == nil then
-		data = deltaBarData.new()
-		deltaBarData.clean(data)
-	end
+function deltaBar.init()
+	data = deltaBarData.new()
+	deltaBarData.clean(data)
+end
 
+function deltaBar.windowMain()
 	--Limites e Tamanhos
 	local limitBarDeltaBackground = vec2(500, 25):scale(deltaBarSettings.store.deltaBarScale)
 	local limitBackgroundText = vec2(90, 40):scale(deltaBarSettings.store.deltaBarScale)

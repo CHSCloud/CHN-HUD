@@ -18,7 +18,7 @@ local codes = {
 
 local translations = {}
 
-local function loadTranslations()
+function language.loadTranslations()
 	local file_path = ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\CHN-HUD\\language\\languages\\" .. codes[languageSettings.currentLanguage] .. ".json"
 
 	if io.fileExists(file_path) then
@@ -32,7 +32,7 @@ end
 ---@param key integer | string
 function language.setlanguage(key)
 	languageSettings.currentLanguage = key
-	loadTranslations()
+	language.loadTranslations()
 end
 
 ---@param key string
@@ -45,7 +45,5 @@ end
 function language.getCurrentLanguage()
 	return languageSettings.currentLanguage
 end
-
-loadTranslations()
 
 return language

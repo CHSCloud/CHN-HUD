@@ -21,11 +21,11 @@ local pedals = {}
 ---@type pedalsData
 local data = nil
 
-function pedals.windowMain()
-	if data == nil then
-		data = pedalsData.new()
-	end
+function pedals.init()
+	data = pedalsData.new()
+end
 
+function pedals.windowMain()
 	ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
 	data.fontBar = 15 * pedalsSettings.store.pedalsScale
 	data.fontBarInfinite = 25 * pedalsSettings.store.pedalsScale

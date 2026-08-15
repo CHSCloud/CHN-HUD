@@ -15,12 +15,12 @@ local map = {}
 ---@type mapData
 local data
 
-function map.windowMain()
-	if data == nil then
-		data = mapData.new()
-		mapData.initMap(data)
-	end
+function map.init()
+	data = mapData.new()
+	mapData.initMap(data)
+end
 
+function map.windowMain()
 	if mapSettings.store.resetSectionsINI then
 		data.trackSections = mapSettings.resetSectionsINI()
 	end
