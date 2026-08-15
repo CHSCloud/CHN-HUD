@@ -37,22 +37,22 @@ function position.drawPosition(data, logoPath, nationPath, driverDrawNumber, car
 		COLOR.BLACK
 	)
 
-	pos.x = pos.x + 10
+	pos.x = pos.x + 10 * leaderboardSettings.store.leaderboardScale
 	-- Desenha logo do carro
 	if leaderboardSettings.store.logoActive then
-		pos.x = pos.x + 40
+		pos.x = pos.x + 40 * leaderboardSettings.store.leaderboardScale
 		ui.setCursor(pos + vec2(0, 2.5):scale(leaderboardSettings.store.leaderboardScale))
 		ui.image(logoPath, vec2(28, 28):scale(leaderboardSettings.store.leaderboardScale), ui.ImageFit.Fill)
 	end
 	-- Desenha logo do país
 	if leaderboardSettings.store.nationActive then
-		pos.x = pos.x + 40
+		pos.x = pos.x + 40 * leaderboardSettings.store.leaderboardScale
 		ui.setCursor(pos + vec2(0, 2.5):scale(leaderboardSettings.store.leaderboardScale))
 		ui.image(nationPath, vec2(28, 28):scale(leaderboardSettings.store.leaderboardScale), ui.ImageFit.Fill)
 	end
 
 	-- Desenha nome do jogador
-	pos.x = pos.x + 40
+	pos.x = pos.x + 40 * leaderboardSettings.store.leaderboardScale
 	ui.setCursor(pos + vec2(0, 2.5):scale(leaderboardSettings.store.leaderboardScale))
 	ui.dwriteTextAligned(
 		driverName,
@@ -64,8 +64,8 @@ function position.drawPosition(data, logoPath, nationPath, driverDrawNumber, car
 		color
 	)
 
-	pos.x = pos.x + 190
-	data.positionLenght = pos.x
+	pos.x = pos.x + 190 * leaderboardSettings.store.leaderboardScale
+	data.positionLenght = pos.x / leaderboardSettings.store.leaderboardScale
 	data.posX = data.posX + data.positionLenght
 end
 

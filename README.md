@@ -8,6 +8,7 @@
 ### Correções de bugs
  - Deltar bar não resetando
  - Refinando chamadas de funções protegidas
+ - Redimencionamento do leaderboard incorreto
 
 
 ## 1.3.1
