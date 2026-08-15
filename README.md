@@ -9,6 +9,7 @@
  - Deltar bar não resetando
  - Refinando chamadas de funções protegidas
  - Escalonamento do leaderboard incorreto
+ - Bug na seleção de volante no pedals, que quando o jogo iniciava ia para o "Simple"
  - Erros de tradução
 
 

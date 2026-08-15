@@ -78,10 +78,6 @@ Wheels = {
 	"",
 }
 
-if pedalsSettings.store.wheelType > #wheelsLabels then
-	pedalsSettings.store.wheelType = 1
-end
-
 local function resetToDefault()
 	for key, value in pairs(defaultValues) do
 		pedalsSettings.store[key] = value
@@ -165,6 +161,11 @@ local function removeWheel(wheelType)
 	io.deleteFile(ac.getFolder(ac.FolderID.ACAppsLua) .. "\\CHN-HUD\\assets\\pedals\\wheels\\" .. fileName)
 	table.remove(Wheels, wheelType)
 	table.remove(wheelsLabels, wheelType)
+	pedalsSettings.store.wheelType = 1
+end
+
+function pedalsSettings.init()
+	findWheels()
 end
 
 -- Desenha a seção de outros
@@ -576,7 +577,6 @@ function pedalsSettings.pedalsSettings()
 
 		if isRemoved then
 			removeWheel(pedalsSettings.store.wheelType)
-			pedalsSettings.store.wheelType = 1
 		end
 
 		if button.main(vec2(20, initPos + 35), language.get("UPLOAD_WHEEL")) then
@@ -709,7 +709,6 @@ function pedalsSettings.pedalsSettings()
 end
 
 -- Executando funções de inicialização
-findWheels()
 ac.onFolderChanged(ac.getFolder(ac.FolderID.ACAppsLua) .. "\\CHN-HUD\\assets\\pedals\\wheels\\", nil, true, function(files)
 	findWheels()
 	if pedalsSettings.store.wheelType > #wheelsLabels then

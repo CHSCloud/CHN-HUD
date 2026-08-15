@@ -6,6 +6,7 @@ local isAppsInit = false
 
 local language = require("language.language")
 local settings = require("src.settings.settings")
+local pedalsSettings = require("src.settings.tabs.pedalsSettings")
 local pitLane = require("src.hud.pitLane.pitLane")
 local pedals = require("src.hud.pedals.pedals")
 local sessionLaps = require("src.hud.sessionLaps.sessionLaps")
@@ -27,6 +28,7 @@ end
 -- INICIALIZA TODOS OS APPS
 local function initApps()
 	language.loadTranslations()
+	pedalsSettings.init()
 	pitLane.init()
 	pedals.init()
 	sessionLaps.init()

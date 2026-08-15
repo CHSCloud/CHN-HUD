@@ -172,8 +172,6 @@ function settings.windowCloseSettings()
 end
 
 function settings.windowMain()
-
-
 	WindowSettingsSize = ui.windowSize()
 	ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
 	ui.drawRectFilled(vec2(0, 0), WindowSettingsSize + ui.windowContentSize(), rgbm.from0255(18, 21, 29, 0.85), 0)
