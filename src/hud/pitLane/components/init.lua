@@ -1,4 +1,5 @@
 local pitLaneSettings = require("src.settings.tabs.pitLaneSettings")
+local rect = require("src.ui.background.rect")
 local types = {}
 
 ---@param data pitLaneData
@@ -13,20 +14,21 @@ function types.default(data)
 	data.fontSpeedYou = 30 * pitLaneSettings.store.pitLaneScale
 	data.fontSlowDown = 15 * pitLaneSettings.store.pitLaneScale
 
-	ui.drawRectFilled(vec2(0, 0), vec2(data.currentWindowWidth, 70 * pitLaneSettings.store.pitLaneScale), WindowsColor, 10 * pitLaneSettings.store.pitLaneScale)
-	ui.drawRectFilled(
+	rect.drawRectRounded(vec2(0, 0), vec2(data.currentWindowWidth, 70 * pitLaneSettings.store.pitLaneScale), WindowsColor, 10 * pitLaneSettings.store.pitLaneScale, 20)
+	rect.drawRectRounded(
 		vec2(5, 5):scale(pitLaneSettings.store.pitLaneScale),
 		vec2(75, 65):scale(pitLaneSettings.store.pitLaneScale),
 		COLOR.WHITE,
-		5 * pitLaneSettings.store.pitLaneScale
+		5 * pitLaneSettings.store.pitLaneScale,
+		20
 	)
-	ui.drawRect(
+	rect.drawRectRoundedOutline(
 		vec2(7, 7):scale(pitLaneSettings.store.pitLaneScale),
 		vec2(73, 63):scale(pitLaneSettings.store.pitLaneScale),
 		COLOR.BLACK,
 		4 * pitLaneSettings.store.pitLaneScale,
-		ui.CornerFlags.All,
-		1.5 * pitLaneSettings.store.pitLaneScale
+		1.5 * pitLaneSettings.store.pitLaneScale,
+		20
 	)
 end
 
@@ -42,12 +44,11 @@ function types.alert(data)
 	data.fontSpeedYou = 25 * pitLaneSettings.store.pitLaneScale
 	data.fontSlowDown = 12 * pitLaneSettings.store.pitLaneScale
 
-	ui.drawRectFilled(
+	rect.drawPillFilled(
 		vec2(0, 0):scale(pitLaneSettings.store.pitLaneScale),
 		vec2(135, 70):scale(pitLaneSettings.store.pitLaneScale),
 		WindowsColor,
-		35 * pitLaneSettings.store.pitLaneScale,
-		ui.CornerFlags.All
+		20
 	)
 	ui.drawCircleFilled(
 		vec2(35, 35):scale(pitLaneSettings.store.pitLaneScale),

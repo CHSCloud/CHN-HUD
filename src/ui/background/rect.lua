@@ -31,6 +31,27 @@ function rect.drawPillStroke(p1, p2, color, thickness, segments)
 	ui.pathStroke(color, true, thickness)
 end
 
+--- @param p1 vec2
+--- @param p2 vec2
+--- @param rounding number 
+--- @param segments integer
+--- @param roundingFlags ui.CornerFlags?
+local function rectRoundedPath(p1, p2, rounding, segments, roundingFlags)
+	roundingFlags = roundingFlags or ui.CornerFlags.All
+	local r = math.max(0, math.min(rounding, (p2.x - p1.x) / 2, (p2.y - p1.y) / 2))
+
+	local rTL = bit.band(roundingFlags, ui.CornerFlags.TopLeft) ~= 0 and r or 0
+	local rTR = bit.band(roundingFlags, ui.CornerFlags.TopRight) ~= 0 and r or 0
+	local rBR = bit.band(roundingFlags, ui.CornerFlags.BottomRight) ~= 0 and r or 0
+	local rBL = bit.band(roundingFlags, ui.CornerFlags.BottomLeft) ~= 0 and r or 0
+
+	ui.pathClear()
+	ui.pathArcTo(vec2(p1.x + rTL, p1.y + rTL), rTL, math.pi, math.pi * 1.5, segments)
+	ui.pathArcTo(vec2(p2.x - rTR, p1.y + rTR), rTR, math.pi * 1.5, math.pi * 2, segments)
+	ui.pathArcTo(vec2(p2.x - rBR, p2.y - rBR), rBR, 0, math.pi * 0.5, segments)
+	ui.pathArcTo(vec2(p1.x + rBL, p2.y - rBL), rBL, math.pi * 0.5, math.pi, segments)
+end
+
 ---@param p1 vec2
 ---@param p2 vec2
 ---@param color rgbm
@@ -38,20 +59,20 @@ end
 ---@param segments integer
 ---@param roundingFlags ui.CornerFlags?
 function rect.drawRectRounded(p1, p2, color, rounding, segments, roundingFlags)
-    roundingFlags = roundingFlags or ui.CornerFlags.All
-	local radius = math.max(0, math.min(rounding, (p2.x - p1.x) / 2, (p2.y - p1.y) / 2))
-
-	local radiusTL = bit.band(roundingFlags, ui.CornerFlags.TopLeft) ~= 0 and radius or 0
-	local radiusTR = bit.band(roundingFlags, ui.CornerFlags.TopRight) ~= 0 and radius or 0
-	local radiusBR = bit.band(roundingFlags, ui.CornerFlags.BottomRight) ~= 0 and radius or 0
-	local radiusBL = bit.band(roundingFlags, ui.CornerFlags.BottomLeft) ~= 0 and radius or 0
-
-	ui.pathClear()
-	ui.pathArcTo(vec2(p1.x + radiusTL, p1.y + radiusTL), radiusTL, math.pi, math.pi * 1.5, segments)
-	ui.pathArcTo(vec2(p2.x - radiusTR, p1.y + radiusTR), radiusTR, math.pi * 1.5, math.pi * 2, segments)
-	ui.pathArcTo(vec2(p2.x - radiusBR, p2.y - radiusBR), radiusBR, 0, math.pi * 0.5, segments)
-	ui.pathArcTo(vec2(p1.x + radiusBL, p2.y - radiusBL), radiusBL, math.pi * 0.5, math.pi, segments)
+	rectRoundedPath(p1, p2, rounding, segments, roundingFlags)
 	ui.pathFillConvex(color)
+end
+
+---@param p1 vec2
+---@param p2 vec2
+---@param color rgbm
+---@param rounding number
+---@param thickness number
+---@param segments integer
+---@param roundingFlags ui.CornerFlags?
+function rect.drawRectRoundedOutline(p1, p2, color, rounding, thickness, segments, roundingFlags)
+	rectRoundedPath(p1, p2, rounding, segments, roundingFlags)
+	ui.pathStroke(color, true, thickness)
 end
 
 
