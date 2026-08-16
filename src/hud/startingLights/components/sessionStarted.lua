@@ -1,17 +1,17 @@
 local startingLightsSettings = require("src.settings.tabs.startingLightsSettings")
+local rect = require("src.ui.background.rect")
 local sessionStarted = {}
 
 --- @param data startingLightsData
 function sessionStarted.drawSessionStarted(data)
 	-- Background
-	ui.drawRectFilled(vec2(0, 0), vec2(data.currentWindowWidth, data.currentWindowHeight), WindowsColor, data.rounding)
-	ui.drawRect(
+	rect.drawPillFilled(vec2(0, 0), vec2(data.currentWindowWidth, data.currentWindowHeight), WindowsColor, data.polygons)
+	rect.drawPillStroke(
 		vec2(data.distanceBorder, data.distanceBorder),
 		vec2(data.currentWindowWidth - data.distanceBorder, data.currentWindowHeight - data.distanceBorder),
 		COLOR.WHITE,
-		data.rounding,
-		ui.CornerFlags.All,
-		data.thickness
+		data.thickness,
+		data.polygons
 	)
 
 	-- Cículos verdes
