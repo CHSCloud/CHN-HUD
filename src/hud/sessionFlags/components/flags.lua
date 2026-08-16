@@ -1,5 +1,5 @@
 local sessionFlagsSettings = require("src.settings.tabs.sessionFlagsSettings")
-
+local rect = require("src.ui.background.rect")
 local flags = {}
 
 ---@param data sessionFlagsData
@@ -15,7 +15,7 @@ function flags.drawFlag(data, path, title, description, titleY, descY, cursorX)
 	cursorX = cursorX or 10
 
 	ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
-	ui.drawRectFilled(vec2(0, 0), data.currentWindowSize, WindowsColor, data.rounding)
+	rect.drawRectRounded(vec2(0, 0), data.currentWindowSize, WindowsColor, data.rounding, 20)
 	ui.setCursor(data.posFlag)
 	ui.image(path, data.flagLenght)
 	ui.setCursor(vec2(cursorX, titleY):scale(sessionFlagsSettings.store.sessionFlagsScale))

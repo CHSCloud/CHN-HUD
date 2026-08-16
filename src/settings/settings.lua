@@ -12,10 +12,11 @@ local toggleButton = require("src.ui.buttons.toggleButton")
 local button = require("src.ui.buttons.button")
 local tab = require("src.ui.buttons.tab")
 local slider = require("src.ui.selectors.slider")
+local rect = require("src.ui.background.rect")
+local droplist = require("src.ui.selectors.droplist")
 
 local language = require("language.language")
 local window = require("common.window")
-local droplist = require("src.ui.selectors.droplist")
 
 local settings = {}
 
@@ -174,7 +175,11 @@ end
 function settings.windowMain()
 	WindowSettingsSize = ui.windowSize()
 	ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
-	ui.drawRectFilled(vec2(0, 0), WindowSettingsSize + ui.windowContentSize(), rgbm.from0255(18, 21, 29, 0.85), 0)
+	if window.isMouseInWindow(ui.mouseLocalPos(), 0, WindowSettingsSize.x, 0, WindowSettingsSize.y) then
+		rect.drawRectRounded(vec2(0, 22), WindowSettingsSize , rgbm.from0255(18, 21, 29, 0.85), 10, 20, ui.CornerFlags.Bottom)
+	else 
+		rect.drawRectRounded(vec2(0, 22), WindowSettingsSize , rgbm.from0255(18, 21, 29, 0.85), 10, 20)
+	end
 
 	local id = "mainTab"
 	tab.tabStart(id, vec2(5,25))

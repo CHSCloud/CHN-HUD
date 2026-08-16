@@ -1,6 +1,7 @@
 local pedalsSettings = require("src.settings.tabs.pedalsSettings")
 local window = require("common.window")
 local pinCheckBox = require("src.ui.buttons.pinCheckBox")
+local rect = require("src.ui.background.rect")
 local pedalsData = require("src.data.pedals.pedalsData")
 
 local gear = require("src.hud.pedals.components.gear")
@@ -55,7 +56,7 @@ function pedals.windowMain()
 	data.currentWindowHeight = data.contentMidle + data.contentTop + data.contentBottom
 	data.contentMidle = 0
 
-	ui.drawRectFilled(vec2(0, 0), data.currentWindowSize, WindowsColor, 10 * pedalsSettings.store.pedalsScale)
+	rect.drawRectRounded(vec2(0, 0), data.currentWindowSize, WindowsColor, 10 * pedalsSettings.store.pedalsScale, 20)
 
 	if pedalsSettings.store.telemetryActive and pedalsSettings.store.telemetryPos == 1 then
 		telemetry.drawTelemetry(data)

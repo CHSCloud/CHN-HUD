@@ -1,5 +1,6 @@
 local sessionLapsSettings = require("src.settings.tabs.sessionLapsSettings")
 local pinCheckBox = require("src.ui.buttons.pinCheckBox")
+local rect = require("src.ui.background.rect")
 local window = require("common.window")
 local sessionLapsData = require("src.data.sessionLaps.sessionLapsData")
 
@@ -35,7 +36,7 @@ function sessionLaps.windowMain()
 		sessionLapsData.setSectorsDivisions(data, sessionLapsSettings.store.numberDivisions - 1)
 		data.currentNumberDivisions = sessionLapsSettings.store.numberDivisions
 	end
-	ui.drawRectFilled(vec2(0, 0), data.currentWindowSize, WindowsColor, 5 * sessionLapsSettings.store.sessionLapsScale)
+	rect.drawRectRounded(vec2(0, 0), data.currentWindowSize, WindowsColor, 6 * sessionLapsSettings.store.sessionLapsScale, 20)
 	-- Volta atual
 	if sessionLapsSettings.store.currentLapActive then
 		laps.drawCurrent(data)

@@ -1,5 +1,6 @@
 local sessionLapsSettings = require("src.settings.tabs.sessionLapsSettings")
 local sessionLapsData = require("src.data.sessionLaps.sessionLapsData")
+local rect = require("src.ui.background.rect")
 local utils = require("common.utils")
 local sectors = {}
 
@@ -7,11 +8,12 @@ local sectors = {}
 ---@param sectorNumber number
 local function drawSector(data, sectorNumber)
 	data.currentWindowHeight = data.currentWindowHeight + 5
-	ui.drawRectFilled(
+	rect.drawRectRounded(
 		vec2(3, data.currentWindowHeight):scale(sessionLapsSettings.store.sessionLapsScale),
 		vec2(23, data.currentWindowHeight + 20):scale(sessionLapsSettings.store.sessionLapsScale),
 		COLOR.WHITE,
-		3
+		3 * sessionLapsSettings.store.sessionLapsScale,
+		20
 	)
 	ui.setCursor(vec2(3, data.currentWindowHeight):scale(sessionLapsSettings.store.sessionLapsScale))
 	ui.dwriteTextAligned(

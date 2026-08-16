@@ -2,6 +2,7 @@ local window = require("common.window")
 local pinCheckBox = require("src.ui.buttons.pinCheckBox")
 local deltaBarSettings = require("src.settings.tabs.deltaBarSettings")
 local deltaBarData = require("src.data.deltaBar.deltaBarData")
+local rect = require("src.ui.background.rect")
 
 local deltaBar = {}
 
@@ -28,7 +29,6 @@ function deltaBar.windowMain()
 	local fontTextDelta = 30 * deltaBarSettings.store.deltaBarScale
 
 	--Bordas Arredondadas
-	local cornerBarDeltaBackground = 8 * deltaBarSettings.store.deltaBarScale
 	local cornerColorBarDelta = 8 * deltaBarSettings.store.deltaBarScale
 	local cornerBackgroundText = 8 * deltaBarSettings.store.deltaBarScale
 
@@ -69,7 +69,7 @@ function deltaBar.windowMain()
 	local deltaMeter = data.smoothedDeltaMeter
 
 	--Background Barra Delta
-	ui.drawRectFilled(vec2(0, 0), limitBarDeltaBackground, WindowsColor, cornerBarDeltaBackground)
+	rect.drawPillFilled(vec2(0, 0), limitBarDeltaBackground, WindowsColor, 20)
 	--Background Texto Delta
 	ui.drawRectFilled(
 		vec2(barEnd - limitBackgroundText.x / 2, limitBarDeltaBackground_limitBackgroundText + limitBarDeltaBackground.y),

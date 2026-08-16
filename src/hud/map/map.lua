@@ -3,7 +3,7 @@ local utils = require("common.utils")
 local pinCheckBox = require("src.ui.buttons.pinCheckBox")
 local mapSettings = require("src.settings.tabs.mapSettings")
 local mapData = require("src.data.map.mapData")
-
+local rect = require("src.ui.background.rect")
 local drs = require("src.hud.map.components.drs")
 local sections = require("src.hud.map.components.sections")
 local sectors = require("src.hud.map.components.sectors")
@@ -85,22 +85,24 @@ function map.windowMain()
 				data.transparancy = data.transparancy + 0.1
 			end
 		end
-		ui.drawRectFilled(
+		rect.drawRectRounded(
 			vec2(0, 0),
 			data.currentWindowSize,
 			rgbm(WindowsColor.r, WindowsColor.g, WindowsColor.b, data.transparancy),
-			20 * mapSettings.store.mapScale
+			20 * mapSettings.store.mapScale,
+			20
 		)
 	else
 		if data.transparancy > 0 then
 			if 20 * TIMER % 6 >= 1 then
 				data.transparancy = data.transparancy - 0.1
 			end
-			ui.drawRectFilled(
+			rect.drawRectRounded(
 				vec2(0, 0),
 				data.currentWindowSize,
 				rgbm(WindowsColor.r, WindowsColor.g, WindowsColor.b, data.transparancy),
-				20 * mapSettings.store.mapScale
+				20 * mapSettings.store.mapScale,
+				20
 			)
 		else
 			data.transparancy = 0

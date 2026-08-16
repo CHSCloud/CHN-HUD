@@ -2,6 +2,7 @@ local tyresSettings = require("src.settings.tabs.tyresSettings")
 local pinCheckBox = require("src.ui.buttons.pinCheckBox")
 local window = require("common.window")
 local language = require("language.language")
+local rect = require("src.ui.background.rect")
 
 local tyresData = require("src.data.tyres.tyresData")
 
@@ -19,7 +20,7 @@ end
 
 function tyres.windowMain()
 	data.wheels = CAR.wheels
-	ui.drawRectFilled(vec2(0, 0), data.currentWindowSize, WindowsColor, 20 * tyresSettings.store.tyresScale)
+	rect.drawRectRounded(vec2(0, 0), data.currentWindowSize, WindowsColor, 20 * tyresSettings.store.tyresScale, 20)
 	data.currentWindowSize = vec2(300, 250):scale(tyresSettings.store.tyresScale)
 	data.wheelsPos = vec2(0, 35):scale(tyresSettings.store.tyresScale)
 
