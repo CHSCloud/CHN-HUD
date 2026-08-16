@@ -75,7 +75,4 @@ function rect.drawRectRoundedOutline(p1, p2, color, rounding, thickness, segment
 	ui.pathStroke(color, true, thickness)
 end
 
-
-
-
 return rect

@@ -119,6 +119,4 @@ function window.pinAllApps(pin)
 	end
 end
 
-window.init()
-
 return window

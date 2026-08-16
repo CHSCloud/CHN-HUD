@@ -30,6 +30,17 @@ local defaultValues = {
 }
 settings.store = ac.storage(defaultValues)
 
+local tabPin = false
+SettingsActive = false
+WindowsColor = settings.store.windowsColor
+SelectedSpeed = settings.store.selectedSpeed
+SelectedTemperature = settings.store.selectedTemperature
+SelectedFuel = settings.store.selectedFuel
+
+local isLatestVersion = true
+local onlineVersion = nil
+local isTabUpdateActive = false
+
 COLOR = {
 	RED = rgbm.from0255(255, 0, 0, 1),
 	RED_DARK = rgbm.from0255(200, 0, 0, 1),
@@ -45,20 +56,6 @@ COLOR = {
 	WHITE_LINE = rgbm.from0255(255, 255, 255, 0.8),
 }
 
-local tabPin = false
-SettingsActive = false
-WindowsColor = settings.store.windowsColor
-SelectedSpeed = settings.store.selectedSpeed
-SelectedTemperature = settings.store.selectedTemperature
-SelectedFuel = settings.store.selectedFuel
-
-if settings.store.optionLanguage ~= language.getCurrentLanguage() then
-	language.setlanguage(settings.store.optionLanguage)
-end
-
-local isLatestVersion = true
-local onlineVersion = nil
-local isTabUpdateActive = false
 local function verifyVersion()
 	if onlineVersion == nil then
 		local manifest = ac.INIConfig.load(ac.getFolder(ac.FolderID.ACApps) .. "\\lua\\CHN-HUD\\manifest.ini")
@@ -76,6 +73,7 @@ local function verifyVersion()
 				local html = response.body
 
 				onlineVersion = string.match(html, "CHN HUD ([%d%.]+)")
+				
 				if onlineVersion ~= nil then
 					if onlineVersion ~= currentVersion then
 						isLatestVersion = false
@@ -86,7 +84,6 @@ local function verifyVersion()
 		end
 	end
 end
-verifyVersion()
 
 local function geral()
 	if tabPin then
@@ -162,6 +159,13 @@ local function geral()
 		settings.store.windowsColor = rgbm.from0255(18, 21, 29, 0.85)
 		settings.store.transparancy = 0.85
 	end
+end
+
+function settings.init()
+	if settings.store.optionLanguage ~= language.getCurrentLanguage() then
+		language.setlanguage(settings.store.optionLanguage)
+	end
+	verifyVersion()
 end
 
 function settings.windowOpenSettings()

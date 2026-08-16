@@ -4,6 +4,7 @@ CAR = ac.getCar(SIM.focusedCar)
 USER_UI = ac.getUI()
 local isAppsInit = false
 
+local window = require("common.window")
 local language = require("language.language")
 local settings = require("src.settings.settings")
 local pedalsSettings = require("src.settings.tabs.pedalsSettings")
@@ -18,16 +19,18 @@ local leaderboard = require("src.hud.leaderboard.leaderboard")
 local tyres = require("src.hud.tyres.tyres")
 
 ---@Credits This function was inspired by the "call_protected_function" function from CMRT Complete HUD.
----@param app function
-local function callProtectedFunction(app)
-	xpcall(app, function (Error)
+---@param func function
+local function callProtectedFunction(func)
+	xpcall(func, function (Error)
 		ac.debug("Error in function: " .. Error, debug.traceback())
 	end)
 end
 
 -- INICIALIZA TODOS OS APPS
 local function initApps()
+	window.init()
 	language.loadTranslations()
+	settings.init()
 	pedalsSettings.init()
 	pitLane.init()
 	pedals.init()
