@@ -3,6 +3,7 @@ local language = require("language.language")
 local droplist = require("src.ui.selectors.droplist")
 local formText = require("src.ui.forms.formText")
 local slider = require("src.ui.selectors.slider")
+local rect = require("src.ui.background.rect")
 
 local utils = require("common.utils")
 local window = require("common.window")
@@ -58,8 +59,8 @@ function sectionPanel.main(id, iniFile, pos, size)
 	local position = 0
 	local numberSections = 0
 
-	ui.drawRect(pos, pos + size, USER_UI.accentColor, 10, ui.CornerFlags.All, 3)
-	ui.drawRect(pos + vec2(10, 40), pos + size - vec2(20, 40), COLOR.WHITE, 10, ui.CornerFlags.All, 3)
+	rect.drawRectRoundedOutline(pos, pos + size, USER_UI.accentColor, 10, 3, 20)
+	rect.drawRectRoundedOutline(pos + vec2(10, 40), pos + size - vec2(20, 40), COLOR.WHITE, 10, 3, 20)
 	ui.setCursor(pos + vec2(10, 43))
 	isEdited = ui.childWindow(
 		"##" .. id,

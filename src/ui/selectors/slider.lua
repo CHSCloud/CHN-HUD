@@ -1,4 +1,5 @@
 local window = require("common.window")
+local rect = require("src.ui.background.rect")
 local utils = require("common.utils")
 
 local slider = {}
@@ -42,8 +43,8 @@ function slider.main(text, outputText, pos, lenght, value, init, final, posText,
 	end
 
 	local posValue = utils.remapIntervalWithLimits(value, init, final, 0, lenght)
-	ui.drawRectFilled(pos, pos + vec2(lenght, 15), USER_UI.accentColor, 20)
-	ui.drawRectFilled(pos + vec2(posValue - width, -5), pos + vec2(posValue + width, 20), COLOR.WHITE, 20)
+	rect.drawPillFilled(pos, pos + vec2(lenght, 15), USER_UI.accentColor, 20)
+	rect.drawRectRounded(pos + vec2(posValue - width, -5), pos + vec2(posValue + width, 20), COLOR.WHITE, 20, 20)
 	if window.isMouseInWindow(ui.mouseLocalPos(), pos.x, pos.x + lenght, pos.y, pos.y + 15) then
 		ui.setMouseCursor(ui.MouseCursor.Hand)
 	end

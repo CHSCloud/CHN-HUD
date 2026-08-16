@@ -1,4 +1,5 @@
 local tyresSettings = require("src.settings.tabs.tyresSettings")
+local rect = require("src.ui.background.rect")
 local utils = require("common.utils")
 local wheels = {}
 
@@ -31,29 +32,29 @@ end
 local function drawWheel(lutData, wheel, pos, initTemp, finalTemp)
 	local color
 	color = getColorByTemperature(lutData, wheel.tyreInsideTemperature, initTemp, finalTemp, COLOR.BLUE, COLOR.GREEN, COLOR.RED)
-	ui.drawRectFilled(pos, pos + vec2(14, 70):scale(tyresSettings.store.tyresScale), color, 10 * tyresSettings.store.tyresScale, ui.CornerFlags.Left)
+	rect.drawRectRounded(pos, pos + vec2(14, 70):scale(tyresSettings.store.tyresScale), color, 50 * tyresSettings.store.tyresScale,20, ui.CornerFlags.Left)
 
 	color = getColorByTemperature(lutData, wheel.tyreMiddleTemperature, initTemp, finalTemp, COLOR.BLUE, COLOR.GREEN, COLOR.RED)
 	ui.drawRectFilled(pos + vec2(16):scale(tyresSettings.store.tyresScale), pos + vec2(30, 70):scale(tyresSettings.store.tyresScale), color)
 
 	color = getColorByTemperature(lutData, wheel.tyreOutsideTemperature, initTemp, finalTemp, COLOR.BLUE, COLOR.GREEN, COLOR.RED)
-	ui.drawRectFilled(
+	rect.drawRectRounded(
 		pos + vec2(32):scale(tyresSettings.store.tyresScale),
 		pos + vec2(46, 70):scale(tyresSettings.store.tyresScale),
 		color,
-		10 * tyresSettings.store.tyresScale,
+		50 * tyresSettings.store.tyresScale,
+		20,
 		ui.CornerFlags.Right
 	)
 
 	if wheel.ndSlip > 1 then
 		local init = 21 - utils.remapIntervalWithLimits(wheel.ndSlip, 1, 5, 0, 21)
 		local final = 25 + utils.remapIntervalWithLimits(wheel.ndSlip, 1, 5, 0, 21)
-		ui.drawRectFilled(
+		rect.drawPillFilled(
 			pos + vec2(init, 30):scale(tyresSettings.store.tyresScale),
 			pos + vec2(final, 40):scale(tyresSettings.store.tyresScale),
 			COLOR.RED,
-			10 * tyresSettings.store.tyresScale,
-			ui.CornerFlags.All
+			20
 		)
 	end
 end

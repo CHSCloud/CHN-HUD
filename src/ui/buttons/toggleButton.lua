@@ -1,4 +1,5 @@
 local window = require("common.window")
+local rect = require("src.ui.background.rect")
 local toggleButton = {}
 
 local positions = {}
@@ -21,7 +22,7 @@ function toggleButton.main(id, pos, key, text)
 		else
 			positions[id] = final
 		end
-		ui.drawRectFilled(pos, pos + size, USER_UI.accentColor, 20)
+		rect.drawPillFilled(pos, pos + size, USER_UI.accentColor, 20)
 		ui.drawCircleFilled(pos + positions[id], size.y / 2.2, COLOR.WHITE, 20)
 	else
 		if positions[id].x > init.x then
@@ -29,7 +30,7 @@ function toggleButton.main(id, pos, key, text)
 		else
 			positions[id] = init
 		end
-		ui.drawRectFilled(pos, pos + size, COLOR.GRAY_BG, 20)
+		rect.drawPillFilled(pos, pos + size, COLOR.GRAY_BG, 20)
 		ui.drawCircleFilled(pos + positions[id], size.y / 2.2, COLOR.WHITE, 20)
 	end
 

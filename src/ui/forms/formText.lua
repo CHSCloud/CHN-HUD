@@ -1,4 +1,5 @@
 local utils = require("common.utils")
+local rect = require("src.ui.background.rect")
 local formText = {}
 
 --- @param id string
@@ -17,7 +18,7 @@ function formText.main(id, pos, text, size, rounding, color, textFlags)
 		size.x = textLenght.x + 15
 	end
 	local _, count = string.gsub(textFormated, "\n", "")
-	ui.drawRectFilled(pos, pos + vec2(size.x, size.y + textLenght.y * count), color, rounding)
+	rect.drawRectRounded(pos, pos + vec2(size.x, size.y + textLenght.y * count), color, rounding, 20)
 	ui.pushStyleColor(ui.StyleColor.FrameBg, rgbm.from0255(0, 0, 0, 0))
 	ui.pushStyleColor(ui.StyleColor.Text, COLOR.BLACK)
 	ui.setCursor(pos)

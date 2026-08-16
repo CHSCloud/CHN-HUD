@@ -1,4 +1,5 @@
 local window = require("common.window")
+local rect = require("src.ui.background.rect")
 local button = {}
 
 --- @param pos vec2
@@ -18,8 +19,8 @@ function button.main(pos, text, focused)
 		ui.setMouseCursor(ui.MouseCursor.Hand)
 	end
 
-	ui.drawRectFilled(pos, pos + vec2(lenght, 25), color, 10)
-	ui.drawRect(pos + vec2(2, 2), pos + vec2(lenght - 2, 23), COLOR.WHITE, 10, ui.CornerFlags.All, 2)
+	rect.drawPillFilled(pos, pos + vec2(lenght, 25), color, 30)
+	rect.drawPillStroke(pos + vec2(2, 2), pos + vec2(lenght - 2, 23), COLOR.WHITE, 2, 20)
 	ui.setCursor(pos)
 	ui.dwriteTextAligned(text, 12, ui.Alignment.Center, ui.Alignment.Center, vec2(lenght, 25), false, COLOR.WHITE)
 

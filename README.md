@@ -12,6 +12,7 @@
  - Bug na seleção de volante no pedals, que quando o jogo iniciava ia para o "Simple"
  - Erros de tradução
  - Cor das letras dos setores não muda
+ - Serrilhamento nas bordas dos apps
 
 
 ## 1.3.1
