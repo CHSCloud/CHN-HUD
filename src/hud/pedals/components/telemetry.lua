@@ -8,7 +8,7 @@ local telemetry = {}
 ---@param color rgbm
 ---@param min vec2
 ---@param max vec2
-local function drawGraph(telemetryData, parameter, color, min, max)
+local function drawGraphDefault(telemetryData, parameter, color, min, max)
 	telemetryData[#telemetryData + 1] = utils.smoothValue(telemetryData[#telemetryData], parameter, 0.4)
 	table.remove(telemetryData, 1)
 
@@ -30,7 +30,7 @@ end
 ---@param color rgbm
 ---@param min vec2
 ---@param max vec2
-local function drawGraphInverted(telemetryData, parameter, color, min, max)
+local function drawGraphDefaultInverted(telemetryData, parameter, color, min, max)
 	table.insert(telemetryData, 1, utils.smoothValue(telemetryData[1], parameter, 0.4))
 	table.remove(telemetryData, #telemetryData)
 
@@ -44,6 +44,60 @@ local function drawGraphInverted(telemetryData, parameter, color, min, max)
 		end
 	end
 	ui.pathSimpleStroke(color, false, 2 * pedalsSettings.store.pedalsScale)
+end
+
+---@param telemetryData table
+---@param parameter number
+---@param color rgbm
+---@param min vec2
+---@param max vec2
+local function drawGraphBrake(telemetryData, parameter, color, min, max)
+	telemetryData[#telemetryData + 1] = {}
+	telemetryData[#telemetryData].value = utils.smoothValue(telemetryData[#telemetryData - 1].value, parameter, 0.4)
+	telemetryData[#telemetryData].absAction = false
+	table.remove(telemetryData, 1)
+
+	local lenght = (400 * pedalsSettings.store.pedalsScale) / pedalsSettings.store.telemetryPeriod
+	if CAR.absInAction then
+		telemetryData[#telemetryData].absAction = true
+	end
+
+	local segmentStart = 1
+	local currentColor = telemetryData[1].absAction and COLOR.YELLOW or color
+
+	for i = 2, #telemetryData do
+		local currentStatus = telemetryData[i].absAction
+		local nextColor = currentStatus and COLOR.YELLOW or color
+
+		if nextColor ~= currentColor then
+			ui.pathClear()
+			for j = segmentStart, i do
+				local xAxis = max.x - (#telemetryData - j) * lenght
+				local value = telemetryData[j].value
+				local yAxis = max.y - value * (max.y - 10 * pedalsSettings.store.pedalsScale)
+
+				if xAxis >= min.x then
+					ui.pathLineTo(vec2(xAxis, yAxis))
+				end
+			end
+			ui.pathStroke(currentColor, false, 2 * pedalsSettings.store.pedalsScale)
+
+			segmentStart = i
+			currentColor = nextColor
+		end
+	end
+
+	ui.pathClear()
+	for j = segmentStart, #telemetryData do
+		local xAxis = max.x - (#telemetryData - j) * lenght
+		local value = telemetryData[j].value
+		local yAxis = max.y - value * (max.y - 10 * pedalsSettings.store.pedalsScale)
+
+		if xAxis >= min.x then
+			ui.pathLineTo(vec2(xAxis, yAxis))
+		end
+	end
+	ui.pathStroke(currentColor, false, 2 * pedalsSettings.store.pedalsScale)
 end
 
 ---@param data pedalsData
@@ -71,15 +125,16 @@ function telemetry.drawTelemetry(data)
 		else
 			padding = 2 * pedalsSettings.store.pedalsScale
 		end
+
 		ui.drawRectFilled(init, init + vec2(rectWidth, rectHeight - padding), COLOR.GRAY_BG)
 		init = init + vec2(0, rectHeight)
 	end
 
 	local functionGraph
 	if pedalsSettings.store.telemetryInverted then
-		functionGraph = drawGraphInverted
+		functionGraph = drawGraphDefaultInverted
 	else
-		functionGraph = drawGraph
+		functionGraph = drawGraphDefault
 	end
 
 	if pedalsSettings.store.telemetryThrottle then
@@ -87,7 +142,7 @@ function telemetry.drawTelemetry(data)
 	end
 
 	if pedalsSettings.store.telemetryBrake then
-		functionGraph(data.brakeTelemetry, CAR.brake, COLOR.RED, min, max)
+		drawGraphBrake(data.brakeTelemetry, CAR.brake, COLOR.RED, min, max)
 	end
 
 	if pedalsSettings.store.telemetryClucth then

@@ -32,10 +32,22 @@ local pedalsData = {}
 
 ---@param points number
 ---@return table
-local function getEmptyTable(points)
+local function getEmptyTableDefault(points)
 	local table = {}
 	for i = 1, points, 1 do
 		table[i] = 0
+	end
+	return table
+end
+
+---@param points number
+---@return table
+local function getEmptyTableBrake(points)
+	local table = {}
+	for i = 1, points, 1 do
+		table[i] = {}
+		table[i].value = 0
+		table[i].absAction = false
 	end
 	return table
 end
@@ -64,20 +76,47 @@ function pedalsData.new()
 		barMidleSize = nil,
 		barPaddingMidle = nil,
 		contentPositions = {},
-		throttleTelemetry = getEmptyTable(pedalsSettings.store.telemetryPeriod),
-		brakeTelemetry = getEmptyTable(pedalsSettings.store.telemetryPeriod),
-		clutchTelemetry = getEmptyTable(pedalsSettings.store.telemetryPeriod),
-		handbrakeTelemetry = getEmptyTable(pedalsSettings.store.telemetryPeriod),
+		throttleTelemetry = getEmptyTableDefault(pedalsSettings.store.telemetryPeriod),
+		brakeTelemetry = getEmptyTableBrake(pedalsSettings.store.telemetryPeriod),
+		clutchTelemetry = getEmptyTableDefault(pedalsSettings.store.telemetryPeriod),
+		handbrakeTelemetry = getEmptyTableDefault(pedalsSettings.store.telemetryPeriod),
 		lastTelemetryPeriod = pedalsSettings.store.telemetryPeriod,
 	}
+end
+---@param tlb table
+---@param newSize number
+local function resizeTelemetryDefault(tlb, newSize)
+	local currentSize = #tlb
+	if newSize < currentSize then
+		table.move(tlb, newSize, currentSize, newSize)
+	elseif newSize > currentSize then
+		for i = currentSize + 1, newSize do
+			tlb[i] = 0
+		end
+	end
+end
+
+---@param tlb table
+---@param newSize number
+local function resizeTelemetryBrake(tlb, newSize)
+	local currentSize = #tlb
+	if newSize < currentSize then
+		table.move(tlb, newSize, currentSize, newSize)
+	elseif newSize > currentSize then
+		for i = currentSize + 1, newSize do
+			tlb[i] = {}
+			tlb[i].value = 0
+			tlb[i].absAction = false
+		end
+	end
 end
 
 ---@param data pedalsData
 function pedalsData.remapTelemetry(data)
-	utils.resizeTable(data.throttleTelemetry, pedalsSettings.store.telemetryPeriod)
-	utils.resizeTable(data.brakeTelemetry, pedalsSettings.store.telemetryPeriod)
-	utils.resizeTable(data.clutchTelemetry, pedalsSettings.store.telemetryPeriod)
-	utils.resizeTable(data.handbrakeTelemetry, pedalsSettings.store.telemetryPeriod)
+	resizeTelemetryDefault(data.throttleTelemetry, pedalsSettings.store.telemetryPeriod)
+	resizeTelemetryBrake(data.brakeTelemetry, pedalsSettings.store.telemetryPeriod)
+	resizeTelemetryDefault(data.clutchTelemetry, pedalsSettings.store.telemetryPeriod)
+	resizeTelemetryDefault(data.handbrakeTelemetry, pedalsSettings.store.telemetryPeriod)
 end
 
 ---@param data pedalsData

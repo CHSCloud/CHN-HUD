@@ -13,7 +13,7 @@
       "?.lua",
       "?/init.lua",
       "c:\\Program Files (x86)\\Steam\\steamapps\\common\\assettocorsa/extension/internal/lua-?.lua"
-  ],
+    ],
   "[lua]": {
     "editor.defaultFormatter": "JohnnyMorganz.stylua",
     "editor.formatOnSave": true
