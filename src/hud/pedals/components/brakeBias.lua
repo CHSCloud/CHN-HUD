@@ -11,7 +11,7 @@ function brakeBias.drawBrakeBias(data)
 		data.fontContentBottom,
 		ui.Alignment.Start,
 		ui.Alignment.Center,
-		vec2(30, 20):scale(pedalsSettings.store.pedalsScale),
+		vec2(50, 20):scale(pedalsSettings.store.pedalsScale),
 		false,
 		COLOR.WHITE
 	)

@@ -71,11 +71,12 @@ function deltaBar.windowMain()
 	--Background Barra Delta
 	rect.drawPillFilled(vec2(0, 0), limitBarDeltaBackground, WindowsColor, 20)
 	--Background Texto Delta
-	ui.drawRectFilled(
+	rect.drawRectRounded(
 		vec2(barEnd - limitBackgroundText.x / 2, limitBarDeltaBackground_limitBackgroundText + limitBarDeltaBackground.y),
 		vec2(barEnd + limitBackgroundText.x / 2, limitBarDeltaBackground_limitBackgroundText + limitBackgroundText.y + limitBarDeltaBackground.y),
 		WindowsColor,
-		cornerBackgroundText
+		cornerBackgroundText,
+		20
 	)
 
 	--Degradê Color da Barra
@@ -97,22 +98,24 @@ function deltaBar.windowMain()
 	local barCalculetorEnd = barEnd - barEndPercent * barEnd
 	--Barra Arredondado no Lado Esquerdo
 	if barCalculetorEnd < barEnd then
-		ui.drawRectFilled(
+		rect.drawRectRounded(
 			vec2(barCalculetorEnd + limitColorOnBackground, limitColorOnBackground),
 			vec2(barEnd + limitColorOnBackground, limitBarDeltaBackground.y - limitColorOnBackground),
 			barColor,
 			cornerColorBarDelta,
+			20,
 			ui.CornerFlags.Left
 		)
 	end
 
 	--Barra Arredondado no Lado Direito
 	if barCalculetorEnd > barEnd then
-		ui.drawRectFilled(
+		rect.drawRectRounded(
 			vec2(barEnd - limitColorOnBackground, limitColorOnBackground),
 			vec2(barCalculetorEnd - limitColorOnBackground, limitBarDeltaBackground.y - limitColorOnBackground),
 			barColor,
 			cornerColorBarDelta,
+			20,
 			ui.CornerFlags.Right
 		)
 	end
