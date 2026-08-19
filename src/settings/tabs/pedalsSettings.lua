@@ -57,6 +57,7 @@ local defaultValues = {
 	telemetryInverted = false,
 	telemetryThrottle = true,
 	telemetryBrake = true,
+	telemetryAbs = false,
 	telemetryClucth = false,
 	telemetryHandbrake = false,
 }
@@ -689,6 +690,10 @@ function pedalsSettings.pedalsSettings()
 		posYTelemetry = posYTelemetry + 25
 		if toggleButton.main("telemetryBrake", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryBrake, language.get("BRAKE")) then
 			pedalsSettings.store.telemetryBrake = not pedalsSettings.store.telemetryBrake
+		end
+		posYTelemetry = posYTelemetry + 25
+		if toggleButton.main("telemetryAbs", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryAbs, "Show ABS in brake") then
+			pedalsSettings.store.telemetryAbs = not pedalsSettings.store.telemetryAbs
 		end
 		posYTelemetry = posYTelemetry + 25
 		if toggleButton.main("telemetryClutch", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryClucth, language.get("CLUTCH")) then

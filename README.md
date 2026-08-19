@@ -5,6 +5,7 @@
 ## 1.3.3
 ### Adições
  - Novas tabs
+ - Abs no freio
 ### Correções de bugs
  - Deltar bar não resetando
  - Refinando chamadas de funções protegidas

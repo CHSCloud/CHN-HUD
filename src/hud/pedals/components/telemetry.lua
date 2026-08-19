@@ -22,7 +22,7 @@ local function drawGraphDefault(telemetryData, parameter, color, min, max)
 			ui.pathLineTo(vec2(xAxis, max.y - value * (max.y - 10 * pedalsSettings.store.pedalsScale)))
 		end
 	end
-	ui.pathSimpleStroke(color, false, 2 * pedalsSettings.store.pedalsScale)
+	ui.pathSmoothStroke(color, false, 2 * pedalsSettings.store.pedalsScale)
 end
 
 ---@param telemetryData table
@@ -43,7 +43,7 @@ local function drawGraphDefaultInverted(telemetryData, parameter, color, min, ma
 			ui.pathLineTo(vec2(xAxis, max.y - value * (max.y - 10 * pedalsSettings.store.pedalsScale)))
 		end
 	end
-	ui.pathSimpleStroke(color, false, 2 * pedalsSettings.store.pedalsScale)
+	ui.pathSmoothStroke(color, false, 2 * pedalsSettings.store.pedalsScale)
 end
 
 ---@param telemetryData table
@@ -80,7 +80,7 @@ local function drawGraphBrake(telemetryData, parameter, color, min, max)
 					ui.pathLineTo(vec2(xAxis, yAxis))
 				end
 			end
-			ui.pathStroke(currentColor, false, 2 * pedalsSettings.store.pedalsScale)
+			ui.pathSmoothStroke(currentColor, false, 2 * pedalsSettings.store.pedalsScale)
 
 			segmentStart = i
 			currentColor = nextColor
@@ -97,7 +97,61 @@ local function drawGraphBrake(telemetryData, parameter, color, min, max)
 			ui.pathLineTo(vec2(xAxis, yAxis))
 		end
 	end
-	ui.pathStroke(currentColor, false, 2 * pedalsSettings.store.pedalsScale)
+	ui.pathSmoothStroke(currentColor, false, 2 * pedalsSettings.store.pedalsScale)
+end
+
+---@param telemetryData table
+---@param parameter number
+---@param color rgbm
+---@param min vec2
+---@param max vec2
+local function drawGraphBrakeInverted(telemetryData, parameter, color, min, max)
+	table.insert(telemetryData, 1, {})
+	telemetryData[1].value = utils.smoothValue(telemetryData[2].value, parameter, 0.4)
+	telemetryData[1].absAction = false
+	table.remove(telemetryData, #telemetryData)
+
+	local lenght = (400 * pedalsSettings.store.pedalsScale) / pedalsSettings.store.telemetryPeriod
+	if CAR.absInAction then
+		telemetryData[1].absAction = true
+	end
+
+	local segmentStart = 1
+	local currentColor = telemetryData[1].absAction and COLOR.YELLOW or color
+
+	for i = 2, #telemetryData do
+		local currentStatus = telemetryData[i].absAction
+		local nextColor = currentStatus and COLOR.YELLOW or color
+
+		if nextColor ~= currentColor then
+			ui.pathClear()
+			for j = segmentStart, i do
+				local xAxis = min.x + j * lenght
+				local value = telemetryData[j].value
+				local yAxis = max.y - value * (max.y - 10 * pedalsSettings.store.pedalsScale)
+
+				if xAxis < max.x then
+					ui.pathLineTo(vec2(xAxis, yAxis))
+				end
+			end
+			ui.pathSmoothStroke(currentColor, false, 2 * pedalsSettings.store.pedalsScale)
+
+			segmentStart = i
+			currentColor = nextColor
+		end
+	end
+
+	ui.pathClear()
+	for j = segmentStart, #telemetryData do
+		local xAxis = min.x + j * lenght
+		local value = telemetryData[j].value
+		local yAxis = max.y - value * (max.y - 10 * pedalsSettings.store.pedalsScale)
+
+		if xAxis < max.x then
+			ui.pathLineTo(vec2(xAxis, yAxis))
+		end
+	end
+	ui.pathSmoothStroke(currentColor, false, 2 * pedalsSettings.store.pedalsScale)
 end
 
 ---@param data pedalsData
@@ -130,27 +184,30 @@ function telemetry.drawTelemetry(data)
 		init = init + vec2(0, rectHeight)
 	end
 
-	local functionGraph
+	local functionGraphDefault
+	local functionGraphBrake
 	if pedalsSettings.store.telemetryInverted then
-		functionGraph = drawGraphDefaultInverted
+		functionGraphDefault = drawGraphDefaultInverted
+		functionGraphBrake = drawGraphBrakeInverted
 	else
-		functionGraph = drawGraphDefault
+		functionGraphDefault = drawGraphDefault
+		functionGraphBrake = drawGraphBrake
 	end
 
 	if pedalsSettings.store.telemetryThrottle then
-		functionGraph(data.throttleTelemetry, CAR.gas, COLOR.GREEN, min, max)
+		functionGraphDefault(data.throttleTelemetry, CAR.gas, COLOR.GREEN, min, max)
 	end
 
 	if pedalsSettings.store.telemetryBrake then
-		drawGraphBrake(data.brakeTelemetry, CAR.brake, COLOR.RED, min, max)
+		functionGraphBrake(data.brakeTelemetry, CAR.brake, COLOR.RED, min, max)
 	end
 
 	if pedalsSettings.store.telemetryClucth then
-		functionGraph(data.clutchTelemetry, 1 - CAR.clutch, COLOR.BLUE, min, max)
+		functionGraphDefault(data.clutchTelemetry, 1 - CAR.clutch, COLOR.BLUE, min, max)
 	end
 
 	if pedalsSettings.store.telemetryHandbrake then
-		functionGraph(data.handbrakeTelemetry, CAR.handbrake, COLOR.YELLOW, min, max)
+		functionGraphDefault(data.handbrakeTelemetry, CAR.handbrake, COLOR.YELLOW, min, max)
 	end
 end
 
