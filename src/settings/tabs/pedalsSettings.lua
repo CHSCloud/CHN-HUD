@@ -677,23 +677,27 @@ function pedalsSettings.pedalsSettings()
 			droplist.PosText.Start
 		)
 
-		posYTelemetry = 630
+		posYTelemetry = 610
 		posXTelemetry = posXTelemetry + 280
-		ui.drawLine(vec2(posXTelemetry - 15, posYTelemetry - 10), vec2(posXTelemetry - 15, posYTelemetry + 130), COLOR.WHITE_LINE, 2)
+		ui.drawLine(vec2(posXTelemetry - 15, posYTelemetry), vec2(posXTelemetry - 15, posYTelemetry + 170), COLOR.WHITE_LINE, 2)
+		--ui.dwriteDrawText(language.get("PEDALS"), 12, vec2(posXTelemetry - 5, posYTelemetry - 20), COLOR.WHITE)
 		if toggleButton.main("telemetryInverted", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryInverted, language.get("INVERT_GRAPH")) then
 			pedalsSettings.store.telemetryInverted = not pedalsSettings.store.telemetryInverted
 		end
 		posYTelemetry = posYTelemetry + 25
+		if toggleButton.main("telemetryAbs", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryAbs, language.get("SHOW_ABS_TELEMETRY")) then
+			pedalsSettings.store.telemetryAbs = not pedalsSettings.store.telemetryAbs
+		end
+
+		posYTelemetry = posYTelemetry + 50
+	
+		ui.dwriteDrawText(language.get("PEDALS"), 12, vec2(posXTelemetry - 5, posYTelemetry - 20), COLOR.WHITE)
 		if toggleButton.main("telemetryThrottle", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryThrottle, language.get("THROTTLE")) then
 			pedalsSettings.store.telemetryThrottle = not pedalsSettings.store.telemetryThrottle
 		end
 		posYTelemetry = posYTelemetry + 25
 		if toggleButton.main("telemetryBrake", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryBrake, language.get("BRAKE")) then
 			pedalsSettings.store.telemetryBrake = not pedalsSettings.store.telemetryBrake
-		end
-		posYTelemetry = posYTelemetry + 25
-		if toggleButton.main("telemetryAbs", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryAbs, "Show ABS in brake") then
-			pedalsSettings.store.telemetryAbs = not pedalsSettings.store.telemetryAbs
 		end
 		posYTelemetry = posYTelemetry + 25
 		if toggleButton.main("telemetryClutch", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryClucth, language.get("CLUTCH")) then

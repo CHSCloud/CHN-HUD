@@ -5,6 +5,7 @@
     "UPLOAD_WHEEL": "Subir Volante",
     "SIZE": "Escala",
     "ABS": "ABS",
+    "SHOW_ABS_TELEMETRY": "Mostrar ABS na telemetria do freio",
     "ALERT_ABS": "Este carro não possui ABS",
     "TC": "Controle de Tração",
     "ALERT_TC": "Este carro não possui controle de tração",

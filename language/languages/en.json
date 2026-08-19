@@ -5,6 +5,7 @@
     "UPLOAD_WHEEL": "Upload Wheel",
     "SIZE": "Scale",
     "ABS": "ABS",
+    "SHOW_ABS_TELEMETRY": "Show ABS in brake telemetry",
     "ALERT_ABS": "This car does not have ABS",
     "TC": "Traction control",
     "ALERT_TC": "This car does not have tranction control",

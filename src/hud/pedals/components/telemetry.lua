@@ -61,39 +61,50 @@ local function drawGraphBrake(telemetryData, parameter, color, min, max)
 	if CAR.absInAction then
 		telemetryData[#telemetryData].absAction = true
 	end
+	if pedalsSettings.store.telemetryAbs then
+		local segmentStart = 1
+		local currentColor = telemetryData[1].absAction and COLOR.YELLOW or color
 
-	local segmentStart = 1
-	local currentColor = telemetryData[1].absAction and COLOR.YELLOW or color
+		for i = 2, #telemetryData do
+			local currentStatus = telemetryData[i].absAction
+			local nextColor = currentStatus and COLOR.YELLOW or color
 
-	for i = 2, #telemetryData do
-		local currentStatus = telemetryData[i].absAction
-		local nextColor = currentStatus and COLOR.YELLOW or color
+			if nextColor ~= currentColor then
+				ui.pathClear()
+				for j = segmentStart, i do
+					local xAxis = max.x - (#telemetryData - j) * lenght
 
-		if nextColor ~= currentColor then
-			ui.pathClear()
-			for j = segmentStart, i do
-				local xAxis = max.x - (#telemetryData - j) * lenght
-
-				if xAxis >= min.x then
-					ui.pathLineTo(vec2(xAxis, max.y - telemetryData[j].value * (max.y - 10 * pedalsSettings.store.pedalsScale)))
+					if xAxis >= min.x then
+						ui.pathLineTo(vec2(xAxis, max.y - telemetryData[j].value * (max.y - 10 * pedalsSettings.store.pedalsScale)))
+					end
 				end
+				ui.pathSmoothStroke(currentColor, false, 2 * pedalsSettings.store.pedalsScale)
+
+				segmentStart = i
+				currentColor = nextColor
 			end
-			ui.pathSmoothStroke(currentColor, false, 2 * pedalsSettings.store.pedalsScale)
-
-			segmentStart = i
-			currentColor = nextColor
 		end
-	end
 
-	ui.pathClear()
-	for j = segmentStart, #telemetryData do
-		local xAxis = max.x - (#telemetryData - j) * lenght
+		ui.pathClear()
+		for j = segmentStart, #telemetryData do
+			local xAxis = max.x - (#telemetryData - j) * lenght
 
-		if xAxis >= min.x then
-			ui.pathLineTo(vec2(xAxis, max.y - telemetryData[j].value * (max.y - 10 * pedalsSettings.store.pedalsScale)))
+			if xAxis >= min.x then
+				ui.pathLineTo(vec2(xAxis, max.y - telemetryData[j].value * (max.y - 10 * pedalsSettings.store.pedalsScale)))
+			end
 		end
+		ui.pathSmoothStroke(currentColor, false, 2 * pedalsSettings.store.pedalsScale)
+	else
+		ui.pathClear()
+		for i, value in ipairs(telemetryData) do
+			local xAxis = max.x - (#telemetryData - i) * lenght
+
+			if xAxis >= min.x then
+				ui.pathLineTo(vec2(xAxis, max.y - value.value * (max.y - 10 * pedalsSettings.store.pedalsScale)))
+			end
+		end
+		ui.pathSmoothStroke(color, false, 2 * pedalsSettings.store.pedalsScale)
 	end
-	ui.pathSmoothStroke(currentColor, false, 2 * pedalsSettings.store.pedalsScale)
 end
 
 ---@param telemetryData table
@@ -111,39 +122,49 @@ local function drawGraphBrakeInverted(telemetryData, parameter, color, min, max)
 	if CAR.absInAction then
 		telemetryData[1].absAction = true
 	end
+	if pedalsSettings.store.telemetryAbs then
+		local segmentStart = 1
+		local currentColor = telemetryData[1].absAction and COLOR.YELLOW or color
 
-	local segmentStart = 1
-	local currentColor = telemetryData[1].absAction and COLOR.YELLOW or color
+		for i = 2, #telemetryData do
+			local currentStatus = telemetryData[i].absAction
+			local nextColor = currentStatus and COLOR.YELLOW or color
 
-	for i = 2, #telemetryData do
-		local currentStatus = telemetryData[i].absAction
-		local nextColor = currentStatus and COLOR.YELLOW or color
+			if nextColor ~= currentColor then
+				ui.pathClear()
+				for j = segmentStart, i do
+					local xAxis = min.x + j * lenght
 
-		if nextColor ~= currentColor then
-			ui.pathClear()
-			for j = segmentStart, i do
-				local xAxis = min.x + j * lenght
-
-				if xAxis < max.x then
-					ui.pathLineTo(vec2(xAxis, max.y - telemetryData[j].value * (max.y - 10 * pedalsSettings.store.pedalsScale)))
+					if xAxis < max.x then
+						ui.pathLineTo(vec2(xAxis, max.y - telemetryData[j].value * (max.y - 10 * pedalsSettings.store.pedalsScale)))
+					end
 				end
+				ui.pathSmoothStroke(currentColor, false, 2 * pedalsSettings.store.pedalsScale)
+
+				segmentStart = i
+				currentColor = nextColor
 			end
-			ui.pathSmoothStroke(currentColor, false, 2 * pedalsSettings.store.pedalsScale)
-
-			segmentStart = i
-			currentColor = nextColor
 		end
-	end
 
-	ui.pathClear()
-	for j = segmentStart, #telemetryData do
-		local xAxis = min.x + j * lenght
+		ui.pathClear()
+		for j = segmentStart, #telemetryData do
+			local xAxis = min.x + j * lenght
 
-		if xAxis < max.x then
-			ui.pathLineTo(vec2(xAxis, max.y - telemetryData[j].value * (max.y - 10 * pedalsSettings.store.pedalsScale)))
+			if xAxis < max.x then
+				ui.pathLineTo(vec2(xAxis, max.y - telemetryData[j].value * (max.y - 10 * pedalsSettings.store.pedalsScale)))
+			end
 		end
+		ui.pathSmoothStroke(currentColor, false, 2 * pedalsSettings.store.pedalsScale)
+	else
+		ui.pathClear()
+		for i, value in ipairs(telemetryData) do
+			local xAxis = min.x + i * lenght
+			if xAxis < max.x then
+				ui.pathLineTo(vec2(xAxis, max.y - value.value * (max.y - 10 * pedalsSettings.store.pedalsScale)))
+			end
+		end
+		ui.pathSmoothStroke(color, false, 2 * pedalsSettings.store.pedalsScale)
 	end
-	ui.pathSmoothStroke(currentColor, false, 2 * pedalsSettings.store.pedalsScale)
 end
 
 ---@param data pedalsData
