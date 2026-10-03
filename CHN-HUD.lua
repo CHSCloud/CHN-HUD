@@ -62,6 +62,7 @@ ac.onSessionStart(function (sessionIndex, restarted)
 	if restarted then
 		callProtectedFunction(sessionLaps.onSessionStart)
 		callProtectedFunction(deltaBar.onSessionStart)
+		callProtectedFunction(pedals.onSessionStart)
 	end
 end)
 

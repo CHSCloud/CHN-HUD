@@ -26,6 +26,10 @@ function pedals.init()
 	data = pedalsData.new()
 end
 
+function pedals.onSessionStart()
+	data = pedalsData.new()
+end
+
 function pedals.windowMain()
 	ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
 	data.fontBar = 15 * pedalsSettings.store.pedalsScale
