@@ -59,11 +59,9 @@ end
 
 -- FUNÇÃO CHAMADA PARA RESTART DAS SESSÕES
 ac.onSessionStart(function (sessionIndex, restarted)
-	if restarted then
-		callProtectedFunction(sessionLaps.onSessionStart)
-		callProtectedFunction(deltaBar.onSessionStart)
-		callProtectedFunction(pedals.onSessionStart)
-	end
+	callProtectedFunction(sessionLaps.onSessionStart)
+	callProtectedFunction(deltaBar.onSessionStart)
+	callProtectedFunction(pedals.onSessionStart)
 end)
 
 -- TELA DE CONFIGURAÇÕES

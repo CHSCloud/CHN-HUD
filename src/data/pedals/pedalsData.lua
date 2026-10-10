@@ -23,8 +23,7 @@ local utils = require("common.utils")
 ---@field barMidleSize any
 ---@field barPaddingMidle any
 ---@field contentPositions vec2[][]
----@field maxFuelInLap number
----@field minFuelInLap number
+---@field initFuelInLap number
 ---@field fuelPerLap number[]
 ---@field lapCount number
 ---@field throttleTelemetry table
@@ -80,8 +79,7 @@ function pedalsData.new()
 		barMidleSize = nil,
 		barPaddingMidle = nil,
 		contentPositions = {},
-		maxFuelInLap = -math.huge,
-		minFuelInLap = math.huge,
+		initFuelInLap = nil,
 		fuelPerLap = {},
 		lapCount = 0,
 		throttleTelemetry = getEmptyTableDefault(pedalsSettings.store.telemetryPeriod),
