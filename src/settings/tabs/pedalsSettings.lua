@@ -1,6 +1,7 @@
 local language = require("language.language")
 local utils = require("common.utils")
 local slider = require("src.ui.selectors.slider")
+local tab = require("src.ui.buttons.tab")
 local button = require("src.ui.buttons.button")
 local droplist = require("src.ui.selectors.droplist")
 local droplistWithRemove = require("src.ui.selectors.droplistWithRemove")
@@ -32,6 +33,7 @@ local defaultValues = {
 	tractionControlPos = 2,
 
 	fuelActive = true,
+	fuelOption = 1,
 	fuelPos = 4,
 
 	pedalLimitsLines = true,
@@ -70,6 +72,8 @@ local positionsKeysCenter = {}
 local positionsBorders = {}
 local positionsCenters = {}
 local positionsTelemetry = {}
+
+local fuelOptions = {}
 
 local wheelsLabels = {
 	language.get("SIMPLE"),
@@ -192,8 +196,18 @@ local function drawOthers(pos)
 		if pedalsSettings.store.fuelPos ~= old then
 			invertPositionBorder(old, pedalsSettings.store.fuelPos, "fuelPos")
 		end
-	end
 
+		pedalsSettings.store.fuelOption = droplist.main(
+			"##fuelOption",
+			"",
+			vec2(pos.x + ui.measureDWriteText(language.get("FUEL"), 12).x + 260, pos.y - 4),
+			utils.findLenghtLongestString(positionsBorders, 12).x + 40,
+			pedalsSettings.store.fuelOption,
+			fuelOptions,
+			droplist.PosText.Start
+		)
+
+	end
 	pos.y = pos.y + 30
 	if toggleButton.main("brakeBias", pos, pedalsSettings.store.brakeBiasActive, language.get("BRAKE_BIAS")) then
 		pedalsSettings.store.brakeBiasActive = not pedalsSettings.store.brakeBiasActive
@@ -489,36 +503,9 @@ local function drawRPM(pos)
 	end
 end
 
-function pedalsSettings.pedalsSettings()
-	positionsBorders = {
-		language.get("TOP_LEFT"),
-		language.get("TOP_RIGHT"),
-		language.get("BOTTOM_LEFT"),
-		language.get("BOTTOM_RIGHT"),
-	}
-	positionsCenters = {
-		[5] = language.get("TOP_CENTER"),
-		[6] = language.get("BOTTOM_CENTER"),
-	}
-	positionsTelemetry = {
-		language.get("LEFT"),
-		language.get("RIGHT"),
-	}
-
-	positionsKeysBorders = {
-		brakebiasPos = pedalsSettings.store.brakebiasPos,
-		fuelPos = pedalsSettings.store.fuelPos,
-		tractionControlPos = pedalsSettings.store.tractionControlPos,
-		drsPos = pedalsSettings.store.drsPos,
-	}
-	positionsKeysCenter = {
-		rpmPos = pedalsSettings.store.rpmPos,
-		p2pPos = pedalsSettings.store.p2pPos,
-	}
-
+local function general()
 	-- Layout
-	local initPos = 55
-	local posXStyle = 180
+	local initPos = 90
 
 	initPos = initPos + 20
 	pedalsSettings.store.pedalsScale = slider.main(
@@ -594,9 +581,17 @@ function pedalsSettings.pedalsSettings()
 	-- RPM
 	drawRPM(vec2(20, 320))
 
+	-- Botão Reset
+	initPos = initPos + 70
+	if button.main(vec2(20, initPos), language.get("RESET_DEFAULT")) then
+		resetToDefault()
+	end
+end
+
+local function pedals()
 	-- PEDAIS
-	initPos = 600
-	ui.drawLine(vec2(10, initPos), vec2(WindowSettingsSize.x - 18, initPos), COLOR.WHITE_LINE, 2)
+	local initPos = 80
+	local posXStyle = 180
 	initPos = initPos + 10
 	ui.dwriteDrawText(language.get("PEDALS"), 12, vec2(15, initPos), COLOR.WHITE)
 
@@ -632,8 +627,11 @@ function pedalsSettings.pedalsSettings()
 		pedalsSettings.store.handbrakeActive = not pedalsSettings.store.handbrakeActive
 	end
 	--
+end
 
-	local posXTelemetry = posXStyle + 230
+local function telemetry()
+	local posYTelemetry = 110
+	local posXTelemetry = 20
 	ui.setCursor(vec2(posXTelemetry - 5, posYTelemetry))
 	ui.dwriteDrawText(language.get("TELEMETRY"), 12, vec2(posXTelemetry - 5, posYTelemetry - 25), COLOR.WHITE)
 	if toggleButton.main("activeTelemetry", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryActive, "") then
@@ -677,9 +675,10 @@ function pedalsSettings.pedalsSettings()
 			droplist.PosText.Start
 		)
 
-		posYTelemetry = 610
-		posXTelemetry = posXTelemetry + 280
+		posYTelemetry = 90
+		posXTelemetry = posXTelemetry + 290
 		ui.drawLine(vec2(posXTelemetry - 15, posYTelemetry), vec2(posXTelemetry - 15, posYTelemetry + 170), COLOR.WHITE_LINE, 2)
+		posXTelemetry = posXTelemetry + 10
 		--ui.dwriteDrawText(language.get("PEDALS"), 12, vec2(posXTelemetry - 5, posYTelemetry - 20), COLOR.WHITE)
 		if toggleButton.main("telemetryInverted", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryInverted, language.get("INVERT_GRAPH")) then
 			pedalsSettings.store.telemetryInverted = not pedalsSettings.store.telemetryInverted
@@ -709,12 +708,46 @@ function pedalsSettings.pedalsSettings()
 		end
 	end
 	--
+end
 
-	-- Botão Reset
-	initPos = initPos + 70
-	if button.main(vec2(20, initPos), language.get("RESET_DEFAULT")) then
-		resetToDefault()
-	end
+function pedalsSettings.pedalsSettings()
+	positionsBorders = {
+		language.get("TOP_LEFT"),
+		language.get("TOP_RIGHT"),
+		language.get("BOTTOM_LEFT"),
+		language.get("BOTTOM_RIGHT"),
+	}
+	positionsCenters = {
+		[5] = language.get("TOP_CENTER"),
+		[6] = language.get("BOTTOM_CENTER"),
+	}
+	positionsTelemetry = {
+		language.get("LEFT"),
+		language.get("RIGHT"),
+	}
+
+	positionsKeysBorders = {
+		brakebiasPos = pedalsSettings.store.brakebiasPos,
+		fuelPos = pedalsSettings.store.fuelPos,
+		tractionControlPos = pedalsSettings.store.tractionControlPos,
+		drsPos = pedalsSettings.store.drsPos,
+	}
+	positionsKeysCenter = {
+		rpmPos = pedalsSettings.store.rpmPos,
+		p2pPos = pedalsSettings.store.p2pPos,
+	}
+
+	fuelOptions = {
+		"Default",
+		"Fuel per Lap",
+		"Est. Laps"
+	}
+	local id = "pedalsTab"
+	tab.tabStart(id, vec2(5, 52))
+	tab.item(id, language.get("GENERAL"), general)
+	tab.item(id, "Pedals configuration", pedals)
+	tab.item(id, language.get("TELEMETRY"), telemetry)
+	tab.tabEnd(id)
 end
 
 -- Executando funções de inicialização
