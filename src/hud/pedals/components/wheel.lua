@@ -25,7 +25,7 @@ function wheel.drawWheel(data)
 	else
 		ui.setCursor(vec2(p1, p2))
 		ui.beginRotation()
-		ui.image("assets/pedals/wheels/" .. Wheels[pedalsSettings.store.wheelType], vec2(width, height), ui.ImageFit.Fit)
+		ui.image("assets/pedals/wheels/" .. pedalsSettings.wheels[pedalsSettings.store.wheelType], vec2(width, height), ui.ImageFit.Fit)
 		ui.endRotation(90 - CAR.steer)
 	end
 

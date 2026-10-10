@@ -79,7 +79,7 @@ local wheelsLabels = {
 	language.get("SIMPLE"),
 }
 
-Wheels = {
+pedalsSettings.wheels = {
 	"",
 }
 
@@ -113,12 +113,12 @@ end
 
 local function findWheels()
 	local dir = ac.getFolder(ac.FolderID.ACAppsLua) .. "\\CHN-HUD\\assets\\pedals\\wheels"
-	table.clear(Wheels)
+	table.clear(pedalsSettings.wheels)
 	table.clear(wheelsLabels)
-	table.insert(Wheels, "")
+	table.insert(pedalsSettings.wheels, "")
 	table.insert(wheelsLabels, language.get("SIMPLE"))
 	io.scanDir(dir, function(fileName)
-		table.insert(Wheels, fileName)
+		table.insert(pedalsSettings.wheels, fileName)
 		table.insert(wheelsLabels, string.sub(fileName:gsub("%.%w+$", ""), 1, 25))
 	end)
 end
@@ -162,9 +162,9 @@ end
 
 ---@param wheelType number
 local function removeWheel(wheelType)
-	local fileName = Wheels[wheelType]
+	local fileName = pedalsSettings.wheels[wheelType]
 	io.deleteFile(ac.getFolder(ac.FolderID.ACAppsLua) .. "\\CHN-HUD\\assets\\pedals\\wheels\\" .. fileName)
-	table.remove(Wheels, wheelType)
+	table.remove(pedalsSettings.wheels, wheelType)
 	table.remove(wheelsLabels, wheelType)
 	pedalsSettings.store.wheelType = 1
 end
