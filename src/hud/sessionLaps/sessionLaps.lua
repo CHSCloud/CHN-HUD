@@ -59,8 +59,8 @@ function sessionLaps.windowMain()
 
 	data.currentWindowSize = vec2(data.currentWindowWidth, data.currentWindowHeight * sessionLapsSettings.store.sessionLapsScale)
 
-	window.resize(data.currentWindowSize, "Session Laps")
-	pinCheckBox.main(sessionLapsSettings.store.sessionLapsScale, "Session Laps", window.getWindow("Session Laps"):pinned(), data.currentWindowSize)
+	window.resize(data.currentWindowSize, "CHN Session Laps")
+	pinCheckBox.main(sessionLapsSettings.store.sessionLapsScale, "CHN Session Laps", window.getWindow("CHN Session Laps"):pinned(), data.currentWindowSize)
 end
 
 return sessionLaps

@@ -73,7 +73,7 @@ local function verifyVersion()
 				local html = response.body
 
 				onlineVersion = string.match(html, "CHN HUD ([%d%.]+)")
-				
+
 				if onlineVersion ~= nil then
 					if onlineVersion ~= currentVersion then
 						isLatestVersion = false
@@ -180,13 +180,13 @@ function settings.windowMain()
 	WindowSettingsSize = ui.windowSize()
 	ui.pushDWriteFont("fonts/Montserrat-Bold.ttf")
 	if window.isMouseInWindow(ui.mouseLocalPos(), 0, WindowSettingsSize.x, 0, WindowSettingsSize.y) then
-		rect.drawRectRounded(vec2(0, 22), WindowSettingsSize , rgbm.from0255(18, 21, 29, 0.85), 10, 20, ui.CornerFlags.Bottom)
-	else 
-		rect.drawRectRounded(vec2(0, 22), WindowSettingsSize , rgbm.from0255(18, 21, 29, 0.85), 10, 20)
+		rect.drawRectRounded(vec2(0, 22), WindowSettingsSize, rgbm.from0255(18, 21, 29, 0.85), 10, 20, ui.CornerFlags.Bottom)
+	else
+		rect.drawRectRounded(vec2(0, 22), WindowSettingsSize, rgbm.from0255(18, 21, 29, 0.85), 10, 20)
 	end
 
 	local id = "mainTab"
-	tab.tabStart(id, vec2(5,25))
+	tab.tabStart(id, vec2(5, 25))
 	tab.item(id, language.get("GENERAL"), geral)
 	tab.item(id, language.get("PEDALS"), pedalsSettings.pedalsSettings)
 	tab.item(id, language.get("PIT_LANE"), pitLaneSettings.pitLaneSettings)
@@ -291,7 +291,7 @@ function settings.windowMain()
 				local size = settingsINI:get("WINDOW_0", "SIZE", nil)
 				if size ~= nil then
 					local sizeSplit = string.split(size[1], ",")
-					window.resize(vec2(tonumber(sizeSplit[1]), tonumber(sizeSplit[2])), "Settings CHN")
+					window.resize(vec2(tonumber(sizeSplit[1]), tonumber(sizeSplit[2])), "CHN Settings")
 				end
 			end
 		end

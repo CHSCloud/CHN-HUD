@@ -68,8 +68,8 @@ function sessionFlags.windowMain()
 		flags.drawFlag(data, "assets/flags/greenFlag.png", language.get("GO_GO_GO"), language.get("GREEN_FLAG"))
 	end
 
-	window.resize(data.currentWindowSize, "Session Flags")
-	pinCheckBox.main(1, "Session Flags", window.getWindow("Session Flags"):pinned(), data.currentWindowSize)
+	window.resize(data.currentWindowSize, "CHN Session Flags")
+	pinCheckBox.main(1, "CHN Session Flags", window.getWindow("CHN Session Flags"):pinned(), data.currentWindowSize)
 end
 
 return sessionFlags

@@ -157,8 +157,8 @@ function map.windowMain()
 		end
 		players.drawPlayers(data)
 	end
-	window.resize(data.currentWindowSize, "Map")
-	pinCheckBox.main(mapSettings.store.mapScale * 1.5, "Map", window.getWindow("Map"):pinned(), data.currentWindowSize)
+	window.resize(data.currentWindowSize, "CHN Map")
+	pinCheckBox.main(mapSettings.store.mapScale * 1.5, "CHN Map", window.getWindow("CHN Map"):pinned(), data.currentWindowSize)
 end
 
 return map

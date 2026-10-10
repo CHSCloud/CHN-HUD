@@ -63,9 +63,9 @@ function pitLane.windowMain()
 
 	data.currentWindowSize = vec2(data.currentWindowWidth, data.currentWindowHeight)
 
-	window.resize(data.currentWindowSize, "Pit Lane")
+	window.resize(data.currentWindowSize, "CHN Pit Lane")
 
-	pinCheckBox.main(pitLaneSettings.store.pitLaneScale, "Pit Lane", window.getWindow("Pit Lane"):pinned(), data.currentWindowSize)
+	pinCheckBox.main(pitLaneSettings.store.pitLaneScale, "CHN Pit Lane", window.getWindow("CHN Pit Lane"):pinned(), data.currentWindowSize)
 end
 
 return pitLane

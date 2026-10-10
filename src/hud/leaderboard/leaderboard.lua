@@ -140,8 +140,8 @@ function leaderboard.windowMain()
 		end
 	end
 
-	window.resize(data.currentWindowSize, "Leaderboard")
-	pinCheckBox.main(leaderboardSettings.store.leaderboardScale, "Leaderboard", window.getWindow("Leaderboard"):pinned(), data.currentWindowSize)
+	window.resize(data.currentWindowSize, "CHN Leaderboard")
+	pinCheckBox.main(leaderboardSettings.store.leaderboardScale, "CHN Leaderboard", window.getWindow("CHN Leaderboard"):pinned(), data.currentWindowSize)
 end
 
 return leaderboard

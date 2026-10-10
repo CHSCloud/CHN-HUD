@@ -71,9 +71,9 @@ function tyres.windowMain()
 
 	wheels.drawWheelInfo(data, vec2(175 * tyresSettings.store.tyresScale, data.wheelsPos.y + 130 * tyresSettings.store.tyresScale), 3)
 
-	window.resize(data.currentWindowSize, "Tyres")
+	window.resize(data.currentWindowSize, "CHN Tyres")
 	
-	pinCheckBox.main(tyresSettings.store.tyresScale, "Tyres", window.getWindow("Tyres"):pinned(), data.currentWindowSize)
+	pinCheckBox.main(tyresSettings.store.tyresScale, "CHN Tyres", window.getWindow("CHN Tyres"):pinned(), data.currentWindowSize)
 end
 
 return tyres

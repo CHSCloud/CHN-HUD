@@ -35,7 +35,7 @@ function startingLights.windowMain()
 	data.currentWindowHeight = 3 * data.radius + data.distanceBorder
 	data.currentWindowWidth = ((startingLightsSettings.store.numStartingLights - 1) * data.distance) + 3 * data.radius + data.distanceBorder
 
-	window.resize(vec2(data.currentWindowWidth + 2 * startingLightsSettings.store.startingLightsScale, data.currentWindowHeight), "Starting Lights")
+	window.resize(vec2(data.currentWindowWidth + 2 * startingLightsSettings.store.startingLightsScale, data.currentWindowHeight), "CHN Starting Lights")
 
 	if SIM.raceSessionType == ac.SessionType.Race then
 		if SIM.timeToSessionStart < 10000 and SIM.timeToSessionStart > 0 then
@@ -50,8 +50,8 @@ function startingLights.windowMain()
 	end
 	pinCheckBox.main(
 		startingLightsSettings.store.startingLightsScale,
-		"Starting Lights",
-		window.getWindow("Starting Lights"):pinned(),
+		"CHN Starting Lights",
+		window.getWindow("CHN Starting Lights"):pinned(),
 		vec2(data.currentWindowWidth, data.currentWindowHeight)
 	)
 end

@@ -167,9 +167,9 @@ function pedals.windowMain()
 
 	data.currentWindowSize = vec2(data.currentWindowWidth, data.currentWindowHeight)
 
-	window.resize(data.currentWindowSize, "Pedals")
+	window.resize(data.currentWindowSize, "CHN Pedals")
 
-	pinCheckBox.main(pedalsSettings.store.pedalsScale, "Pedals", window.getWindow("Pedals"):pinned(), data.currentWindowSize)
+	pinCheckBox.main(pedalsSettings.store.pedalsScale, "CHN Pedals", window.getWindow("CHN Pedals"):pinned(), data.currentWindowSize)
 end
 
 return pedals

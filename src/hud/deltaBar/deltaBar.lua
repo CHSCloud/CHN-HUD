@@ -156,11 +156,11 @@ function deltaBar.windowMain()
 	ui.dwriteTextAligned(deltaText, fontTextDelta, ui.Alignment.Center, ui.Alignment.Center, limitBackgroundText, false, textColor)
 	ui.popDWriteFont()
 
-	window.resize(vec2(500, 70):scale(deltaBarSettings.store.deltaBarScale), "Delta Bar")
+	window.resize(vec2(500, 70):scale(deltaBarSettings.store.deltaBarScale), "CHN Delta Bar")
 	pinCheckBox.main(
 		deltaBarSettings.store.deltaBarScale,
-		"Delta Bar",
-		window.getWindow("Delta Bar"):pinned(),
+		"CHN Delta Bar",
+		window.getWindow("CHN Delta Bar"):pinned(),
 		vec2(500, 70):scale(deltaBarSettings.store.deltaBarScale)
 	)
 end

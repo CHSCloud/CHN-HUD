@@ -7,29 +7,29 @@ local defaultValues = {
 window.store = ac.storage(defaultValues)
 
 local pinStorage = ac.storage({
-	["Settings CHN"] = false,
-	["Pedals"] = false,
-	["Pit Lane"] = false,
-	["Session Laps"] = false,
-	["Starting Lights"] = false,
-	["Session Flags"] = false,
-	["Delta Bar"] = false,
-	["Map"] = false,
-	["Leaderboard"] = false,
-	["Tyres"] = false,
+	["CHN Settings"] = false,
+	["CHN Pedals"] = false,
+	["CHN Pit Lane"] = false,
+	["CHN Session Laps"] = false,
+	["CHN Starting Lights"] = false,
+	["CHN Session Flags"] = false,
+	["CHN Delta Bar"] = false,
+	["CHN Map"] = false,
+	["CHN Leaderboard"] = false,
+	["CHN Tyres"] = false,
 })
 
 local windowNames = {
-	"Settings CHN",
-	"Pedals",
-	"Pit Lane",
-	"Session Laps",
-	"Starting Lights",
-	"Session Flags",
-	"Delta Bar",
-	"Map",
-	"Leaderboard",
-	"Tyres",
+	"CHN Settings",
+	"CHN Pedals",
+	"CHN Pit Lane",
+	"CHN Session Laps",
+	"CHN Starting Lights",
+	"CHN Session Flags",
+	"CHN Delta Bar",
+	"CHN Map",
+	"CHN Leaderboard",
+	"CHN Tyres",
 }
 
 ---@Credits This function was inspired by the "settings.init()" function from CMRT Complete HUD.
@@ -42,7 +42,7 @@ function window.init()
 				if all[i].name ~= nil then
 					win = ac.accessAppWindow(all[i].name)
 					if win ~= nil then
-						if all[i].title ~= "Settings CHN" then
+						if all[i].title ~= "CHN Settings" then
 							win:setPinned(pinStorage[all[i].title])
 						end
 						window[windowNames[j]] = win
@@ -113,7 +113,7 @@ end
 function window.pinAllApps(pin)
 	window.store.pinAllApps = pin
 	for _, name in ipairs(windowNames) do
-		if name ~= "Settings CHN" then
+		if name ~= "CHN Settings" then
 			window.getWindow(name):setPinned(pin)
 		end
 	end

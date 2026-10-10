@@ -5,15 +5,15 @@ local pinCheckBox = {}
 local maxLenght = 20
 
 local lenghts = {
-	["Pedals"] = 0,
-	["Pit Lane"] = 0,
-	["Session Laps"] = 0,
-	["Starting Lights"] = 0,
-	["Session Flags"] = 0,
-	["Delta Bar"] = 0,
-	["Map"] = 0,
-	["Leaderboard"] = 0,
-	["Tyres"] = 0,
+	["CHN Pedals"] = 0,
+	["CHN Pit Lane"] = 0,
+	["CHN Session Laps"] = 0,
+	["CHN Starting Lights"] = 0,
+	["CHN Session Flags"] = 0,
+	["CHN Delta Bar"] = 0,
+	["CHN Map"] = 0,
+	["CHN Leaderboard"] = 0,
+	["CHN Tyres"] = 0,
 }
 
 --- @param pos vec2
