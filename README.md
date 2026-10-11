@@ -1,35 +1,33 @@
 # CHN HUD
 
- Hud em desenvolvimento para o Assetto Corsa, inicialmente baseado no iOverlay
+> **A minimalist, functional, and highly configurable HUD for Assetto Corsa.**
 
-## 1.3.3
-### Adições
- - Novas tabs
- - Abs no freio
-### Correções de bugs
- - Deltar bar não resetando
- - Refinando chamadas de funções protegidas
- - Escalonamento do leaderboard incorreto
- - Bug na seleção de volante no pedals, que quando o jogo iniciava ia para o "Simple"
- - Erros de tradução
- - Cor das letras dos setores não muda
- - Serrilhamento nas bordas dos apps
+**CHN HUD** is an in-development application focused on providing essential telemetry and driving information clearly, without screen distractions.
 
+---
 
-## 1.3.1
-### Adições
- - Pedals: 
-    - Telemetria
-    - Visualização em Galões no combustível
-    - Upload de Volantes
- - Session Laps:
-    - Visualização de tempo de setores e micro-setores
- - LeaderBoard: 
-    - Best Lap
-    - Int
- - Map
-    - Opção de slider para progresso
-### Correções de bugs
- - Volante não espadir a tela ao ser adicionando sozinho
- - Cores do P2P não aparecendo
+## Key Features
 
+- **Minimalist:** Clean design focused on what truly matters on the track.
+- **Configurable:** Personalize and adjust elements according to your preferences.
+- **Performance:** Developed to be lightweight, avoiding framerate drops (FPS) in the simulator.
+- **In Development:** Updates and new features added based on community feedback.
+
+---
+
+## Prerequisites
+
+To use this HUD, you will need:
+
+- **Assetto Corsa**
+- **Content Manager** (recommended for easy installation and managing apps/plugins)
+- **Custom Shaders Patch (CSP)**
+
+---
+
+## Installation
+
+1. Download the latest version from the **Releases** section of this repository or via [Overtake.gg](https://www.overtake.gg/downloads/chn-hud.78851/).
+2. Drag and drop the downloaded `.zip` file anywhere onto the Content Manager window.
+3. Click the hamburger menu (three horizontal lines) in the top-right corner of Content Manager and click **Install**.
+4. Launch Assetto Corsa via Content Manager, open the in-game right sidebar, and enable the CHN HUD functions.
