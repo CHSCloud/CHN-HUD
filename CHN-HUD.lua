@@ -17,6 +17,7 @@ local map = require("src.hud.map.map")
 local deltaBar = require("src.hud.deltaBar.deltaBar")
 local leaderboard = require("src.hud.leaderboard.leaderboard")
 local tyres = require("src.hud.tyres.tyres")
+local fuel = require("src.hud.fuel.fuel")
 
 ---@Credits This function was inspired by the "call_protected_function" function from CMRT Complete HUD.
 ---@param func function
@@ -41,6 +42,7 @@ local function initApps()
 	deltaBar.init()
 	leaderboard.init()
 	tyres.init()
+	fuel.init()
 end
 
 -- FUNÇÃO DE ATUALIZAÇÃO
@@ -116,6 +118,12 @@ function WindowLeaderboard()
 	callProtectedFunction(leaderboard.windowMain)
 end
 
+-- TELA DOS PNEUS
 function WindowTyres()
 	callProtectedFunction(tyres.windowMain)
+end
+
+-- TELA DO COMBUSTÍVEL
+function WindowFuel()
+	callProtectedFunction(fuel.windowMain)
 end
