@@ -8,15 +8,12 @@ local droplistWithRemove = require("src.ui.selectors.droplistWithRemove")
 local toggleButton = require("src.ui.buttons.toggleButton")
 local pedalsSettings = {}
 
-local defaultValues = {
+local defaultGeneralValues = {
 	pedalsScale = 1,
 	gearActive = true,
 	speedActive = true,
 	wheelActive = true,
 	absActive = true,
-
-	throttleActive = true,
-	brakeActive = true,
 
 	brakeBiasActive = true,
 	brakebiasPos = 3,
@@ -25,10 +22,6 @@ local defaultValues = {
 	p2pLenght = 0.65,
 	p2pPos = 6,
 
-	clutchActive = true,
-	handbrakeActive = false,
-	textBarsActive = false,
-
 	tractionControlActive = false,
 	tractionControlPos = 2,
 
@@ -36,7 +29,6 @@ local defaultValues = {
 	fuelOption = 1,
 	fuelPos = 4,
 
-	pedalLimitsLines = true,
 	rpmActive = true,
 	wheelType = 1,
 
@@ -51,10 +43,21 @@ local defaultValues = {
 
 	drsActvationActive = false,
 	drsPos = 1,
+}
 
+local defaultPedalsValues = {
+	throttleActive = true,
+	brakeActive = true,
+	clutchActive = true,
+	handbrakeActive = false,
+	textBarsActive = false,
+	pedalLimitsLines = true,
+}
+
+local defaultTelemetryValues = {
 	telemetryActive = true,
 	telemetryLenght = 250,
-	telemetryPeriod = 300,
+	telemetryPeriod = 415,
 	telemetryPos = 1,
 	telemetryInverted = false,
 	telemetryThrottle = true,
@@ -64,6 +67,10 @@ local defaultValues = {
 	telemetryHandbrake = false,
 }
 
+local defaultValues = {}
+utils.copyTable(defaultGeneralValues, defaultValues)
+utils.copyTable(defaultPedalsValues, defaultValues)
+utils.copyTable(defaultTelemetryValues, defaultValues)
 pedalsSettings.store = ac.storage(defaultValues)
 
 local positionsKeysBorders = {}
@@ -83,8 +90,20 @@ pedalsSettings.wheels = {
 	"",
 }
 
-local function resetToDefault()
-	for key, value in pairs(defaultValues) do
+local function resetToDefaultGeneral()
+	for key, value in pairs(defaultGeneralValues) do
+		pedalsSettings.store[key] = value
+	end
+end
+
+local function resetToDefaultPedals()
+	for key, value in pairs(defaultPedalsValues) do
+		pedalsSettings.store[key] = value
+	end
+end
+
+local function resetToDefaultTelemetry()
+	for key, value in pairs(defaultTelemetryValues) do
 		pedalsSettings.store[key] = value
 	end
 end
@@ -576,15 +595,15 @@ local function general()
 	ui.drawLine(vec2(10, initPos), vec2(WindowSettingsSize.x - 18, initPos), COLOR.WHITE_LINE, 2)
 
 	-- OUTROS
-	drawOthers(vec2(420, 120))
+	drawOthers(vec2(420, 155))
 
 	-- RPM
-	drawRPM(vec2(20, 320))
+	drawRPM(vec2(20, 340))
 
 	-- Botão Reset
-	initPos = initPos + 70
+	initPos = initPos + 240
 	if button.main(vec2(20, initPos), language.get("RESET_DEFAULT")) then
-		resetToDefault()
+		resetToDefaultGeneral()
 	end
 end
 
@@ -627,6 +646,10 @@ local function pedals()
 		pedalsSettings.store.handbrakeActive = not pedalsSettings.store.handbrakeActive
 	end
 	--
+	initPos = initPos + 35
+	if button.main(vec2(20, initPos), language.get("RESET_DEFAULT")) then
+		resetToDefaultPedals()
+	end
 end
 
 local function telemetry()
@@ -708,6 +731,9 @@ local function telemetry()
 		end
 	end
 	--
+	if button.main(vec2(20, posYTelemetry + 50), language.get("RESET_DEFAULT")) then
+		resetToDefaultTelemetry()
+	end
 end
 
 function pedalsSettings.pedalsSettings()
