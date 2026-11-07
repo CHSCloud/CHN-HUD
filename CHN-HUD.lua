@@ -53,6 +53,10 @@ ac.onSessionStart(function (sessionIndex, restarted)
 	callProtectedFunction(pedals.onSessionStart)
 end)
 
+ac.onRelease(function (item)
+	fuel.onGameClone()
+end)
+
 -- FUNÇÃO DE ATUALIZAÇÃO
 ---@param dt number
 function script.update(dt)
