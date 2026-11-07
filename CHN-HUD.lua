@@ -31,6 +31,7 @@ end
 local function initApps()
 	window.init()
 	language.loadTranslations()
+	
 	settings.init()
 	pedalsSettings.init()
 	pitLane.init()
@@ -44,6 +45,13 @@ local function initApps()
 	tyres.init()
 	fuel.init()
 end
+
+-- FUNÇÃO CHAMADA PARA RESTART DAS SESSÕES
+ac.onSessionStart(function (sessionIndex, restarted)
+	callProtectedFunction(sessionLaps.onSessionStart)
+	callProtectedFunction(deltaBar.onSessionStart)
+	callProtectedFunction(pedals.onSessionStart)
+end)
 
 -- FUNÇÃO DE ATUALIZAÇÃO
 ---@param dt number
@@ -59,13 +67,6 @@ function script.update(dt)
 	end
 end
 
--- FUNÇÃO CHAMADA PARA RESTART DAS SESSÕES
-ac.onSessionStart(function (sessionIndex, restarted)
-	callProtectedFunction(sessionLaps.onSessionStart)
-	callProtectedFunction(deltaBar.onSessionStart)
-	callProtectedFunction(pedals.onSessionStart)
-end)
-
 -- TELA DE CONFIGURAÇÕES
 function WindowSettings()
 	callProtectedFunction(settings.windowMain)
@@ -76,7 +77,6 @@ end
 function WindowCloseSettings()
 	callProtectedFunction(settings.windowCloseSettings)
 end
---
 
 -- TELA DOS PEDAIS
 function WindowPedals()

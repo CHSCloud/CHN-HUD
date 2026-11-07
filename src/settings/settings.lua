@@ -31,7 +31,6 @@ local defaultValues = {
 }
 settings.store = ac.storage(defaultValues)
 
-local tabPin = false
 SettingsActive = false
 WindowsColor = settings.store.windowsColor
 SelectedSpeed = settings.store.selectedSpeed
@@ -66,14 +65,14 @@ local function verifyVersion()
 			if currentVersion == "" then
 				return
 			end
-			web.get("https://www.overtake.gg/downloads/chn-hud.78851/", function(err, response)
+
+			web.get("https://raw.githubusercontent.com/CHSCloud/CHN-HUD/main/manifest.ini", function(err, response)
 				if err or response.status ~= 200 then
 					return
 				end
 
-				local html = response.body
-
-				onlineVersion = string.match(html, "CHN HUD ([%d%.]+)")
+				local manifestContent = response.body or ""
+				onlineVersion = string.match(manifestContent, "VERSION=([%d%.]+)")
 
 				if onlineVersion ~= nil then
 					if onlineVersion ~= currentVersion then
@@ -87,15 +86,9 @@ local function verifyVersion()
 end
 
 local function geral()
-	if tabPin then
-		tabPin = false
-	end
-
 	local initPos = 80
-	settings.store.optionLanguage =
-		droplist.main("##Language", language.get("LANGUAGE"), vec2(15, initPos), 160, settings.store.optionLanguage, language.languages)
+	settings.store.optionLanguage = droplist.main("##Language", language.get("LANGUAGE"), vec2(15, initPos), 160, settings.store.optionLanguage, language.languages)
 	if settings.store.optionLanguage ~= language.getCurrentLanguage() then
-		tabPin = true
 		language.setlanguage(settings.store.optionLanguage)
 	end
 
