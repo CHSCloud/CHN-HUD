@@ -1,6 +1,7 @@
 TIMER = 0
 SIM = ac.getSim()
 CAR = ac.getCar(SIM.focusedCar)
+MY_CAR = ac.getCar(0)
 USER_UI = ac.getUI()
 local isAppsInit = false
 
@@ -63,6 +64,7 @@ function script.update(dt)
 	TIMER = TIMER + dt
 	SIM = ac.getSim()
 	CAR = ac.getCar(SIM.focusedCar)
+	MY_CAR = ac.getCar(0)
 	USER_UI = ac.getUI()
 
 	if not isAppsInit then

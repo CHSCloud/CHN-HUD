@@ -1,5 +1,4 @@
 local pedalsSettings = require("src.settings.tabs.pedalsSettings")
-local utils = require("common.utils")
 
 ---@class pedalsData
 ---@field currentWindowSize vec2
@@ -23,8 +22,7 @@ local utils = require("common.utils")
 ---@field barMidleSize any
 ---@field barPaddingMidle any
 ---@field contentPositions vec2[][]
----@field initFuelInLap number
----@field fuelPerLap number[]
+---@field fuelPerLap number
 ---@field lapCount number
 ---@field throttleTelemetry table
 ---@field brakeTelemetry table
@@ -79,8 +77,8 @@ function pedalsData.new()
 		barMidleSize = nil,
 		barPaddingMidle = nil,
 		contentPositions = {},
-		initFuelInLap = nil,
-		fuelPerLap = {},
+        ---@diagnostic disable-next-line: undefined-field
+        fuelPerLap = ac.storage(ac.getTrackName() .. ac.getCarID(0) .. "fuelPerLap", nil):get() or MY_CAR.fuelPerLap,
 		lapCount = 0,
 		throttleTelemetry = getEmptyTableDefault(pedalsSettings.store.telemetryPeriod),
 		brakeTelemetry = getEmptyTableBrake(pedalsSettings.store.telemetryPeriod),

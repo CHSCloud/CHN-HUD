@@ -41,6 +41,11 @@ function pedals.windowMain()
 	data.barLimitSize = vec2(20, 6) * pedalsSettings.store.pedalsScale
 	data.barMidleSize = vec2(20, 44) * pedalsSettings.store.pedalsScale
 	data.barPaddingMidle = 2 * pedalsSettings.store.pedalsScale
+
+	if data.fuelPerLap == 0 then
+		data.fuelPerLap = MY_CAR.fuelPerLap
+	end 
+
 	pedalsData.resetContentPositions(data, data.currentWindowSize)
 
 	if

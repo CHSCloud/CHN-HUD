@@ -14,7 +14,7 @@ function fuelData.new()
         fontTitle = 16,
         fontContent = 10,
         ---@diagnostic disable-next-line: undefined-field
-        fuelPerLap = ac.storage(ac.getTrackName() .. ac.getCarID(0) .. "fuelPerLap", nil):get() or CAR.fuelPerLap
+        fuelPerLap = ac.storage(ac.getTrackName() .. ac.getCarID(0) .. "fuelPerLap", nil):get() or MY_CAR.fuelPerLap
     }
 end
 

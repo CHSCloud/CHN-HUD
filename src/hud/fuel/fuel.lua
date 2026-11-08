@@ -20,7 +20,7 @@ end
 
 ---@Credits This function was inspired by the "on_game_close" function from CMRT Complete HUD
 function fuel.onGameClone()
-    local fuelPerLap = ac.getCar(0).fuelPerLap
+    local fuelPerLap = MY_CAR.fuelPerLap
     if fuelPerLap > 0 then
         local fuelPerLapStored = ac.storage(ac.getTrackName() .. ac.getCarID(0) .. "fuelPerLap", nil)
         ---@diagnostic disable-next-line: undefined-field
@@ -69,6 +69,7 @@ function fuel.windowMain()
     data.windowHeight = 105 * fuelSettings.store.fuelScale
     data.fontTitle = 14 * fuelSettings.store.fuelScale
     data.fontContent = 12 * fuelSettings.store.fuelScale
+
     rect.drawRectRounded(vec2(0, 0), vec2(data.windowWidth, data.windowHeight), WindowsColor, 8 * fuelSettings.store.fuelScale, 20)
 
     ui.setCursor(vec2((data.windowWidth - ui.measureDWriteText(language.get("FUEL"), data.fontTitle).x) / 2 - 10 * fuelSettings.store.fuelScale, 2 * fuelSettings.store.fuelScale))
@@ -86,19 +87,15 @@ function fuel.windowMain()
     
     ui.drawLine(vec2(0, 25 * fuelSettings.store.fuelScale), vec2(data.windowWidth, 25 * fuelSettings.store.fuelScale), COLOR.WHITE, 2 * fuelSettings.store.fuelScale)
 
-    infoFuel(vec2(10 * fuelSettings.store.fuelScale, 30 * fuelSettings.store.fuelScale), "Fuel", string.format("%.1fL", math.max(0, CAR.fuel)))
+    infoFuel(vec2(10 * fuelSettings.store.fuelScale, 30 * fuelSettings.store.fuelScale), "Fuel", string.format("%.1fL", math.max(0, MY_CAR.fuel)))
 
-    if CAR.fuelPerLap == 0 then
-        if data.fuelPerLap == 0 then
-            infoFuel(vec2(10 * fuelSettings.store.fuelScale, 55 * fuelSettings.store.fuelScale), "Fuel/Lap", "N/A")
-            infoFuel(vec2(10 * fuelSettings.store.fuelScale, 80 * fuelSettings.store.fuelScale), "Laps Left", "N/A")
-        else
-            infoFuel(vec2(10 * fuelSettings.store.fuelScale, 55 * fuelSettings.store.fuelScale), "Fuel/Lap", string.format("%.1fL", data.fuelPerLap))
-            infoFuel(vec2(10 * fuelSettings.store.fuelScale, 80 * fuelSettings.store.fuelScale), "Laps Left", string.format("%.1f", CAR.fuel / data.fuelPerLap))
-        end
+    if data.fuelPerLap == 0 then
+		data.fuelPerLap = MY_CAR.fuelPerLap
+        infoFuel(vec2(10 * fuelSettings.store.fuelScale, 55 * fuelSettings.store.fuelScale), "Fuel/Lap", "--L")
+        infoFuel(vec2(10 * fuelSettings.store.fuelScale, 80 * fuelSettings.store.fuelScale), "Laps Left", "--")
     else
-        infoFuel(vec2(10 * fuelSettings.store.fuelScale, 55 * fuelSettings.store.fuelScale), "Fuel/Lap", string.format("%.1fL", CAR.fuelPerLap))
-        infoFuel(vec2(10 * fuelSettings.store.fuelScale, 80 * fuelSettings.store.fuelScale), "Laps Left", string.format("%.1f", CAR.fuel / CAR.fuelPerLap))
+        infoFuel(vec2(10 * fuelSettings.store.fuelScale, 55 * fuelSettings.store.fuelScale), "Fuel/Lap", string.format("%.1fL", data.fuelPerLap))
+        infoFuel(vec2(10 * fuelSettings.store.fuelScale, 80 * fuelSettings.store.fuelScale), "Laps Left", string.format("%.1f", MY_CAR.fuel / data.fuelPerLap))
     end
 end
 
