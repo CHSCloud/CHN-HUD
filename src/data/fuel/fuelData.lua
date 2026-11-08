@@ -3,7 +3,7 @@
 ---@field windowHeight number
 ---@field fontTitle number
 ---@field fontContent number
----@field fuelPerLap number
+---@field previousFuelPerLap number
 local fuelData = {}
 
 ---@return fuelData
@@ -14,7 +14,7 @@ function fuelData.new()
         fontTitle = 16,
         fontContent = 10,
         ---@diagnostic disable-next-line: undefined-field
-        fuelPerLap = ac.storage(ac.getTrackName() .. ac.getCarID(0) .. "fuelPerLap", nil):get() or MY_CAR.fuelPerLap
+        previousFuelPerLap = ac.storage(ac.getTrackName() .. ac.getCarID(0) .. "previousFuelPerLap", nil):get() or 0
     }
 end
 

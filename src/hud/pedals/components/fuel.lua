@@ -13,23 +13,34 @@ local function setFuel(data)
 			fuel = string.format("%.1fgal", math.max(0, MY_CAR.fuel * 0.264172))
 		end
 	elseif pedalsSettings.store.fuelOption == 2 then
-		if data.fuelPerLap == 0 then
+		local fuelPerLap
+		if MY_CAR.fuelPerLap > 0 then
+			fuelPerLap = MY_CAR.fuelPerLap
+		elseif data.previousFuelPerLap > 0 then
+			fuelPerLap = data.previousFuelPerLap
+		else
 			return string.format("--L")
 		end
 		
 		if SelectedFuel == 1 then
-			fuel = string.format("%.1fL", data.fuelPerLap)
+			fuel = string.format("%.1fL", fuelPerLap)
 		else
-			fuel = string.format("%.1fL", data.fuelPerLap * 0.264172)
+			fuel = string.format("%.1fL", fuelPerLap * 0.264172)
 		end
 	else
-		if data.fuelPerLap == 0 then
+		local fuelPerLap
+		if MY_CAR.fuelPerLap > 0 then
+			fuelPerLap = MY_CAR.fuelPerLap
+		elseif data.previousFuelPerLap > 0 then
+			fuelPerLap = data.previousFuelPerLap
+		else
 			return string.format("--")
 		end
+
 		if SelectedFuel == 1 then
-			fuel = string.format("%.1f", MY_CAR.fuel / data.fuelPerLap)
+			fuel = string.format("%.1f", MY_CAR.fuel / fuelPerLap)
 		else
-			fuel = string.format("%.1f", (MY_CAR.fuel / data.fuelPerLap) * 0.264172)
+			fuel = string.format("%.1f", (MY_CAR.fuel / fuelPerLap) * 0.264172)
 		end
 	end
 	return fuel

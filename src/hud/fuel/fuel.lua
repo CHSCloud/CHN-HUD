@@ -22,9 +22,9 @@ end
 function fuel.onGameClone()
     local fuelPerLap = MY_CAR.fuelPerLap
     if fuelPerLap > 0 then
-        local fuelPerLapStored = ac.storage(ac.getTrackName() .. ac.getCarID(0) .. "fuelPerLap", nil)
+        local previousFuelPerLap = ac.storage(ac.getTrackName() .. ac.getCarID(0) .. "previousFuelPerLap", nil)
         ---@diagnostic disable-next-line: undefined-field
-        fuelPerLapStored:set(fuelPerLap)
+        previousFuelPerLap:set(fuelPerLap)
     end
 end
 
@@ -89,13 +89,15 @@ function fuel.windowMain()
 
     infoFuel(vec2(10 * fuelSettings.store.fuelScale, 30 * fuelSettings.store.fuelScale), "Fuel", string.format("%.1fL", math.max(0, MY_CAR.fuel)))
 
-    if data.fuelPerLap == 0 then
-		data.fuelPerLap = MY_CAR.fuelPerLap
+    if MY_CAR.fuelPerLap > 0 then
+        infoFuel(vec2(10 * fuelSettings.store.fuelScale, 55 * fuelSettings.store.fuelScale), "Fuel/Lap", string.format("%.1fL", MY_CAR.fuelPerLap))
+        infoFuel(vec2(10 * fuelSettings.store.fuelScale, 80 * fuelSettings.store.fuelScale), "Laps Left", string.format("%.1f", MY_CAR.fuel / MY_CAR.fuelPerLap))
+    elseif data.previousFuelPerLap > 0 then
+        infoFuel(vec2(10 * fuelSettings.store.fuelScale, 55 * fuelSettings.store.fuelScale), "Fuel/Lap", string.format("%.1fL", data.previousFuelPerLap))
+        infoFuel(vec2(10 * fuelSettings.store.fuelScale, 80 * fuelSettings.store.fuelScale), "Laps Left", string.format("%.1f", MY_CAR.fuel / data.previousFuelPerLap))
+    else
         infoFuel(vec2(10 * fuelSettings.store.fuelScale, 55 * fuelSettings.store.fuelScale), "Fuel/Lap", "--L")
         infoFuel(vec2(10 * fuelSettings.store.fuelScale, 80 * fuelSettings.store.fuelScale), "Laps Left", "--")
-    else
-        infoFuel(vec2(10 * fuelSettings.store.fuelScale, 55 * fuelSettings.store.fuelScale), "Fuel/Lap", string.format("%.1fL", data.fuelPerLap))
-        infoFuel(vec2(10 * fuelSettings.store.fuelScale, 80 * fuelSettings.store.fuelScale), "Laps Left", string.format("%.1f", MY_CAR.fuel / data.fuelPerLap))
     end
 end
 
