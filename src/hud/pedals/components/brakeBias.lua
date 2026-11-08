@@ -4,14 +4,16 @@ local brakeBias = {}
 
 ---@param data pedalsData
 function brakeBias.drawBrakeBias(data)
-	pedalsData.setPositionContentBorder(data, pedalsSettings.store.brakebiasPos, vec2(60, 20):scale(pedalsSettings.store.pedalsScale))
-	ui.setCursor(data.contentPositions[pedalsSettings.store.brakebiasPos][1] + vec2(25) * pedalsSettings.store.pedalsScale)
+	local brakeBiasString = string.format("%.1f", CAR.brakeBias * 100)
+	local lenght = ui.measureDWriteText(brakeBiasString, data.fontContentBottom).x
+	pedalsData.setPositionContentBorder(data, pedalsSettings.store.brakebiasPos, vec2(lenght + 28 * pedalsSettings.store.pedalsScale, 20 * pedalsSettings.store.pedalsScale))
+	ui.setCursor(data.contentPositions[pedalsSettings.store.brakebiasPos][1] + vec2(23) * pedalsSettings.store.pedalsScale)
 	ui.dwriteTextAligned(
-		string.format("%.1f", CAR.brakeBias * 100),
+		brakeBiasString,
 		data.fontContentBottom,
 		ui.Alignment.Start,
 		ui.Alignment.Center,
-		vec2(50, 20):scale(pedalsSettings.store.pedalsScale),
+		vec2(lenght, 20):scale(pedalsSettings.store.pedalsScale),
 		false,
 		COLOR.WHITE
 	)
