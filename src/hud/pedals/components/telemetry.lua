@@ -175,9 +175,9 @@ function telemetry.drawTelemetry(data)
 		pedalsData.remapTelemetry(data)
 	end
 
-	local min = vec2(data.currentWindowWidth + 10 * pedalsSettings.store.pedalsScale, 10 * pedalsSettings.store.pedalsScale)
+	local min = vec2(data.currentWindowWidth + 5 * pedalsSettings.store.pedalsScale, 10 * pedalsSettings.store.pedalsScale)
 	local max = vec2(
-		data.currentWindowWidth + pedalsSettings.store.telemetryLenght * pedalsSettings.store.pedalsScale - 10 * pedalsSettings.store.pedalsScale,
+		data.currentWindowWidth + pedalsSettings.store.telemetryLenght * pedalsSettings.store.pedalsScale - 5 * pedalsSettings.store.pedalsScale,
 		data.currentWindowSize.y - 10 * pedalsSettings.store.pedalsScale
 	)
 

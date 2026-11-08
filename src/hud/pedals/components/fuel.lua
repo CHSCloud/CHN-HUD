@@ -14,22 +14,22 @@ local function setFuel(data)
 		end
 	elseif pedalsSettings.store.fuelOption == 2 then
 		if data.fuelPerLap == 0 then
-			return string.format("-/Lap")
+			return string.format("--L")
 		end
 		
 		if SelectedFuel == 1 then
-			fuel = string.format("%.1f/Lap", data.fuelPerLap)
+			fuel = string.format("%.1fL", data.fuelPerLap)
 		else
-			fuel = string.format("%.1f/Lap", data.fuelPerLap * 0.264172)
+			fuel = string.format("%.1fL", data.fuelPerLap * 0.264172)
 		end
 	else
 		if data.fuelPerLap == 0 then
-			return string.format("- Laps")
+			return string.format("--")
 		end
 		if SelectedFuel == 1 then
-			fuel = string.format("%.1f Laps", MY_CAR.fuel / data.fuelPerLap)
+			fuel = string.format("%.1f", MY_CAR.fuel / data.fuelPerLap)
 		else
-			fuel = string.format("%.1f Laps", (MY_CAR.fuel / data.fuelPerLap) * 0.264172)
+			fuel = string.format("%.1f", (MY_CAR.fuel / data.fuelPerLap) * 0.264172)
 		end
 	end
 	return fuel
@@ -45,21 +45,21 @@ function fuel.drawFuel(data)
 	end
 
 	local fuelString = setFuel(data)
-	local lenght = ui.measureDWriteText(fuelString, data.fontContentBottom).x + 23 * pedalsSettings.store.pedalsScale
-	pedalsData.setPositionContentBorder(data, pedalsSettings.store.fuelPos, vec2(lenght, 20 * pedalsSettings.store.pedalsScale))
+	local lenght = ui.measureDWriteText(fuelString, data.fontContentBottom).x
+	pedalsData.setPositionContentBorder(data, pedalsSettings.store.fuelPos, vec2(lenght + 25 * pedalsSettings.store.pedalsScale, 20 * pedalsSettings.store.pedalsScale))
 
-	ui.setCursor(data.contentPositions[pedalsSettings.store.fuelPos][1] + vec2(-4, 1):scale(pedalsSettings.store.pedalsScale))
+	ui.setCursor(data.contentPositions[pedalsSettings.store.fuelPos][1] + vec2(20 * pedalsSettings.store.pedalsScale))
 	ui.dwriteTextAligned(
 		fuelString,
 		data.fontContentBottom,
-		ui.Alignment.End,
+		ui.Alignment.Start,
 		ui.Alignment.Center,
-		vec2(lenght, 20 * pedalsSettings.store.pedalsScale),
+		vec2(lenght, 20):scale(pedalsSettings.store.pedalsScale),
 		false,
 		fuelColor
 	)
 
-	ui.setCursor(data.contentPositions[pedalsSettings.store.fuelPos][1]+ vec2(0, 2.5 * pedalsSettings.store.pedalsScale))
+	ui.setCursor(data.contentPositions[pedalsSettings.store.fuelPos][1] + vec2(0, 2):scale(pedalsSettings.store.pedalsScale))
 	if MY_CAR.fuel < 5.005 then
 		if (4 * TIMER) % 2 >= 1 then
 			ui.image("assets/pedals/Fuel.png", vec2(16, 16):scale(pedalsSettings.store.pedalsScale), fuelColor, ui.ImageFit.Fit)
