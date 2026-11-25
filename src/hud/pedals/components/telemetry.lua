@@ -168,6 +168,32 @@ local function drawGraphBrakeInverted(telemetryData, parameter, color, min, max)
 end
 
 ---@param data pedalsData
+local function drawGearShifts(data, min, max)
+	if data.currentGear ~= CAR.gear then
+		data.gearTelemetry[#data.gearTelemetry + 1] = true
+		table.remove(data.gearTelemetry, 1)
+	else
+		data.gearTelemetry[#data.gearTelemetry + 1] = false
+		table.remove(data.gearTelemetry, 1)
+	end
+
+	for i, value in ipairs(data.gearTelemetry) do
+		if value then
+			local lenght = (400 * pedalsSettings.store.pedalsScale) / pedalsSettings.store.telemetryPeriod
+			local xAxis = max.x - (#data.gearTelemetry - i) * lenght
+
+			if xAxis >= min.x then
+				ui.drawRectFilled(
+					vec2(xAxis - 1 * pedalsSettings.store.pedalsScale, min.y),
+					vec2(xAxis + 1 * pedalsSettings.store.pedalsScale, max.y),
+					COLOR.WHITE
+				)
+			end
+		end
+	end
+end
+
+---@param data pedalsData
 function telemetry.drawTelemetry(data)
 	data.contentMidle = 73 * pedalsSettings.store.pedalsScale
 	if data.lastTelemetryPeriod ~= pedalsSettings.store.telemetryPeriod then
@@ -205,6 +231,10 @@ function telemetry.drawTelemetry(data)
 	else
 		functionGraphDefault = drawGraphDefault
 		functionGraphBrake = drawGraphBrake
+	end
+
+	if pedalsSettings.store.telemetryGear then
+		drawGearShifts(data, min, max)
 	end
 
 	if pedalsSettings.store.telemetryThrottle then

@@ -65,6 +65,7 @@ local defaultTelemetryValues = {
 	telemetryAbs = false,
 	telemetryClucth = false,
 	telemetryHandbrake = false,
+	telemetryGear = false,
 }
 
 local defaultValues = {}
@@ -728,6 +729,11 @@ local function telemetry()
 		posYTelemetry = posYTelemetry + 25
 		if toggleButton.main("telemetryHandbrake", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryHandbrake, language.get("HANDBRAKE")) then
 			pedalsSettings.store.telemetryHandbrake = not pedalsSettings.store.telemetryHandbrake
+		end
+
+		posYTelemetry = posYTelemetry + 25
+		if toggleButton.main("telemetryGear", vec2(posXTelemetry, posYTelemetry), pedalsSettings.store.telemetryGear, language.get("GEAR")) then
+			pedalsSettings.store.telemetryGear = not pedalsSettings.store.telemetryGear
 		end
 	end
 	--

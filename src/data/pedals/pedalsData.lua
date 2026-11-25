@@ -28,6 +28,7 @@ local pedalsSettings = require("src.settings.tabs.pedalsSettings")
 ---@field brakeTelemetry table
 ---@field clutchTelemetry table
 ---@field handbrakeTelemetry table
+---@field gearTelemetry table
 ---@field lastTelemetryPeriod number
 local pedalsData = {}
 
@@ -37,6 +38,16 @@ local function getEmptyTableDefault(points)
 	local table = {}
 	for i = 1, points, 1 do
 		table[i] = 0
+	end
+	return table
+end
+
+---@param points number
+---@return table
+local function getEmptyTableGear(points)
+	local table = {}
+	for i = 1, points, 1 do
+		table[i] = false
 	end
 	return table
 end
@@ -84,6 +95,7 @@ function pedalsData.new()
 		brakeTelemetry = getEmptyTableBrake(pedalsSettings.store.telemetryPeriod),
 		clutchTelemetry = getEmptyTableDefault(pedalsSettings.store.telemetryPeriod),
 		handbrakeTelemetry = getEmptyTableDefault(pedalsSettings.store.telemetryPeriod),
+		gearTelemetry = getEmptyTableGear(pedalsSettings.store.telemetryPeriod),
 		lastTelemetryPeriod = pedalsSettings.store.telemetryPeriod,
 	}
 end
